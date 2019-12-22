@@ -72,6 +72,8 @@ public:
 	void SetStars5();
 	void SetStars6();
 	void TpToLastCar();
+	bool playerImmortal = 0;
+	void PlayerImmortal();
 	void GiveUnlimitedAmmo();
 	void FixCar();
 	void VisFixCar();

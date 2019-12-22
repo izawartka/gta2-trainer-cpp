@@ -31,10 +31,11 @@
 #define IDC_CARVISFIX2                  3025
 #define IDC_CARID                       3025
 #define IDC_TPPOPEN                     3026
-#define IDC_CARDETONATE                 3027
 #define IDC_CARLASTTP                   3027
 #define IDC_PEDIDS                      3030
 #define IDC_PEDS0TIME                   3031
+#define IDC_PEDIDS2                     3032
+#define IDC_PEDIMMORT                   3032
 #define ID_DEBUG_MAKEINT3CRASHTOATTACHDEBUGGER 32771
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773

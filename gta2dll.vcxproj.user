@@ -6,7 +6,7 @@
     <LocalDebuggerWorkingDirectory>..\GTA2 Mouse</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommand>GTA2-TRAINER.EXE PATH HERE</LocalDebuggerCommand>
+    <LocalDebuggerCommand>GTA2-TRAINER.EXE HERE</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>GTA2 ROOT HERE</LocalDebuggerWorkingDirectory>
     <LocalDebuggerAttach>false</LocalDebuggerAttach>

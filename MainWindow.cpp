@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_LOCKCARDAMAGE, &MainWindow::LockCarDamage)
 	ON_BN_CLICKED(IDC_PEDS0TIME, &MainWindow::NoReloads)
 	ON_BN_CLICKED(IDC_CARLASTTP, &MainWindow::TpToLastCar)
+	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
 END_MESSAGE_MAP()
 
 
@@ -744,6 +745,22 @@ void MainWindow::VisFixCar()
 void MainWindow::ShowPedIDs()
 {
 	
+}
+
+void MainWindow::PlayerImmortal()
+{
+	playerImmortal = !playerImmortal;
+
+	if (playerImmortal)
+	{
+		fnGetPedByID(1)->Invulnerability = 9999;
+		log(L"Invulnerability enabled");
+	}
+	else
+	{
+		fnGetPedByID(1)->Invulnerability = 1;
+		log(L"Invulnerability disabled");
+	}
 }
 
 void MainWindow::PedInfo()
