@@ -39,6 +39,7 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PEDSTIME, m_pedSTime);
 	DDX_Control(pDX, IDC_STARCOUNTER, m_pedCopLevel);
 	DDX_Control(pDX, IDC_CARDAMAGE, m_carDamage);
+	DDX_Control(pDX, IDC_CARID, m_carID);
 }
 
 
@@ -71,7 +72,9 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CARVISFIX, &MainWindow::VisFixCar)
 	ON_BN_CLICKED(IDC_PEDIDS, &MainWindow::ShowPedIDs)
 	ON_BN_CLICKED(IDC_LOCKCOPLEVEL, &MainWindow::LockStars)
+	ON_BN_CLICKED(IDC_LOCKCARDAMAGE, &MainWindow::LockCarDamage)
 	ON_BN_CLICKED(IDC_PEDS0TIME, &MainWindow::NoReloads)
+	ON_BN_CLICKED(IDC_CARLASTTP, &MainWindow::TpToLastCar)
 END_MESSAGE_MAP()
 
 
@@ -459,7 +462,29 @@ void MainWindow::CopLockETC()
 
 		if (noReloads && playerPed->selectedWeapon) playerPed->selectedWeapon->timeToReload = 0;
 	}
-	
+
+	if (playerPed->currentCar)
+	{
+		CurrLastCar = playerPed->currentCar;
+	}
+
+	if (CurrLastCar && carDamageLocked)
+	{
+		if (CurrLastCar == PrevCar)
+		{
+
+			CurrLastCar->carDamage = startCarDamage;
+		}
+		else
+		{
+			((CButton*)GetDlgItem(IDC_LOCKCARDAMAGE))->SetCheck(false);
+			carDamageLocked = false;
+			startCarDamage = 0;
+			log(L"Player has changed the car; Engine damage unlocked");
+		}
+	}
+
+	PrevCar = CurrLastCar;
 }
 
 struct SPAWNCAR {
@@ -586,16 +611,10 @@ void MainWindow::OnSpawncarGunjeep()
 
 void MainWindow::CarEngineOff()
 {
-	Ped* playerPed = fnGetPedByID(1);
-
-	if (playerPed->currentCar)
+	if (CurrLastCar)
 	{
-		playerPed->currentCar->engineState = CAR_ENGINE_STATE(TURNING_OFF);
+		CurrLastCar->engineState = CAR_ENGINE_STATE(TURNING_OFF);
 		log(L"Engine turned off");
-	}
-	else
-	{
-		log(L"Do you want to stop your heart or something? Find a car first");
 	}
 }
 
@@ -603,7 +622,7 @@ void MainWindow::LockStars()
 {
 	starsLocked = !starsLocked;
 	startCopValue = fnGetPedByID(1)->copValue;
-	if(starsLocked) log(L"Cop level locked");
+	if(starsLocked) log(L"Cop level locked at %d", startCopValue);
 	else            log(L"Cop level unlocked");
 	 
 }
@@ -613,6 +632,22 @@ void MainWindow::NoReloads()
 	noReloads = !noReloads;
 	if (noReloads) log(L"No reloads enabled");
 	else           log(L"No reloads disabled");
+
+}
+
+void MainWindow::LockCarDamage()
+{
+	if (carDamageLocked)
+	{
+		log(L"Engine damage unlocked");
+	}
+	else if (CurrLastCar)
+	{
+		startCarDamage = CurrLastCar->carDamage;
+		log(L"Engine damage locked at %d", startCarDamage);
+	}
+
+	carDamageLocked = !carDamageLocked;
 
 }
 
@@ -665,9 +700,16 @@ void MainWindow::SetStars6()
 	log(L"6 stars");
 }
 
-void MainWindow::DetonateLastCar()
+void MainWindow::TpToLastCar()
 {
-	
+	Ped* playerPed = fnGetPedByID(1);
+
+	if (CurrLastCar && playerPed && playerPed->pedSprite)
+	{
+		playerPed->pedSprite->actualPosition->x = CurrLastCar->position->x;
+		playerPed->pedSprite->actualPosition->y = CurrLastCar->position->y;
+		playerPed->pedSprite->actualPosition->z = CurrLastCar->position->z;
+	}
 }
 
 void MainWindow::GiveUnlimitedAmmo()
@@ -687,14 +729,16 @@ void MainWindow::GiveUnlimitedAmmo()
 
 void MainWindow::FixCar()
 {
-	if (fnGetPedByID(1)->currentCar) fnGetPedByID(1)->currentCar->carDamage = 0;
-	else log(L"Does people have engines? Player not in the car");
+	if (CurrLastCar)
+	{
+		CurrLastCar->carDamage = 0;
+		startCarDamage = 0;
+	}
 }
 
 void MainWindow::VisFixCar()
 {
-	if (fnGetPedByID(1)->currentCar) fnGetPedByID(1)->currentCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(0x800040);
-	else log(L"Maybe you need a plastic surgery? Player not in the car");
+	if (CurrLastCar)CurrLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(0x800040);
 }
 
 void MainWindow::ShowPedIDs()
@@ -725,6 +769,16 @@ void MainWindow::PedInfo()
 
 		m_pedCopLevel.SetWindowTextW(buf);
 
+		if (CurrLastCar)
+		{
+			swprintf(buf, 256, L"%d", CurrLastCar->carDamage);
+			m_carDamage.SetWindowTextW(buf);
+
+			swprintf(buf, 256, L"%d", CurrLastCar->id);
+			m_carID.SetWindowTextW(buf);
+		}
+		
+
 		if (playerPed->currentCar)
 		{
 			swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->x / 16384.0);
@@ -739,8 +793,6 @@ void MainWindow::PedInfo()
 			swprintf(buf, 256, L"%d", playerPed->currentCar->position->rotation);
 			m_pedRot.SetWindowTextW(buf);
 
-			swprintf(buf, 256, L"%d", playerPed->currentCar->carDamage);
-			m_carDamage.SetWindowTextW(buf);
 		}
 		else
 		{
@@ -766,8 +818,6 @@ void MainWindow::PedInfo()
 
 				swprintf(buf, 256, L"%d", playerPed->pedSprite->actualPosition->rotation);
 				m_pedRot.SetWindowTextW(buf);
-
-				m_carDamage.SetWindowTextW(L"");
 			}
 		}
 

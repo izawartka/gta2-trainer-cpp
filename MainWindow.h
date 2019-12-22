@@ -56,6 +56,7 @@ public:
 	CEdit m_pedSTime;
 	CEdit m_pedCopLevel;
 	CEdit m_carDamage;
+	CEdit m_carID;
 	void CarEngineOff();
 	bool starsLocked = 0;
 	short startCopValue = 0;
@@ -70,10 +71,15 @@ public:
 	void SetStars4();
 	void SetStars5();
 	void SetStars6();
-	void DetonateLastCar();
+	void TpToLastCar();
 	void GiveUnlimitedAmmo();
 	void FixCar();
 	void VisFixCar();
+	short startCarDamage = 0;
+	bool carDamageLocked = 0;
+	void LockCarDamage();
 	void ShowPedIDs();
 	void PedInfo();
+	Car* CurrLastCar;
+	Car* PrevCar;
 };
