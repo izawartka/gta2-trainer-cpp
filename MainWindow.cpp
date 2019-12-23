@@ -76,6 +76,8 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_PEDS0TIME, &MainWindow::NoReloads)
 	ON_BN_CLICKED(IDC_CARLASTTP, &MainWindow::TpToLastCar)
 	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
+	ON_BN_CLICKED(ID_TPALLPEDS, &MainWindow::TeleportAllPeds)
+	ON_BN_CLICKED(IDC_BEAHUMAN, &MainWindow::BeAHuman)
 END_MESSAGE_MAP()
 
 
@@ -108,20 +110,38 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
-		MOD_ALT | MOD_NOREPEAT,
+		MOD_SHIFT | MOD_NOREPEAT,
 		0x54); //ALT+T
 
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
-		MOD_ALT | MOD_NOREPEAT,
+		MOD_SHIFT | MOD_NOREPEAT,
 		0x47); //ALT+G
 
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
-		MOD_ALT | MOD_NOREPEAT,
+		MOD_SHIFT | MOD_NOREPEAT,
 		0x4a); //ALT+J
+
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_SHIFT | MOD_NOREPEAT,
+		0x50); //ALT+P
+
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_SHIFT | MOD_NOREPEAT,
+		0x44); //ALT+D
+
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_SHIFT | MOD_NOREPEAT,
+		0x4e); //ALT+N
 
 	//AppendMenu();
 	CMenu *menu = GetMenu();
@@ -462,19 +482,49 @@ void MainWindow::CopLockETC()
 		}
 
 		if (noReloads && playerPed->selectedWeapon) playerPed->selectedWeapon->timeToReload = 0;
+
+		if (beAHuman)
+		{
+			if (selectedPed && selectedPed->pedSprite)
+			{
+				playerPed->pedSprite->actualPosition->x = selectedPed->pedSprite->actualPosition->x;
+				playerPed->pedSprite->actualPosition->y = selectedPed->pedSprite->actualPosition->y;
+				playerPed->pedSprite->actualPosition->z = selectedPed->pedSprite->actualPosition->z;
+			}
+			else
+			{
+				Ped* currentPed;
+
+				for (int i = 1; i < 200; i++)
+				{
+					currentPed = fnGetPedByID(i);
+
+					if (currentPed && currentPed->pedSprite)
+					{
+						selectedPed = currentPed;
+
+					}
+
+
+				}
+			}
+		}
+		
+
 	}
 
-	if (playerPed->currentCar)
-	{
-		CurrLastCar = playerPed->currentCar;
-	}
+		if (playerPed->currentCar)
+		{
+			currLastCar = playerPed->currentCar;
+		}
 
-	if (CurrLastCar && carDamageLocked)
+
+	if (currLastCar && carDamageLocked)
 	{
-		if (CurrLastCar == PrevCar)
+		if (currLastCar == currLastCarOld)
 		{
 
-			CurrLastCar->carDamage = startCarDamage;
+			currLastCar->carDamage = startCarDamage;
 		}
 		else
 		{
@@ -485,7 +535,8 @@ void MainWindow::CopLockETC()
 		}
 	}
 
-	PrevCar = CurrLastCar;
+	currLastCarOld = currLastCar;
+
 }
 
 struct SPAWNCAR {
@@ -558,6 +609,15 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 	case 0x4a:
 		OnSpawncarGunjeep();
 		break;
+	case 0x50:
+		TeleportAllPeds();
+		break;
+	case 0x44:
+		NewFunction();
+		break;
+	case 0x4e:
+		NextHuman();
+		break;
 	default:
 		break;
 	}
@@ -612,9 +672,9 @@ void MainWindow::OnSpawncarGunjeep()
 
 void MainWindow::CarEngineOff()
 {
-	if (CurrLastCar)
+	if (currLastCar)
 	{
-		CurrLastCar->engineState = CAR_ENGINE_STATE(TURNING_OFF);
+		currLastCar->engineState = CAR_ENGINE_STATE(TURNING_OFF);
 		log(L"Engine turned off");
 	}
 }
@@ -642,9 +702,9 @@ void MainWindow::LockCarDamage()
 	{
 		log(L"Engine damage unlocked");
 	}
-	else if (CurrLastCar)
+	else if (currLastCar)
 	{
-		startCarDamage = CurrLastCar->carDamage;
+		startCarDamage = currLastCar->carDamage;
 		log(L"Engine damage locked at %d", startCarDamage);
 	}
 
@@ -705,11 +765,11 @@ void MainWindow::TpToLastCar()
 {
 	Ped* playerPed = fnGetPedByID(1);
 
-	if (CurrLastCar && playerPed && playerPed->pedSprite)
+	if (currLastCar && playerPed && playerPed->pedSprite)
 	{
-		playerPed->pedSprite->actualPosition->x = CurrLastCar->position->x;
-		playerPed->pedSprite->actualPosition->y = CurrLastCar->position->y;
-		playerPed->pedSprite->actualPosition->z = CurrLastCar->position->z;
+		playerPed->pedSprite->actualPosition->x = currLastCar->position->x;
+		playerPed->pedSprite->actualPosition->y = currLastCar->position->y;
+		playerPed->pedSprite->actualPosition->z = currLastCar->position->z;
 	}
 }
 
@@ -730,16 +790,16 @@ void MainWindow::GiveUnlimitedAmmo()
 
 void MainWindow::FixCar()
 {
-	if (CurrLastCar)
+	if (currLastCar)
 	{
-		CurrLastCar->carDamage = 0;
+		currLastCar->carDamage = 0;
 		startCarDamage = 0;
 	}
 }
 
 void MainWindow::VisFixCar()
 {
-	if (CurrLastCar)CurrLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(0x800040);
+	if (currLastCar)currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(0x800040);
 }
 
 void MainWindow::ShowPedIDs()
@@ -786,12 +846,12 @@ void MainWindow::PedInfo()
 
 		m_pedCopLevel.SetWindowTextW(buf);
 
-		if (CurrLastCar)
+		if (currLastCar)
 		{
-			swprintf(buf, 256, L"%d", CurrLastCar->carDamage);
+			swprintf(buf, 256, L"%d", currLastCar->carDamage);
 			m_carDamage.SetWindowTextW(buf);
 
-			swprintf(buf, 256, L"%d", CurrLastCar->id);
+			swprintf(buf, 256, L"%d", currLastCar->id);
 			m_carID.SetWindowTextW(buf);
 		}
 		
@@ -824,17 +884,38 @@ void MainWindow::PedInfo()
 			}
 			else
 			{
-				swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->x / 16384.0);
-				m_pedX.SetWindowTextW(buf);
+				if (playerPed->pedSprite->actualPosition->x != pedXOld)
+				{
+					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->x / 16384.0);
+					m_pedX.SetWindowTextW(buf);
+					
+				}
+				
+				if (playerPed->pedSprite->actualPosition->y != pedYOld)
+				{
+					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->y / 16384.0);
+					m_pedY.SetWindowTextW(buf);
+					
+				}
 
-				swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->y / 16384.0);
-				m_pedY.SetWindowTextW(buf);
+				if (playerPed->pedSprite->actualPosition->z != pedZOld)
+				{
+					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->z / 16384.0);
+					m_pedZ.SetWindowTextW(buf);
+					
+				}
 
-				swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->z / 16384.0);
-				m_pedZ.SetWindowTextW(buf);
+				if (playerPed->pedSprite->actualPosition->rotation != pedRotOld)
+				{
+					swprintf(buf, 256, L"%d", playerPed->pedSprite->actualPosition->rotation);
+					m_pedRot.SetWindowTextW(buf);
 
-				swprintf(buf, 256, L"%d", playerPed->pedSprite->actualPosition->rotation);
-				m_pedRot.SetWindowTextW(buf);
+				}
+
+				pedXOld = playerPed->pedSprite->actualPosition->x;
+				pedYOld = playerPed->pedSprite->actualPosition->y;
+				pedZOld = playerPed->pedSprite->actualPosition->z;
+				pedRotOld = playerPed->pedSprite->actualPosition->rotation;
 			}
 		}
 
@@ -864,4 +945,75 @@ void MainWindow::PedInfo()
 		m_pedSTime.SetWindowTextW(L"");
 	}
 	
+}
+
+void MainWindow::TeleportAllPeds()
+{
+
+	Ped* currentPed;
+	Ped* playerPed = fnGetPedByID(1);
+	if (playerPed && playerPed->pedSprite)
+	{
+		for (int i = 1; i < 200; i++)
+		{
+			currentPed = fnGetPedByID(i);
+
+			if (currentPed && currentPed->pedSprite)
+			{
+				currentPed->pedSprite->actualPosition->x = playerPed->pedSprite->actualPosition->x;
+				currentPed->pedSprite->actualPosition->y = playerPed->pedSprite->actualPosition->y;
+				currentPed->pedSprite->actualPosition->z = playerPed->pedSprite->actualPosition->z;
+			}
+		}
+		log(L"Teleported");
+	}
+	else log(L"Where the fuck is the player?!?");
+}
+
+void MainWindow::BeAHuman()
+{
+	Ped* playerPed = fnGetPedByID(1);
+
+	if (beAHuman)
+	{
+		beAHuman = false;
+		log(L"You are no longer a human");
+
+		playerPed->pedSprite->actualPosition->x = pedXPreHuman;
+		playerPed->pedSprite->actualPosition->y = pedYPreHuman;
+		playerPed->pedSprite->actualPosition->z = pedZPreHuman;
+
+
+	}
+	else if (playerPed && playerPed->pedSprite)
+	{
+		beAHuman = true;
+		log(L"Congratulations! You are a human now");
+		log(L"You can change your identity by pressing SHIFT + N");
+
+		pedXPreHuman = playerPed->pedSprite->actualPosition->x;
+		pedYPreHuman = playerPed->pedSprite->actualPosition->y;
+		pedZPreHuman = playerPed->pedSprite->actualPosition->z;
+	}
+	else
+	{
+		log(L"Where the fuck is the ped?!?");
+		((CButton*)GetDlgItem(IDC_BEAHUMAN))->SetCheck(false);
+	}
+}
+
+void MainWindow::NextHuman()
+{
+	if (beAHuman)
+	{
+		selectedPed = selectedPed->nextPed;
+		log(L"You've changed your identity");
+	}
+	
+}
+
+void MainWindow::NewFunction()
+{
+	// You can add anything here to test it and then press SHIFT+D ingame to run the code :)
+
 }

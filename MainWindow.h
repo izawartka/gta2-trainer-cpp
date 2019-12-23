@@ -82,6 +82,15 @@ public:
 	void LockCarDamage();
 	void ShowPedIDs();
 	void PedInfo();
-	Car* CurrLastCar;
-	Car* PrevCar;
+	Car* currLastCar;
+	Car* currLastCarOld;
+	int pedXOld, pedYOld, pedZOld, pedRotOld;
+	void TeleportAllPeds();
+	void NewFunction();
+	Ped* selectedPed;
+	bool beAHuman;
+	void BeAHuman();
+	void NextHuman();
+	int pedXPreHuman, pedYPreHuman, pedZPreHuman;
+
 };

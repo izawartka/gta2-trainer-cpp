@@ -4,6 +4,7 @@
 //
 #define IDD_DIALOG1                     3000
 #define IDC_EDIT1                       3000
+#define IDD_DIALOG                      3000
 #define IDC_PEDX                        3001
 #define IDR_MENU1                       3002
 #define IDC_PEDY                        3003
@@ -34,8 +35,9 @@
 #define IDC_CARLASTTP                   3027
 #define IDC_PEDIDS                      3030
 #define IDC_PEDS0TIME                   3031
-#define IDC_PEDIDS2                     3032
 #define IDC_PEDIMMORT                   3032
+#define IDC_PEDIMMORT2                  3033
+#define IDC_BEAHUMAN                    3034
 #define ID_DEBUG_MAKEINT3CRASHTOATTACHDEBUGGER 32771
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
@@ -44,13 +46,16 @@
 #define ID_SPAWNCAR_GT                  32778
 #define ID_SPAWNCAR_GUNJEPP             32779
 #define ID_SPAWNCAR_GUNJEEP             32780
+#define ID_COMMANDS_TELEPORTALLPEDS     32781
+#define ID_COMMANDS_TPALLPEDS           32782
+#define ID_TPALLPEDS                    32783
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3006
-#define _APS_NEXT_COMMAND_VALUE         32781
+#define _APS_NEXT_COMMAND_VALUE         32784
 #define _APS_NEXT_CONTROL_VALUE         3002
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
