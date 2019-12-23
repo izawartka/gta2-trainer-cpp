@@ -13,12 +13,14 @@ If you want to build it on your own, there is VS solution inside so it shouldn't
 Oh and you will probably have to change some options in Project Settings so if you run it, VS will start gta-trainer.exe instead of
 trying to run gta2dll.dll but it isn't so hard.
 
+VERY IMPORTANT THING IS TO SELECT Realse x86 SETTINGS IN VS!
+
 ## Authors
 And of course i shoud give some credits at the end
 I based my project on h0x91b's work so all the fame belongs to him i think...
 but you can worship me (masuo aka. izawartka) as well :PP
 
-And if you want to add something more to it, you're free to do it but it would be kind if you would mention about us somewhere.
+And if you want to add something more to it, you're free to do it but it would be kind if you would mention us somewhere.
 
 ## Links
 Some videos on YT:
