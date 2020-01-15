@@ -40,6 +40,9 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STARCOUNTER, m_pedCopLevel);
 	DDX_Control(pDX, IDC_CARDAMAGE, m_carDamage);
 	DDX_Control(pDX, IDC_CARID, m_carID);
+	DDX_Control(pDX, IDC_GANG1V, m_gangRespect[0]);
+	DDX_Control(pDX, IDC_GANG2V, m_gangRespect[1]);
+	DDX_Control(pDX, IDC_GANG3V, m_gangRespect[2]);
 }
 
 
@@ -49,7 +52,6 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_WM_CREATE()
 	ON_WM_PAINT()
 	ON_WM_TIMER()
-	ON_COMMAND(ID_DEBUG_MAKEINT3CRASHTOATTACHDEBUGGER, &MainWindow::OnDebugMakeInt3Crash)
 	ON_COMMAND(ID_COMMANDS_HELLO, &MainWindow::OnCommandsHello)
 	ON_COMMAND(ID_COMMANDS_CAPTUREMOUSE, &MainWindow::OnCommandsCaptureMouse)
 	ON_COMMAND(ID_SPAWNCAR_TANK, &MainWindow::OnSpawncarTank)
@@ -78,6 +80,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
 	ON_BN_CLICKED(ID_TPALLPEDS, &MainWindow::TeleportAllPeds)
 	ON_BN_CLICKED(IDC_BEAHUMAN, &MainWindow::BeAHuman)
+	ON_COMMAND_RANGE(3040, 3048, &GangRespect)
 END_MESSAGE_MAP()
 
 
@@ -322,12 +325,6 @@ void MainWindow::OnTimer(UINT_PTR nIDEvent)
 	CDialogEx::OnTimer(nIDEvent);
 }
 
-
-void MainWindow::OnDebugMakeInt3Crash()
-{
-}
-
-
 void MainWindow::log(const WCHAR* fmt, ...)
 {
 	CString tmp;
@@ -523,7 +520,6 @@ void MainWindow::CopLockETC()
 	{
 		if (currLastCar == currLastCarOld)
 		{
-
 			currLastCar->carDamage = startCarDamage;
 		}
 		else
@@ -569,18 +565,17 @@ UINT SpawnCarThread(LPVOID data)
 	//info->win->log(L"Spawn %d", info->model);
 	double nAngle = playerPed->pedSprite->actualPosition->rotation / 4.0 + 270.0;
 	const double distance = 1;
-	Car* car = fnSpawnCar(
-		playerPed->pedSprite->actualPosition->x + (int)(cos(nAngle * (M_PI / 180.0)) * distance * 16384.0),
-		playerPed->pedSprite->actualPosition->y - (int)(sin(nAngle * (M_PI / 180.0)) * distance * 16384.0),
-		playerPed->pedSprite->actualPosition->z,
-		180 * 4,
-		info->model
-	);
-	if (car) {
-		//info->win->log(L"The car spawned at 0x%08X", car);
-		fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)L"Car is here!", 10);
-	}
-
+		Car* car = fnSpawnCar(
+			playerPed->pedSprite->actualPosition->x + (int)(cos(nAngle * (M_PI / 180.0)) * distance * 16384.0),
+			playerPed->pedSprite->actualPosition->y - (int)(sin(nAngle * (M_PI / 180.0)) * distance * 16384.0),
+			playerPed->pedSprite->actualPosition->z,
+			180 * 4,
+			info->model
+		);
+		if (car) {
+			//info->win->log(L"The car spawned at 0x%08X", car);
+			fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)L"Car is here!", 10);
+		}
 	delete info;
 	return 0;
 }
@@ -854,6 +849,18 @@ void MainWindow::PedInfo()
 			swprintf(buf, 256, L"%d", currLastCar->id);
 			m_carID.SetWindowTextW(buf);
 		}
+
+		int* gangresp;
+		DWORD* gangsArr = (DWORD*)0x005eb898;
+
+		for (int i = 0; i < 3; i++)
+		{
+			gangresp = (int*)*gangsArr + 0x47 + i * 0x51;
+			
+			swprintf(buf, 256, L"%d", *gangresp);
+			m_gangRespect[i].SetWindowTextW(buf);
+		}
+		
 		
 
 		if (playerPed->currentCar)
@@ -1012,8 +1019,27 @@ void MainWindow::NextHuman()
 	
 }
 
+void MainWindow::GangRespect(UINT nID)
+{
+	DWORD* gangsArr = (DWORD*)0x005eb898;
+	int gangNo;
+	int dataInt = (int)nID - 3040;
+
+	if (dataInt >= 0 && dataInt <= 2) gangNo = 0;
+	if (dataInt >= 3 && dataInt <= 5) gangNo = 1;
+	if (dataInt >= 6 && dataInt <= 8) gangNo = 2;
+
+	int* gangresp;
+	gangresp = (int*)*gangsArr + 0x47 + gangNo * 0x51;
+
+	if (dataInt == 0 || dataInt == 3 || dataInt == 6) *gangresp -= 20;
+	if (dataInt == 1 || dataInt == 4 || dataInt == 7) *gangresp = 0;
+	if (dataInt == 2 || dataInt == 5 || dataInt == 8) *gangresp += 20;
+	
+	log(L"Changed the respect to %d", *gangresp);
+}
+
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press SHIFT+D ingame to run the code :)
-
 }

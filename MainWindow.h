@@ -32,7 +32,6 @@ public:
 	afx_msg void OnPaint();
 	bool firstPaint;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	afx_msg void OnDebugMakeInt3Crash();
 	CEdit m_log;
 	HWND m_gtaWindow;
 	void log(const WCHAR* fmt, ...);
@@ -92,5 +91,7 @@ public:
 	void BeAHuman();
 	void NextHuman();
 	int pedXPreHuman, pedYPreHuman, pedZPreHuman;
+	void GangRespect(UINT nID);
+	CEdit m_gangRespect[3];
 
 };

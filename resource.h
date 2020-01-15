@@ -33,12 +33,27 @@
 #define IDC_CARID                       3025
 #define IDC_TPPOPEN                     3026
 #define IDC_CARLASTTP                   3027
+#define IDC_STAR7                       3028
+#define IDC_STAR8                       3029
 #define IDC_PEDIDS                      3030
 #define IDC_PEDS0TIME                   3031
 #define IDC_PEDIMMORT                   3032
-#define IDC_PEDIMMORT2                  3033
+#define IDC_STAR9                       3033
 #define IDC_BEAHUMAN                    3034
-#define ID_DEBUG_MAKEINT3CRASHTOATTACHDEBUGGER 32771
+#define IDC_GANG1V                      3035
+#define IDC_GANG2V                      3036
+#define IDC_GANG3V                      3037
+
+#define IDC_GANG1M                      3040
+#define IDC_GANG1Z                      3041
+#define IDC_GANG1P                      3042
+#define IDC_GANG2M                      3043
+#define IDC_GANG2Z                      3044
+#define IDC_GANG2P                      3045
+#define IDC_GANG3M                      3046
+#define IDC_GANG3Z                      3047
+#define IDC_GANG3P                      3048
+
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774
