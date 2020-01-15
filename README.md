@@ -10,10 +10,10 @@ Next, just run gta-trainer.exe instead of gta.exe and you should see trainer win
 
 ## Playing with code
 If you want to build it on your own, there is VS solution inside so it shouldn't be a problem to compile it.
-Oh and you will probably have to change some options in Project Settings so if you run it, VS will start gta-trainer.exe instead of
+Oh and you will probably have to change 3 options in Project Settings so if you run it, VS will start gta-trainer.exe instead of
 trying to run gta2dll.dll but it isn't so hard.
 
-VERY IMPORTANT THING IS TO SELECT Realse x86 SETTINGS IN VS!
+### REMEMBER TO SELECT Realse x86 SETTINGS IN VS BEFORE CHANGING PATHES AND BUILDING!
 
 ## Authors
 And of course i shoud give some credits at the end
