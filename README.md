@@ -6,7 +6,7 @@ It contains some fun features like cop level controll, weapon hacks, car spawner
 
 ## Fast install
 If you want just to play with it, download and copy content of the "build" directory to your game root folder.
-Next, just run gta-trainer.exe instead of gta.exe and you should see trainer window under the gta2 window.
+Next, just run (in window mode) gta-trainer.exe instead of gta.exe and you should see trainer window under the GTA2 window.
 
 Oh and i've made it on GTA 11.44, if you've got other version I don't promise it will work :<
 
