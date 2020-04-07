@@ -458,7 +458,7 @@ struct Sprite {
     undefined field_0x21;
     undefined field_0x22;
     undefined field_0x23;
-    ushort maybe_id;
+    ushort maybe_id; //raczej color
     undefined field_0x26;
     undefined field_0x27;
     undefined field_0x28;
@@ -719,7 +719,7 @@ struct Car {
     struct MaybeCarEngine * maybeEngine;
     void * field_0x5c;
     void * field_0x60;
-    void * field_0x64;
+    void* field_0x64;
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
@@ -776,7 +776,7 @@ struct Pos {
     int z;
     short incFromS20;
     short field_0x22;
-    short field_0x24;
+    short carColor;
     undefined field_0x26;
     undefined field_0x27;
     int field_0x28;
@@ -1537,7 +1537,7 @@ struct CarManager {
     undefined4 field_0x60;
     undefined4 field_0x64;
     byte field_0x68;
-    undefined1 do_free_shoping; /* Created by retype action */
+    bool do_free_shoping; /* Created by retype action */
 };
 
 typedef struct MaybeCarEngineHolder MaybeCarEngineHolder, *PMaybeCarEngineHolder;

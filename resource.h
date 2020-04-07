@@ -32,8 +32,11 @@
 #define IDC_CARVISFIX2                  3025
 #define IDC_CARID                       3025
 #define IDC_TPPOPEN                     3026
+#define IDC_TPPLAYER                    3026
 #define IDC_CARLASTTP                   3027
 #define IDC_STAR7                       3028
+#define IDC_CARVISBRK3                  3028
+#define IDC_CARVIS                      3028
 #define IDC_STAR8                       3029
 #define IDC_PEDIDS                      3030
 #define IDC_PEDS0TIME                   3031
@@ -43,7 +46,8 @@
 #define IDC_GANG1V                      3035
 #define IDC_GANG2V                      3036
 #define IDC_GANG3V                      3037
-
+#define IDC_CARVEL                      3038
+#define IDC_FREESHOP                    3039
 #define IDC_GANG1M                      3040
 #define IDC_GANG1Z                      3041
 #define IDC_GANG1P                      3042
@@ -53,7 +57,12 @@
 #define IDC_GANG3M                      3046
 #define IDC_GANG3Z                      3047
 #define IDC_GANG3P                      3048
-
+#define IDC_CARVISBRK                   3049
+#define IDC_KEEPWEAPONS                 3050
+#define IDC_SHOWCOUNTERS                3051
+#define IDC_CARCOLM                     3052
+#define IDC_CARCOLP                     3053
+#define IDC_CARCOLV                     3054
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774
@@ -64,14 +73,16 @@
 #define ID_COMMANDS_TELEPORTALLPEDS     32781
 #define ID_COMMANDS_TPALLPEDS           32782
 #define ID_TPALLPEDS                    32783
+#define ID_COMMANDS_SHOW                32784
+#define IDC_SHOWPEDIDS                  32785
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3006
-#define _APS_NEXT_COMMAND_VALUE         32784
-#define _APS_NEXT_CONTROL_VALUE         3002
+#define _APS_NEXT_COMMAND_VALUE         32786
+#define _APS_NEXT_CONTROL_VALUE         3058
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

@@ -26,6 +26,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	//std::map<std::wstring, DWORD> cars;
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -56,6 +57,9 @@ public:
 	CEdit m_pedCopLevel;
 	CEdit m_carDamage;
 	CEdit m_carID;
+	CEdit m_carVelocity;
+	CEdit m_carVisualData;
+	CEdit m_carColor;
 	void CarEngineOff();
 	bool starsLocked = 0;
 	short startCopValue = 0;
@@ -76,10 +80,10 @@ public:
 	void GiveUnlimitedAmmo();
 	void FixCar();
 	void VisFixCar();
+	void VisBreakCar();
 	short startCarDamage = 0;
 	bool carDamageLocked = 0;
 	void LockCarDamage();
-	void ShowPedIDs();
 	void PedInfo();
 	Car* currLastCar;
 	Car* currLastCarOld;
@@ -93,5 +97,17 @@ public:
 	int pedXPreHuman, pedYPreHuman, pedZPreHuman;
 	void GangRespect(UINT nID);
 	CEdit m_gangRespect[3];
+	int currLastCarXOld = 0, currLastCarYOld = 0, currLastCarXYShift;
+	void ShowIDs();
+	void ShowCounters();
+	void FreeShopping();
+	void KeepWeapons();
+	void CarColorPlus();
+	void CarColorMinus();
+	bool* showIDs = false;
+	bool* showCounters = false;
+	bool* keepWeapons = false;
+	void TeleportPlayer();
+
 
 };
