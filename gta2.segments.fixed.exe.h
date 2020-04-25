@@ -3874,9 +3874,7 @@ struct Menu {
     int unk1;
 };
 
-typedef struct Police Police, *PPolice;
 
-typedef struct SPoliceSub SPoliceSub, *PSPoliceSub;
 
 typedef struct PedManager PedManager, *PPedManager;
 
@@ -3889,66 +3887,7 @@ struct PedManager {
     undefined field_0x203ab;
 };
 
-struct SPoliceSub {
-    undefined field_0x0;
-    undefined field_0x1;
-    byte field_0x2;
-    byte field_0x3;
-    byte field_0x4;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
-    undefined4 field_0x8;
-    undefined4 field_0xc;
-    struct PedManager * field_0x10;
-    undefined4 field_0x14;
-    undefined2 field_0x18;
-    byte field_0x1a;
-    undefined field_0x1b;
-    undefined4 field_0x1c;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    undefined4 field_0x24;
-    byte field_0x28;
-    byte field_0x29;
-    undefined2 field_0x2a;
-    undefined2 field_0x2c;
-    undefined field_0x2e;
-    undefined field_0x2f;
-    undefined4 field_0x30;
-    byte field_0x34;
-    undefined field_0x35;
-    undefined field_0x36;
-    undefined field_0x37;
-};
 
-struct Police {
-    undefined field_0x0;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    struct SPoliceSub arr20[20];
-    byte arr124_4[124][4];
-    int copLevel;
-    byte field_0x658;
-    byte field_0x659;
-    undefined field_0x65a;
-    undefined field_0x65b;
-    int field_0x65c;
-    undefined field_0x660[333];
-    byte numPolicePedsInRangeScreen;
-    undefined field_0x7ae;
-    undefined field_0x7af;
-    undefined field_0x7b0;
-    undefined field_0x7b1;
-    undefined field_0x7b2;
-    undefined field_0x7b3;
-    undefined field_0x7b4;
-    undefined field_0x7b5;
-    undefined field_0x7b6;
-    undefined field_0x7b7;
 };
 
 typedef enum MAIN_MENU_SOUND {
