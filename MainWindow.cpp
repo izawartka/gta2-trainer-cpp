@@ -11,6 +11,7 @@
 #include <string>
 #include <iterator>
 #include <map>
+#include <cfenv>
 
 // MainWindow dialog
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
@@ -1433,13 +1434,14 @@ void MainWindow::TeleportPlayer()
 	if (playerPed->pedSprite && playerPed->pedSprite->actualPosition)
 	{
 		m_pedX.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->x = (int)(_ttof(buffer) * 16384);
+		fesetround(FE_TONEAREST);
+		playerPed->pedSprite->actualPosition->x = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedY.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->y = (int)(_ttof(buffer) * 16384);
+		playerPed->pedSprite->actualPosition->y = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedZ.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->z = (int)(_ttof(buffer) * 16384) + 10;
+		playerPed->pedSprite->actualPosition->z = (int)(_wtof(buffer) * 16384.0) + 10;
 
 		log(L"Player teleported to %f, %f, %f!", ((float)playerPed->pedSprite->actualPosition->x)/16384.0f, ((float)playerPed->pedSprite->actualPosition->y) / 16384.0f, ((float)playerPed->pedSprite->actualPosition->z) / 16384.0f);
 
