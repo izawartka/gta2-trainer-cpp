@@ -165,6 +165,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(ID_SPAWNCAR_GT, &MainWindow::OnSpawncarGt)
 	ON_COMMAND_RANGE(35000, 35000 + 83, &OnSpawnCarClick)
 	ON_COMMAND_RANGE(45000, 45000 + 15, &OnGetWeaponClick)
+	ON_COMMAND_RANGE(55000, 55000 + 62, &OnPlayVocalClick)
 	ON_COMMAND(ID_SPAWNCAR_GUNJEEP, &MainWindow::OnSpawncarGunjeep)
 	ON_BN_CLICKED(IDC_CARENGINEOFF, &MainWindow::CarEngineOff)
 	ON_BN_CLICKED(IDC_UNLMAMMO, &MainWindow::GiveUnlimitedAmmo)
@@ -198,7 +199,6 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CARCOLR, &MainWindow::CarColorReset)
 	ON_BN_CLICKED(IDC_GOSLOW, &MainWindow::GoSlow)
 	ON_BN_CLICKED(IDC_PEDHAMSET, &MainWindow::SetHealthArmorMoney)
-	ON_COMMAND(ID_COMMANDS_FNSETPEDSTATE, &MainWindow::OnCommands_fnPlayVocal)
 END_MESSAGE_MAP()
 
 
@@ -231,37 +231,37 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
-		MOD_SHIFT | MOD_NOREPEAT,
+		MOD_ALT | MOD_NOREPEAT,
 		0x54); //ALT+T
 
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
-		MOD_SHIFT | MOD_NOREPEAT,
+		MOD_ALT | MOD_NOREPEAT,
 		0x47); //ALT+G
 
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
-		MOD_SHIFT | MOD_NOREPEAT,
+		MOD_ALT | MOD_NOREPEAT,
 		0x4a); //ALT+J
 
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
-		MOD_SHIFT | MOD_NOREPEAT,
+		MOD_ALT | MOD_NOREPEAT,
 		0x50); //ALT+P
 
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
-		MOD_SHIFT | MOD_NOREPEAT,
+		MOD_ALT | MOD_NOREPEAT,
 		0x44); //ALT+N
 
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
-		MOD_SHIFT | MOD_NOREPEAT,
+		MOD_ALT | MOD_NOREPEAT,
 		0x4e); //ALT+N
 
 	//AppendMenu();
@@ -399,6 +399,76 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	menu->AppendMenuW(MF_POPUP, (UINT_PTR)wMenu->m_hMenu, L"Get weapon");
 
+	CMenu* vMenu = new CMenu();
+	vMenu->CreatePopupMenu();
+
+	std::map<std::wstring, DWORD> vocals;
+
+	vocals.insert(std::pair<std::wstring, DWORD>(L"INSANE STUNT BONUS", 1));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"GRAND THEFT AUTO", 2));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"WIPEOUT", 3));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"EXPEDITIOUS EXECUTION", 4));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"GENOCIDE", 5));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"COP KILLA", 6));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"CAR JACKA", 7));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"ELVIS HAS LEFT THE BUILDING", 8));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"ACCURACY BONUS", 9));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"BACK TO FRONT BONUS", 10));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"MEDICAL EMERGENCY", 11));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"KILL FRENZY", 12));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"BUSTED", 17));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"FRENZY FAILED", 18));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"FRENZY PASSED", 19));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"FRYING TONIGHT", 20));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"GAME OVER", 21));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"JOB COMPLETE", 22));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"JOB FAILED", 23));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"AND REMEMBER, RESPECT IS EVERYTHING", 24));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"SHOCKING", 25));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"MMM... SOMETHIN'S COOKIN", 26));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"TIME'S UP, PAL", 27));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"TOASTED", 28));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"WASTED", 29));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"BOMB ARMED", 30));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"LAUGH6", 31));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"LAUGH (random)", 32));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"RACE OVER", 33));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"SECOND LAP", 34));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"FINAL LAP", 35));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"RACE ON", 36));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X2", 37));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X3", 38));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X4", 39));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X5", 40));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X6", 41));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"TIME OUT", 42));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"YOUR TIME IS EXTENDED", 43));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"TIME'S UP, PAL (duplicate)", 44));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"OH SORRY ABOUT THAT... DID THAT HURT?", 45));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"NICE WORK", 46));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"CHOCTASTIC", 47));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"RASPBERRY RIPPLE", 48));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"YOU SHOT YOUR LOAD", 49));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"OH... DID THAT HURT?", 50));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"DEATH TO ICE CREAM VANS", 51));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"CRISPY CRITTER", 52));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"YOU'RE TOAST, BUDDY", 53));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"EAT LEADEN DEATH, PUNK", 54));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"THAT'S GONNA HURT", 55));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"SORRY ABOUT THAT", 56));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"XIN LOI, MY MAN", 57));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"DAMN SUNDAY DRIVERS", 58));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"SUCK IT AND SEE", 59));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"TASTE MY WRATH, ICE-CREAM BOY", 60));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"HALLELUJAH! ANOTHER SOUL SAVED", 61));
+	vocals.insert(std::pair<std::wstring, DWORD>(L"DAMNATION! NO DONATION, NO SALVATION", 62));
+	
+	for (itr = vocals.begin(); itr != vocals.end(); ++itr) {
+		vMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 55000), itr->first.c_str());
+	}
+
+	menu->AppendMenuW(MF_POPUP, (UINT_PTR)vMenu->m_hMenu, L"Play Vocal");
+
 	return 0;
 }
 
@@ -426,26 +496,6 @@ void MainWindow::OnPaint()
 	else if (!m_gtaWindow) {
 		m_gtaWindow = FindWindowA("WinMain", "GTA2");
 	}
-}
-
-
-void MainWindow::OnTimer(UINT_PTR nIDEvent)
-{
-	switch (nIDEvent) {
-	case TIMER_CAPTURE_MOUSE:
-		if (captureMouse) {
-			CaptureMouse();
-		}
-		CopLockETC();
-		break;
-	case TIMER_PED_INFO:
-		PedInfo();
-		break;
-	default:
-		break;
-	}
-
-	CDialogEx::OnTimer(nIDEvent);
 }
 
 void MainWindow::log(const WCHAR* fmt, ...)
@@ -869,8 +919,13 @@ void MainWindow::OnGetWeaponClick(UINT nID) {
 	}
 	else
 	{
-		log(L"Where the fuck is the ped?!?");
+		log(L"Player ped not found :c");
 	}
+}
+
+void MainWindow::OnPlayVocalClick(UINT nID) {
+	log(L"Vocal #%d played", nID - 55000);
+	fnPlayVocal((DWORD*)0x005d85a0, 0, (VOCAL)(nID - 55000));
 }
 
 void MainWindow::OnSpawncarGunjeep()
@@ -1047,18 +1102,21 @@ void MainWindow::PedInfo()
 	{
 		if (pedHOld != playerPed->health)
 		{
+			m_pedHealth.SetWindowTextW(L"0");
 			swprintf(buf, 256, L"%d", playerPed->health);
 			m_pedHealth.SetWindowTextW(buf);
 		}
 		
 		if (pedAOld != *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa)) //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
 		{
+			m_pedArmor.SetWindowTextW(L"0");
 			swprintf(buf, 256, L"%d", *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa)); //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
 			m_pedArmor.SetWindowTextW(buf);
 		}
 
 		if (pedMOld != *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4)) //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
 		{
+			m_pedMoney.SetWindowTextW(L"0");
 			swprintf(buf, 256, L"%d", *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4)); //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
 			m_pedMoney.SetWindowTextW(buf);
 		}
@@ -1093,7 +1151,7 @@ void MainWindow::PedInfo()
 			currLastCarXOld = currLastCar->position->x;
 			currLastCarYOld = currLastCar->position->y;
 			swprintf(buf, 256, L"%d", currLastCarXYShift);
-			if(currLastCarXYShift) m_carVelocity.SetWindowTextW(buf);
+			m_carVelocity.SetWindowTextW(buf);
 
 			if (currLastCar->position)
 			{
@@ -1232,7 +1290,7 @@ void MainWindow::TeleportAllPeds()
 		}
 		log(L"Teleported");
 	}
-	else log(L"Where the fuck is the player?!?");
+	else log(L"Player ped not found :c");
 }
 
 void MainWindow::BeAHuman()
@@ -1254,7 +1312,7 @@ void MainWindow::BeAHuman()
 	{
 		beAHuman = true;
 		log(L"Congratulations! You are a human now");
-		log(L"You can change your identity by pressing SHIFT + N");
+		log(L"You can change your identity by pressing ALT + N");
 
 		pedXPreHuman = playerPed->pedSprite->actualPosition->x;
 		pedYPreHuman = playerPed->pedSprite->actualPosition->y;
@@ -1264,7 +1322,7 @@ void MainWindow::BeAHuman()
 	}
 	else
 	{
-		log(L"Where the fuck is the ped?!?");
+		log(L"Player ped not found");
 		((CButton*)GetDlgItem(IDC_BEAHUMAN))->SetCheck(false);
 	}
 }
@@ -1458,26 +1516,20 @@ void MainWindow::TeleportPlayer()
 	}
 }
 
-void MainWindow::NewFunction()
-{
-	// You can add anything here to test it and then press SHIFT+D ingame to run the code :)
-
-	GoSlow();
-}
-
 void MainWindow::OnGTADraw()
 {
-	// TODO: Add your implementation code here.
+
 }
 
-
-void MainWindow::OnGTAGameTick(Game *game)
+void MainWindow::OnGTAGameTick(Game* game)
 {
-	// TODO: Add your implementation code here.
+	//OnTimer moved here, it's more stable now
+	CopLockETC();
+	PedInfo();
+	if (captureMouse) CaptureMouse();
 }
 
-
-void MainWindow::OnCommands_fnPlayVocal()
+void MainWindow::NewFunction()
 {
-	fnPlayVocal((DWORD*)0x005d85a0, 0, VOCAL_COP_KILLA);
+	// You can add anything here to test it and then press ALT+D ingame to run the code :)
 }

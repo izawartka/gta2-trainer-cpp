@@ -52,7 +52,7 @@
     <ClInclude Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gta2.h">
+    <ClInclude Include="gta2.segments.fixed.exe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

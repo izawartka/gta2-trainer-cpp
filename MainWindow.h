@@ -32,7 +32,6 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnPaint();
 	bool firstPaint;
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CEdit m_log;
 	HWND m_gtaWindow;
 	void log(const WCHAR* fmt, ...);
@@ -45,6 +44,7 @@ public:
 	afx_msg void OnSpawncarGt();
 	afx_msg void OnSpawnCarClick(UINT nID);
 	afx_msg void OnGetWeaponClick(UINT nID);
+	afx_msg void OnPlayVocalClick(UINT nID);
 	uint frames;
 	afx_msg void OnSpawncarGunjeep();
 	CEdit m_pedX;
@@ -90,15 +90,15 @@ public:
 	void PedInfo();
 	Car* currLastCar = 0;
 	Car* currLastCarOld = 0;
-	int pedXOld, pedYOld, pedZOld, pedRotOld;
-	int pedHOld, pedAOld, pedMOld;
+	int pedXOld = 0, pedYOld = 0, pedZOld = 0, pedRotOld = 0;
+	int pedHOld = 1, pedAOld = 1, pedMOld = 1; // 1 not 0 because it has to be different than the actual value in the first tick
 	void TeleportAllPeds();
 	void NewFunction();
 	Ped* selectedPed = 0;
 	bool beAHuman = false;
 	void BeAHuman();
 	void NextHuman();
-	int pedXPreHuman, pedYPreHuman, pedZPreHuman;
+	int pedXPreHuman = 0, pedYPreHuman = 0, pedZPreHuman = 0;
 	void GangRespect(UINT nID);
 	CEdit m_gangRespect[3];
 	int currLastCarXOld = 0, currLastCarYOld = 0, currLastCarXYShift;
@@ -119,5 +119,4 @@ public:
 
 	void OnGTADraw();
 	void OnGTAGameTick(Game* game);
-	afx_msg void OnCommands_fnPlayVocal();
 };
