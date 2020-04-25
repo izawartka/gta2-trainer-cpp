@@ -1593,19 +1593,19 @@ struct AmbulanceSub {
     byte field_0x0;
     byte field_0x1;
     byte field_0x2;
-    undefined field_0x3;
+    undefined1 field_0x3;
     int field_0x4;
     int field_0x8;
     int field_0xc;
     int field_0x10;
     byte field_0x14;
-    undefined field_0x15;
+    undefined1 field_0x15;
     short field_0x16;
     int field_0x18;
     byte field_0x1c;
     byte field_0x1d;
-    undefined field_0x1e;
-    undefined field_0x1f;
+    undefined1 field_0x1e;
+    undefined1 field_0x1f;
 };
 
 struct Ambulance {
@@ -1817,7 +1817,7 @@ struct Ambulance {
     undefined field_0xcd;
     undefined field_0xce;
     undefined field_0xcf;
-    struct AmbulanceSub arr[2]; /* Created by retype action */
+    struct AmbulanceSub arr[2];
 };
 
 typedef struct FrontEnd FrontEnd, *PFrontEnd;
@@ -1873,7 +1873,7 @@ struct FrontEnd {
     short field_0xc99c;
     byte field_0xc99e;
     byte field_0xc99f;
-    short maybeBufSize256;
+    short bufSize_256;
     short short_eq_5;
     int field_0xc9a4;
     int field_0xc9a8;
@@ -1900,68 +1900,7 @@ struct FrontEnd {
     byte field_0xc9ca;
     undefined field_0xc9cb[9194];
     undefined1 vector_8; /* Created by retype action */
-    undefined field_0xedb6;
-    undefined field_0xedb7;
-    undefined field_0xedb8;
-    undefined field_0xedb9;
-    undefined field_0xedba;
-    undefined field_0xedbb;
-    undefined field_0xedbc;
-    undefined field_0xedbd;
-    undefined field_0xedbe;
-    undefined field_0xedbf;
-    undefined field_0xedc0;
-    undefined field_0xedc1;
-    undefined field_0xedc2;
-    undefined field_0xedc3;
-    undefined field_0xedc4;
-    undefined field_0xedc5;
-    undefined field_0xedc6;
-    undefined field_0xedc7;
-    undefined field_0xedc8;
-    undefined field_0xedc9;
-    undefined field_0xedca;
-    undefined field_0xedcb;
-    undefined field_0xedcc;
-    undefined field_0xedcd;
-    undefined field_0xedce;
-    undefined field_0xedcf;
-    undefined field_0xedd0;
-    undefined field_0xedd1;
-    undefined field_0xedd2;
-    undefined field_0xedd3;
-    undefined field_0xedd4;
-    undefined field_0xedd5;
-    undefined field_0xedd6;
-    undefined field_0xedd7;
-    undefined field_0xedd8;
-    undefined field_0xedd9;
-    undefined field_0xedda;
-    undefined field_0xeddb;
-    undefined field_0xeddc;
-    undefined field_0xeddd;
-    undefined field_0xedde;
-    undefined field_0xeddf;
-    undefined field_0xede0;
-    undefined field_0xede1;
-    undefined field_0xede2;
-    undefined field_0xede3;
-    undefined field_0xede4;
-    undefined field_0xede5;
-    undefined field_0xede6;
-    undefined field_0xede7;
-    undefined field_0xede8;
-    undefined field_0xede9;
-    undefined field_0xedea;
-    undefined field_0xedeb;
-    undefined field_0xedec;
-    undefined field_0xeded;
-    undefined field_0xedee;
-    undefined field_0xedef;
-    undefined field_0xedf0;
-    undefined field_0xedf1;
-    undefined field_0xedf2;
-    undefined field_0xedf3;
+    undefined field_0xedb6[62];
     byte movie2;
     undefined field_0xedf5;
     short field_0xedf6;
@@ -1996,9 +1935,9 @@ struct FrontEnd {
 
 typedef struct Game Game, *PGame;
 
-typedef struct Save Save, *PSave;
 
 typedef struct XYZ XYZ, *PXYZ;
+typedef struct Player Player, *PPlayer;
 
 typedef struct SaveSlotAnimatedValue SaveSlotAnimatedValue, *PSaveSlotAnimatedValue;
 
@@ -2057,7 +1996,7 @@ struct SaveSlotAnimatedValue { /* Used for animate changing of values */
     undefined field_0x1d;
     undefined field_0x1e;
     undefined field_0x1f;
-    struct Save * ptrToSaveSlot;
+    struct Player * ptrToSaveSlot;
     undefined field_0x24;
     undefined field_0x25;
     undefined field_0x26;
