@@ -1950,104 +1950,6 @@ typedef struct SaveSlotAnimatedValue SaveSlotAnimatedValue, *PSaveSlotAnimatedVa
 
 typedef struct S26 S26, *PS26;
 
-
-struct SaveSlotAnimatedValue { /* Used for animate changing of values */
-    int value;
-    undefined field_0x4;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-    undefined field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-    byte accuracyCount;
-    undefined field_0x11;
-    undefined field_0x12;
-    undefined field_0x13;
-    int reverseCount;
-    undefined field_0x18;
-    undefined field_0x19;
-    undefined field_0x1a;
-    undefined field_0x1b;
-    undefined field_0x1c;
-    undefined field_0x1d;
-    undefined field_0x1e;
-    undefined field_0x1f;
-    struct Save * ptrToSaveSlot;
-    undefined field_0x24;
-    undefined field_0x25;
-    undefined field_0x26;
-    undefined field_0x27;
-    undefined field_0x28;
-    undefined field_0x29;
-    short maxDigitsInValue;
-    short min;
-    short digitOffsetForAnimationOfChange;
-    int max;
-    undefined field_0x34;
-    undefined field_0x35;
-    short id;
-};
-
-struct S26 {
-    undefined field_0x0;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    undefined field_0x4;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-    undefined field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-    undefined field_0x10;
-    undefined field_0x11;
-    undefined field_0x12;
-    undefined field_0x13;
-    undefined field_0x14;
-    undefined field_0x15;
-    undefined field_0x16;
-    undefined field_0x17;
-    undefined field_0x18;
-    undefined field_0x19;
-    undefined field_0x1a;
-    undefined field_0x1b;
-    undefined field_0x1c;
-    undefined field_0x1d;
-    undefined field_0x1e;
-    undefined field_0x1f;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    undefined field_0x24;
-    undefined field_0x25;
-    undefined field_0x26;
-    undefined field_0x27;
-    undefined field_0x28;
-    undefined4 field_0x29;
-    undefined4 field_0x2d;
-    byte field_0x31;
-    undefined field_0x32;
-    undefined field_0x33;
-    undefined field_0x34;
-    undefined field_0x35;
-    undefined field_0x36;
-    undefined field_0x37;
-    int relToCopStars;
-};
-
 struct XYZ {
     int x;
     int y;
@@ -2242,6 +2144,49 @@ struct XYZ {
     undefined field_0xfd;
     undefined field_0xfe;
     undefined field_0xff;
+};
+
+struct SaveSlotAnimatedValue { /* Used for animate changing of values */
+    int value;
+    undefined field_0x4;
+    undefined field_0x5;
+    undefined field_0x6;
+    undefined field_0x7;
+    undefined field_0x8;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
+    undefined field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+    byte accuracyCount;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    int reverseCount;
+    undefined field_0x18;
+    undefined field_0x19;
+    undefined field_0x1a;
+    undefined field_0x1b;
+    undefined field_0x1c;
+    undefined field_0x1d;
+    undefined field_0x1e;
+    undefined field_0x1f;
+    struct Player * ptrToSaveSlot;
+    undefined field_0x24;
+    undefined field_0x25;
+    undefined field_0x26;
+    undefined field_0x27;
+    undefined field_0x28;
+    undefined field_0x29;
+    short maxDigitsInValue;
+    short min;
+    short digitOffsetForAnimationOfChange;
+    int max;
+    undefined field_0x34;
+    undefined field_0x35;
+    short id;
 };
 
 struct Player { /* Player actually */
@@ -3142,6 +3087,61 @@ struct Game { /* S8 */
     undefined field_0x3e;
     undefined field_0x3f;
 };
+
+struct S26 {
+    undefined field_0x0;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    undefined field_0x4;
+    undefined field_0x5;
+    undefined field_0x6;
+    undefined field_0x7;
+    undefined field_0x8;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
+    undefined field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+    undefined field_0x10;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined field_0x14;
+    undefined field_0x15;
+    undefined field_0x16;
+    undefined field_0x17;
+    undefined field_0x18;
+    undefined field_0x19;
+    undefined field_0x1a;
+    undefined field_0x1b;
+    undefined field_0x1c;
+    undefined field_0x1d;
+    undefined field_0x1e;
+    undefined field_0x1f;
+    undefined field_0x20;
+    undefined field_0x21;
+    undefined field_0x22;
+    undefined field_0x23;
+    undefined field_0x24;
+    undefined field_0x25;
+    undefined field_0x26;
+    undefined field_0x27;
+    undefined field_0x28;
+    undefined4 field_0x29;
+    undefined4 field_0x2d;
+    byte field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+    undefined field_0x34;
+    undefined field_0x35;
+    undefined field_0x36;
+    undefined field_0x37;
+    int relToCopStars;
+};
+
 typedef struct GameStats GameStats, *PGameStats;
 
 struct GameStats {
@@ -4211,8 +4211,7 @@ typedef short Sint16;
 
 struct SCR_PLAYER_PED {
     struct SCR_CMD_HEADER header;
-    Uint16 field_0x8;
-    Uint16 field_0xa;
+    struct Ped * ped;
     struct SCR_XYZ_f pos;
     Uint16 rot;
     Sint16 remap;
@@ -4250,8 +4249,6 @@ typedef struct AllCarsInfo AllCarsInfo, *PAllCarsInfo;
 typedef struct CarInfo CarInfo, *PCarInfo;
 
 typedef uchar UINT8;
-
-typedef char INT8;
 
 typedef enum CarInfoFlags {
     artic_cab=8,
@@ -4345,10 +4342,11 @@ struct SpriteBase {
 
 typedef struct SpriteEntry SpriteEntry, *PSpriteEntry;
 
+typedef unsigned long long    uint16;
 struct SpriteEntry {
     void * ptr;
-    undefined field_0x4;
-    undefined field_0x5;
+    UINT8 w;
+    UINT8 h;
     uint16 pad;
 };
 
