@@ -7,9 +7,11 @@
 #define IDD_DIALOG                      3000
 #define IDC_PEDX                        3001
 #define IDR_MENU1                       3002
+#define IDC_PEDHEALTH                   3002
 #define IDC_PEDY                        3003
 #define IDC_PEDZ                        3004
 #define IDC_EDIT5                       3005
+#define IDC_PEDARMOR                    3005
 #define IDC_PEDROT                      3006
 #define IDC_PEDSAMMO                    3007
 #define IDC_PEDSTYPE                    3008
@@ -38,10 +40,13 @@
 #define IDC_CARVISBRK3                  3028
 #define IDC_CARVIS                      3028
 #define IDC_STAR8                       3029
+#define IDC_PEDMONEY                    3029
 #define IDC_PEDIDS                      3030
 #define IDC_PEDS0TIME                   3031
 #define IDC_PEDIMMORT                   3032
 #define IDC_STAR9                       3033
+#define IDC_UNLMAMMO2                   3033
+#define IDC_PEDHAMSET                   3033
 #define IDC_BEAHUMAN                    3034
 #define IDC_GANG1V                      3035
 #define IDC_GANG2V                      3036
@@ -63,6 +68,9 @@
 #define IDC_CARCOLM                     3052
 #define IDC_CARCOLP                     3053
 #define IDC_CARCOLV                     3054
+#define IDC_CARCOLP2                    3055
+#define IDC_CARCOLR                     3055
+#define IDC_GOSLOW                      3056
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774

@@ -46,6 +46,9 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CARVEL, m_carVelocity);
 	DDX_Control(pDX, IDC_CARCOLV, m_carColor);
 	DDX_Control(pDX, IDC_CARVIS, m_carVisualData);
+	DDX_Control(pDX, IDC_PEDHEALTH, m_pedHealth);
+	DDX_Control(pDX, IDC_PEDARMOR, m_pedArmor);
+	DDX_Control(pDX, IDC_PEDMONEY, m_pedMoney);
 }
 
 
@@ -92,7 +95,9 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_TPPLAYER, &MainWindow::TeleportPlayer)
 	ON_BN_CLICKED(IDC_CARCOLP, &MainWindow::CarColorPlus)
 	ON_BN_CLICKED(IDC_CARCOLM, &MainWindow::CarColorMinus)
-	
+	ON_BN_CLICKED(IDC_CARCOLR, &MainWindow::CarColorReset)
+	ON_BN_CLICKED(IDC_GOSLOW, &MainWindow::GoSlow)
+	ON_BN_CLICKED(IDC_PEDHAMSET, &MainWindow::SetHealthArmorMoney)
 END_MESSAGE_MAP()
 
 
@@ -516,7 +521,6 @@ void MainWindow::CopLockETC()
 			}
 		}
 		
-
 	}
 
 		if (playerPed->currentCar)
@@ -940,6 +944,28 @@ void MainWindow::PedInfo()
 
 	if (playerPed)
 	{
+		if (pedHOld != playerPed->health)
+		{
+			swprintf(buf, 256, L"%d", playerPed->health);
+			m_pedHealth.SetWindowTextW(buf);
+		}
+		
+		if (pedAOld != *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa)) //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
+		{
+			swprintf(buf, 256, L"%d", *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa)); //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
+			m_pedArmor.SetWindowTextW(buf);
+		}
+
+		if (pedMOld != *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4)) //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
+		{
+			swprintf(buf, 256, L"%d", *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4)); //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
+			m_pedMoney.SetWindowTextW(buf);
+		}
+
+		pedHOld = playerPed->health;
+		pedAOld = *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa);
+		pedMOld = *(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4);
+
 		int Pvalue = playerPed->copValue;
 
 		if(Pvalue <600) swprintf(buf, 256, L"%d (0) Peace", Pvalue);
@@ -1059,6 +1085,7 @@ void MainWindow::PedInfo()
 	}
 	
 	/*int weaponID = (playerPed->selectedWeapon - &playerPed->playerWeapons->weapons[0]->ammo) / 48*/;
+	///int* selectedWeapon = (int*)0x1F3CC4;
 	int weapSTART = reinterpret_cast<int>(&playerPed->playerWeapons->weapons[0]->ammo);
 	int weapCURR = reinterpret_cast<int>(&playerPed->selectedWeapon->ammo);
 	int weapID = (weapCURR - weapSTART) / 48;
@@ -1216,6 +1243,8 @@ void MainWindow::CarColorPlus()
 {
 	if (currLastCar && currLastCar->position)
 	{
+		currLastCar->position->lockPalleteMaybe = 3;
+
 		currLastCar->position->carColor++;
 		if (currLastCar->position->carColor >35) currLastCar->position->carColor = 0;
 	}
@@ -1225,9 +1254,17 @@ void MainWindow::CarColorMinus()
 {
 	if (currLastCar && currLastCar->position)
 	{
+		currLastCar->position->lockPalleteMaybe = 3;
+
 		currLastCar->position->carColor--;
 		if (currLastCar->position->carColor <0) currLastCar->position->carColor = 35;
 	}
+}
+
+void MainWindow::CarColorReset()
+{
+	currLastCar->position->lockPalleteMaybe = 2;
+	currLastCar->position->carColor = 0;
 }
 
 void MainWindow::ShowIDs()
@@ -1259,13 +1296,36 @@ void MainWindow::KeepWeapons()
 
 void MainWindow::FreeShopping()
 {
-	DWORD* carManagerPointer = (DWORD*)0x005e4ca4;
-	CarManager* carManager = (CarManager*)*carManagerPointer;
+	CarManager* carManager = (CarManager*)*(DWORD*)0x005e4ca4;
 	carManager->do_free_shoping = !carManager->do_free_shoping;
 	//log(L"%d, %d", carManagerPointer, carManager);
 
 	if (carManager->do_free_shoping) log(L"Free shopping enabled!");
 	else log(L"Free shopping disabled!");
+}
+
+void MainWindow::GoSlow()
+{
+	walkingSpeed = (int*)(*(DWORD*)(*(DWORD*)(*(DWORD*)(*(DWORD*)(*(DWORD*)0x05e3cc4 + 0x34) + 0x168) + 0x80) + 0x8) + 0x3c); //Temponary; when i learn how to use Ghirda, i'll fix that xD
+
+	*walkingSpeed = 256 * (1024 / *walkingSpeed);
+	if (*walkingSpeed == 256) log(L"Slow walking enabled");
+	if (*walkingSpeed == 1024) log(L"Slow walking disabled");
+}
+
+void MainWindow::SetHealthArmorMoney()
+{
+	CString buffer;
+
+	m_pedHealth.GetWindowTextW(buffer);
+	fnGetPedByID(1)->health = (int)_ttof(buffer);
+
+	m_pedArmor.GetWindowTextW(buffer);
+	*(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa) = (int)_ttof(buffer); //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
+
+	m_pedMoney.GetWindowTextW(buffer);
+	*(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4) = (int)_ttof(buffer); //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
+
 }
 
 void MainWindow::TeleportPlayer()
@@ -1289,7 +1349,7 @@ void MainWindow::TeleportPlayer()
 	}
 	else
 	{
-		log(L"Couldn't teleport; player is in a car or something :/");
+		log(L"Couldn't teleport; player is in the car or something :/");
 	}
 }
 
@@ -1297,4 +1357,5 @@ void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press SHIFT+D ingame to run the code :)
 
+	GoSlow();
 }

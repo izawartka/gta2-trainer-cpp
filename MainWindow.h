@@ -60,6 +60,9 @@ public:
 	CEdit m_carVelocity;
 	CEdit m_carVisualData;
 	CEdit m_carColor;
+	CEdit m_pedHealth;
+	CEdit m_pedArmor;
+	CEdit m_pedMoney;
 	void CarEngineOff();
 	bool starsLocked = 0;
 	short startCopValue = 0;
@@ -88,6 +91,7 @@ public:
 	Car* currLastCar;
 	Car* currLastCarOld;
 	int pedXOld, pedYOld, pedZOld, pedRotOld;
+	int pedHOld, pedAOld, pedMOld;
 	void TeleportAllPeds();
 	void NewFunction();
 	Ped* selectedPed;
@@ -104,10 +108,13 @@ public:
 	void KeepWeapons();
 	void CarColorPlus();
 	void CarColorMinus();
+	void CarColorReset();
+	void GoSlow();
+	int* walkingSpeed = nullptr;
 	bool* showIDs = false;
 	bool* showCounters = false;
 	bool* keepWeapons = false;
 	void TeleportPlayer();
-
+	void SetHealthArmorMoney();
 
 };

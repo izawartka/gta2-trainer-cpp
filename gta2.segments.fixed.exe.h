@@ -417,21 +417,7 @@ struct WEAPON_PLAYER_LIST {
     undefined field_0x4f;
     uint bitMask;
     undefined field_0x54[1732];
-    struct WEAPON_STRUCT * weapons[22]; /* Created by retype action */
-    undefined field_0x770;
-    undefined field_0x771;
-    undefined field_0x772;
-    undefined field_0x773;
-    undefined field_0x774;
-    undefined field_0x775;
-    undefined field_0x776;
-    undefined field_0x777;
-    undefined field_0x778;
-    undefined field_0x779;
-    undefined field_0x77a;
-    undefined field_0x77b;
-    undefined field_0x77c;
-    undefined field_0x77d;
+    struct WEAPON_STRUCT * weapons[36]; /* Created by retype action */
     undefined field_0x77e;
     undefined field_0x77f;
     undefined field_0x780;
@@ -785,7 +771,7 @@ struct Pos {
     undefined field_0x2e;
     undefined field_0x2f;
     int field_0x30;
-    int field_0x34;
+    short lockPalleteMaybe; // 2 - uses default pallete for this vehicle // 3 - uses paintjob pallete (carColor variable)
     byte field_0x38;
     byte field_0x39;
     undefined field_0x3a;
@@ -4814,7 +4800,7 @@ struct WeaponRelStruct {
     undefined field_0x1;
     undefined field_0x2;
     undefined field_0x3;
-    struct WEAPON_STRUCT weapons[22];
+    struct WEAPON_STRUCT weapons[36];
 };
 
 typedef struct LocaleSettings LocaleSettings, *PLocaleSettings;
