@@ -11,6 +11,7 @@
 #include <string>
 #include <iterator>
 #include <map>
+#include <cfenv>
 
 // MainWindow dialog
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
@@ -19,6 +20,11 @@ const DWORD pGameTick = (DWORD)0x0045c1f0;
 const DWORD pDraw = (DWORD)0x00461960;
 Game* game = 0;
 MainWindow* mainWnd = nullptr;
+
+
+// void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
+typedef void* (__fastcall PlayVocal)(DWORD*, DWORD edx, VOCAL vocal);
+PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
 
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
 	DWORD OldProtection = { 0 };
@@ -192,6 +198,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CARCOLR, &MainWindow::CarColorReset)
 	ON_BN_CLICKED(IDC_GOSLOW, &MainWindow::GoSlow)
 	ON_BN_CLICKED(IDC_PEDHAMSET, &MainWindow::SetHealthArmorMoney)
+	ON_COMMAND(ID_COMMANDS_FNSETPEDSTATE, &MainWindow::OnCommands_fnPlayVocal)
 END_MESSAGE_MAP()
 
 
@@ -1433,13 +1440,14 @@ void MainWindow::TeleportPlayer()
 	if (playerPed->pedSprite && playerPed->pedSprite->actualPosition)
 	{
 		m_pedX.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->x = (int)(_ttof(buffer) * 16384);
+		fesetround(FE_TONEAREST);
+		playerPed->pedSprite->actualPosition->x = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedY.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->y = (int)(_ttof(buffer) * 16384);
+		playerPed->pedSprite->actualPosition->y = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedZ.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->z = (int)(_ttof(buffer) * 16384) + 10;
+		playerPed->pedSprite->actualPosition->z = (int)(_wtof(buffer) * 16384.0) + 10;
 
 		log(L"Player teleported to %f, %f, %f!", ((float)playerPed->pedSprite->actualPosition->x)/16384.0f, ((float)playerPed->pedSprite->actualPosition->y) / 16384.0f, ((float)playerPed->pedSprite->actualPosition->z) / 16384.0f);
 
@@ -1466,4 +1474,10 @@ void MainWindow::OnGTADraw()
 void MainWindow::OnGTAGameTick(Game *game)
 {
 	// TODO: Add your implementation code here.
+}
+
+
+void MainWindow::OnCommands_fnPlayVocal()
+{
+	fnPlayVocal((DWORD*)0x005d85a0, 0, VOCAL_COP_KILLA);
 }

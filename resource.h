@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Plik do³¹czany wygenerowany przez œrodowisko Microsoft Visual C++.
-// U¿ywany przez: gta2dll.rc
+// Microsoft Visual C++ generated include file.
+// Used by gta2dll.rc
 //
 #define IDD_DIALOG1                     3000
 #define IDC_EDIT1                       3000
@@ -83,13 +83,14 @@
 #define ID_TPALLPEDS                    32783
 #define ID_COMMANDS_SHOW                32784
 #define IDC_SHOWPEDIDS                  32785
+#define ID_COMMANDS_FNSETPEDSTATE       32786
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3006
-#define _APS_NEXT_COMMAND_VALUE         32786
+#define _APS_NEXT_COMMAND_VALUE         32787
 #define _APS_NEXT_CONTROL_VALUE         3058
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
