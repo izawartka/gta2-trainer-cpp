@@ -6,16 +6,26 @@ typedef unsigned int    dword;
 typedef long long    longlong;
 typedef unsigned char    uchar;
 typedef unsigned int    uint;
-typedef unsigned long long    uint16;
+typedef unsigned int    uint3;
 typedef unsigned long    ulong;
 typedef unsigned long long    ulonglong;
 typedef unsigned char    undefined1;
 typedef unsigned short    undefined2;
-typedef unsigned int    undefined3;
 typedef unsigned int    undefined4;
 typedef unsigned long long    undefined8;
 typedef unsigned short    ushort;
 typedef unsigned short    word;
+typedef uchar bbool;
+
+typedef struct Position Position, *PPosition;
+
+typedef struct Position Pos;
+typedef undefined1 u1;
+
+typedef undefined2 u2;
+
+typedef undefined4 u4;
+
 typedef struct Car Car, *PCar;
 
 typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
@@ -53,8 +63,6 @@ typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
     UNK_200000=2097152,
     UNK_80000=524288
 } CAR_LIGHTS_AND_DOORS_BITSTATE;
-
-typedef struct Pos Pos, *PPos;
 
 typedef struct Ped Ped, *PPed;
 
