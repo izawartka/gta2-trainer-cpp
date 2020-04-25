@@ -4250,6 +4250,8 @@ typedef struct CarInfo CarInfo, *PCarInfo;
 
 typedef uchar UINT8;
 
+typedef char INT8_;
+
 typedef enum CarInfoFlags {
     artic_cab=8,
     emerg_lights=2,
@@ -4269,8 +4271,8 @@ typedef enum CarInfoFlags2 {
 typedef struct DoorInfo DoorInfo, *PDoorInfo;
 
 struct DoorInfo {
-    INT8 rx;
-    INT8 ry;
+    INT8_ rx;
+    INT8_ ry;
 };
 
 struct CarInfo {
@@ -4282,10 +4284,10 @@ struct CarInfo {
     UINT8 passengers;
     byte wreck;
     byte rating;
-    INT8 front_wheel_offset;
-    INT8 rear_wheel_offset;
-    INT8 front_window_offset;
-    INT8 rear_window_offset;
+    INT8_ front_wheel_offset;
+    INT8_ rear_wheel_offset;
+    INT8_ front_window_offset;
+    INT8_ rear_window_offset;
     enum CarInfoFlags info_flags;
     enum CarInfoFlags2 info_flags_2;
     UINT8 remap[22]; /* variable size */
@@ -4710,11 +4712,11 @@ typedef struct D3DContext D3DContext, *PD3DContext;
 
 typedef struct DirectDrawDevices DirectDrawDevices, *PDirectDrawDevices;
 
-typedef struct HINSTANCE__ HINSTANCE__, *PHINSTANCE__;
+typedef struct HINSTANCE___ HINSTANCE___, *PHINSTANCE___;
 
-typedef struct HINSTANCE__ * HINSTANCE;
+typedef struct HINSTANCE___ * HINSTANCE_;
 
-typedef HINSTANCE HMODULE;
+typedef HINSTANCE_ HMODULE___;
 
 struct DirectDrawDevices {
     undefined4 field_0x0;
@@ -4747,6 +4749,10 @@ struct DirectDrawDevices {
     undefined field_0x2a;
     undefined field_0x2b;
     char arg3[8];
+};
+
+struct HINSTANCE___ {
+    int unused;
 };
 
 struct D3DContext {
@@ -4817,7 +4823,7 @@ struct D3DContext {
     undefined field_0x76;
     undefined field_0x77;
     undefined4 field_0x78;
-    HMODULE hModuleOfVidDll;
+    HMODULE___ hModuleOfVidDll;
     undefined field_0x80;
     undefined field_0x81;
     undefined field_0x82;
@@ -4893,10 +4899,6 @@ struct D3DContext {
     undefined field_0x208[316];
     undefined4 field_0x344;
     undefined4 field_0x348;
-};
-
-struct HINSTANCE__ {
-    int unused;
 };
 
 typedef struct D3DContext_s1 D3DContext_s1, *PD3DContext_s1;
