@@ -13,13 +13,107 @@
 #include <map>
 
 // MainWindow dialog
+BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
+
+const DWORD pGameTick = (DWORD)0x0045c1f0;
+const DWORD pDraw = (DWORD)0x00461960;
+Game* game = 0;
+MainWindow* mainWnd = nullptr;
+
+BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
+	DWORD OldProtection = { 0 };
+	BOOL success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)hookFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
+	if (!success) {
+		DWORD error = GetLastError();
+		return 0;
+	}
+
+	size_t i;
+
+	// memcpy(hookFn, originalFn, copyBytes);
+	for (i = 0; i < copyBytes; i++) {
+		*(BYTE*)((LPBYTE)hookFn + i + 1) = *(BYTE*)((LPBYTE)originalFn + i);
+	}
+
+	success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)originalFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
+	if (!success) {
+		DWORD error = GetLastError();
+		return 0;
+	}
+
+	*(BYTE*)((LPBYTE)originalFn) = 0xE9; //JMP FAR
+	DWORD offset = (((DWORD)hookFn) - ((DWORD)originalFn + 5)); //Offset math.
+	*(DWORD*)((LPBYTE)originalFn + 1) = offset;
+
+	for (i = 5; i < copyBytes; i++) {
+		*(BYTE*)((LPBYTE)originalFn + i) = 0x90; //JMP FAR
+	}
+
+	return 1;
+}
+
+static __declspec(naked) void gameTick(void) {
+	// this will be replaced by original 5 bytes
+	__asm {
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+	}
+
+	__asm MOV game, ECX; // copy ptr to game
+
+	OutputDebugStringA("gameTick\n");
+	mainWnd->OnGTAGameTick(game);
+
+	__asm {
+		MOV EAX, pGameTick
+		add eax, 5
+		JMP EAX
+	}
+
+}
+
+static __declspec(naked) void draw(void) {
+	// this will be replaced by original bytes 6 bytes
+	__asm {
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+	}
+
+	__asm pushad
+
+	OutputDebugStringA("draw\n");
+	mainWnd->OnGTADraw();
+
+	__asm popad
+
+	__asm {
+		mov eax, pDraw
+		add eax, 5
+		jmp eax
+	}
+
+}
 
 IMPLEMENT_DYNAMIC(MainWindow, CDialogEx)
 
 MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG1, pParent)
 {
-	
+	mainWnd = this;
+	DetourFunc(pGameTick, (DWORD)gameTick);
+	DetourFunc(pDraw, (DWORD)draw, 6);
 }
 
 MainWindow::~MainWindow()
@@ -1214,7 +1308,10 @@ void MainWindow::NextHuman()
 		}
 
 		selectedPed = newSelectedPed;
-		log(L"You're now the ped #%d", selectedPed->id);
+
+		if (selectedPed != nullptr) {
+			log(L"You're now the ped #%d", selectedPed->id);
+		}
 	}
 	
 }
@@ -1358,4 +1455,15 @@ void MainWindow::NewFunction()
 	// You can add anything here to test it and then press SHIFT+D ingame to run the code :)
 
 	GoSlow();
+}
+
+void MainWindow::OnGTADraw()
+{
+	// TODO: Add your implementation code here.
+}
+
+
+void MainWindow::OnGTAGameTick(Game *game)
+{
+	// TODO: Add your implementation code here.
 }
