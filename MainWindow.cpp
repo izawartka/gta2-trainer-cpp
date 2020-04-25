@@ -21,6 +21,11 @@ const DWORD pDraw = (DWORD)0x00461960;
 Game* game = 0;
 MainWindow* mainWnd = nullptr;
 
+
+// void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
+typedef void* (__fastcall PlayVocal)(DWORD*, DWORD edx, VOCAL vocal);
+PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
+
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
 	DWORD OldProtection = { 0 };
 	BOOL success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)hookFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
@@ -193,6 +198,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CARCOLR, &MainWindow::CarColorReset)
 	ON_BN_CLICKED(IDC_GOSLOW, &MainWindow::GoSlow)
 	ON_BN_CLICKED(IDC_PEDHAMSET, &MainWindow::SetHealthArmorMoney)
+	ON_COMMAND(ID_COMMANDS_FNSETPEDSTATE, &MainWindow::OnCommands_fnPlayVocal)
 END_MESSAGE_MAP()
 
 
@@ -1468,4 +1474,10 @@ void MainWindow::OnGTADraw()
 void MainWindow::OnGTAGameTick(Game *game)
 {
 	// TODO: Add your implementation code here.
+}
+
+
+void MainWindow::OnCommands_fnPlayVocal()
+{
+	fnPlayVocal((DWORD*)0x005d85a0, 0, VOCAL_COP_KILLA);
 }

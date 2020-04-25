@@ -119,4 +119,5 @@ public:
 
 	void OnGTADraw();
 	void OnGTAGameTick(Game* game);
+	afx_msg void OnCommands_fnPlayVocal();
 };
