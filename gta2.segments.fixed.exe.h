@@ -98,8 +98,6 @@ typedef struct Ped Ped, *PPed;
 
 typedef struct MaybeCarEngine MaybeCarEngine, *PMaybeCarEngine;
 
-typedef uint UINT;
-
 typedef enum CAR_MODEL {
     ALFA=0,
     ALLARD=1,
@@ -224,8 +222,6 @@ typedef enum CAR_SIREN_STATE {
 typedef enum HORN {
     HORN_ON=248
 } HORN;
-
-typedef struct S22_1 S22_1, *PS22_1;
 
 typedef struct WEAPON_PLAYER_LIST WEAPON_PLAYER_LIST, *PWEAPON_PLAYER_LIST;
 
@@ -354,8 +350,6 @@ typedef enum PED_STATE2 {
     PED_STATE2_WALKING=0
 } PED_STATE2;
 
-typedef struct S22_2 S22_2, *PS22_2;
-
 typedef enum WEAPON_INDEX {
     ARMY_GUN_JEEP=22,
     CAR_SMG=9,
@@ -481,7 +475,7 @@ struct Sprite {
     undefined field_0x21;
     undefined field_0x22;
     undefined field_0x23;
-    ushort maybe_id; //raczej color
+    ushort maybe_id; /* maybe color */
     undefined field_0x26;
     undefined field_0x27;
     undefined field_0x28;
@@ -504,7 +498,7 @@ struct Sprite {
     int field_0x3c;
     short spriteRotation;
     short field_0x42;
-    byte field_0x44;
+    u1 field_0x44;
     undefined field_0x45;
     short field_0x46;
     undefined field_0x48;
@@ -527,14 +521,8 @@ struct Sprite {
     undefined field_0x5d;
     undefined field_0x5e;
     undefined field_0x5f;
-    undefined field_0x60;
-    undefined field_0x61;
-    undefined field_0x62;
-    undefined field_0x63;
-    undefined field_0x64;
-    undefined field_0x65;
-    undefined field_0x66;
-    undefined field_0x67;
+    undefined4 field_0x60;
+    undefined4 field_0x64;
     byte field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
@@ -550,7 +538,7 @@ struct Sprite {
     undefined field_0x77;
     struct Sprite * MaybeNext;
     struct Ped * ped;
-    struct Pos * actualPosition;
+    struct Position * actualPosition;
     undefined field_0x84;
     undefined field_0x85;
     undefined field_0x86;
@@ -590,84 +578,8 @@ struct Sprite {
     undefined field_0xae;
     undefined field_0xaf;
     int field_0xb0;
-    undefined field_0xb4;
-    undefined field_0xb5;
-    undefined field_0xb6;
-    undefined field_0xb7;
-    undefined field_0xb8;
-    undefined field_0xb9;
-    undefined field_0xba;
-    undefined field_0xbb;
-    undefined field_0xbc;
-    undefined field_0xbd;
-    undefined field_0xbe;
-    undefined field_0xbf;
-    undefined field_0xc0;
-    undefined field_0xc1;
-    undefined field_0xc2;
-    undefined field_0xc3;
-    undefined field_0xc4;
-    undefined field_0xc5;
-    undefined field_0xc6;
-    undefined field_0xc7;
-    undefined field_0xc8;
-    undefined field_0xc9;
-    undefined field_0xca;
-    undefined field_0xcb;
-    undefined field_0xcc;
-    undefined field_0xcd;
-    undefined field_0xce;
-    undefined field_0xcf;
-    undefined field_0xd0;
-    undefined field_0xd1;
-    undefined field_0xd2;
-    undefined field_0xd3;
-    undefined field_0xd4;
-    undefined field_0xd5;
-    undefined field_0xd6;
-    undefined field_0xd7;
-    undefined field_0xd8;
-    undefined field_0xd9;
-    undefined field_0xda;
-    undefined field_0xdb;
-    undefined field_0xdc;
-    undefined field_0xdd;
-    undefined field_0xde;
-    undefined field_0xdf;
-    undefined field_0xe0;
-    undefined field_0xe1;
-    undefined field_0xe2;
-    undefined field_0xe3;
-    undefined field_0xe4;
-    undefined field_0xe5;
-    undefined field_0xe6;
-    undefined field_0xe7;
-    undefined field_0xe8;
-    undefined field_0xe9;
-    undefined field_0xea;
-    undefined field_0xeb;
-    undefined field_0xec;
-    undefined field_0xed;
-    undefined field_0xee;
-    undefined field_0xef;
-    undefined field_0xf0;
-    undefined field_0xf1;
-    undefined field_0xf2;
-    undefined field_0xf3;
-    undefined field_0xf4;
-    undefined field_0xf5;
-    undefined field_0xf6;
-    undefined field_0xf7;
-    undefined field_0xf8;
-    undefined field_0xf9;
-    undefined field_0xfa;
-    undefined field_0xfb;
-    undefined field_0xfc;
-    undefined field_0xfd;
-    undefined field_0xfe;
-    undefined field_0xff;
 };
-//SAMOCHODYYY
+
 struct Car {
     undefined field_0x0;
     undefined field_0x1;
@@ -737,12 +649,12 @@ struct Car {
     undefined field_0x4a;
     undefined field_0x4b;
     int field_0x4c;
-    struct Pos * position;
+    struct Position * position;
     struct Ped * driver; /* Created by retype action */
     struct MaybeCarEngine * maybeEngine;
     void * field_0x5c;
     void * field_0x60;
-    void* field_0x64;
+    void * field_0x64;
     undefined field_0x68;
     undefined field_0x69;
     undefined field_0x6a;
@@ -755,7 +667,7 @@ struct Car {
     undefined field_0x79;
     undefined field_0x7a;
     undefined field_0x7b;
-    UINT field_0x7c;
+    uint field_0x7c;
     undefined field_0x80;
     undefined field_0x81;
     undefined field_0x82;
@@ -771,7 +683,7 @@ struct Car {
     undefined field_0x92;
     undefined field_0x93;
     undefined field_0x94;
-    byte pedId; /* Created by retype action */
+    undefined field_0x95;
     undefined field_0x96;
     undefined field_0x97;
     byte locksDoor; /* 1 - locked, 2 - unlocked */
@@ -779,7 +691,7 @@ struct Car {
     undefined field_0x9a;
     undefined field_0x9b;
     enum CAR_ENGINE_STATE engineState;
-    enum CAR_TYPE_COUNTER type;
+    enum TRAFFIC_CAR_TYPE trafficCarType;
     enum CAR_SIREN_STATE sirenState;
     undefined field_0xa5;
     undefined field_0xa6;
@@ -880,7 +792,7 @@ struct MaybeCarEngine {
     undefined field_0x59;
     undefined field_0x5a;
     undefined field_0x5b;
-    void * MaybePrev;
+    void * prev;
     undefined field_0x60;
     undefined field_0x61;
     undefined field_0x62;
@@ -963,53 +875,6 @@ struct MaybeCarEngine {
     undefined field_0xaf;
 };
 
-struct S22_2 {
-    undefined field_0x0;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    undefined field_0x4;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
-};
-
-struct S22_1 {
-    int field_0x0;
-    int field_0x4;
-    int field_0x8;
-    struct S22_2 field_0xc[4];
-    struct S22_1 * ref1;
-    undefined field_0x30;
-    undefined field_0x31;
-    undefined field_0x32;
-    undefined field_0x33;
-    undefined field_0x34;
-    undefined field_0x35;
-    undefined field_0x36;
-    undefined field_0x37;
-    undefined field_0x38;
-    undefined field_0x39;
-    undefined field_0x3a;
-    undefined field_0x3b;
-    undefined field_0x3c;
-    undefined field_0x3d;
-    undefined field_0x3e;
-    undefined field_0x3f;
-    undefined field_0x40;
-    undefined field_0x41;
-    undefined field_0x42;
-    undefined field_0x43;
-    undefined field_0x44;
-    undefined field_0x45;
-    undefined field_0x46;
-    undefined field_0x47;
-    byte field_0x48;
-    undefined field_0x49;
-    undefined field_0x4a;
-    undefined field_0x4b;
-};
-
 struct Ped {
     byte field_0x0;
     byte field_0x1;
@@ -1050,12 +915,18 @@ struct Ped {
     undefined field_0x2a;
     undefined field_0x2b;
     struct Ped * elvisSomething;
-    undefined4 field_0x30;
+    undefined field_0x30;
     byte lenOfForPedsArray;
+    undefined field_0x32;
+    undefined field_0x33;
+    undefined field_0x34;
     undefined field_0x35;
     undefined field_0x36;
     undefined field_0x37;
-    undefined4 field_0x38;
+    undefined field_0x38;
+    undefined field_0x39;
+    undefined field_0x3a;
+    undefined field_0x3b;
     undefined field_0x3c;
     undefined field_0x3d;
     undefined field_0x3e;
@@ -1182,7 +1053,7 @@ struct Ped {
     undefined field_0xb7;
     undefined field_0xb8;
     undefined field_0xb9;
-	undefined field_0xba;
+    undefined field_0xba;
     undefined field_0xbb;
     undefined field_0xbc;
     undefined field_0xbd;
@@ -1378,7 +1249,7 @@ struct Ped {
     int id;
     int somePedId;
     ushort Invulnerability; /* 9999 = infinity */
-    short copValue;
+    short CopLevel; /* 600 = 1 star, 1600 = 2 */
     short field_0x20c;
     short field_0x20e;
     short field_0x210;
@@ -1482,7 +1353,7 @@ struct CarManager {
     undefined field_0x1;
     undefined field_0x2;
     undefined field_0x3;
-    int field_0x4;
+    undefined4 field_0x4;
     byte field_0x8;
     byte field_0x9;
     byte field_0xa;
@@ -1508,22 +1379,13 @@ struct CarManager {
     undefined4 protRecycledCars;
     undefined4 unkCarType9Counter;
     int unkCarTypeACounter;
-    undefined field_0x4c;
-    undefined field_0x4d;
-    undefined field_0x4e;
-    undefined field_0x4f;
-    undefined field_0x50;
-    undefined field_0x51;
-    undefined field_0x52;
-    undefined field_0x53;
-    undefined field_0x54;
-    undefined field_0x55;
+    undefined4 field_0x4c;
+    undefined4 field_0x50;
+    byte field_0x54;
+    byte inc;
     undefined field_0x56;
     undefined field_0x57;
-    undefined field_0x58;
-    undefined field_0x59;
-    undefined field_0x5a;
-    undefined field_0x5b;
+    undefined4 field_0x58;
     byte field_0x5c;
     undefined field_0x5d;
     undefined field_0x5e;
@@ -1531,7 +1393,7 @@ struct CarManager {
     undefined4 field_0x60;
     undefined4 field_0x64;
     byte field_0x68;
-    bool do_free_shoping; /* Created by retype action */
+    bbool do_free_shoping;
 };
 
 typedef struct MaybeCarEngineHolder MaybeCarEngineHolder, *PMaybeCarEngineHolder;
@@ -1539,112 +1401,6 @@ typedef struct MaybeCarEngineHolder MaybeCarEngineHolder, *PMaybeCarEngineHolder
 struct MaybeCarEngineHolder {
     struct MaybeCarEngine * firstElement;
     struct MaybeCarEngine * arr306;
-};
-
-typedef struct SRelToCars SRelToCars, *PSRelToCars;
-
-struct SRelToCars {
-    void * * field_0x0;
-    void * field_0x4;
-    byte arr306[188][306];
-    undefined field_0xe0c0;
-    undefined field_0xe0c1;
-    undefined field_0xe0c2;
-    undefined field_0xe0c3;
-};
-
-typedef struct SRelToCars2 SRelToCars2, *PSRelToCars2;
-
-struct SRelToCars2 {
-    byte field_0x0;
-    byte field_0x1;
-    byte field_0x2;
-    undefined field_0x3;
-    undefined4 field_0x4;
-    undefined4 field_0x8;
-    byte field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-};
-
-typedef struct SRelToCars3 SRelToCars3, *PSRelToCars3;
-
-struct SRelToCars3 {
-    undefined field_0x0;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    undefined field_0x4;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-    struct SRelToCars2 arr4[4];
-    undefined4 field_0x4c;
-    undefined4 field_0x50;
-    undefined4 field_0x54;
-    undefined4 field_0x58;
-    undefined4 field_0x5c;
-    undefined field_0x60;
-    undefined field_0x61;
-    undefined field_0x62;
-    undefined field_0x63;
-    undefined4 field_0x64;
-    struct SRelToCars3 * field_0x68;
-    undefined4 field_0x6c;
-    undefined4 field_0x70;
-    undefined2 field_0x74;
-    undefined2 field_0x76;
-    undefined2 field_0x78;
-    undefined field_0x7a;
-    undefined field_0x7b;
-    undefined4 field_0x7c;
-    byte field_0x80;
-    undefined field_0x81;
-    undefined field_0x82;
-    undefined field_0x83;
-    undefined4 field_0x84;
-    undefined4 field_0x88;
-    byte field_0x8c;
-    byte field_0x8d;
-    byte field_0x8e;
-    undefined field_0x8f;
-    undefined4 field_0x90;
-    byte field_0x94;
-    byte field_0x95;
-    undefined field_0x96;
-    undefined field_0x97;
-    undefined4 field_0x98;
-    undefined4 field_0x9c;
-    undefined4 field_0xa0;
-    byte field_0xa4;
-    byte field_0xa5;
-    byte field_0xa6;
-    undefined field_0xa7;
-    undefined field_0xa8;
-    undefined field_0xa9;
-    undefined field_0xaa;
-    undefined field_0xab;
-    undefined field_0xac;
-    undefined field_0xad;
-    undefined field_0xae;
-    undefined field_0xaf;
-    undefined field_0xb0;
-    undefined field_0xb1;
-    undefined field_0xb2;
-    undefined field_0xb3;
-    undefined field_0xb4;
-    undefined field_0xb5;
-    undefined field_0xb6;
-    undefined field_0xb7;
-    undefined field_0xb8;
-    undefined field_0xb9;
-    undefined field_0xba;
-    undefined field_0xbb;
 };
 
 typedef enum CHEATS {
