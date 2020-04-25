@@ -1249,7 +1249,7 @@ struct Ped {
     int id;
     int somePedId;
     ushort Invulnerability; /* 9999 = infinity */
-    short CopLevel; /* 600 = 1 star, 1600 = 2 */
+    short copValue; /* 600 = 1 star, 1600 = 2 */
     short field_0x20c;
     short field_0x20e;
     short field_0x210;
@@ -1448,14 +1448,14 @@ typedef enum GAME_STATUS {
 } GAME_STATUS;
 
 typedef enum GTA_ERROR_CODE {
-    No_LEVELSTART_declaration_in_scriptfile=65,
-    OUT_OF_MEMORY=32,
-    Player_Ped_twice=66,
-    SCR_NAME_DOESNT_MATCH=21,
-    TOO_MANY_DOORS=2020,
-    UNK=1,
-    Unable_to_set_registry_value=46,
-    unable_to_close_registry_key=42
+    GTA_ERROR_CODE_NO_LEVELSTART_DECLARATION_IN_SCRIPTFILE=65,
+    GTA_ERROR_CODE_OUT_OF_MEMORY=32,
+    GTA_ERROR_CODE_PLAYER_PED_TWICE=66,
+    GTA_ERROR_CODE_SCR_NAME_DOESNT_MATCH=21,
+    GTA_ERROR_CODE_TOO_MANY_DOORS=2020,
+    GTA_ERROR_CODE_UNABLE_TO_CLOSE_REGISTRY_KEY=42,
+    GTA_ERROR_CODE_UNABLE_TO_SET_REGISTRY_VALUE=46,
+    GTA_ERROR_CODE_UNK1=1
 } GTA_ERROR_CODE;
 
 typedef enum KEY_NAME {
