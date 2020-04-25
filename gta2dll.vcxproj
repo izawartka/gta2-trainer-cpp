@@ -76,19 +76,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>[GTA2 ROOT]</OutDir>
+    <OutDir>..\GTA2 Mouse</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>[GTA2 ROOT]</OutDir>
+    <OutDir>..\GTA2 Mouse</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>[GTA2 ROOT]</OutDir>
+    <OutDir>..\GTA2 Mouse</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>[GTA2 ROOT]</OutDir>
+    <OutDir>..\GTA2 Mouse</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -208,7 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
-    <ClInclude Include="gta2.h" />
+    <ClInclude Include="gta2.segments.fixed.exe.h" />
     <ClInclude Include="gta2dll.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="pch.h" />
