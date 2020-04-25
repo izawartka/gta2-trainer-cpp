@@ -88,14 +88,14 @@ public:
 	bool carDamageLocked = 0;
 	void LockCarDamage();
 	void PedInfo();
-	Car* currLastCar;
-	Car* currLastCarOld;
+	Car* currLastCar = 0;
+	Car* currLastCarOld = 0;
 	int pedXOld, pedYOld, pedZOld, pedRotOld;
 	int pedHOld, pedAOld, pedMOld;
 	void TeleportAllPeds();
 	void NewFunction();
-	Ped* selectedPed;
-	bool beAHuman;
+	Ped* selectedPed = 0;
+	bool beAHuman = false;
 	void BeAHuman();
 	void NextHuman();
 	int pedXPreHuman, pedYPreHuman, pedZPreHuman;
@@ -117,4 +117,6 @@ public:
 	void TeleportPlayer();
 	void SetHealthArmorMoney();
 
+	void OnGTADraw();
+	void OnGTAGameTick(Game* game);
 };
