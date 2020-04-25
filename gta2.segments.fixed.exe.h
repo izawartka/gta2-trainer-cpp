@@ -20,6 +20,36 @@ typedef uchar bbool;
 typedef struct Position Position, *PPosition;
 
 typedef struct Position Pos;
+
+struct Position {
+    short rotation;
+    undefined field_0x2;
+    undefined field_0x3;
+    struct Position * prev;
+    int field_0x8;
+    struct Position * next;
+    int field_0x10;
+    int x; /* Created by retype action */
+    int y; /* Created by retype action */
+    int z; /* Created by retype action */
+    short incFromS20;
+    short field_0x22;
+    short carColor;
+    undefined field_0x26;
+    undefined field_0x27;
+    int field_0x28;
+    byte field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+    int field_0x30;
+    int field_0x34;
+    byte field_0x38;
+    byte field_0x39;
+    undefined field_0x3a;
+    undefined field_0x3b;
+};
+
 typedef undefined1 u1;
 
 typedef undefined2 u2;
@@ -754,35 +784,6 @@ struct Car {
     undefined field_0xa5;
     undefined field_0xa6;
     enum HORN horn;
-};
-
-struct Pos {
-    short rotation;
-    undefined field_0x2;
-    undefined field_0x3;
-    struct Pos * MaybePrev;
-    int field_0x8;
-    struct S22_1 * s22_1;
-    void * ptrRelToPos;
-    int x;
-    int y;
-    int z;
-    short incFromS20;
-    short field_0x22;
-    short carColor;
-    undefined field_0x26;
-    undefined field_0x27;
-    int field_0x28;
-    byte field_0x2c;
-    undefined field_0x2d;
-    undefined field_0x2e;
-    undefined field_0x2f;
-    int field_0x30;
-    short lockPalleteMaybe; // 2 - uses default pallete for this vehicle // 3 - uses paintjob pallete (carColor variable)
-    byte field_0x38;
-    byte field_0x39;
-    undefined field_0x3a;
-    undefined field_0x3b;
 };
 
 struct WEAPON_STRUCT {
