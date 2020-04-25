@@ -448,17 +448,7 @@ struct WEAPON_PLAYER_LIST {
     undefined field_0x4f;
     uint bitMask;
     undefined field_0x54[1732];
-    struct WEAPON_STRUCT * weapons[36]; /* Created by retype action */
-    undefined field_0x77e;
-    undefined field_0x77f;
-    undefined field_0x780;
-    undefined field_0x781;
-    undefined field_0x782;
-    undefined field_0x783;
-    undefined field_0x784;
-    undefined field_0x785;
-    undefined field_0x786;
-    undefined field_0x787;
+    struct WEAPON_STRUCT * weapons[28]; /* Created by retype action */
     short count; /* Created by retype action */
 };
 
@@ -4366,9 +4356,9 @@ struct WeaponRelStruct {
     undefined field_0x1;
     undefined field_0x2;
     undefined field_0x3;
-    struct WEAPON_STRUCT weapons[22];
-    undefined field_0x424[3035];
-    undefined field_0xfff;
+    struct WEAPON_STRUCT weapons[28];
+    undefined field_0x544[2747];
+    undefined1 field_0xfff;
 };
 
 typedef struct BitMap BitMap, *PBitMap;
