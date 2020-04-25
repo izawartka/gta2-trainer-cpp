@@ -1503,6 +1503,13 @@ typedef enum KEYBOARD_STATE {
     KEY_STATE_TAB=512
 } KEYBOARD_STATE;
 
+typedef enum MAIN_MENU_SOUND {
+    BACK_SOUND=5,
+    CHEAT_SOUND=9,
+    ENTER_SOUND=6,
+    LEFT_RIGHT_SOUND=3
+} MAIN_MENU_SOUND;
+
 typedef enum PLAYER_MOVEMENT_STATE {
     BACKWARD=2,
     CTRL_ATTACK=16,
@@ -3874,28 +3881,48 @@ struct Menu {
     int unk1;
 };
 
+typedef struct palette_base palette_base, *Ppalette_base;
 
+struct palette_base {
+    ushort tile;
+    ushort sprite;
+    ushort car_remap;
+    ushort ped_remap;
+    ushort code_obj_remap;
+    ushort map_obj_remap;
+    ushort user_remap;
+    ushort font_remap;
+};
 
-typedef struct PedManager PedManager, *PPedManager;
+typedef struct PedManager_S25 PedManager_S25, * PPedManager_S25;
 
-struct PedManager {
+struct PedManager_S25 {
     struct Ped * firstPedInArray;
     struct Ped * lastPedInArray;
     struct Ped peds[200]; /* Created by retype action */
-    short MaybePedsInUse;
+    short pedsInUse;
     undefined field_0x203aa;
     undefined field_0x203ab;
 };
 
+typedef struct sprite_base sprite_base, *Psprite_base;
 
+struct sprite_base {
+    ushort car;
+    ushort ped;
+    ushort code_obj;
+    ushort map_obj;
+    ushort user;
+    ushort font;
 };
 
-typedef enum MAIN_MENU_SOUND {
-    BACK_SOUND=5,
-    CHEAT_SOUND=9,
-    ENTER_SOUND=6,
-    LEFT_RIGHT_SOUND=3
-} MAIN_MENU_SOUND;
+typedef struct sprite_entry sprite_entry, *Psprite_entry;
+
+struct sprite_entry {
+    void * ptr;
+    byte w;
+    byte h;
+};
 
 typedef enum PED_BIT_STATE2 {
     PED_BIT_STATE2_FIRING_FROM_GUN=2,
