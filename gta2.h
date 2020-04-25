@@ -43,7 +43,9 @@ struct Position {
     undefined field_0x2e;
     undefined field_0x2f;
     int field_0x30;
-    int field_0x34;
+    short lockPalleteMaybe; /* 2 - uses default pallete for this vehicle // 3 - uses paintjob pallete (carColor variable) */
+    undefined field_0x36;
+    undefined field_0x37;
     byte field_0x38;
     byte field_0x39;
     undefined field_0x3a;
