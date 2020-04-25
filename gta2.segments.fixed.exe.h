@@ -1942,7 +1942,7 @@ struct FrontEnd {
 
 typedef struct Game Game, *PGame;
 
-typedef struct Save Save, *PSave;
+typedef struct Player Player, *PPlayer;
 
 typedef struct XYZ XYZ, *PXYZ;
 
@@ -1950,31 +1950,6 @@ typedef struct SaveSlotAnimatedValue SaveSlotAnimatedValue, *PSaveSlotAnimatedVa
 
 typedef struct S26 S26, *PS26;
 
-struct Game { /* S8 */
-    enum GAME_STATUS gameStatus; /* 1 - run, 2 - pause game */
-    struct Save * players[6];
-    struct Save * currentSaveSlot2;
-    byte field_0x20;
-    byte field_0x21;
-    byte field_0x22;
-    byte length;
-    char slotIndex;
-    undefined field_0x25;
-    undefined field_0x26;
-    undefined field_0x27;
-    int field_0x28;
-    int relatedToQuitGame;
-    byte compensationFPSTime;
-    undefined field_0x31;
-    undefined field_0x32;
-    undefined field_0x33;
-    int field_0x34;
-    struct Save * CurrentSaveSlot; /* Created by retype action */
-    undefined field_0x3c;
-    undefined field_0x3d;
-    undefined field_0x3e;
-    undefined field_0x3f;
-};
 
 struct SaveSlotAnimatedValue { /* Used for animate changing of values */
     int value;
@@ -2269,7 +2244,7 @@ struct XYZ {
     undefined field_0xff;
 };
 
-struct Save { /* Player actually */
+struct Player { /* Player actually */
     byte f0;
     undefined field_0x1;
     undefined field_0x2;
@@ -3142,6 +3117,31 @@ struct Save { /* Player actually */
     undefined field_0x85b;
 };
 
+struct Game { /* S8 */
+    enum GAME_STATUS gameStatus; /* 1 - run, 2 - pause game */
+    struct Player * players[6];
+    struct Player * currentSaveSlot2;
+    byte field_0x20;
+    byte field_0x21;
+    byte field_0x22;
+    byte length;
+    char slotIndex;
+    undefined field_0x25;
+    undefined field_0x26;
+    undefined field_0x27;
+    int field_0x28;
+    int relatedToQuitGame;
+    byte compensationFPSTime;
+    undefined field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+    int field_0x34;
+    struct Player * CurrentSaveSlot; /* Created by retype action */
+    undefined field_0x3c;
+    undefined field_0x3d;
+    undefined field_0x3e;
+    undefined field_0x3f;
+};
 typedef struct GameStats GameStats, *PGameStats;
 
 struct GameStats {
@@ -3501,6 +3501,17 @@ typedef struct Gangs Gangs, *PGangs;
 
 struct Gangs {
     struct Gang arr[10];
+};
+
+typedef struct PedManager_S25 PedManager_S25, *PPedManager_S25;
+
+struct PedManager_S25 {
+    struct Ped * firstPedInArray;
+    struct Ped * lastPedInArray;
+    struct Ped peds[200]; /* Created by retype action */
+    short pedsInUse;
+    undefined field_0x203aa;
+    undefined field_0x203ab;
 };
 
 typedef struct Menu Menu, *PMenu;
@@ -3894,17 +3905,6 @@ struct palette_base {
     ushort font_remap;
 };
 
-typedef struct PedManager_S25 PedManager_S25, * PPedManager_S25;
-
-struct PedManager_S25 {
-    struct Ped * firstPedInArray;
-    struct Ped * lastPedInArray;
-    struct Ped peds[200]; /* Created by retype action */
-    short pedsInUse;
-    undefined field_0x203aa;
-    undefined field_0x203ab;
-};
-
 typedef struct sprite_base sprite_base, *Psprite_base;
 
 struct sprite_base {
@@ -3922,6 +3922,7 @@ struct sprite_entry {
     void * ptr;
     byte w;
     byte h;
+    ushort pad;
 };
 
 typedef enum PED_BIT_STATE2 {
@@ -4196,35 +4197,12 @@ struct SCR_XYZ_f {
 struct SCR_CAR_DATA_DEC {
     struct SCR_CMD_HEADER head;
     short varname;
-    short field_0xa;
+    short field_0xc;
     struct SCR_XYZ_f pos;
     short rot;
     short remap;
     ushort carId;
-    ushort trailerId; /* 0xFFFF - no trailer */
-};
-
-typedef struct SCR_CMD_SIX_PARAMS SCR_CMD_SIX_PARAMS, *PSCR_CMD_SIX_PARAMS;
-
-typedef union U_SCR_TWO_PARAMS U_SCR_TWO_PARAMS, *PU_SCR_TWO_PARAMS;
-
-typedef struct SCR_TWO_SHORTS SCR_TWO_SHORTS, *PSCR_TWO_SHORTS;
-
-struct SCR_TWO_SHORTS {
-    short s1;
-    short s2;
-};
-
-union U_SCR_TWO_PARAMS {
-    struct SCR_TWO_SHORTS shorts;
-    int i32val;
-};
-
-struct SCR_CMD_SIX_PARAMS {
-    struct SCR_CMD_HEADER header;
-    union U_SCR_TWO_PARAMS params12;
-    union U_SCR_TWO_PARAMS params34;
-    union U_SCR_TWO_PARAMS params56;
+    ushort trailerId;
 };
 
 typedef struct SCR_PLAYER_PED SCR_PLAYER_PED, *PSCR_PLAYER_PED;
@@ -4233,7 +4211,8 @@ typedef short Sint16;
 
 struct SCR_PLAYER_PED {
     struct SCR_CMD_HEADER header;
-    struct Ped * ped;
+    Uint16 field_0x8;
+    Uint16 field_0xa;
     struct SCR_XYZ_f pos;
     Uint16 rot;
     Sint16 remap;
@@ -4266,209 +4245,13 @@ struct SCR_STRINGS {
     byte buf[5118];
 };
 
-typedef struct ScriptFunctionsAddrTable ScriptFunctionsAddrTable, *PScriptFunctionsAddrTable;
-
-typedef void * LPVOID;
-
-struct ScriptFunctionsAddrTable {
-    LPVOID * field_0x0;
-    LPVOID * field_0x4;
-    LPVOID * field_0x8;
-    LPVOID * field_0xc;
-    LPVOID * field_0x10;
-    LPVOID * field_0x14;
-    LPVOID * field_0x18;
-    LPVOID * field_0x1c;
-    LPVOID * field_0x20;
-    LPVOID * field_0x24;
-    LPVOID * field_0x28;
-    LPVOID * field_0x2c;
-    LPVOID * field_0x30;
-    LPVOID * field_0x34;
-    LPVOID * field_0x38;
-    LPVOID * field_0x3c;
-    LPVOID * field_0x40;
-    LPVOID * field_0x44;
-    LPVOID * field_0x48;
-    LPVOID * field_0x4c;
-    LPVOID * field_0x50;
-    LPVOID * field_0x54;
-    LPVOID * field_0x58;
-    LPVOID * field_0x5c;
-    LPVOID * field_0x60;
-    LPVOID * field_0x64;
-    LPVOID * field_0x68;
-    LPVOID * field_0x6c;
-    LPVOID * field_0x70;
-    LPVOID * field_0x74;
-    LPVOID * field_0x78;
-    LPVOID * field_0x7c;
-    LPVOID * field_0x80;
-    LPVOID * field_0x84;
-    LPVOID * field_0x88;
-    LPVOID * field_0x8c;
-    LPVOID * field_0x90;
-    LPVOID * field_0x94;
-    LPVOID * field_0x98;
-    LPVOID * field_0x9c;
-    LPVOID * field_0xa0;
-    LPVOID * field_0xa4;
-    LPVOID * field_0xa8;
-    LPVOID * field_0xac;
-    LPVOID * field_0xb0;
-    LPVOID * field_0xb4;
-    LPVOID * field_0xb8;
-    LPVOID * field_0xbc;
-    LPVOID * field_0xc0;
-    LPVOID * field_0xc4;
-    LPVOID * field_0xc8;
-    LPVOID * field_0xcc;
-    LPVOID * field_0xd0;
-    LPVOID * field_0xd4;
-    LPVOID * field_0xd8;
-    LPVOID * field_0xdc;
-    LPVOID * field_0xe0;
-    LPVOID * field_0xe4;
-    LPVOID * field_0xe8;
-    LPVOID * field_0xec;
-    LPVOID * field_0xf0;
-    LPVOID * field_0xf4;
-    LPVOID * field_0xf8;
-    LPVOID * field_0xfc;
-    LPVOID * field_0x100;
-    LPVOID * field_0x104;
-    LPVOID * field_0x108;
-    LPVOID * field_0x10c;
-    LPVOID * field_0x110;
-    LPVOID * field_0x114;
-    LPVOID * field_0x118;
-    LPVOID * field_0x11c;
-    LPVOID * field_0x120;
-    LPVOID * field_0x124;
-    LPVOID * field_0x128;
-    LPVOID * field_0x12c;
-    LPVOID * field_0x130;
-    LPVOID * field_0x134;
-    LPVOID * field_0x138;
-    LPVOID * field_0x13c;
-    LPVOID * field_0x140;
-    LPVOID * field_0x144;
-    LPVOID * field_0x148;
-    LPVOID * field_0x14c;
-    LPVOID * field_0x150;
-    LPVOID * field_0x154;
-    LPVOID * field_0x158;
-    LPVOID * field_0x15c;
-    LPVOID * field_0x160;
-    LPVOID * field_0x164;
-    LPVOID * field_0x168;
-    LPVOID * field_0x16c;
-    LPVOID * field_0x170;
-    LPVOID * field_0x174;
-    LPVOID * field_0x178;
-    LPVOID * field_0x17c;
-    LPVOID * field_0x180;
-    LPVOID * field_0x184;
-    LPVOID * field_0x188;
-    LPVOID * field_0x18c;
-    LPVOID * field_0x190;
-    LPVOID * field_0x194;
-    LPVOID * field_0x198;
-    LPVOID * field_0x19c;
-    LPVOID * field_0x1a0;
-    LPVOID * field_0x1a4;
-    LPVOID * field_0x1a8;
-    LPVOID * field_0x1ac;
-    LPVOID * field_0x1b0;
-    LPVOID * field_0x1b4;
-    LPVOID * field_0x1b8;
-    LPVOID * field_0x1bc;
-    LPVOID * field_0x1c0;
-    LPVOID * field_0x1c4;
-    LPVOID * field_0x1c8;
-    LPVOID * field_0x1cc;
-    LPVOID * field_0x1d0;
-    LPVOID * field_0x1d4;
-    LPVOID * field_0x1d8;
-    LPVOID * field_0x1dc;
-    LPVOID * field_0x1e0;
-    LPVOID * field_0x1e4;
-    LPVOID * field_0x1e8;
-    LPVOID * field_0x1ec;
-    LPVOID * field_0x1f0;
-    LPVOID * field_0x1f4;
-    LPVOID * field_0x1f8;
-    LPVOID * field_0x1fc;
-    LPVOID * field_0x200;
-    LPVOID * field_0x204;
-    LPVOID * field_0x208;
-    LPVOID * field_0x20c;
-    LPVOID * field_0x210;
-    LPVOID * field_0x214;
-    LPVOID * field_0x218;
-    LPVOID * field_0x21c;
-    LPVOID * field_0x220;
-    LPVOID * field_0x224;
-    LPVOID * field_0x228;
-    LPVOID * field_0x22c;
-    LPVOID * field_0x230;
-    LPVOID * field_0x234;
-    LPVOID * field_0x238;
-    LPVOID * field_0x23c;
-    LPVOID * field_0x240;
-    LPVOID * field_0x244;
-    LPVOID * field_0x248;
-    LPVOID * field_0x24c;
-    LPVOID * field_0x250;
-    LPVOID * field_0x254;
-    LPVOID * field_0x258;
-    LPVOID * field_0x25c;
-    LPVOID * field_0x260;
-    LPVOID * field_0x264;
-    LPVOID * field_0x268;
-    LPVOID * field_0x26c;
-    LPVOID * field_0x270;
-    LPVOID * field_0x274;
-    LPVOID * field_0x278;
-    LPVOID * field_0x27c;
-    LPVOID * field_0x280;
-    LPVOID * field_0x284;
-    LPVOID * field_0x288;
-    LPVOID * field_0x28c;
-    LPVOID * field_0x290;
-    LPVOID * field_0x294;
-    LPVOID * field_0x298;
-    LPVOID * field_0x29c;
-    LPVOID * field_0x2a0;
-    LPVOID * field_0x2a4;
-    LPVOID * field_0x2a8;
-    LPVOID * field_0x2ac;
-    LPVOID * field_0x2b0;
-    LPVOID * field_0x2b4;
-    LPVOID * field_0x2b8;
-    LPVOID * field_0x2bc;
-    LPVOID * field_0x2c0;
-    LPVOID * field_0x2c4;
-    LPVOID * field_0x2c8;
-    LPVOID * field_0x2cc;
-    LPVOID * field_0x2d0;
-    LPVOID * field_0x2d4;
-    LPVOID * field_0x2d8;
-    LPVOID * field_0x2dc;
-    LPVOID * field_0x2e0;
-    LPVOID * field_0x2e4;
-    LPVOID * field_0x2e8;
-    LPVOID * field_0x2ec;
-    LPVOID * field_0x2f0;
-    LPVOID * field_0x2f4;
-    LPVOID * field_0x2f8;
-    LPVOID * field_0x2fc;
-    LPVOID * field_0x300;
-};
-
 typedef struct AllCarsInfo AllCarsInfo, *PAllCarsInfo;
 
 typedef struct CarInfo CarInfo, *PCarInfo;
+
+typedef uchar UINT8;
+
+typedef char INT8;
 
 typedef enum CarInfoFlags {
     artic_cab=8,
@@ -4489,54 +4272,33 @@ typedef enum CarInfoFlags2 {
 typedef struct DoorInfo DoorInfo, *PDoorInfo;
 
 struct DoorInfo {
-    undefined field_0x0;
-    undefined field_0x1;
+    INT8 rx;
+    INT8 ry;
 };
 
 struct CarInfo {
-    undefined field_0x0;
+    UINT8 model;
     undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    undefined field_0x4;
-    undefined field_0x5;
+    UINT8 w;
+    UINT8 h;
+    UINT8 num_remaps; /* max 64 */
+    UINT8 passengers;
     byte wreck;
     byte rating;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
+    INT8 front_wheel_offset;
+    INT8 rear_wheel_offset;
+    INT8 front_window_offset;
+    INT8 rear_window_offset;
     enum CarInfoFlags info_flags;
     enum CarInfoFlags2 info_flags_2;
-    undefined field_0xe;
-    undefined field_0xf;
-    undefined field_0x10;
-    undefined field_0x11;
-    undefined field_0x12;
-    undefined field_0x13;
-    undefined field_0x14;
-    undefined field_0x15;
-    undefined field_0x16;
-    undefined field_0x17;
-    undefined field_0x18;
-    undefined field_0x19;
-    undefined field_0x1a;
-    undefined field_0x1b;
-    undefined field_0x1c;
-    undefined field_0x1d;
-    undefined field_0x1e;
-    undefined field_0x1f;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    undefined field_0x24;
+    UINT8 remap[22]; /* variable size */
+    UINT8 num_doors; /* max 5 */
     struct DoorInfo doors[5];
 };
 
 struct AllCarsInfo {
     struct CarInfo * cars[256];
-    undefined field_0x400;
+    UINT8 totalCars; /* Created by retype action */
     undefined field_0x401;
     undefined field_0x402;
     undefined field_0x403;
