@@ -409,9 +409,9 @@ DWORD ptrToGame = 0x005eb4fc;
 typedef Ped* (__stdcall GetPedById)(int);
 GetPedById* fnGetPedByID = (GetPedById*)0x0043ae10;
 
-//Save* __thiscall Game::GetSaveSlotByIndex(Game* this, byte index);
-typedef Save* (__fastcall GetSaveSlotByIndex)(Game* game, DWORD edx, byte index);
-GetSaveSlotByIndex* fnGetSaveSlotByIndex = (GetSaveSlotByIndex*)0x004219e0;
+//Player* __thiscall Game::GetPlayerSlotByIndex(Game* this, byte index);
+typedef Player* (__fastcall GetPlayerSlotByIndex)(Game* game, DWORD edx, byte index);
+GetPlayerSlotByIndex* fnGetSaveSlotByIndex = (GetPlayerSlotByIndex*)0x004219e0;
 
 //void __thiscall ShowBigOnScreenLabel(void* this, WCHAR* txt, int timeToShowInSeconds);
 typedef void(__fastcall ShowBigOnScreenLabel)(void* ptr, DWORD edx, WCHAR* txt, int time);

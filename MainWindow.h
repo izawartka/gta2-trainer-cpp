@@ -1,7 +1,7 @@
 #pragma once
 
 // MainWindow dialog
-#include "gta2.segments.fixed.exe.h"
+#include "gta2.h"
 
 enum TIMER {
 	TIMER_CAPTURE_MOUSE,

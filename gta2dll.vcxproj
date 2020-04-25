@@ -208,7 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
-    <ClInclude Include="gta2.segments.fixed.exe.h" />
+    <ClInclude Include="gta2.h" />
     <ClInclude Include="gta2dll.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="pch.h" />
