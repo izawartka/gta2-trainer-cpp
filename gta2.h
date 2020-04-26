@@ -1363,12 +1363,12 @@ struct MaybeCarEngineHolder {
 
 typedef struct TrafficManager TrafficManager, *PTrafficManager;
 
-struct TrafficManager {
+struct TrafficManager { /* 005e4ca4 */
     undefined field_0x0;
     undefined field_0x1;
     undefined field_0x2;
     undefined field_0x3;
-    undefined4 field_0x4;
+    void * ptr1;
     byte field_0x8;
     byte field_0x9;
     byte field_0xa;
@@ -1396,7 +1396,7 @@ struct TrafficManager {
     int unkCarTypeACounter;
     undefined4 field_0x4c;
     undefined4 field_0x50;
-    byte field_0x54;
+    byte minimalCarSpawnDelay;
     byte inc;
     undefined field_0x56;
     undefined field_0x57;
@@ -5244,7 +5244,7 @@ struct S23 {
 typedef struct S24_char S24_char, *PS24_char;
 
 struct S24_char {
-    short short0;
+    short PedCapacity;
     byte field_0x2;
     byte field_0x3;
     byte field_0x4;
