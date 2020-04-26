@@ -1603,6 +1603,81 @@ struct CarManager3 {
     void * field_0x0;
     struct CarManager3_S1 field_0x4[306];
 };
+
+typedef struct CarManager4 CarManager4, *PCarManager4;
+
+typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
+
+struct CarManager4_S1 {
+    undefined4 field_0x0;
+    undefined4 field_0x4;
+    u1 field_0x8;
+    u1 field_0x9;
+    u1 field_0xa;
+    undefined field_0xb;
+    undefined4 field_0xc;
+    undefined2 field_0x10;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined4 field_0x14;
+    undefined4 field_0x18;
+    undefined4 field_0x1c;
+    undefined4 field_0x20;
+    uint field_0x24;
+    u1 field_0x28;
+    u1 field_0x29;
+    u1 field_0x2a;
+    u1 field_0x2b;
+    u1 field_0x2c;
+    u1 field_0x2d;
+    u1 field_0x2e;
+    u1 field_0x2f;
+    undefined field_0x30;
+    undefined field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+    undefined4 field_0x34;
+    undefined4 field_0x38;
+    undefined4 field_0x3c;
+    undefined4 field_0x40;
+    undefined4 field_0x44;
+    undefined4 field_0x48;
+    undefined4 field_0x4c;
+    undefined4 field_0x50;
+    undefined2 field_0x54;
+    undefined2 field_0x56;
+    undefined2 field_0x58;
+    undefined2 field_0x5a;
+    undefined4 field_0x5c;
+    undefined4 field_0x60;
+    undefined4 field_0x64;
+    undefined4 field_0x68;
+    undefined4 field_0x6c;
+    undefined4 field_0x70;
+    undefined4 field_0x74;
+};
+
+struct CarManager4 {
+    int * field_0x0;
+    struct CarManager4_S1 arr306[306];
+};
+
+typedef struct CarManager5 CarManager5, *PCarManager5;
+
+typedef struct CarManager5_S1 CarManager5_S1, *PCarManager5_S1;
+
+struct CarManager5_S1 {
+    undefined4 field_0x0;
+    undefined4 field_0x4;
+    undefined4 field_0x8;
+    undefined4 field_0xc;
+};
+
+struct CarManager5 {
+    int * field_0x0;
+    struct CarManager5_S1 arr10[10];
+};
+
 typedef struct MaybeCarEngineHolder MaybeCarEngineHolder, *PMaybeCarEngineHolder;
 
 struct MaybeCarEngineHolder {
@@ -4626,80 +4701,6 @@ struct C1 { /* PlaceHolder Class Structure */
     undefined field_0x1486;
     undefined field_0x1487;
     struct S5 * s5Arr1020[1020];
-};
-
-typedef struct CarManager4 CarManager4, *PCarManager4;
-
-typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
-
-struct CarManager4_S1 {
-    undefined4 field_0x0;
-    undefined4 field_0x4;
-    u1 field_0x8;
-    u1 field_0x9;
-    u1 field_0xa;
-    undefined field_0xb;
-    undefined4 field_0xc;
-    undefined2 field_0x10;
-    undefined field_0x12;
-    undefined field_0x13;
-    undefined4 field_0x14;
-    undefined4 field_0x18;
-    undefined4 field_0x1c;
-    undefined4 field_0x20;
-    uint field_0x24;
-    u1 field_0x28;
-    u1 field_0x29;
-    u1 field_0x2a;
-    u1 field_0x2b;
-    u1 field_0x2c;
-    u1 field_0x2d;
-    u1 field_0x2e;
-    u1 field_0x2f;
-    undefined field_0x30;
-    undefined field_0x31;
-    undefined field_0x32;
-    undefined field_0x33;
-    undefined4 field_0x34;
-    undefined4 field_0x38;
-    undefined4 field_0x3c;
-    undefined4 field_0x40;
-    undefined4 field_0x44;
-    undefined4 field_0x48;
-    undefined4 field_0x4c;
-    undefined4 field_0x50;
-    undefined2 field_0x54;
-    undefined2 field_0x56;
-    undefined2 field_0x58;
-    undefined2 field_0x5a;
-    undefined4 field_0x5c;
-    undefined4 field_0x60;
-    undefined4 field_0x64;
-    undefined4 field_0x68;
-    undefined4 field_0x6c;
-    undefined4 field_0x70;
-    undefined4 field_0x74;
-};
-
-struct CarManager4 {
-    int * field_0x0;
-    struct CarManager4_S1 arr306[306];
-};
-
-typedef struct CarManager5 CarManager5, *PCarManager5;
-
-typedef struct CarManager5_S1 CarManager5_S1, *PCarManager5_S1;
-
-struct CarManager5_S1 {
-    undefined4 field_0x0;
-    undefined4 field_0x4;
-    undefined4 field_0x8;
-    undefined4 field_0xc;
-};
-
-struct CarManager5 {
-    int * field_0x0;
-    struct CarManager5_S1 arr10[10];
 };
 
 typedef struct D3DContext D3DContext, *PD3DContext;
