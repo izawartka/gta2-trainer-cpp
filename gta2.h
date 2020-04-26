@@ -1813,6 +1813,16 @@ typedef enum SAVE_SLOT_UNCLEAR_UI_OR_SCRIPTS_VALUE_ID { /* Maybe used in scrtipt
     PLAYER_MONEY=158
 } SAVE_SLOT_UNCLEAR_UI_OR_SCRIPTS_VALUE_ID;
 
+typedef enum TRAFFIC_PHASE {
+    TRAFFIC_PHASE_HORIZONTAL_GREEN=4,
+    TRAFFIC_PHASE_HORIZONTAL_RED=6,
+    TRAFFIC_PHASE_HORIZONTAL_YELLOW=5,
+    TRAFFIC_PHASE_PEDS_CROSSING=7,
+    TRAFFIC_PHASE_VERTICAL_GREEN=1,
+    TRAFFIC_PHASE_VERTICAL_RED=3,
+    TRAFFIC_PHASE_VERTICAL_YELLOW=2
+} TRAFFIC_PHASE;
+
 typedef enum VOCAL {
     VOCAL_ACCURACY_BONUS=9,
     VOCAL_AND_REMEMBER__RESPECT_IS_EVERYTHING=24,
@@ -8018,7 +8028,9 @@ typedef enum TILE_ENUM1 {
 typedef struct TrafficLigthStruct TrafficLigthStruct, *PTrafficLigthStruct;
 
 struct TrafficLigthStruct {
-    undefined field_0x0[402];
-    byte cycle;
+    undefined field_0x0[400];
+    u2 field_0x190;
+    enum TRAFFIC_PHASE phase;
+    byte timer;
 };
 

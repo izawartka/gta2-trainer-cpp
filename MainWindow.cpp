@@ -18,6 +18,7 @@ BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
 
 const DWORD pGameTick = (DWORD)0x0045c1f0;
 const DWORD pDraw = (DWORD)0x00461960;
+const TrafficLigthStruct *ptrToTrafficLights = (TrafficLigthStruct*)0x006721cc;
 Game* game = 0;
 MainWindow* mainWnd = nullptr;
 
