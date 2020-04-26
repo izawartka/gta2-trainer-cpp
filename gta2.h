@@ -594,13 +594,10 @@ struct Sprite {
 
 struct Car {
     undefined4 field_0x0;
-    undefined field_0x4;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
+    undefined4 field_0x4;
     enum CAR_LIGHTS_AND_DOORS_BITSTATE carLights;
-    struct SomeStructInsideACar field_0xc[4];
-    int field_0x4c;
+    struct SomeStructInsideACar arr4[4];
+    struct Car * lastCar;
     struct Position * position;
     struct Ped * driver; /* Created by retype action */
     struct MaybeCarEngine * maybeEngine;
@@ -635,7 +632,7 @@ struct Car {
     enum CAR_ENGINE_STATE engineState;
     enum TRAFFIC_CAR_TYPE trafficCarType;
     enum CAR_SIREN_STATE sirenState;
-    u1 field_0xa5;
+    byte sirenPhase;
     u1 field_0xa6;
     enum HORN horn;
     u1 field_0xa8;
@@ -1272,56 +1269,6 @@ struct CarEnginePrefab { /* 0066ab7c */
     struct MaybeCarEngine arr306[306];
 };
 
-typedef struct CarManager CarManager, *PCarManager;
-
-struct CarManager {
-    undefined field_0x0;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    undefined4 field_0x4;
-    byte field_0x8;
-    byte field_0x9;
-    byte field_0xa;
-    byte field_0xb;
-    undefined4 field_0xc;
-    short field_0x10;
-    undefined field_0x12;
-    undefined field_0x13;
-    undefined4 field_0x14;
-    undefined field_0x18;
-    undefined field_0x19;
-    byte field_0x1a;
-    undefined field_0x1b;
-    undefined4 field_0x1c;
-    undefined4 field_0x20;
-    undefined4 field_0x24;
-    undefined4 recycledCars;
-    undefined4 unkCarType4Counter;
-    undefined4 unkCarType5Counter;
-    undefined4 unitCars;
-    undefined4 unkCarType7Counter;
-    undefined4 missionCars;
-    undefined4 protRecycledCars;
-    undefined4 unkCarType9Counter;
-    int unkCarTypeACounter;
-    undefined4 field_0x4c;
-    undefined4 field_0x50;
-    byte field_0x54;
-    byte inc;
-    undefined field_0x56;
-    undefined field_0x57;
-    undefined4 field_0x58;
-    byte field_0x5c;
-    undefined field_0x5d;
-    undefined field_0x5e;
-    undefined field_0x5f;
-    undefined4 field_0x60;
-    undefined4 field_0x64;
-    byte field_0x68;
-    bbool do_free_shoping;
-};
-
 typedef struct CarManager4 CarManager4, *PCarManager4;
 
 typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
@@ -1412,6 +1359,56 @@ typedef struct MaybeCarEngineHolder MaybeCarEngineHolder, *PMaybeCarEngineHolder
 struct MaybeCarEngineHolder {
     struct MaybeCarEngine * firstElement;
     struct MaybeCarEngine * arr306;
+};
+
+typedef struct TrafficManager TrafficManager, *PTrafficManager;
+
+struct TrafficManager {
+    undefined field_0x0;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    undefined4 field_0x4;
+    byte field_0x8;
+    byte field_0x9;
+    byte field_0xa;
+    byte field_0xb;
+    undefined4 field_0xc;
+    short field_0x10;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined4 nextCarId;
+    undefined field_0x18;
+    undefined field_0x19;
+    byte field_0x1a;
+    undefined field_0x1b;
+    undefined4 field_0x1c;
+    undefined4 field_0x20;
+    undefined4 field_0x24;
+    undefined4 recycledCars;
+    undefined4 unkCarType4Counter;
+    undefined4 unkCarType5Counter;
+    undefined4 unitCars;
+    undefined4 unkCarType7Counter;
+    undefined4 missionCars;
+    undefined4 protRecycledCars;
+    undefined4 unkCarType9Counter;
+    int unkCarTypeACounter;
+    undefined4 field_0x4c;
+    undefined4 field_0x50;
+    byte field_0x54;
+    byte inc;
+    undefined field_0x56;
+    undefined field_0x57;
+    undefined4 field_0x58;
+    byte field_0x5c;
+    undefined field_0x5d;
+    undefined field_0x5e;
+    undefined field_0x5f;
+    undefined4 field_0x60;
+    undefined4 field_0x64;
+    byte field_0x68;
+    bbool do_free_shoping;
 };
 
 typedef enum CHEATS {
