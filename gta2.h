@@ -498,7 +498,7 @@ struct Sprite {
     short field_0x46;
     undefined field_0x48;
     undefined field_0x49;
-    short unknownIdleTimer;
+    short cigaretteIdleTimer;
     undefined field_0x4c;
     undefined field_0x4d;
     undefined field_0x4e;
