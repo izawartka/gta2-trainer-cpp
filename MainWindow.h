@@ -63,6 +63,9 @@ public:
 	CEdit m_pedHealth;
 	CEdit m_pedArmor;
 	CEdit m_pedMoney;
+	CEdit m_pedClothes;
+	CEdit m_pedShape;
+	CEdit m_BigText;
 	void CarEngineOff();
 	bool starsLocked = 0;
 	short startCopValue = 0;
@@ -93,7 +96,6 @@ public:
 	int pedXOld = 0, pedYOld = 0, pedZOld = 0, pedRotOld = 0;
 	int pedHOld = 1, pedAOld = 1, pedMOld = 1; // 1 not 0 because it has to be different than the actual value in the first tick
 	void TeleportAllPeds();
-	void NewFunction();
 	Ped* selectedPed = 0;
 	bool beAHuman = false;
 	void BeAHuman();
@@ -109,6 +111,12 @@ public:
 	void CarColorPlus();
 	void CarColorMinus();
 	void CarColorReset();
+	void PedClothesPlus();
+	void PedClothesMinus();
+	void PedShapePlus();
+	void PedShapeMinus();
+	void PedShapeClothesReset();
+	void ShowBigText();
 	void GoSlow();
 	int* walkingSpeed = nullptr;
 	bool* showIDs = false;
@@ -119,4 +127,5 @@ public:
 
 	void OnGTADraw();
 	void OnGTAGameTick(Game* game);
+	void NewFunction();
 };

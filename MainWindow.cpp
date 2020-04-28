@@ -149,6 +149,9 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PEDHEALTH, m_pedHealth);
 	DDX_Control(pDX, IDC_PEDARMOR, m_pedArmor);
 	DDX_Control(pDX, IDC_PEDMONEY, m_pedMoney);
+	DDX_Control(pDX, IDC_PEDCLOTHV, m_pedClothes);
+	DDX_Control(pDX, IDC_PEDSHAPEV, m_pedShape);
+	DDX_Control(pDX, IDC_BIGTEXTTEXT, m_BigText);
 }
 
 
@@ -199,6 +202,12 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CARCOLR, &MainWindow::CarColorReset)
 	ON_BN_CLICKED(IDC_GOSLOW, &MainWindow::GoSlow)
 	ON_BN_CLICKED(IDC_PEDHAMSET, &MainWindow::SetHealthArmorMoney)
+	ON_BN_CLICKED(IDC_PEDCLOTHP, &MainWindow::PedClothesPlus)
+	ON_BN_CLICKED(IDC_PEDCLOTHM, &MainWindow::PedClothesMinus)
+	ON_BN_CLICKED(IDC_PEDSHAPEP, &MainWindow::PedShapePlus)
+	ON_BN_CLICKED(IDC_PEDSHAPEM, &MainWindow::PedShapeMinus)
+	ON_BN_CLICKED(IDC_PEDSHAPECLOTHR, &MainWindow::PedShapeClothesReset)
+	ON_BN_CLICKED(IDC_BIGTEXTSHOW, &MainWindow::ShowBigText)
 END_MESSAGE_MAP()
 
 
@@ -1100,6 +1109,12 @@ void MainWindow::PedInfo()
 
 	if (playerPed)
 	{
+		swprintf(buf, 256, L"%d", playerPed->clothes);
+		m_pedClothes.SetWindowTextW(buf);
+
+		swprintf(buf, 256, L"%d", playerPed->bodyShape);
+		m_pedShape.SetWindowTextW(buf);
+
 		if (pedHOld != playerPed->health)
 		{
 			m_pedHealth.SetWindowTextW(L"0");
@@ -1427,6 +1442,69 @@ void MainWindow::CarColorReset()
 {
 	currLastCar->position->lockPalleteMaybe = 2;
 	currLastCar->position->carColor = 0;
+}
+
+void MainWindow::PedClothesMinus()
+{
+	Ped* playerPed = fnGetPedByID(1);
+
+	if (playerPed)
+	{
+		playerPed->clothes--;
+		if (playerPed->clothes == 255) playerPed->clothes = 52;
+	}
+}
+
+void MainWindow::PedClothesPlus()
+{
+	Ped* playerPed = fnGetPedByID(1);
+
+	if (playerPed)
+	{
+		playerPed->clothes++;
+		if (playerPed->clothes > 52) playerPed->clothes = 0;
+	}
+}
+
+void MainWindow::PedShapeMinus()
+{
+	Ped* playerPed = fnGetPedByID(1);
+
+	if (playerPed)
+	{
+		playerPed->bodyShape--;
+		if (playerPed->bodyShape == 255) playerPed->bodyShape = 2;
+	}
+}
+
+void MainWindow::PedShapePlus()
+{
+	Ped* playerPed = fnGetPedByID(1);
+
+	if (playerPed)
+	{
+		playerPed->bodyShape++;
+		if (playerPed->bodyShape > 2) playerPed->bodyShape = 0;
+	}
+}
+
+void MainWindow::PedShapeClothesReset()
+{
+	Ped* playerPed = fnGetPedByID(1);
+	if (playerPed)
+	{
+		playerPed->bodyShape = 1;
+		playerPed->clothes = 25;
+	}
+}
+
+void MainWindow::ShowBigText()
+{
+	S10* s10 = (S10*)*(DWORD*)0x00672f40;
+	CString buffer;
+	m_BigText.GetWindowTextW(buffer);
+	fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)(LPCTSTR)buffer, 10);
+	log(L"Text shown!");
 }
 
 void MainWindow::ShowIDs()

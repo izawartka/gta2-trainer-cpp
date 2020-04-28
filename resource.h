@@ -28,6 +28,7 @@
 #define IDC_LOCKCOPLEVEL                3019
 #define IDC_CARENGINEOFF                3020
 #define IDC_CARFIX                      3021
+#define IDC_PEDSHAPCLOTHR               3021
 #define IDC_CARVISFIX                   3022
 #define IDC_CARDAMAGE                   3023
 #define IDC_LOCKCARDAMAGE               3024
@@ -71,6 +72,16 @@
 #define IDC_CARCOLP2                    3055
 #define IDC_CARCOLR                     3055
 #define IDC_GOSLOW                      3056
+#define IDC_PEDSHAPEM                   3057
+#define IDC_PEDSHAPEP                   3058
+#define IDC_PEDSHAPEV                   3059
+#define IDC_PEDCLOTHM                   3060
+#define IDC_PEDCLOTHP                   3061
+#define IDC_PEDCLOTHV                   3062
+#define IDC_BIGTEXTTEXT                 3063
+#define IDC_BIGTEXTSHOW                 3064
+#define IDC_CARCOLR2                    3065
+#define IDC_PEDSHAPECLOTHR              3066
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774
@@ -91,7 +102,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3006
 #define _APS_NEXT_COMMAND_VALUE         32787
-#define _APS_NEXT_CONTROL_VALUE         3058
+#define _APS_NEXT_CONTROL_VALUE         3064
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

@@ -1280,7 +1280,7 @@ struct Ped {
     undefined field_0x23e;
     undefined field_0x23f;
     enum OCUPATION occupation;
-    byte field_0x244;
+    byte clothes;
     undefined field_0x245;
     undefined field_0x246;
     undefined field_0x247;
@@ -1308,7 +1308,10 @@ struct Ped {
     undefined field_0x269;
     byte field_0x26a;
     undefined field_0x26b;
-    int field_0x26c;
+    byte bodyShape;
+    undefined field_0x26e;
+    undefined field_0x26d;
+    undefined field_0x26f;
     int field_0x270;
     enum CAR_MODEL gangCarModel;
     enum PED_STATE state;
