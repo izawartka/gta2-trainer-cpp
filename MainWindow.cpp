@@ -1459,11 +1459,11 @@ void MainWindow::KeepWeapons()
 
 void MainWindow::FreeShopping()
 {
-	CarManager* carManager = (CarManager*)*(DWORD*)0x005e4ca4;
-	carManager->do_free_shoping = !carManager->do_free_shoping;
+	TrafficManager* trafficManager = (TrafficManager*)*(DWORD*)0x005e4ca4;
+	trafficManager->do_free_shoping = !trafficManager->do_free_shoping;
 	//log(L"%d, %d", carManagerPointer, carManager);
 
-	if (carManager->do_free_shoping) log(L"Free shopping enabled!");
+	if (trafficManager->do_free_shoping) log(L"Free shopping enabled!");
 	else log(L"Free shopping disabled!");
 }
 
