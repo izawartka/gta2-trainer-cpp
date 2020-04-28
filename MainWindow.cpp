@@ -846,6 +846,7 @@ UINT SpawnCarThread(LPVOID data)
 	else
 	{
 	}
+	return 0;
 }
 
 
@@ -1148,7 +1149,7 @@ void MainWindow::PedInfo()
 			swprintf(buf, 256, L"%d", currLastCar->id);
 			m_carID.SetWindowTextW(buf);
 
-			currLastCarXYShift = sqrt(pow(currLastCar->position->x - currLastCarXOld, 2) + pow(currLastCar->position->y - currLastCarYOld, 2));
+			currLastCarXYShift = (int)sqrt(pow(currLastCar->position->x - currLastCarXOld, 2) + pow(currLastCar->position->y - currLastCarYOld, 2));
 			currLastCarXOld = currLastCar->position->x;
 			currLastCarYOld = currLastCar->position->y;
 			swprintf(buf, 256, L"%d", currLastCarXYShift);
