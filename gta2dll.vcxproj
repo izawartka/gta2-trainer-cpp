@@ -99,6 +99,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <CallingConvention>StdCall</CallingConvention>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,6 +149,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <CallingConvention>StdCall</CallingConvention>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -193,6 +195,12 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Hooking.Patterns.cpp">
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdcpp17</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdcpp17</LanguageStandard>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="gta2dll.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="pch.cpp">
@@ -207,9 +215,15 @@
     <None Include="res\gta2dll.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gta2.h" />
+    <ClInclude Include="Hooking.Patterns.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="gta2.segments.fixed.exe.h" />
     <ClInclude Include="gta2dll.h" />
+    <ClInclude Include="injector\assembly.hpp" />
+    <ClInclude Include="injector\calling.hpp" />
+    <ClInclude Include="injector\hooking.hpp" />
+    <ClInclude Include="injector\injector.hpp" />
+    <ClInclude Include="injector\utility.hpp" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
