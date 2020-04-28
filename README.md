@@ -20,7 +20,7 @@ Before you'll try to compile it for the first time, you have to change some sett
 4. Configuration Settings > Debugging > Working directory <-- change it to the GTA2 root folder path
 
 ## Authors
-h0x91b
+h0x91b,
 masuo (aka. izawartka)
 
 And if you want to add something more to it, you're free to do it but it would be kind if you would mention us somewhere.
