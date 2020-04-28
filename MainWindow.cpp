@@ -13,15 +13,50 @@
 #include <map>
 #include <cfenv>
 
+// MainWindow dialog
+BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
+
 const DWORD pGameTick = (DWORD)0x0045c1f0;
 const DWORD pDraw = (DWORD)0x00461960;
-const TrafficLigthStruct *ptrToTrafficLights = (TrafficLigthStruct*)0x006721cc;
 Game* game = 0;
 MainWindow* mainWnd = nullptr;
 
+
 // void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
-typedef void* (__fastcall PlayVocal)(void*, DWORD edx, VOCAL vocal);
+typedef void* (__fastcall PlayVocal)(DWORD*, DWORD edx, VOCAL vocal);
 PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
+
+BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
+	DWORD OldProtection = { 0 };
+	BOOL success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)hookFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
+	if (!success) {
+		DWORD error = GetLastError();
+		return 0;
+	}
+
+	size_t i;
+
+	// memcpy(hookFn, originalFn, copyBytes);
+	for (i = 0; i < copyBytes; i++) {
+		*(BYTE*)((LPBYTE)hookFn + i + 1) = *(BYTE*)((LPBYTE)originalFn + i);
+	}
+
+	success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)originalFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
+	if (!success) {
+		DWORD error = GetLastError();
+		return 0;
+	}
+
+	*(BYTE*)((LPBYTE)originalFn) = 0xE9; //JMP FAR
+	DWORD offset = (((DWORD)hookFn) - ((DWORD)originalFn + 5)); //Offset math.
+	*(DWORD*)((LPBYTE)originalFn + 1) = offset;
+
+	for (i = 5; i < copyBytes; i++) {
+		*(BYTE*)((LPBYTE)originalFn + i) = 0x90; //JMP FAR
+	}
+
+	return 1;
+}
 
 static __declspec(naked) void gameTick(void) {
 	// this will be replaced by original 5 bytes
@@ -83,11 +118,12 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG1, pParent)
 {
 	mainWnd = this;
+	DetourFunc(pGameTick, (DWORD)gameTick);
+	DetourFunc(pDraw, (DWORD)draw, 6);
 }
 
 MainWindow::~MainWindow()
 {
-
 }
 
 void MainWindow::DoDataExchange(CDataExchange* pDX)
@@ -809,7 +845,6 @@ UINT SpawnCarThread(LPVOID data)
 	else
 	{
 	}
-	return 0;
 }
 
 
@@ -1112,7 +1147,7 @@ void MainWindow::PedInfo()
 			swprintf(buf, 256, L"%d", currLastCar->id);
 			m_carID.SetWindowTextW(buf);
 
-			currLastCarXYShift = (int)sqrt(pow(currLastCar->position->x - currLastCarXOld, 2) + pow(currLastCar->position->y - currLastCarYOld, 2));
+			currLastCarXYShift = sqrt(pow(currLastCar->position->x - currLastCarXOld, 2) + pow(currLastCar->position->y - currLastCarYOld, 2));
 			currLastCarXOld = currLastCar->position->x;
 			currLastCarYOld = currLastCar->position->y;
 			swprintf(buf, 256, L"%d", currLastCarXYShift);
@@ -1423,11 +1458,11 @@ void MainWindow::KeepWeapons()
 
 void MainWindow::FreeShopping()
 {
-	TrafficManager* trafficManager = (TrafficManager*)*(DWORD*)0x005e4ca4;
-	trafficManager->do_free_shoping = !trafficManager->do_free_shoping;
+	CarManager* carManager = (CarManager*)*(DWORD*)0x005e4ca4;
+	carManager->do_free_shoping = !carManager->do_free_shoping;
 	//log(L"%d, %d", carManagerPointer, carManager);
 
-	if (trafficManager->do_free_shoping) log(L"Free shopping enabled!");
+	if (carManager->do_free_shoping) log(L"Free shopping enabled!");
 	else log(L"Free shopping disabled!");
 }
 
