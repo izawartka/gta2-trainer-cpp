@@ -13,7 +13,8 @@
 #include <map>
 #include <cfenv>
 
-#include "injector/calling.hpp"
+#include <detours.h>
+#pragma comment(lib, "detours.lib")
 
 // MainWindow dialog
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
@@ -26,8 +27,29 @@ MainWindow* mainWnd = nullptr;
 
 
 // void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
-typedef void* (__fastcall PlayVocal)(DWORD*, DWORD edx, VOCAL vocal);
+typedef void* (__fastcall PlayVocal)(void*, DWORD edx, VOCAL vocal);
 PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
+
+// void __fastcall StartMapPlaySound(void *param_1)
+typedef void* (__fastcall StartMapPlaySound)(void*, DWORD edx);
+StartMapPlaySound* fnStartMapPlaySound = (StartMapPlaySound*)0x004784d0;
+
+void __fastcall myPlayVocal(void* _this, DWORD edx, VOCAL v) {
+	//replace VOCAL to something else
+	OutputDebugStringA("myPlayVocal");
+	fnPlayVocal(_this, edx, VOCAL_DAMNATION__NO_DONATION__NO_SALVATION);
+}
+
+void __fastcall myStartMapPlaySound(void* _this, DWORD edx) {
+	DetourRestoreAfterWith();
+
+	DetourTransactionBegin();
+	DetourUpdateThread(GetCurrentThread());
+	DetourAttach(&(PVOID&)fnPlayVocal, myPlayVocal);
+	DetourTransactionCommit();
+
+	fnStartMapPlaySound(_this, edx);
+}
 
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
 	DWORD OldProtection = { 0 };
@@ -123,10 +145,18 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	mainWnd = this;
 	DetourFunc(pGameTick, (DWORD)gameTick);
 	DetourFunc(pDraw, (DWORD)draw, 6);
+
+	DetourRestoreAfterWith();
+
+	DetourTransactionBegin();
+	DetourUpdateThread(GetCurrentThread());
+	DetourAttach(&(PVOID&)fnStartMapPlaySound, myStartMapPlaySound);
+	DetourTransactionCommit();
 }
 
 MainWindow::~MainWindow()
 {
+
 }
 
 void MainWindow::DoDataExchange(CDataExchange* pDX)
@@ -1536,14 +1566,13 @@ void MainWindow::OnGTAGameTick(Game* game)
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
-
-	void* fn = (void*)0x004105b0;
 	void* _this = (void*)0x005d85a0;
-
-	//optione 1 - inline call
-	injector::thiscall<void(void*, VOCAL)>::call(fn, _this, VOCAL_AND_REMEMBER__RESPECT_IS_EVERYTHING);
-
-	//option 2 - separate definition and call, more clear to read..
-	injector::thiscall<void(void*, VOCAL)> fPlayVocal;
-	fPlayVocal.call(fn, _this, VOCAL_AND_REMEMBER__RESPECT_IS_EVERYTHING);
+/*
+	static BOOL once = false;
+	if (!once) {
+		once = true;
+		return;
+	}
+*/
+	fnPlayVocal(_this, 0, VOCAL_BACK_TO_FRONT_BONUS);
 }

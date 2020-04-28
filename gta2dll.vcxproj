@@ -100,10 +100,12 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <CallingConvention>StdCall</CallingConvention>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Detours\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>.\gta2dll.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)Detours\lib.X86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -150,12 +152,14 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <CallingConvention>StdCall</CallingConvention>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Detours\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>.\gta2dll.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)Detours\lib.X86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -219,13 +223,6 @@
     <ClInclude Include="Hooking.Patterns.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="gta2dll.h" />
-    <ClInclude Include="injector\assembly.hpp" />
-    <ClInclude Include="injector\calling.hpp" />
-    <ClInclude Include="injector\gvm\gvm.hpp" />
-    <ClInclude Include="injector\gvm\translator.hpp" />
-    <ClInclude Include="injector\hooking.hpp" />
-    <ClInclude Include="injector\injector.hpp" />
-    <ClInclude Include="injector\utility.hpp" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
