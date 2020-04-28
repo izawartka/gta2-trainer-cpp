@@ -13,7 +13,6 @@
 #include <map>
 #include <cfenv>
 
-#include "injector/calling.hpp"
 
 // MainWindow dialog
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
@@ -1536,14 +1535,5 @@ void MainWindow::OnGTAGameTick(Game* game)
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
-
-	void* fn = (void*)0x004105b0;
 	void* _this = (void*)0x005d85a0;
-
-	//optione 1 - inline call
-	injector::thiscall<void(void*, VOCAL)>::call(fn, _this, VOCAL_AND_REMEMBER__RESPECT_IS_EVERYTHING);
-
-	//option 2 - separate definition and call, more clear to read..
-	injector::thiscall<void(void*, VOCAL)> fPlayVocal;
-	fPlayVocal.call(fn, _this, VOCAL_AND_REMEMBER__RESPECT_IS_EVERYTHING);
 }
