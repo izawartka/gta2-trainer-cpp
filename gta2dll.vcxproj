@@ -76,19 +76,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>[GTA2 ROOT PATH]</OutDir>
+    <OutDir>C:\Users\motor\Desktop\Programowanie\GTA2 Trainer\GTA2 Mouse</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>[GTA2 ROOT PATH]</OutDir>
+    <OutDir>C:\Users\motor\Desktop\Programowanie\GTA2 Trainer\GTA2 Mouse</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>[GTA2 ROOT PATH]</OutDir>
+    <OutDir>C:\Users\motor\Desktop\Programowanie\GTA2 Trainer\GTA2 Mouse</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>[GTA2 ROOT PATH]</OutDir>
+    <OutDir>C:\Users\motor\Desktop\Programowanie\GTA2 Trainer\GTA2 Mouse</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -199,12 +199,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Hooking.Patterns.cpp">
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdcpp17</LanguageStandard>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdcpp17</LanguageStandard>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="gta2dll.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="pch.cpp">
@@ -220,7 +214,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gta2.h" />
-    <ClInclude Include="Hooking.Patterns.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="gta2dll.h" />
     <ClInclude Include="MainWindow.h" />

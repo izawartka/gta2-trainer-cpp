@@ -13,75 +13,15 @@
 #include <map>
 #include <cfenv>
 
-#include <detours.h>
-#pragma comment(lib, "detours.lib")
-
-// MainWindow dialog
-BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
-
 const DWORD pGameTick = (DWORD)0x0045c1f0;
 const DWORD pDraw = (DWORD)0x00461960;
 const TrafficLigthStruct *ptrToTrafficLights = (TrafficLigthStruct*)0x006721cc;
 Game* game = 0;
 MainWindow* mainWnd = nullptr;
 
-
 // void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
 typedef void* (__fastcall PlayVocal)(void*, DWORD edx, VOCAL vocal);
 PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
-
-// void __fastcall StartMapPlaySound(void *param_1)
-typedef void* (__fastcall StartMapPlaySound)(void*, DWORD edx);
-StartMapPlaySound* fnStartMapPlaySound = (StartMapPlaySound*)0x004784d0;
-
-void __fastcall myPlayVocal(void* _this, DWORD edx, VOCAL v) {
-	//replace VOCAL to something else
-	OutputDebugStringA("myPlayVocal");
-	fnPlayVocal(_this, edx, VOCAL_DAMNATION__NO_DONATION__NO_SALVATION);
-}
-
-void __fastcall myStartMapPlaySound(void* _this, DWORD edx) {
-	DetourRestoreAfterWith();
-
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
-	DetourAttach(&(PVOID&)fnPlayVocal, myPlayVocal);
-	DetourTransactionCommit();
-
-	fnStartMapPlaySound(_this, edx);
-}
-
-BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
-	DWORD OldProtection = { 0 };
-	BOOL success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)hookFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
-	if (!success) {
-		DWORD error = GetLastError();
-		return 0;
-	}
-
-	size_t i;
-
-	// memcpy(hookFn, originalFn, copyBytes);
-	for (i = 0; i < copyBytes; i++) {
-		*(BYTE*)((LPBYTE)hookFn + i + 1) = *(BYTE*)((LPBYTE)originalFn + i);
-	}
-
-	success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)originalFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
-	if (!success) {
-		DWORD error = GetLastError();
-		return 0;
-	}
-
-	*(BYTE*)((LPBYTE)originalFn) = 0xE9; //JMP FAR
-	DWORD offset = (((DWORD)hookFn) - ((DWORD)originalFn + 5)); //Offset math.
-	*(DWORD*)((LPBYTE)originalFn + 1) = offset;
-
-	for (i = 5; i < copyBytes; i++) {
-		*(BYTE*)((LPBYTE)originalFn + i) = 0x90; //JMP FAR
-	}
-
-	return 1;
-}
 
 static __declspec(naked) void gameTick(void) {
 	// this will be replaced by original 5 bytes
@@ -143,15 +83,6 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG1, pParent)
 {
 	mainWnd = this;
-	DetourFunc(pGameTick, (DWORD)gameTick);
-	DetourFunc(pDraw, (DWORD)draw, 6);
-
-	DetourRestoreAfterWith();
-
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
-	DetourAttach(&(PVOID&)fnStartMapPlaySound, myStartMapPlaySound);
-	DetourTransactionCommit();
 }
 
 MainWindow::~MainWindow()
@@ -1566,13 +1497,4 @@ void MainWindow::OnGTAGameTick(Game* game)
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
-	void* _this = (void*)0x005d85a0;
-/*
-	static BOOL once = false;
-	if (!once) {
-		once = true;
-		return;
-	}
-*/
-	fnPlayVocal(_this, 0, VOCAL_BACK_TO_FRONT_BONUS);
 }
