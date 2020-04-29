@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Plik do³¹czany wygenerowany przez œrodowisko Microsoft Visual C++.
-// U¿ywany przez: gta2dll.rc
+// Microsoft Visual C++ generated include file.
+// Used by gta2dll.rc
 //
 #define IDD_DIALOG1                     3000
 #define IDC_EDIT1                       3000
