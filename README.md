@@ -22,7 +22,7 @@ Before you'll try to compile it for the first time, you have to change some sett
 h0x91b,
 masuo (aka. izawartka)
 
-And if you want to add something more to it, you're free to do it but it would be kind if you would mention us somewhere.
+And if you want to add something more to it, you're free to do it but it would be nice if you mentioned us somewhere.
 
 ## Links
 Some of my videos on YT:
