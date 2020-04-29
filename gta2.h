@@ -233,7 +233,7 @@ typedef struct Sprite Sprite, *PSprite;
 
 typedef struct WEAPON_STRUCT WEAPON_STRUCT, *PWEAPON_STRUCT;
 
-typedef enum PED_AI_MODE {
+typedef enum PED_AI_MODE : unsigned short {
     PED_AI_MODE_0_DUMMY=0,
     PED_AI_MODE_CARTHIEF_MUGGER=40,
     PED_AI_MODE_PLAYER=9999
@@ -307,7 +307,7 @@ typedef enum OCUPATION {
     UNK_REL_TO_POLICE4=37
 } OCUPATION;
 
-typedef enum PED_REMAP {
+typedef enum PED_REMAP : unsigned char {
     PED_REMAP_1=1,
     PED_REMAP_10=10,
     PED_REMAP_11=11,
