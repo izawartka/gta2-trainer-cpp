@@ -213,6 +213,7 @@
     <None Include="res\gta2dll.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gta2-addresses.h" />
     <ClInclude Include="gta2.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="gta2dll.h" />

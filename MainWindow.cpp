@@ -18,47 +18,11 @@
 #include <detours.h>
 #pragma comment(lib, "detours.lib")
 
+
 // MainWindow dialog
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
 
-const DWORD pGameTick = (DWORD)0x0045c1f0;
-const DWORD pDraw = (DWORD)0x00461960;
-const TrafficLigthStruct* ptrToTrafficLights = (TrafficLigthStruct*)0x006721cc;
 MainWindow* mainWnd = nullptr;
-
-DWORD ptrToPedManager = 0x005e5bbc;
-DWORD ptrToGame = 0x005eb4fc;
-
-typedef Ped* (__stdcall GetPedById)(int);
-GetPedById* fnGetPedByID = (GetPedById*)0x0043ae10;
-
-//Player* __thiscall Game::GetPlayerSlotByIndex(Game* this, byte index);
-typedef Player* (__fastcall GetPlayerSlotByIndex)(Game* game, DWORD edx, byte index);
-GetPlayerSlotByIndex* fnGetSaveSlotByIndex = (GetPlayerSlotByIndex*)0x004219e0;
-
-//void __thiscall ShowBigOnScreenLabel(void* this, WCHAR* txt, int timeToShowInSeconds);
-typedef void(__fastcall ShowBigOnScreenLabel)(void* ptr, DWORD edx, WCHAR* txt, int time);
-ShowBigOnScreenLabel* fnShowBigOnScreenLabel = (ShowBigOnScreenLabel*)0x004c6060;
-
-//void SpawnCar(int x, int y, int z, short rot, CAR_MODEL model)
-typedef Car* (SpawnCar)(int x, int y, int z, short rot, CAR_MODEL model);
-SpawnCar* fnSpawnCar = (SpawnCar*)0x00426e10;
-
-// void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
-typedef void* (__fastcall PlayVocal)(void*, DWORD edx, VOCAL vocal);
-PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
-
-// void __fastcall StartMapPlaySound(void *param_1)
-typedef void* (__fastcall StartMapPlaySound)(void*, DWORD edx);
-StartMapPlaySound* fnStartMapPlaySound = (StartMapPlaySound*)0x004784d0;
-
-// void Vid_FlipBuffers(D3DContext *param_1)
-typedef void* (Vid_FlipBuffers)(D3DContext* param_1);
-Vid_FlipBuffers* fnVid_FlipBuffers = 0;
-
-// Ped * SpawnPedAtPosition(int x,int y,int z,PED_REMAP remap,short param_5)
-typedef Ped* (SpawnPedAtPosition)(int x, int y, int z, PED_REMAP remap, short param_5);
-SpawnPedAtPosition* fnSpawnPedAtPosition = (SpawnPedAtPosition*)0x0043db40;
 
 void __fastcall myPlayVocal(void* _this, DWORD edx, VOCAL v) {
 	fnPlayVocal(_this, edx, v);
@@ -1733,4 +1697,6 @@ void MainWindow::NewFunction()
 	ped->bitStateInvisOnFireEtc = (PED_BIT_STATE)(ped->bitStateInvisOnFireEtc | 8);
 	fnPlayVocal(_this, 0, VOCAL_Nice_work);
 	//	ped->field_0x1f8 = _DAT_005e5f28;
+
+	fnSetPedPosition(fnGetPedByID(1), 0, pGame->CurrentPlayer->xyz.x, pGame->CurrentPlayer->xyz.y, 4 * 16384);
 }
