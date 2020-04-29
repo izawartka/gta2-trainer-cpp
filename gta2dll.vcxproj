@@ -200,6 +200,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="gta2dll.cpp" />
+    <ClCompile Include="Hooking.Patterns.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -217,6 +218,7 @@
     <ClInclude Include="gta2.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="gta2dll.h" />
+    <ClInclude Include="Hooking.Patterns.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
