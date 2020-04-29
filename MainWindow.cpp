@@ -14,16 +14,16 @@
 #include <cfenv>
 #include <ddraw.h>
 #include <d3d9.h>
-#include "detours.h"
+
+#include <detours.h>
+#pragma comment(lib, "detours.lib")
 
 // MainWindow dialog
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
 
 const DWORD pGameTick = (DWORD)0x0045c1f0;
 const DWORD pDraw = (DWORD)0x00461960;
-Game* game = 0;
-const TrafficLigthStruct *ptrToTrafficLights = (TrafficLigthStruct*)0x006721cc;
-
+const TrafficLigthStruct* ptrToTrafficLights = (TrafficLigthStruct*)0x006721cc;
 MainWindow* mainWnd = nullptr;
 
 DWORD ptrToPedManager = 0x005e5bbc;
@@ -45,7 +45,7 @@ typedef Car* (SpawnCar)(int x, int y, int z, short rot, CAR_MODEL model);
 SpawnCar* fnSpawnCar = (SpawnCar*)0x00426e10;
 
 // void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
-typedef void* (__fastcall PlayVocal)(DWORD*, DWORD edx, VOCAL vocal);
+typedef void* (__fastcall PlayVocal)(void*, DWORD edx, VOCAL vocal);
 PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
 
 // void __fastcall StartMapPlaySound(void *param_1)
@@ -60,7 +60,7 @@ Vid_FlipBuffers* fnVid_FlipBuffers = 0;
 typedef Ped* (SpawnPedAtPosition)(int x, int y, int z, PED_REMAP remap, short param_5);
 SpawnPedAtPosition* fnSpawnPedAtPosition = (SpawnPedAtPosition*)0x0043db40;
 
-void __fastcall myPlayVocal(DWORD* _this, DWORD edx, VOCAL v) {
+void __fastcall myPlayVocal(void* _this, DWORD edx, VOCAL v) {
 	fnPlayVocal(_this, edx, v);
 }
 
@@ -100,18 +100,18 @@ void myVid_FlipBuffers(D3DContext* context) {
 	LPDIRECTDRAWSURFACE7 surf = (LPDIRECTDRAWSURFACE7)context->surface2;
 	HRESULT hr = surf->GetDC(&dc);
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
-	if (hr == DD_OK && pGame && pGame->gameStatus ) {
-		RECT rect = { screenCenterX - 150, screenCenterY, screenCenterX+300, screenCenterY+300 };
+	if (hr == DD_OK && pGame && pGame->gameStatus) {
+		RECT rect = { screenCenterX - 150, screenCenterY, screenCenterX + 300, screenCenterY + 300 };
 		SetBkMode(dc, TRANSPARENT);
 		SetTextColor(dc, RGB(50, 100, 250));
 		HFONT hFont = CreateFont(30, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 2, 0, L"SYSTEM_FIXED_FONT");
 		HFONT hTmp = (HFONT)SelectObject(dc, hFont);
 		DrawText(
-			dc, 
-			L"Ped", 
-			3, 
-			&rect, 
-			DT_CENTER|DT_VCENTER
+			dc,
+			L"Ped",
+			3,
+			&rect,
+			DT_CENTER | DT_VCENTER
 		);
 		DeleteObject(SelectObject(dc, hTmp));
 
@@ -231,10 +231,18 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	mainWnd = this;
 	DetourFunc(pGameTick, (DWORD)gameTick);
 	DetourFunc(pDraw, (DWORD)draw, 6);
+
+	DetourRestoreAfterWith();
+
+	DetourTransactionBegin();
+	DetourUpdateThread(GetCurrentThread());
+	DetourAttach(&(PVOID&)fnStartMapPlaySound, myStartMapPlaySound);
+	DetourTransactionCommit();
 }
 
 MainWindow::~MainWindow()
 {
+
 }
 
 void MainWindow::DoDataExchange(CDataExchange* pDX)
@@ -947,12 +955,13 @@ UINT SpawnCarThread(LPVOID data)
 	else
 	{
 	}
+	return 0;
 }
 
 
 void MainWindow::OnSpawncarTank()
 {
-	SPAWNCAR *info = new SPAWNCAR;
+	SPAWNCAR* info = new SPAWNCAR;
 	info->win = this;
 	info->model = TANK;
 	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
@@ -1255,7 +1264,7 @@ void MainWindow::PedInfo()
 			swprintf(buf, 256, L"%d", currLastCar->id);
 			m_carID.SetWindowTextW(buf);
 
-			currLastCarXYShift = sqrt(pow(currLastCar->position->x - currLastCarXOld, 2) + pow(currLastCar->position->y - currLastCarYOld, 2));
+			currLastCarXYShift = (int)sqrt(pow(currLastCar->position->x - currLastCarXOld, 2) + pow(currLastCar->position->y - currLastCarYOld, 2));
 			currLastCarXOld = currLastCar->position->x;
 			currLastCarYOld = currLastCar->position->y;
 			swprintf(buf, 256, L"%d", currLastCarXYShift);
@@ -1554,7 +1563,7 @@ void MainWindow::PedClothesPlus()
 
 	if (playerPed)
 	{
-		(PED_REMAP)((BYTE)playerPed->remap + 1);
+		playerPed->remap = (PED_REMAP)((BYTE)playerPed->remap + 1);
 		if (playerPed->remap > 52) playerPed->remap = (PED_REMAP)0;
 	}
 }
@@ -1629,11 +1638,11 @@ void MainWindow::KeepWeapons()
 
 void MainWindow::FreeShopping()
 {
-	TrafficManager* TrafficManager = (TrafficManager*)*(DWORD*)0x005e4ca4;
-	TrafficManager->do_free_shoping = !TrafficManager->do_free_shoping;
-	//log(L"%d, %d", TrafficManagerPointer, TrafficManager);
+	TrafficManager* trafficManager = (TrafficManager*)*(DWORD*)0x005e4ca4;
+	trafficManager->do_free_shoping = !trafficManager->do_free_shoping;
+	//log(L"%d, %d", carManagerPointer, carManager);
 
-	if (TrafficManager->do_free_shoping) log(L"Free shopping enabled!");
+	if (trafficManager->do_free_shoping) log(L"Free shopping enabled!");
 	else log(L"Free shopping disabled!");
 }
 
@@ -1704,15 +1713,15 @@ void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
 	void* _this = (void*)0x005d85a0;
-/*
-	static BOOL once = false;
-	if (!once) {
-		once = true;
-		return;
-	}
-*/
+	/*
+		static BOOL once = false;
+		if (!once) {
+			once = true;
+			return;
+		}
+	*/
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
-	Ped *ped = fnSpawnPedAtPosition(pGame->CurrentPlayer->xyz.x, pGame->CurrentPlayer->xyz.y - 4096, pGame->CurrentPlayer->xyz.z + 16384, PED_REMAP_23, 0);
+	Ped* ped = fnSpawnPedAtPosition(pGame->CurrentPlayer->xyz.x, pGame->CurrentPlayer->xyz.y - 4096, pGame->CurrentPlayer->xyz.z + 16384, PED_REMAP_23, 0);
 	ped->occupation = CARTHIEF;
 	ped->field_0x22c = 2;
 	ped->aiMode = PED_AI_MODE_CARTHIEF_MUGGER;
@@ -1723,5 +1732,5 @@ void MainWindow::NewFunction()
 	ped->remap2 = PED_REMAP2_0;
 	ped->bitStateInvisOnFireEtc = (PED_BIT_STATE)(ped->bitStateInvisOnFireEtc | 8);
 	fnPlayVocal(_this, 0, VOCAL_Nice_work);
-//	ped->field_0x1f8 = _DAT_005e5f28;
+	//	ped->field_0x1f8 = _DAT_005e5f28;
 }
