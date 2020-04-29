@@ -14,6 +14,7 @@
 #include <cfenv>
 #include <ddraw.h>
 #include <d3d9.h>
+#include "detours.h"
 
 // MainWindow dialog
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
@@ -59,7 +60,7 @@ Vid_FlipBuffers* fnVid_FlipBuffers = 0;
 typedef Ped* (SpawnPedAtPosition)(int x, int y, int z, PED_REMAP remap, short param_5);
 SpawnPedAtPosition* fnSpawnPedAtPosition = (SpawnPedAtPosition*)0x0043db40;
 
-void __fastcall myPlayVocal(void* _this, DWORD edx, VOCAL v) {
+void __fastcall myPlayVocal(DWORD* _this, DWORD edx, VOCAL v) {
 	fnPlayVocal(_this, edx, v);
 }
 
@@ -184,7 +185,7 @@ static __declspec(naked) void gameTick(void) {
 	}
 
 	OutputDebugStringA("gameTick\n");
-	mainWnd->OnGTAGameTick(0);
+	mainWnd->OnGTAGameTick((Game*)*(DWORD*)ptrToGame);
 
 	__asm {
 		MOV EAX, pGameTick
@@ -1201,10 +1202,10 @@ void MainWindow::PedInfo()
 
 	if (playerPed)
 	{
-		swprintf(buf, 256, L"%d", playerPed->clothes);
+		swprintf(buf, 256, L"%d", playerPed->remap);
 		m_pedClothes.SetWindowTextW(buf);
 
-		swprintf(buf, 256, L"%d", playerPed->bodyShape);
+		swprintf(buf, 256, L"%d", playerPed->remap2);
 		m_pedShape.SetWindowTextW(buf);
 
 		if (pedHOld != playerPed->health)
@@ -1542,8 +1543,8 @@ void MainWindow::PedClothesMinus()
 
 	if (playerPed)
 	{
-		playerPed->clothes--;
-		if (playerPed->clothes == 255) playerPed->clothes = 52;
+		playerPed->remap = (PED_REMAP)((BYTE)playerPed->remap - 1);
+		if (playerPed->remap == 255) playerPed->remap = (PED_REMAP)52;
 	}
 }
 
@@ -1553,8 +1554,8 @@ void MainWindow::PedClothesPlus()
 
 	if (playerPed)
 	{
-		playerPed->clothes++;
-		if (playerPed->clothes > 52) playerPed->clothes = 0;
+		(PED_REMAP)((BYTE)playerPed->remap + 1);
+		if (playerPed->remap > 52) playerPed->remap = (PED_REMAP)0;
 	}
 }
 
@@ -1564,8 +1565,8 @@ void MainWindow::PedShapeMinus()
 
 	if (playerPed)
 	{
-		playerPed->bodyShape--;
-		if (playerPed->bodyShape == 255) playerPed->bodyShape = 2;
+		playerPed->remap2 = (PED_REMAP2)((BYTE)playerPed->remap2 - 1);
+		if (playerPed->remap2 == 255) playerPed->remap2 = (PED_REMAP2)2;
 	}
 }
 
@@ -1575,8 +1576,8 @@ void MainWindow::PedShapePlus()
 
 	if (playerPed)
 	{
-		playerPed->bodyShape++;
-		if (playerPed->bodyShape > 2) playerPed->bodyShape = 0;
+		playerPed->remap2 = (PED_REMAP2)((BYTE)playerPed->remap2 + 1);
+		if (playerPed->remap2 > 2) playerPed->remap2 = (PED_REMAP2)0;
 	}
 }
 
@@ -1585,8 +1586,8 @@ void MainWindow::PedShapeClothesReset()
 	Ped* playerPed = fnGetPedByID(1);
 	if (playerPed)
 	{
-		playerPed->bodyShape = 1;
-		playerPed->clothes = 25;
+		playerPed->remap2 = PED_REMAP2_1;
+		playerPed->remap = PED_REMAP_PLAYER;
 	}
 }
 
@@ -1628,11 +1629,11 @@ void MainWindow::KeepWeapons()
 
 void MainWindow::FreeShopping()
 {
-	CarManager* carManager = (CarManager*)*(DWORD*)0x005e4ca4;
-	carManager->do_free_shoping = !carManager->do_free_shoping;
-	//log(L"%d, %d", carManagerPointer, carManager);
+	TrafficManager* TrafficManager = (TrafficManager*)*(DWORD*)0x005e4ca4;
+	TrafficManager->do_free_shoping = !TrafficManager->do_free_shoping;
+	//log(L"%d, %d", TrafficManagerPointer, TrafficManager);
 
-	if (carManager->do_free_shoping) log(L"Free shopping enabled!");
+	if (TrafficManager->do_free_shoping) log(L"Free shopping enabled!");
 	else log(L"Free shopping disabled!");
 }
 
