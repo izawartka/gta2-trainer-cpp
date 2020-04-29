@@ -55,7 +55,7 @@
     <ClInclude Include="gta2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gta2-addresses.h">
+    <ClInclude Include="gta2-helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
