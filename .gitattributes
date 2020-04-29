@@ -1,3 +1,5 @@
 *.cpp text eol=crlf
 *.h text eol=crlf
 *.c text eol=crlf
+*.rc text
+*.aps binary
