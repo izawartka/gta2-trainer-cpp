@@ -358,6 +358,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-gta2dll.vcxproj
-gta2dll.vcxproj
-gta2dll.vcxproj
+*.lib
+*.exp
+\[GTA2 ROOT PATH\]/
