@@ -192,6 +192,7 @@ IMPLEMENT_DYNAMIC(MainWindow, CDialogEx)
 MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG1, pParent)
 {
+	MessageBoxW(0, L"aaa");
 	mainWnd = this;
 	DetourFunc(pGameTick, (DWORD)gameTick);
 	DetourFunc(pDraw, (DWORD)draw, 6);

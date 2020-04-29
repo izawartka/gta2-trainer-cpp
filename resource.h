@@ -4,7 +4,6 @@
 //
 #define IDD_DIALOG1                     3000
 #define IDC_EDIT1                       3000
-#define IDD_DIALOG                      3000
 #define IDC_PEDX                        3001
 #define IDR_MENU1                       3002
 #define IDC_PEDHEALTH                   3002
