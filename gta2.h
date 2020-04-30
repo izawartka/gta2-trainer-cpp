@@ -109,7 +109,9 @@ typedef struct Ped Ped, *PPed;
 
 typedef struct MaybeCarEngine MaybeCarEngine, *PMaybeCarEngine;
 
-typedef enum CAR_MODEL {
+typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
+
+typedef enum CAR_MODEL : unsigned char {
     ALFA=0,
     ALLARD=1,
     AMDB4=2,
@@ -670,7 +672,7 @@ struct Car {
     struct Position * position;
     struct Ped * driver; /* Created by retype action */
     struct MaybeCarEngine * maybeEngine;
-    void * field_0x5c;
+    struct CarManager4_S1 * notEngineStruct;
     void * field_0x60;
     void * field_0x64;
     undefined4 field_0x68;
@@ -687,6 +689,9 @@ struct Car {
     undefined field_0x82;
     undefined field_0x83;
     enum CAR_MODEL carModel;
+    undefined field_0x85;
+    undefined field_0x86;
+    undefined field_0x87;
     uint mask;
     u1 field_0x8c;
     byte field_0x8d;
@@ -841,6 +846,55 @@ struct MaybeCarEngine {
     char steering; /* 1 left and -1 right */
     undefined field_0xae;
     undefined field_0xaf;
+};
+
+struct CarManager4_S1 {
+    undefined4 field_0x0;
+    undefined4 field_0x4;
+    u1 field_0x8;
+    u1 field_0x9;
+    u1 field_0xa;
+    undefined field_0xb;
+    struct CarManager4_S1 * prev;
+    undefined2 field_0x10;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined4 field_0x14;
+    undefined4 field_0x18;
+    undefined4 field_0x1c;
+    undefined4 field_0x20;
+    uint field_0x24;
+    u1 field_0x28;
+    u1 field_0x29;
+    u1 field_0x2a;
+    u1 field_0x2b;
+    u1 field_0x2c;
+    u1 field_0x2d;
+    u1 field_0x2e;
+    u1 field_0x2f;
+    undefined field_0x30;
+    undefined field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+    undefined4 field_0x34;
+    undefined4 field_0x38;
+    undefined4 field_0x3c;
+    undefined4 field_0x40;
+    undefined4 field_0x44;
+    undefined4 field_0x48;
+    undefined4 field_0x4c;
+    undefined4 field_0x50;
+    undefined2 field_0x54;
+    undefined2 field_0x56;
+    undefined2 field_0x58;
+    undefined2 field_0x5a;
+    undefined4 field_0x5c;
+    undefined4 field_0x60;
+    undefined4 field_0x64;
+    undefined4 field_0x68;
+    undefined4 field_0x6c;
+    undefined4 field_0x70;
+    undefined4 field_0x74;
 };
 
 struct Ped {
@@ -1263,6 +1317,9 @@ struct Ped {
     enum PED_REMAP2 remap2;
     int field_0x270;
     enum CAR_MODEL gangCarModel;
+    undefined field_0x275;
+    undefined field_0x276;
+    undefined field_0x277;
     enum PED_STATE state;
     enum PED_STATE2 state2;
     enum PED_STATE state1_2; /* 0 on start, 3 when getting to a car */
@@ -1299,6 +1356,32 @@ typedef enum CAR_UPGRADE {
     UPGRADE_FREE=0
 } CAR_UPGRADE;
 
+typedef struct CarEngineData CarEngineData, *PCarEngineData;
+
+struct CarEngineData {
+    byte model;
+    bool turbo;
+    byte value; /* money cost */
+    byte pad;
+    undefined4 mass;
+    undefined4 front_drive_bias;
+    undefined4 front_mass_bias;
+    undefined4 brake_friction;
+    undefined4 turn_in;
+    undefined4 turn_ratio;
+    undefined4 rear_end_stability;
+    undefined4 handbrake_slide_value;
+    undefined4 thrust;
+    undefined4 max_speed;
+    undefined4 anti_strength;
+    undefined4 skid_threshhold;
+    undefined4 gear1_multiplier;
+    undefined4 gear2_multiplier;
+    undefined4 gear3_multiplier;
+    undefined4 gear2_speed;
+    undefined4 gear3_speed;
+};
+
 typedef struct CarEnginePrefab CarEnginePrefab, *PCarEnginePrefab;
 
 struct CarEnginePrefab { /* 0066ab7c */
@@ -1307,57 +1390,6 @@ struct CarEnginePrefab { /* 0066ab7c */
 };
 
 typedef struct CarManager4 CarManager4, *PCarManager4;
-
-typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
-
-struct CarManager4_S1 {
-    undefined4 field_0x0;
-    undefined4 field_0x4;
-    u1 field_0x8;
-    u1 field_0x9;
-    u1 field_0xa;
-    undefined field_0xb;
-    struct CarManager4_S1 * prev;
-    undefined2 field_0x10;
-    undefined field_0x12;
-    undefined field_0x13;
-    undefined4 field_0x14;
-    undefined4 field_0x18;
-    undefined4 field_0x1c;
-    undefined4 field_0x20;
-    uint field_0x24;
-    u1 field_0x28;
-    u1 field_0x29;
-    u1 field_0x2a;
-    u1 field_0x2b;
-    u1 field_0x2c;
-    u1 field_0x2d;
-    u1 field_0x2e;
-    u1 field_0x2f;
-    undefined field_0x30;
-    undefined field_0x31;
-    undefined field_0x32;
-    undefined field_0x33;
-    undefined4 field_0x34;
-    undefined4 field_0x38;
-    undefined4 field_0x3c;
-    undefined4 field_0x40;
-    undefined4 field_0x44;
-    undefined4 field_0x48;
-    undefined4 field_0x4c;
-    undefined4 field_0x50;
-    undefined2 field_0x54;
-    undefined2 field_0x56;
-    undefined2 field_0x58;
-    undefined2 field_0x5a;
-    undefined4 field_0x5c;
-    undefined4 field_0x60;
-    undefined4 field_0x64;
-    undefined4 field_0x68;
-    undefined4 field_0x6c;
-    undefined4 field_0x70;
-    undefined4 field_0x74;
-};
 
 struct CarManager4 { /* almost sure this is engines */
     struct CarManager4_S1 * last;
@@ -1437,7 +1469,10 @@ struct TrafficManager { /* 005e4ca4 */
     byte inc;
     undefined field_0x56;
     undefined field_0x57;
-    undefined4 field_0x58;
+    enum CAR_MODEL carModel;
+    undefined field_0x59;
+    undefined field_0x5a;
+    undefined field_0x5b;
     byte field_0x5c;
     undefined field_0x5d;
     undefined field_0x5e;
@@ -5124,7 +5159,7 @@ struct DoorInfo {
 
 struct CarInfo {
     UINT8 model;
-    undefined field_0x1;
+    UINT8 sprite;
     UINT8 w;
     UINT8 h;
     UINT8 num_remaps; /* max 64 */
@@ -5176,6 +5211,12 @@ typedef struct PaletteIndex PaletteIndex, *PPaletteIndex;
 
 struct PaletteIndex {
     Uint16 PaletteIndexArr[16384];
+};
+
+typedef struct PhysicalPalette PhysicalPalette, *PPhysicalPalette;
+
+struct PhysicalPalette {
+    UINT8 colors[256][4];
 };
 
 typedef struct SpriteBase SpriteBase, *PSpriteBase;
@@ -9014,11 +9055,11 @@ struct Style_S3 {
     void * spriteIndex;
     void * map_object_info;
     struct PaletteIndex * palleteIndex;
-    void * physical_palettes;
+    struct PhysicalPalette * physical_palettes;
     int i9;
     void * sprite_graphics;
     undefined4 i13;
-    int i10;
+    int tiles;
     undefined4 i21;
     undefined4 i11;
     undefined4 i14;
