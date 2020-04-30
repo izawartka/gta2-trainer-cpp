@@ -11,6 +11,7 @@ typedef unsigned long    ulong;
 typedef unsigned long long    ulonglong;
 typedef unsigned char    undefined1;
 typedef unsigned short    undefined2;
+typedef unsigned int    undefined3;
 typedef unsigned int    undefined4;
 typedef unsigned long long    undefined8;
 typedef unsigned short    ushort;
@@ -21,12 +22,20 @@ typedef struct Position Position, *PPosition;
 
 typedef struct Position Pos;
 
+typedef enum CAR_REL_TO_COLOR_ENUM {
+    CAR_REL_TO_COLOR_ENUM_1=1,
+    CAR_REL_TO_COLOR_ENUM_2=2,
+    CAR_REL_TO_COLOR_ENUM_3=3,
+    CAR_REL_TO_COLOR_ENUM_4=4,
+    CAR_REL_TO_COLOR_ENUM_5=5
+} CAR_REL_TO_COLOR_ENUM;
+
 struct Position {
     short rotation;
     undefined field_0x2;
     undefined field_0x3;
     struct Position * prev;
-    int field_0x8;
+    void * field_0x8;
     struct Position * next;
     int field_0x10;
     int x; /* Created by retype action */
@@ -42,7 +51,7 @@ struct Position {
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    int relToCarColor;
+    enum CAR_REL_TO_COLOR_ENUM relToCarColor;
     int lockPalleteMaybe; /* 2 - uses default pallete for this vehicle // 3 - uses paintjob pallete (carColor variable) */
     byte field_0x38;
     byte field_0x39;
@@ -390,7 +399,7 @@ typedef enum PED_STATE3 {
 typedef enum PED_REMAP2 {
     PED_REMAP2_0=0,
     PED_REMAP2_1=1,
-    PED_REMAP2_2=2
+    PED_REMAP2_HEAVY_ARMOUR=2
 } PED_REMAP2;
 
 typedef enum PED_STATE {
@@ -1146,7 +1155,7 @@ struct Ped {
     struct Ped * pedRef;
     int field_0x14c;
     struct Car * armyCarRef;
-    struct Car * field_0x154;
+    struct Car * carRef;
     int field_0x158;
     struct WEAPON_PLAYER_LIST * playerWeapons;
     struct Ped * nextPed;
@@ -1308,7 +1317,7 @@ struct CarManager4_S1 {
     u1 field_0x9;
     u1 field_0xa;
     undefined field_0xb;
-    undefined4 field_0xc;
+    struct CarManager4_S1 * prev;
     undefined2 field_0x10;
     undefined field_0x12;
     undefined field_0x13;
@@ -1350,8 +1359,8 @@ struct CarManager4_S1 {
     undefined4 field_0x74;
 };
 
-struct CarManager4 {
-    int * field_0x0;
+struct CarManager4 { /* almost sure this is engines */
+    struct CarManager4_S1 * last;
     struct CarManager4_S1 arr306[306];
 };
 

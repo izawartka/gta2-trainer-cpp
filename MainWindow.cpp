@@ -1686,18 +1686,14 @@ void MainWindow::NewFunction()
 		}
 	*/
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
-	Ped* ped = fnSpawnPedAtPosition(pGame->CurrentPlayer->xyz.x, pGame->CurrentPlayer->xyz.y - 4096, pGame->CurrentPlayer->xyz.z + 16384, PED_REMAP_23, 0);
-	ped->occupation = CARTHIEF;
-	ped->field_0x22c = 2;
-	ped->aiMode = PED_AI_MODE_CARTHIEF_MUGGER;
-	ped->bitState2 = PED_BIT_STATE2_CARTHIEF;
-
-	ped->field_0x288 = 2;
-	ped->field_0x28c = 3;
-	ped->remap2 = PED_REMAP2_0;
-	ped->bitStateInvisOnFireEtc = (PED_BIT_STATE)(ped->bitStateInvisOnFireEtc | 8);
-	fnPlayVocal(_this, 0, VOCAL_Nice_work);
-	//	ped->field_0x1f8 = _DAT_005e5f28;
-
-	fnSetPedPosition(fnGetPedByID(1), 0, pGame->CurrentPlayer->xyz.x, pGame->CurrentPlayer->xyz.y, 4 * 16384);
+	Ped* ped = fnGetPedByID(1);
+	Style_S3* s3 = (Style_S3*)*(DWORD*)ptrToS3;
+	Car* car = ped->currentCar;
+	if(car != 0) {
+		CarInfo* info = s3->allCarsInfo->cars[car->carModel];
+		UINT8 w = info->w;
+		UINT8 h = info->h;
+		UINT8 remaps = info->num_remaps;
+		BYTE raiting = info->rating;
+	}
 }
