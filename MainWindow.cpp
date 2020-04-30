@@ -1677,23 +1677,6 @@ void MainWindow::OnGTAGameTick(Game* game)
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
-	void* _this = (void*)0x005d85a0;
-	/*
-		static BOOL once = false;
-		if (!once) {
-			once = true;
-			return;
-		}
-	*/
-	Game* pGame = (Game*)*(DWORD*)ptrToGame;
-	Ped* ped = fnGetPedByID(1);
-	Style_S3* s3 = (Style_S3*)*(DWORD*)ptrToS3;
-	Car* car = ped->currentCar;
-	if(car != 0) {
-		CarInfo* info = s3->allCarsInfo->cars[car->carModel];
-		UINT8 w = info->w;
-		UINT8 h = info->h;
-		UINT8 remaps = info->num_remaps;
-		BYTE raiting = info->rating;
-	}
+	EnginesDataHolder* engines = (EnginesDataHolder*)*(DWORD*)ptrToCarEngines;
+	auto engine = engines->engineArray[TANK];
 }

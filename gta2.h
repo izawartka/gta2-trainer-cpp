@@ -1423,6 +1423,15 @@ struct CarsPrefab { /* ptr is here 005e4ca0 */
     undefined field_0xe0c3;
 };
 
+typedef struct EnginesDataHolder EnginesDataHolder, *PEnginesDataHolder;
+
+struct EnginesDataHolder {
+    undefined4 maybeAlsoCars;
+    undefined4 alsoSomeArray[256];
+    struct CarEngineData * engineArray[256];
+    undefined4 counter2; /* Created by retype action */
+};
+
 typedef struct MaybeCarEngineHolder MaybeCarEngineHolder, *PMaybeCarEngineHolder;
 
 struct MaybeCarEngineHolder {

@@ -10,6 +10,7 @@ static const TrafficLigthStruct* ptrToTrafficLights = (TrafficLigthStruct*)0x006
 static DWORD ptrToPedManager = 0x005e5bbc;
 static DWORD ptrToGame = 0x005eb4fc;
 static DWORD ptrToS3 = 0x00670684;
+static DWORD ptrToCarEngines = 0x005e5488;
 
 typedef Ped* (__stdcall GetPedById)(int);
 static GetPedById* fnGetPedByID = (GetPedById*)0x0043ae10;
