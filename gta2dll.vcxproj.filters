@@ -55,10 +55,13 @@
     <ClInclude Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hooking.Patterns.h">
+    <ClInclude Include="gta2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gta2.h">
+    <ClInclude Include="gta2-helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooking.Patterns.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

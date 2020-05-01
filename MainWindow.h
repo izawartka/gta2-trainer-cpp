@@ -1,7 +1,7 @@
 #pragma once
 
 // MainWindow dialog
-#include "gta2.h"
+#include "gta2-helper.h"
 
 enum TIMER {
 	TIMER_CAPTURE_MOUSE,
