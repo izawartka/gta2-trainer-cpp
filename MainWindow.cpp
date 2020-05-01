@@ -1679,4 +1679,12 @@ void MainWindow::NewFunction()
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
 	EnginesDataHolder* engines = (EnginesDataHolder*)*(DWORD*)ptrToCarEngines;
 	auto engine = engines->engineArray[TANK];
+
+	int z = 0; // will be 1
+	fnFindMaxZForTile(161, 138, &z);
+	
+	int z2 = 0; // will be 32768, e.g. 2.0
+	double decodedZ = 0;
+	fnFindMaxZForLocation(FloatEncode(161.7), FloatEncode(138.8), &z2);
+	decodedZ = FloatDecode(z2);
 }
