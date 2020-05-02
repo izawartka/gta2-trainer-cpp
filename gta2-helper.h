@@ -16,6 +16,7 @@ static DWORD ptrToMapRelatedStruct = 0x00662c08;
 #define ByPtr(type, x) (type*)*(DWORD*)x
 #define FloatEncode(x) (int)(x * 16384)
 #define FloatDecode(x) (double)x / 16384.0
+// Usage: auto game = fnGetGame();
 #define fnGetGame() ByPtr(Game, ptrToGame)
 
 typedef Ped* (__stdcall GetPedById)(int);
@@ -72,8 +73,8 @@ Usage:
 fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
 */
 #define fnDoTeleport(p, x, y) \
-	p->teleportX = FloatEncode(x); \
-	p->teleportY = FloatEncode(y); \
+	p->ph2.encodedCameraOrTeleportX  = FloatEncode(x); \
+	p->ph2.encodedCameraOrTeleportY = FloatEncode(y); \
 	fnDoTeleportRaw(p, 0);
 
 
