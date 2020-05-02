@@ -1680,11 +1680,7 @@ void MainWindow::NewFunction()
 	EnginesDataHolder* engines = (EnginesDataHolder*)*(DWORD*)ptrToCarEngines;
 	auto engine = engines->engineArray[TANK];
 
-	int z = 0; // will be 1
-	fnFindMaxZForTile(161, 138, &z);
-	
-	int z2 = 0; // will be 32768, e.g. 2.0
-	double decodedZ = 0;
-	fnFindMaxZForLocation(FloatEncode(161.7), FloatEncode(138.8), &z2);
-	decodedZ = FloatDecode(z2);
+	Game* game = ByPtr(Game, ptrToGame);
+
+	fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
 }

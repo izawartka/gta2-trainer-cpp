@@ -13,16 +13,18 @@ static DWORD ptrToS3 = 0x00670684;
 static DWORD ptrToCarEngines = 0x005e5488;
 static DWORD ptrToMapRelatedStruct = 0x00662c08;
 
-#define ByPtr(x) (DWORD*)*(DWORD*)x
+#define ByPtr(type, x) (type*)*(DWORD*)x
 #define FloatEncode(x) (int)(x * 16384)
 #define FloatDecode(x) (double)x / 16384.0
+#define fnGetGame() ByPtr(Game, ptrToGame)
 
 typedef Ped* (__stdcall GetPedById)(int);
 static GetPedById* fnGetPedByID = (GetPedById*)0x0043ae10;
 
 //Player* __thiscall Game::GetPlayerSlotByIndex(Game* this, byte index);
 typedef Player* (__fastcall GetPlayerSlotByIndex)(Game* game, DWORD edx, byte index);
-static GetPlayerSlotByIndex* fnGetSaveSlotByIndex = (GetPlayerSlotByIndex*)0x004219e0;
+static GetPlayerSlotByIndex* fnGetPlayerSlotByIndexRaw = (GetPlayerSlotByIndex*)0x004219e0;
+#define fnGetPlayerSlotByIndex(index) fnGetPlayerSlotByIndexRaw(ByPtr(Game, ptrToGame), 0, index)
 
 //void __thiscall ShowBigOnScreenLabel(void* this, WCHAR* txt, int timeToShowInSeconds);
 typedef void(__fastcall ShowBigOnScreenLabel)(void* ptr, DWORD edx, WCHAR* txt, int time);
@@ -52,7 +54,6 @@ static SpawnPedAtPosition* fnSpawnPedAtPosition = (SpawnPedAtPosition*)0x0043db4
 typedef bool* (__fastcall SetPedPosition)(Ped* ped, DWORD edx, int x, int y, int z);
 static SetPedPosition* fnSetPedPosition = (SetPedPosition*)0x004360c0;
 
-
 // void __fastcall FindMaxZForLocation(void *param_1,undefined4 edx,int *outZ,SCR_f x,SCR_f y)
 typedef void(__fastcall FindMaxZForLocation)(void* ptrToMapRelatedStruct, DWORD edx, SCR_f* outZ, SCR_f x, SCR_f y);
 static FindMaxZForLocation* fnFindMaxZForLocationRaw = (FindMaxZForLocation*)0x0046a420;
@@ -62,5 +63,19 @@ static FindMaxZForLocation* fnFindMaxZForLocationRaw = (FindMaxZForLocation*)0x0
 typedef void(__fastcall FindMaxZForTile)(void* ptrToMapRelatedStruct, DWORD edx, int x, int y, int* outZ);
 static FindMaxZForTile* fnFindMaxZForTileRaw = (FindMaxZForTile*)0x00466990;
 #define fnFindMaxZForTile(x, y, z) fnFindMaxZForTileRaw(ByPtr(ptrToMapRelatedStruct), 0, x, y, z);
+
+// void __fastcall DoTeleport(Player *param_1)
+typedef void(__fastcall DoTeleport)(Player*, DWORD edx);
+static DoTeleport* fnDoTeleportRaw = (DoTeleport*)0x004a5ad0;
+/*
+Usage: 
+fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
+*/
+#define fnDoTeleport(p, x, y) \
+	p->teleportX = FloatEncode(x); \
+	p->teleportY = FloatEncode(y); \
+	fnDoTeleportRaw(p, 0);
+
+
 
 #endif // !GTA_H
