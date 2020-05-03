@@ -242,6 +242,10 @@ typedef struct Sprite Sprite, *PSprite;
 
 typedef struct WEAPON_STRUCT WEAPON_STRUCT, *PWEAPON_STRUCT;
 
+typedef int Sint32;
+
+typedef Sint32 SCR_f;
+
 typedef enum PED_AI_MODE : unsigned short {
     PED_AI_MODE_0_DUMMY=0,
     PED_AI_MODE_CARTHIEF_MUGGER=40,
@@ -1222,8 +1226,8 @@ struct Ped {
     int field_0x1a0;
     int field_0x1a4;
     struct Ped * elvisLeader;
-    int x;
-    int y;
+    SCR_f x;
+    SCR_f y;
     int z;
     struct Ped * field_0x1b8;
     struct Ped * field_0x1bc;
@@ -2047,9 +2051,21 @@ typedef struct SaveSlotAnimatedValue SaveSlotAnimatedValue, *PSaveSlotAnimatedVa
 
 typedef struct S26 S26, *PS26;
 
-typedef int Sint32;
+typedef enum PLAYER_PHYSICS_MOVEMENT {
+    PLAYER_PHYSICS_MOVEMENT_BACKWARD=256,
+    PLAYER_PHYSICS_MOVEMENT_DO_NOTHING=0,
+    PLAYER_PHYSICS_MOVEMENT_FORWARD=1,
+    PLAYER_PHYSICS_MOVEMENT_LEFT=65536,
+    PLAYER_PHYSICS_MOVEMENT_RIGHT=16777216,
+    PLAYER_PHYSICS_MOVEMENT_UNK2=2
+} PLAYER_PHYSICS_MOVEMENT;
 
-typedef Sint32 SCR_f;
+typedef enum PLAYER_PHYSICS_STATE2 {
+    PLAYER_PHYSICS_STATE2_190=400,
+    PLAYER_PHYSICS_STATE2_258=600,
+    PLAYER_PHYSICS_STATE2_NO_TELEPORT=2,
+    PLAYER_PHYSICS_STATE2_TELEPORT=1
+} PLAYER_PHYSICS_STATE2;
 
 struct PlayerPhysics {
     SCR_f x;
@@ -2076,10 +2092,10 @@ struct PlayerPhysics {
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    undefined4 field_0x30;
+    enum PLAYER_PHYSICS_MOVEMENT movementBitmask;
     struct Ped * ped;
     undefined4 field_0x38;
-    int field_0x3c;
+    enum PLAYER_PHYSICS_STATE2 state2;
     u4 relToTime;
     u4 fly_car;
     void * field_0x48;
@@ -2230,14 +2246,14 @@ struct Player { /* Player actually */
     undefined field_0x65;
     undefined field_0x66;
     undefined field_0x67;
-    enum PLAYER_PHYSICS_STATE someState;
+    enum PLAYER_PHYSICS_STATE state1;
     int field_0x6c;
-    byte field_0x70;
-    byte field_0x71;
-    byte field_0x72;
-    byte field_0x73;
-    byte field_0x74;
-    byte relToKeyUp;
+    byte up;
+    byte down;
+    byte left;
+    byte right;
+    byte prevWeapon;
+    byte nextWeapon;
     byte debugKey1;
     byte debugKey2;
     bool keyUp;
@@ -2264,8 +2280,8 @@ struct Player { /* Player actually */
     undefined field_0x8d;
     undefined field_0x8e;
     byte field_0x8f;
-    struct PlayerPhysics ph1;
-    struct PlayerPhysics ph2;
+    struct PlayerPhysics ph1; /* player ped related */
+    struct PlayerPhysics ph2; /* camera related, for example teleport use this struct */
     struct PlayerPhysics ph3;
     struct Ped * playerPed2;
     struct Ped * playerPed4;
