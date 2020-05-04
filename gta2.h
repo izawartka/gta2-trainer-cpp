@@ -434,6 +434,7 @@ typedef enum CAR_ENGINE_STATE {
     TURNING_OFF=2,
     TURN_ENGINE_OFF=5
 } CAR_ENGINE_STATE;
+
 typedef enum TRAFFIC_CAR_TYPE {
     TRAFFIC_4=4,
     TRAFFIC_5=5,
@@ -726,6 +727,74 @@ struct Car {
     undefined4 field_0xb0;
     undefined4 field_0xb4;
     u1 field_0xb8;
+    undefined field_0xb9;
+    undefined field_0xba;
+    undefined field_0xbb;
+};
+
+struct PlayerPhysics {
+    SCR_f x;
+    SCR_f y;
+    SCR_f z;
+    undefined4 field_0xc;
+    SCR_f x2;
+    SCR_f y2;
+    SCR_f z2;
+    struct Sprite * sprite;
+    undefined field_0x20;
+    undefined field_0x21;
+    undefined field_0x22;
+    undefined field_0x23;
+    undefined field_0x24;
+    undefined field_0x25;
+    undefined field_0x26;
+    undefined field_0x27;
+    undefined field_0x28;
+    undefined field_0x29;
+    undefined field_0x2a;
+    undefined field_0x2b;
+    undefined field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+    enum PLAYER_PHYSICS_MOVEMENT movementBitmask;
+    struct Ped * ped;
+    undefined4 field_0x38;
+    enum PLAYER_PHYSICS_STATE2 state2;
+    u4 relToTime;
+    u4 fly_car;
+    void * field_0x48;
+    byte accurcy;
+    undefined field_0x4d;
+    undefined field_0x4e;
+    undefined field_0x4f;
+    undefined4 field_0x50;
+    undefined4 field_0x54;
+    undefined4 field_0x58;
+    undefined4 field_0x5c;
+    uint field_0x60;
+    uint field_0x64;
+    uint field_0x68;
+    uint field_0x6c;
+    uint field_0x70;
+    uint field_0x74;
+    SCR_f bottomOfTheSceenY; /* Created by retype action */
+    SCR_f rightOfTheScreenX; /* Created by retype action */
+    SCR_f topOfTheScreenY; /* Created by retype action */
+    SCR_f leftOfTheScreenX; /* Created by retype action */
+    SCR_f xx;
+    SCR_f yy;
+    SCR_f zz;
+    undefined4 field_0x94;
+    SCR_f encodedCameraOrTeleportX;
+    SCR_f encodedCameraOrTeleportY;
+    SCR_f encodedCameraOrTeleportZ;
+    undefined4 field_0xa4;
+    undefined4 field_0xa8;
+    SCR_f xCameraVelocity;
+    SCR_f yCameraVelocity;
+    undefined4 cameraHeadVelocity; /* changed when driving car */
+    undefined field_0xb8;
     undefined field_0xb9;
     undefined field_0xba;
     undefined field_0xbb;
@@ -2167,86 +2236,6 @@ typedef enum PLAYER_PHYSICS_STATE2 {
     PLAYER_PHYSICS_STATE2_NO_TELEPORT=2,
     PLAYER_PHYSICS_STATE2_TELEPORT=1
 } PLAYER_PHYSICS_STATE2;
-
-struct PlayerPhysics {
-    SCR_f x;
-    SCR_f y;
-    SCR_f z;
-    undefined4 field_0xc;
-    SCR_f x2;
-    SCR_f y2;
-    SCR_f z2;
-    struct Sprite * sprite;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    undefined field_0x24;
-    undefined field_0x25;
-    undefined field_0x26;
-    undefined field_0x27;
-    undefined field_0x28;
-    undefined field_0x29;
-    undefined field_0x2a;
-    undefined field_0x2b;
-    undefined field_0x2c;
-    undefined field_0x2d;
-    undefined field_0x2e;
-    undefined field_0x2f;
-    enum PLAYER_PHYSICS_MOVEMENT movementBitmask;
-    struct Ped * ped;
-    undefined4 field_0x38;
-    enum PLAYER_PHYSICS_STATE2 state2;
-    u4 relToTime;
-    u4 fly_car;
-    void * field_0x48;
-    byte accurcy;
-    undefined field_0x4d;
-    undefined field_0x4e;
-    undefined field_0x4f;
-    undefined4 field_0x50;
-    undefined4 field_0x54;
-    undefined4 field_0x58;
-    undefined4 field_0x5c;
-    uint field_0x60;
-    uint field_0x64;
-    uint field_0x68;
-    uint field_0x6c;
-    uint field_0x70;
-    uint field_0x74;
-    undefined field_0x78;
-    undefined field_0x79;
-    undefined field_0x7a;
-    undefined field_0x7b;
-    undefined field_0x7c;
-    undefined field_0x7d;
-    undefined field_0x7e;
-    undefined field_0x7f;
-    undefined field_0x80;
-    undefined field_0x81;
-    undefined field_0x82;
-    undefined field_0x83;
-    undefined field_0x84;
-    undefined field_0x85;
-    undefined field_0x86;
-    undefined field_0x87;
-    SCR_f xx;
-    SCR_f yy;
-    SCR_f zz;
-    undefined4 field_0x94;
-    SCR_f encodedCameraOrTeleportX;
-    SCR_f encodedCameraOrTeleportY;
-    SCR_f encodedCameraOrTeleportZ;
-    undefined4 field_0xa4;
-    undefined4 field_0xa8;
-    SCR_f xCameraVelocity;
-    SCR_f yCameraVelocity;
-    undefined4 cameraHeadVelocity; /* changed when driving car */
-    undefined field_0xb8;
-    undefined field_0xb9;
-    undefined field_0xba;
-    undefined field_0xbb;
-};
 
 struct SaveSlotAnimatedValue { /* Used for animate changing of values */
     int value;
