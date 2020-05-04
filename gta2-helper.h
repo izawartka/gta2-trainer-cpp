@@ -78,5 +78,8 @@ fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
 	fnDoTeleportRaw(p, 0);
 
 
+// bool __fastcall PedTick(Ped *ped)
+typedef void(__fastcall PedTick)(Ped*, DWORD edx);
+static PedTick* fnPedTickRaw = (PedTick*)0x004454e0;
 
 #endif // !GTA_H

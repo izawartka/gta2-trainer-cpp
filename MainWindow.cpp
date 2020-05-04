@@ -192,7 +192,7 @@ IMPLEMENT_DYNAMIC(MainWindow, CDialogEx)
 MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG1, pParent)
 {
-	MessageBoxW(0, L"aaa");
+	//MessageBoxW(0, L"aaa");
 	mainWnd = this;
 	DetourFunc(pGameTick, (DWORD)gameTick);
 	DetourFunc(pDraw, (DWORD)draw, 6);
@@ -1661,6 +1661,27 @@ void MainWindow::TeleportPlayer()
 	}
 }
 
+void Strafe(bool right, bool movingBackward) {
+	Ped* ped = fnGetPedByID(1);
+
+	ped->state = PED_STATE_WALK;
+	ped->state2 = (PED_STATE2)0;
+	bool* IsPlayerPedMoving = (bool*)0x0066a3c7;
+	*IsPlayerPedMoving = true;
+	ped->pedSprite->speed = 1024;
+
+	DWORD* pedDefaultSpeedForStaying = (DWORD*)0x0066a634;
+	*pedDefaultSpeedForStaying = 1024;
+	auto original = ped->pedSprite->spriteRotation;
+	if (right)
+		ped->pedSprite->spriteRotation -= 360;
+	else
+		ped->pedSprite->spriteRotation += 360;
+	fnPedTickRaw(ped, 0);
+	*pedDefaultSpeedForStaying = 0;
+	ped->pedSprite->spriteRotation = original;
+}
+
 void MainWindow::OnGTADraw()
 {
 
@@ -1671,7 +1692,51 @@ void MainWindow::OnGTAGameTick(Game* game)
 	//OnTimer moved here, it's more stable now
 	CopLockETC();
 	PedInfo();
+
+	//auto p = fnGetPlayerSlotByIndex(0);
+
 	if (captureMouse) CaptureMouse();
+
+	BYTE keyboard[256];
+	GetKeyboardState(keyboard);
+
+	auto p = fnGetPlayerSlotByIndex(0);
+
+	auto keyUp = p->keyUp;
+	auto keyDown = p->keyDown;
+	auto keyAttack = p->keyAttack;
+
+	if (keyboard['D'] & 0x80) {
+		p->keyUp = 0;
+		p->keyDown = 0;
+		p->keyAttack = 0;
+		Strafe(true, keyDown);
+	}
+	else if (keyboard['A'] & 0x80) {
+		p->keyUp = 0;
+		p->keyDown = 0;
+		p->keyAttack = 0;
+		Strafe(false, keyDown);
+	}
+
+	if (keyboard['W'] & 0x80) {
+		p->keyUp = 1;
+	} else {
+		p->keyUp = keyUp;
+	}
+
+	if (keyboard['S'] & 0x80) {
+		p->keyDown = 1;
+	} else {
+		p->keyDown = keyDown;
+	}
+
+	if (keyboard[VK_LBUTTON] & 0x80) {
+		p->keyAttack = 1;
+	} else {
+		p->keyAttack = keyAttack;
+	}
+
 }
 
 void MainWindow::NewFunction()
@@ -1680,7 +1745,14 @@ void MainWindow::NewFunction()
 	EnginesDataHolder* engines = (EnginesDataHolder*)*(DWORD*)ptrToCarEngines;
 	auto engine = engines->engineArray[TANK];
 
-	Game* game = ByPtr(Game, ptrToGame);
+	//Game* game = ByPtr(Game, ptrToGame);
+	auto game = fnGetGame();
+	//fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
+	/*
+	auto angle = ped->pedSprite->spriteRotation;
 
-	fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
+	ped->pedSprite->spriteRotation -= 180;
+	fnMovePedForward(ped, 0);
+	ped->pedSprite->spriteRotation = angle;
+	*/
 }
