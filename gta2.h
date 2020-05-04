@@ -22,6 +22,8 @@ typedef struct Position Position, *PPosition;
 
 typedef struct Position Pos;
 
+typedef struct Sprite Sprite, *PSprite;
+
 typedef enum CAR_REL_TO_COLOR_ENUM {
     CAR_REL_TO_COLOR_ENUM_1=1,
     CAR_REL_TO_COLOR_ENUM_2=2,
@@ -34,9 +36,9 @@ struct Position {
     short rotation;
     undefined field_0x2;
     undefined field_0x3;
-    struct Position * prev;
-    void * field_0x8;
-    struct Position * next;
+    struct Position* prev;
+    struct Sprite* sprite;
+    struct Position* next;
     int field_0x10;
     int x; /* Created by retype action */
     int y; /* Created by retype action */
@@ -1329,6 +1331,96 @@ typedef enum CAR_DOOR_STATE {
     CAR_DOOR_STATE_LOCKED=1,
     CAR_DOOR_STATE_UNLOCKED=2
 } CAR_DOOR_STATE;
+
+typedef enum CAR_MODEL4 {
+    CAR_MODEL4_ALFA=0,
+    CAR_MODEL4_ALLARD=1,
+    CAR_MODEL4_AMDB4=2,
+    CAR_MODEL4_APC=3,
+    CAR_MODEL4_BANKVAN=4,
+    CAR_MODEL4_BMW=5,
+    CAR_MODEL4_BOXCAR=6,
+    CAR_MODEL4_BOXTRUCK=7,
+    CAR_MODEL4_BUG=8,
+    CAR_MODEL4_BUICK=10,
+    CAR_MODEL4_BUS=11,
+    CAR_MODEL4_CAR15=15,
+    CAR_MODEL4_CAR20=20,
+    CAR_MODEL4_CAR43=43,
+    CAR_MODEL4_CAR9=9,
+    CAR_MODEL4_COPCAR=12,
+    CAR_MODEL4_DART=13,
+    CAR_MODEL4_EDSEL=14,
+    CAR_MODEL4_EDSELFBI=84,
+    CAR_MODEL4_FIAT=16,
+    CAR_MODEL4_FIRETRUCK=17,
+    CAR_MODEL4_GRAHAM=18,
+    CAR_MODEL4_GT24640=19,
+    CAR_MODEL4_GTRUCK=21,
+    CAR_MODEL4_GUNJEEP=22,
+    CAR_MODEL4_HOTDOG=23,
+    CAR_MODEL4_HOTDOG_D1=24,
+    CAR_MODEL4_HOTDOG_D2=25,
+    CAR_MODEL4_HOTDOG_D3=26,
+    CAR_MODEL4_HOTDOG_D4=85,
+    CAR_MODEL4_ICECREAM=27,
+    CAR_MODEL4_ISETLIMO=28,
+    CAR_MODEL4_ISETTA=29,
+    CAR_MODEL4_JEEP=30,
+    CAR_MODEL4_JEFFREY=31,
+    CAR_MODEL4_KRSNABUS=86,
+    CAR_MODEL4_LIMO=32,
+    CAR_MODEL4_LIMO2=33,
+    CAR_MODEL4_MEDICAR=34,
+    CAR_MODEL4_MERC=35,
+    CAR_MODEL4_MESSER=36,
+    CAR_MODEL4_MIURA=37,
+    CAR_MODEL4_MONSTER=38,
+    CAR_MODEL4_MORGAN=39,
+    CAR_MODEL4_MORRIS=40,
+    CAR_MODEL4_PICKUP=41,
+    CAR_MODEL4_RTYPE=42,
+    CAR_MODEL4_SPIDER=44,
+    CAR_MODEL4_SPRITE=45,
+    CAR_MODEL4_STINGRAY=46,
+    CAR_MODEL4_STRATOS=47,
+    CAR_MODEL4_STRATOSB=48,
+    CAR_MODEL4_STRIPETB=49,
+    CAR_MODEL4_STYPE=50,
+    CAR_MODEL4_STYPECAB=51,
+    CAR_MODEL4_SWATVAN=52,
+    CAR_MODEL4_T2000GT=53,
+    CAR_MODEL4_TANK=54,
+    CAR_MODEL4_TANKER=55,
+    CAR_MODEL4_TAXI=56,
+    CAR_MODEL4_TBIRD=57,
+    CAR_MODEL4_TOWTRUCK=58,
+    CAR_MODEL4_TRAIN=59,
+    CAR_MODEL4_TRAINCAB=60,
+    CAR_MODEL4_TRAINFB=61,
+    CAR_MODEL4_TRANCEAM=62,
+    CAR_MODEL4_TRUKCAB1=63,
+    CAR_MODEL4_TRUKCAB2=64,
+    CAR_MODEL4_TRUKCONT=65,
+    CAR_MODEL4_TRUKTRNS=66,
+    CAR_MODEL4_TVVAN=67,
+    CAR_MODEL4_VAN=68,
+    CAR_MODEL4_VESPA=69,
+    CAR_MODEL4_VTYPE=70,
+    CAR_MODEL4_WBTWIN=71,
+    CAR_MODEL4_WRECK0=72,
+    CAR_MODEL4_WRECK1=73,
+    CAR_MODEL4_WRECK2=74,
+    CAR_MODEL4_WRECK3=75,
+    CAR_MODEL4_WRECK4=76,
+    CAR_MODEL4_WRECK5=77,
+    CAR_MODEL4_WRECK6=78,
+    CAR_MODEL4_WRECK7=79,
+    CAR_MODEL4_WRECK8=80,
+    CAR_MODEL4_WRECK9=81,
+    CAR_MODEL4_XK120=82,
+    CAR_MODEL4_ZCX5=83
+} CAR_MODEL4;
 
 typedef enum CAR_UNK_TYPE {
     FIRE_TRACK_CARS=5,
@@ -3487,48 +3579,6 @@ struct S26 {
     undefined field_0x36;
     undefined field_0x37;
     int relToCopStars;
-};
-
-typedef struct GameStats GameStats, *PGameStats;
-
-struct GameStats {
-    undefined field_0x0[112];
-    uint field_0x70;
-    uint field_0x74;
-    undefined field_0x78[48];
-    int field_0xa8;
-    undefined field_0xac[1120];
-    int vehicles_hijacked;
-    int civilians_run_down;
-    int civilians_murdered;
-    int lawmen_killed;
-    int gang_members_killed;
-    undefined field_0x520;
-    undefined field_0x521;
-    undefined field_0x522;
-    undefined field_0x523;
-    undefined field_0x524;
-    undefined field_0x525;
-    undefined field_0x526;
-    undefined field_0x527;
-    undefined field_0x528;
-    undefined field_0x529;
-    undefined field_0x52a;
-    undefined field_0x52b;
-    int auto_damage_cost;
-    int fugitive_factor;
-    undefined field_0x534;
-    undefined field_0x535;
-    undefined field_0x536;
-    undefined field_0x537;
-    undefined field_0x538;
-    undefined field_0x539;
-    undefined field_0x53a;
-    undefined field_0x53b;
-    undefined field_0x53c;
-    undefined field_0x53d;
-    undefined field_0x53e;
-    undefined field_0x53f;
 };
 
 typedef struct Gang Gang, *PGang;
