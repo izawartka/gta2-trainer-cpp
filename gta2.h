@@ -548,19 +548,6 @@ struct WEAPON_PLAYER_LIST {
     short count; /* Created by retype action */
 };
 
-struct SomeStructInsideACar {
-    byte field_0x0;
-    byte field_0x1; /* equal to 3 on start */
-    byte field_0x2;
-    undefined field_0x3;
-    undefined4 field_0x4;
-    undefined4 field_0x8;
-    byte field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-};
-
 struct Sprite {
     uint id;
     int field_0x4;
@@ -668,6 +655,19 @@ struct Sprite {
     undefined4 teleportY; /* Created by retype action */
     undefined4 teleportZ; /* Created by retype action */
     int field_0xb0;
+};
+
+struct SomeStructInsideACar {
+    byte field_0x0;
+    byte field_0x1; /* equal to 3 on start */
+    byte field_0x2;
+    undefined field_0x3;
+    undefined4 field_0x4;
+    undefined4 field_0x8;
+    byte field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
 };
 
 struct Car {
