@@ -61,6 +61,7 @@ struct Position {
     undefined field_0x3b;
 };
 
+
 typedef undefined1 u1;
 typedef enum PED_STATE {
     PED_STATE_DRIVING_A_CAR=10,
@@ -99,18 +100,17 @@ typedef enum PED_STATE2 {
     PED_STATE2_UNK_f=15
 } PED_STATE2;
 
+typedef struct PlayerPhysics PlayerPhysics, *PPlayerPhysics;
+
+typedef undefined1 u1;
+
 typedef undefined4 u4;
 
-typedef struct Car Car, *PCar;
-
-
-typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
+typedef enum SPRITE_BIT1 {
+    SPRITE_BIT1_1=1
+} SPRITE_BIT1;
 
 typedef struct Ped Ped, *PPed;
-
-typedef struct MaybeCarEngine MaybeCarEngine, *PMaybeCarEngine;
-
-typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
 
 typedef enum CAR_MODEL : unsigned char {
     ALFA=0,
@@ -201,30 +201,31 @@ typedef enum CAR_MODEL : unsigned char {
     XK120=82,
     ZCX5=83
 } CAR_MODEL;
-
-
-
-typedef enum CAR_SIREN_STATE {
-    CAR_ALARM=8,
-    SIREN_OFF=2,
-    SIREN_ON=4,
-    SIREN_UNK1=1,
-    SIREN_UNK_10=16
-} CAR_SIREN_STATE;
-
-typedef enum HORN {
-    HORN_ON=248
-} HORN;
-
-typedef struct WEAPON_PLAYER_LIST WEAPON_PLAYER_LIST, *PWEAPON_PLAYER_LIST;
-
-typedef struct Sprite Sprite, *PSprite;
-
-typedef struct WEAPON_STRUCT WEAPON_STRUCT, *PWEAPON_STRUCT;
-
 typedef int Sint32;
 
 typedef Sint32 SCR_f;
+
+typedef enum PLAYER_PHYSICS_MOVEMENT {
+    PLAYER_PHYSICS_MOVEMENT_BACKWARD=256,
+    PLAYER_PHYSICS_MOVEMENT_DO_NOTHING=0,
+    PLAYER_PHYSICS_MOVEMENT_FORWARD=1,
+    PLAYER_PHYSICS_MOVEMENT_LEFT=65536,
+    PLAYER_PHYSICS_MOVEMENT_RIGHT=16777216,
+    PLAYER_PHYSICS_MOVEMENT_UNK2=2
+} PLAYER_PHYSICS_MOVEMENT;
+
+typedef enum PLAYER_PHYSICS_STATE2 {
+    PLAYER_PHYSICS_STATE2_190=400,
+    PLAYER_PHYSICS_STATE2_258=600,
+    PLAYER_PHYSICS_STATE2_NO_TELEPORT=2,
+    PLAYER_PHYSICS_STATE2_TELEPORT=1
+} PLAYER_PHYSICS_STATE2;
+
+typedef struct Car Car, *PCar;
+
+typedef struct WEAPON_PLAYER_LIST WEAPON_PLAYER_LIST, *PWEAPON_PLAYER_LIST;
+
+typedef struct WEAPON_STRUCT WEAPON_STRUCT, *PWEAPON_STRUCT;
 
 typedef enum PED_AI_MODE : unsigned short {
     PED_AI_MODE_0_DUMMY=0,
@@ -424,6 +425,12 @@ typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
     UNK_80000=524288
 } CAR_LIGHTS_AND_DOORS_BITSTATE;
 
+typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
+
+typedef struct MaybeCarEngine MaybeCarEngine, *PMaybeCarEngine;
+
+typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
+
 typedef enum CAR_ENGINE_STATE {
     BROKEN_DOESNT_WORK=0,
     ENGINE_OFF=1,
@@ -446,6 +453,19 @@ typedef enum TRAFFIC_CAR_TYPE {
     TRAFFIC_UNIT_CAR=6,
     TRAFFIC_a=10
 } TRAFFIC_CAR_TYPE;
+
+typedef enum CAR_SIREN_STATE {
+    CAR_ALARM=8,
+    SIREN_OFF=2,
+    SIREN_ON=4,
+    SIREN_UNK1=1,
+    SIREN_UNK_10=16
+} CAR_SIREN_STATE;
+
+typedef enum HORN {
+    HORN_ON=248
+} HORN;
+
 typedef enum WEAPON_INDEX {
     ARMY_GUN_JEEP=22,
     CAR_SMG=9,
@@ -552,11 +572,11 @@ struct Sprite {
     uint id;
     int field_0x4;
     enum PED_STATE state1;
-    int field_0xc;
+    enum PED_STATE2 state2;
     uint relToId;
-    int field_0x14;
-    uint field_0x18;
-    int field_0x1c;
+    int xxx;
+    uint yyy;
+    struct PlayerPhysics * probablyPhysics;
     undefined field_0x20;
     undefined field_0x21;
     undefined field_0x22;
@@ -580,29 +600,26 @@ struct Sprite {
     undefined field_0x35;
     undefined field_0x36;
     undefined field_0x37;
-    int field_0x38;
+    int speed;
     int field_0x3c;
     short spriteRotation;
     short field_0x42;
     u1 field_0x44;
-    undefined field_0x45;
+    u1 field_0x45;
     short field_0x46;
     undefined field_0x48;
     undefined field_0x49;
     short cigaretteIdleTimer;
-    undefined field_0x4c;
-    undefined field_0x4d;
-    undefined field_0x4e;
-    undefined field_0x4f;
-    undefined field_0x50;
-    undefined field_0x51;
-    undefined field_0x52;
-    undefined field_0x53;
+    u4 field_0x4c;
+    u4 field_0x50;
     undefined field_0x54;
     undefined field_0x55;
     undefined field_0x56;
     undefined field_0x57;
-    uint bit1;
+    enum SPRITE_BIT1 bit1;
+    undefined field_0x59;
+    undefined field_0x5a;
+    undefined field_0x5b;
     undefined field_0x5c;
     undefined field_0x5d;
     undefined field_0x5e;
@@ -639,14 +656,8 @@ struct Sprite {
     undefined field_0x8f;
     int field_0x90;
     void * field_0x94;
-    undefined field_0x98;
-    undefined field_0x99;
-    undefined field_0x9a;
-    undefined field_0x9b;
-    undefined field_0x9c;
-    undefined field_0x9d;
-    undefined field_0x9e;
-    undefined field_0x9f;
+    SCR_f deltaX;
+    SCR_f deltaY;
     undefined field_0xa0;
     undefined field_0xa1;
     undefined field_0xa2;
@@ -1403,6 +1414,8 @@ struct Ped {
     int field_0x28c;
     int relToMultiplayer;
 };
+
+typedef undefined2 u2;
 
 typedef enum CAR_DOOR_STATE {
     CAR_DOOR_STATE_INITIAL_UNK3=3,
@@ -2215,27 +2228,9 @@ typedef enum PLAYER_PHYSICS_STATE {
     PLAYER_PHYSICS_STATE_3=3
 } PLAYER_PHYSICS_STATE;
 
-typedef struct PlayerPhysics PlayerPhysics, *PPlayerPhysics;
-
 typedef struct SaveSlotAnimatedValue SaveSlotAnimatedValue, *PSaveSlotAnimatedValue;
 
 typedef struct S26 S26, *PS26;
-
-typedef enum PLAYER_PHYSICS_MOVEMENT {
-    PLAYER_PHYSICS_MOVEMENT_BACKWARD=256,
-    PLAYER_PHYSICS_MOVEMENT_DO_NOTHING=0,
-    PLAYER_PHYSICS_MOVEMENT_FORWARD=1,
-    PLAYER_PHYSICS_MOVEMENT_LEFT=65536,
-    PLAYER_PHYSICS_MOVEMENT_RIGHT=16777216,
-    PLAYER_PHYSICS_MOVEMENT_UNK2=2
-} PLAYER_PHYSICS_MOVEMENT;
-
-typedef enum PLAYER_PHYSICS_STATE2 {
-    PLAYER_PHYSICS_STATE2_190=400,
-    PLAYER_PHYSICS_STATE2_258=600,
-    PLAYER_PHYSICS_STATE2_NO_TELEPORT=2,
-    PLAYER_PHYSICS_STATE2_TELEPORT=1
-} PLAYER_PHYSICS_STATE2;
 
 struct SaveSlotAnimatedValue { /* Used for animate changing of values */
     int value;
