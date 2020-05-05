@@ -16,6 +16,7 @@ static DWORD ptrToMapRelatedStruct = 0x00662c08;
 #define ByPtr(type, x) (type*)*(DWORD*)x
 #define FloatEncode(x) (int)(x * 16384)
 #define FloatDecode(x) (double)x / 16384.0
+// Usage: auto game = fnGetGame();
 #define fnGetGame() ByPtr(Game, ptrToGame)
 
 typedef Ped* (__stdcall GetPedById)(int);
@@ -55,27 +56,30 @@ typedef bool* (__fastcall SetPedPosition)(Ped* ped, DWORD edx, int x, int y, int
 static SetPedPosition* fnSetPedPosition = (SetPedPosition*)0x004360c0;
 
 // void __fastcall FindMaxZForLocation(void *param_1,undefined4 edx,int *outZ,SCR_f x,SCR_f y)
-typedef void(__fastcall FindMaxZForLocation)(void* ptrToMapRelatedStruct, DWORD edx, SCR_f* outZ, SCR_f x, SCR_f y);
+typedef void (__fastcall FindMaxZForLocation)(void* ptrToMapRelatedStruct, DWORD edx, SCR_f* outZ, SCR_f x, SCR_f y);
 static FindMaxZForLocation* fnFindMaxZForLocationRaw = (FindMaxZForLocation*)0x0046a420;
 #define fnFindMaxZForLocation(x, y, z) fnFindMaxZForLocationRaw(ByPtr(ptrToMapRelatedStruct), 0, z, x, y);
 
 // int __thiscall FUN_00466990(void *ptrToMapRelatedStruct,int x,int y,int *outZ)
-typedef void(__fastcall FindMaxZForTile)(void* ptrToMapRelatedStruct, DWORD edx, int x, int y, int* outZ);
+typedef void (__fastcall FindMaxZForTile)(void* ptrToMapRelatedStruct, DWORD edx, int x, int y, int* outZ);
 static FindMaxZForTile* fnFindMaxZForTileRaw = (FindMaxZForTile*)0x00466990;
 #define fnFindMaxZForTile(x, y, z) fnFindMaxZForTileRaw(ByPtr(ptrToMapRelatedStruct), 0, x, y, z);
 
 // void __fastcall DoTeleport(Player *param_1)
-typedef void(__fastcall DoTeleport)(Player*, DWORD edx);
+typedef void (__fastcall DoTeleport)(Player*, DWORD edx);
 static DoTeleport* fnDoTeleportRaw = (DoTeleport*)0x004a5ad0;
 /*
 Usage: 
 fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
 */
 #define fnDoTeleport(p, x, y) \
-	p->teleportX = FloatEncode(x); \
-	p->teleportY = FloatEncode(y); \
+	p->ph2.encodedCameraOrTeleportX  = FloatEncode(x); \
+	p->ph2.encodedCameraOrTeleportY = FloatEncode(y); \
 	fnDoTeleportRaw(p, 0);
 
 
+// bool __fastcall PedTick(Ped *ped)
+typedef void(__fastcall PedTick)(Ped*, DWORD edx);
+static PedTick* fnPedTickRaw = (PedTick*)0x004454e0;
 
 #endif // !GTA_H
