@@ -106,7 +106,7 @@ typedef undefined1 u1;
 
 typedef undefined4 u4;
 
-typedef enum SPRITE_BIT1 {
+typedef enum SPRITE_BIT1 : unsigned char {
     SPRITE_BIT1_1=1
 } SPRITE_BIT1;
 

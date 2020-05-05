@@ -24,10 +24,7 @@ BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
 
 MainWindow* mainWnd = nullptr;
 
-void __fastcall myPlayVocal(void* _this, DWORD edx, VOCAL v) {
-	fnPlayVocal(_this, edx, v);
-}
-
+/*
 void DrawText3(LPDIRECTDRAWSURFACE7 surf, int X, int Y, WCHAR* txt, COLORREF color) {
 	HDC dc;
 	HRESULT hr = surf->GetDC(&dc);
@@ -102,6 +99,7 @@ void __fastcall myStartMapPlaySound(void* _this, DWORD edx) {
 
 	fnStartMapPlaySound(_this, edx);
 }
+*/
 
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
 	DWORD OldProtection = { 0 };
@@ -201,7 +199,6 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 
 	DetourTransactionBegin();
 	DetourUpdateThread(GetCurrentThread());
-	DetourAttach(&(PVOID&)fnStartMapPlaySound, myStartMapPlaySound);
 	DetourTransactionCommit();
 }
 
@@ -236,6 +233,9 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PEDCLOTHV, m_pedClothes);
 	DDX_Control(pDX, IDC_PEDSHAPEV, m_pedShape);
 	DDX_Control(pDX, IDC_BIGTEXTTEXT, m_BigText);
+	DDX_Control(pDX, IDC_SPRUN, m_globalPedSpeeds[0]);
+	DDX_Control(pDX, IDC_SPWLK, m_globalPedSpeeds[1]);
+	DDX_Control(pDX, IDC_SPSTD, m_globalPedSpeeds[2]);
 }
 
 
@@ -246,7 +246,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_TIMER()
 	ON_COMMAND(ID_COMMANDS_HELLO, &MainWindow::OnCommandsHello)
-	ON_COMMAND(ID_COMMANDS_CAPTUREMOUSE, &MainWindow::OnCommandsCaptureMouse)
+	ON_COMMAND(IDC_MOUSECTRL, &MainWindow::MouseControl)
 	ON_COMMAND(ID_SPAWNCAR_TANK, &MainWindow::OnSpawncarTank)
 	ON_WM_HOTKEY()
 	ON_COMMAND(ID_SPAWNCAR_GT, &MainWindow::OnSpawncarGt)
@@ -273,7 +273,6 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CARLASTTP, &MainWindow::TpToLastCar)
 	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
 	ON_BN_CLICKED(ID_TPALLPEDS, &MainWindow::TeleportAllPeds)
-	ON_BN_CLICKED(IDC_BEAHUMAN, &MainWindow::BeAHuman)
 	ON_COMMAND_RANGE(3040, 3048, &GangRespect)
 	ON_BN_CLICKED(IDC_SHOWPEDIDS, &MainWindow::ShowIDs)
 	ON_BN_CLICKED(IDC_FREESHOP, &MainWindow::FreeShopping)
@@ -292,6 +291,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_PEDSHAPEM, &MainWindow::PedShapeMinus)
 	ON_BN_CLICKED(IDC_PEDSHAPECLOTHR, &MainWindow::PedShapeClothesReset)
 	ON_BN_CLICKED(IDC_BIGTEXTSHOW, &MainWindow::ShowBigText)
+	ON_BN_CLICKED(IDC_SPSET, &MainWindow::SetGlobalPedSpeeds)
 END_MESSAGE_MAP()
 
 
@@ -623,28 +623,11 @@ void MainWindow::OnCommandsHello()
 }
 
 
-void MainWindow::OnCommandsCaptureMouse()
+void MainWindow::MouseControl()
 {
-	CMenu *menu = GetMenu();
-	MENUITEMINFO menuItem = { 0 };
-	menuItem.cbSize = sizeof(MENUITEMINFO);
-	menuItem.fMask = MIIM_STATE;
-
-	menu->GetMenuItemInfoW(ID_COMMANDS_CAPTUREMOUSE, &menuItem);
-
-	if (menuItem.fState == MFS_CHECKED) {
-		// Checked, uncheck it
-		menuItem.fState = MFS_UNCHECKED;
-		log(L"Do not capture mouse");
-		captureMouse = false;
-	}
-	else {
-		// Unchecked, check it
-		menuItem.fState = MFS_CHECKED;
-		log(L"Capture mouse");
-		captureMouse = true;
-	}
-	menu->SetMenuItemInfoW(ID_COMMANDS_CAPTUREMOUSE, &menuItem);
+	captureMouse = !captureMouse;
+	if (captureMouse) log(L"Mouse control enabled!");
+	else log(L"Mouse control disabled!");
 }
 
 void MainWindow::CaptureMouse()
@@ -705,6 +688,36 @@ void MainWindow::CaptureMouse()
 		playerPed->pedSprite->spriteRotation = gtaAngle;
 	}
 
+	BYTE keyboard[256];
+	GetKeyboardState(keyboard);
+
+	auto player = fnGetPlayerSlotByIndex(0);
+
+	auto keyUp = player->keyUp;
+	auto keyDown = player->keyDown;
+	auto keyAttack = player->keyAttack;
+
+
+	if (keyboard['W'] & 0x80) {
+		player->keyUp = 1;
+	}
+	else {
+		player->keyUp = keyUp;
+	}
+
+	if (keyboard['S'] & 0x80) {
+		player->keyDown = 1;
+	}
+	else {
+		player->keyDown = keyDown;
+	}
+
+	if (keyboard[VK_LBUTTON] & 0x80) {
+		player->keyAttack = 1;
+	}
+	else {
+		player->keyAttack = keyAttack;
+	}
 }
 
 void MainWindow::CopLockETC()
@@ -1112,6 +1125,8 @@ void MainWindow::TpToLastCar()
 		playerPed->pedSprite->actualPosition->x = currLastCar->position->x;
 		playerPed->pedSprite->actualPosition->y = currLastCar->position->y;
 		playerPed->pedSprite->actualPosition->z = currLastCar->position->z + 10;
+
+		log(L"Teleported the player to the car");
 	}
 }
 
@@ -1136,32 +1151,39 @@ void MainWindow::FixCar()
 	{
 		currLastCar->carDamage = 0;
 		startCarDamage = 0;
+
+		log(L"Fixed the car engine");
 	}
 }
 
 void MainWindow::VisFixCar()
 {
-	if (currLastCar)currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(0x800040);
+	if (currLastCar)
+	{
+		currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(0x800040);
+		log(L"Fixed the car visually");
+	}
 }
 
 void MainWindow::VisBreakCar()
 {
-	if (currLastCar)currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(4294967295);
+	if (currLastCar)
+	{
+		currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(0xFFFFFFF);
+		log(L"Broke the car visually");
+	}
 }
 
 void MainWindow::PlayerImmortal()
 {
-	playerImmortal = !playerImmortal;
+	Ped* playerPed = fnGetPedByID(1);
 
-	if (playerImmortal)
+	if (playerPed)
 	{
-		fnGetPedByID(1)->Invulnerability = 9999;
-		log(L"Invulnerability enabled");
-	}
-	else
-	{
-		fnGetPedByID(1)->Invulnerability = 1;
-		log(L"Invulnerability disabled");
+		playerPed->Invulnerability = 9999*(!playerPed->Invulnerability);
+
+		if(playerPed->Invulnerability) log(L"Invulnerability enabled");
+		else log(L"Invulnerability disabled");
 	}
 }
 
@@ -1174,8 +1196,34 @@ void MainWindow::PedInfo()
 
 	Ped* playerPed = fnGetPedByID(1);
 
+	if ((int)*(DWORD*)0x66a504 != globalPedSpeedsOld[0])
+	{
+		m_globalPedSpeeds[0].SetWindowTextW(L"0");
+		swprintf(buf, 256, L"%d", (int)*(DWORD*)0x66a504);
+		m_globalPedSpeeds[0].SetWindowTextW(buf);
+	}
+
+	if ((int)*(DWORD*)0x66a574 != globalPedSpeedsOld[1])
+	{
+		m_globalPedSpeeds[1].SetWindowTextW(L"0");
+		swprintf(buf, 256, L"%d", (int)*(DWORD*)0x66a574);
+		m_globalPedSpeeds[1].SetWindowTextW(buf);
+	}
+
+	if ((int)*(DWORD*)0x66a634 != globalPedSpeedsOld[2])
+	{
+		m_globalPedSpeeds[2].SetWindowTextW(L"0");
+		swprintf(buf, 256, L"%d", (int)*(DWORD*)0x66a634);
+		m_globalPedSpeeds[2].SetWindowTextW(buf);
+	}
+
+	globalPedSpeedsOld[0] = (int)*(DWORD*)0x66a504;
+	globalPedSpeedsOld[1] = (int)*(DWORD*)0x66a574;
+	globalPedSpeedsOld[2] = (int)*(DWORD*)0x66a634;
+
 	if (playerPed)
 	{
+
 		swprintf(buf, 256, L"%d", playerPed->remap);
 		m_pedClothes.SetWindowTextW(buf);
 
@@ -1258,25 +1306,45 @@ void MainWindow::PedInfo()
 
 		if (playerPed->currentCar)
 		{
-			swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->x / 16384.0);
-			m_pedX.SetWindowTextW(buf);
+			m_pedZ.SetReadOnly(true);
+	
+			if (playerPed->currentCar->position->x != pedXOld)
+			{
+				swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->x / 16384.0);
+				m_pedX.SetWindowTextW(buf);
+			}
 
-			swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->y / 16384.0);
-			m_pedY.SetWindowTextW(buf);
+			if (playerPed->currentCar->position->y != pedYOld)
+			{
+				swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->y / 16384.0);
+				m_pedY.SetWindowTextW(buf);
+			}
 
-			swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->z / 16384.0);
-			m_pedZ.SetWindowTextW(buf);
+			if (playerPed->currentCar->position->z != pedZOld)
+			{
+				swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->z / 16384.0);
+				m_pedZ.SetWindowTextW(buf);
+			}
 
-			swprintf(buf, 256, L"%d", playerPed->currentCar->position->rotation);
-			m_pedRot.SetWindowTextW(buf);
+			if (playerPed->currentCar->position->rotation != pedRotOld)
+			{
+				swprintf(buf, 256, L"%d", playerPed->currentCar->position->rotation);
+				m_pedRot.SetWindowTextW(buf);
+			}
 
 			swprintf(buf, 256, L"%X", playerPed->currentCar->carLights);
 			m_carVisualData.SetWindowTextW(buf);
 			
+			pedXOld = playerPed->currentCar->position->x;
+			pedYOld = playerPed->currentCar->position->y;
+			pedZOld = playerPed->currentCar->position->z;
+			pedRotOld = playerPed->currentCar->position->rotation;
 
 		}
 		else
 		{
+			m_pedZ.SetReadOnly(false);
+
 			if (!playerPed->pedSprite || !playerPed->pedSprite->actualPosition) {
 
 				m_pedX.SetWindowTextW(L"");
@@ -1288,6 +1356,9 @@ void MainWindow::PedInfo()
 			}
 			else
 			{
+				if (playerPed->pedSprite->cigaretteIdleTimer == 1)
+					log(L"Smokin' time ;3");
+
 				if (playerPed->pedSprite->actualPosition->x != pedXOld)
 				{
 					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->x / 16384.0);
@@ -1491,6 +1562,8 @@ void MainWindow::CarColorPlus()
 
 		currLastCar->position->carColor++;
 		if (currLastCar->position->carColor >35) currLastCar->position->carColor = 0;
+
+		log(L"Car color changed");
 	}
 }
 
@@ -1502,13 +1575,20 @@ void MainWindow::CarColorMinus()
 
 		currLastCar->position->carColor--;
 		if (currLastCar->position->carColor <0) currLastCar->position->carColor = 35;
+
+		log(L"Car color changed");
 	}
 }
 
 void MainWindow::CarColorReset()
 {
-	currLastCar->position->lockPalleteMaybe = 2;
-	currLastCar->position->carColor = 0;
+	if (currLastCar && currLastCar->position)
+	{
+		currLastCar->position->lockPalleteMaybe = 2;
+		currLastCar->position->carColor = 0;
+
+		log(L"Car color changed");
+	}
 }
 
 void MainWindow::PedClothesMinus()
@@ -1519,6 +1599,8 @@ void MainWindow::PedClothesMinus()
 	{
 		playerPed->remap = (PED_REMAP)((BYTE)playerPed->remap - 1);
 		if (playerPed->remap == 255) playerPed->remap = (PED_REMAP)52;
+
+		log(L"Player clothes changed");
 	}
 }
 
@@ -1530,6 +1612,8 @@ void MainWindow::PedClothesPlus()
 	{
 		playerPed->remap = (PED_REMAP)((BYTE)playerPed->remap + 1);
 		if (playerPed->remap > 52) playerPed->remap = (PED_REMAP)0;
+
+		log(L"Player clothes changed");
 	}
 }
 
@@ -1541,6 +1625,8 @@ void MainWindow::PedShapeMinus()
 	{
 		playerPed->remap2 = (PED_REMAP2)((BYTE)playerPed->remap2 - 1);
 		if (playerPed->remap2 == 255) playerPed->remap2 = (PED_REMAP2)2;
+
+		log(L"Player appearance changed");
 	}
 }
 
@@ -1552,6 +1638,8 @@ void MainWindow::PedShapePlus()
 	{
 		playerPed->remap2 = (PED_REMAP2)((BYTE)playerPed->remap2 + 1);
 		if (playerPed->remap2 > 2) playerPed->remap2 = (PED_REMAP2)0;
+
+		log(L"Player appearance changed");
 	}
 }
 
@@ -1562,6 +1650,8 @@ void MainWindow::PedShapeClothesReset()
 	{
 		playerPed->remap2 = PED_REMAP2_1;
 		playerPed->remap = PED_REMAP_PLAYER;
+
+		log(L"Player appearance changed");
 	}
 }
 
@@ -1576,29 +1666,40 @@ void MainWindow::ShowBigText()
 
 void MainWindow::ShowIDs()
 {
-	showIDs = (bool*)0x5EADA1;
-	*showIDs = !*showIDs;
+	*(bool*)0x5EADA1 = !*(bool*)0x5EADA1;
 
-	if (*showIDs) log(L"IDs shown!");
+	if (*(bool*)0x5EADA1) log(L"IDs shown!");
 	else log(L"IDs hidden!");
 }
 
 void MainWindow::ShowCounters()
 {
-	showCounters = (bool*)0x5EAD95;
-	*showCounters = !*showCounters;
+	*(bool*)0x5EAD95 = !*(bool*)0x5EAD95;
 
-	if (*showCounters) log(L"Counters shown!");
+	if (*(bool*)0x5EAD95) log(L"Counters shown!");
 	else log(L"Counters hidden!");
 }
 
 void MainWindow::KeepWeapons()
 {
-	keepWeapons = (bool*)0x5EAD9E;
-	*keepWeapons = !*keepWeapons;
+	*(bool*)0x5EAD9E = !*(bool*)0x5EAD9E;
 
-	if (*keepWeapons) log(L"Weapons will be kept!");
+	if (*(bool*)0x5EAD9E) log(L"Weapons will be kept!");
 	else log(L"Weapons won't be kept!");
+}
+
+void MainWindow::SetGlobalPedSpeeds()
+{
+	CString buffer;
+
+	m_globalPedSpeeds[0].GetWindowTextW(buffer);
+	*(int*)(DWORD*)0x66a504 = (int)_ttof(buffer);
+	m_globalPedSpeeds[1].GetWindowTextW(buffer);
+	*(int*)(DWORD*)0x66a574 = (int)_ttof(buffer);
+	m_globalPedSpeeds[2].GetWindowTextW(buffer);
+	*(int*)(DWORD*)0x66a634 = (int)_ttof(buffer);
+
+	log(L"Ped speeds changed *experimental feature*");
 }
 
 void MainWindow::FreeShopping()
@@ -1633,6 +1734,8 @@ void MainWindow::SetHealthArmorMoney()
 	m_pedMoney.GetWindowTextW(buffer);
 	*(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4) = (int)_ttof(buffer); //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
 
+	log(L"Player stats changed!");
+
 }
 
 void MainWindow::TeleportPlayer()
@@ -1640,7 +1743,7 @@ void MainWindow::TeleportPlayer()
 	Ped* playerPed = fnGetPedByID(1);
 	CString buffer;
 
-	if (playerPed->pedSprite && playerPed->pedSprite->actualPosition)
+	if (playerPed && playerPed->pedSprite && playerPed->pedSprite->actualPosition)
 	{
 		m_pedX.GetWindowTextW(buffer);
 		fesetround(FE_TONEAREST);
@@ -1655,10 +1758,46 @@ void MainWindow::TeleportPlayer()
 		log(L"Player teleported to %f, %f, %f!", ((float)playerPed->pedSprite->actualPosition->x)/16384.0f, ((float)playerPed->pedSprite->actualPosition->y) / 16384.0f, ((float)playerPed->pedSprite->actualPosition->z) / 16384.0f);
 
 	}
+	else if (playerPed && playerPed->currentCar)
+	{
+		m_pedX.GetWindowTextW(buffer);
+		fesetround(FE_TONEAREST);
+		playerPed->currentCar->maybeEngine->x = (int)(_wtof(buffer) * 16384.0);
+
+		m_pedY.GetWindowTextW(buffer);
+		playerPed->currentCar->maybeEngine->y = (int)(_wtof(buffer) * 16384.0);
+
+		log(L"Player car teleported to %f, %f!", ((float)playerPed->currentCar->maybeEngine->x) / 16384.0f, ((float)playerPed->currentCar->maybeEngine->y) / 16384.0f);
+
+	}
 	else
 	{
-		log(L"Couldn't teleport; player is in the car or something :/");
+		log(L"Couldn't find the player");
 	}
+}
+
+void MainWindow::FixCheckboxes()
+{
+	Ped* playerPed = fnGetPedByID(1);
+	TrafficManager* trafficManager = (TrafficManager*)*(DWORD*)0x005e4ca4;
+
+	if (playerPed)
+	{
+		((CButton*)GetDlgItem(IDC_PEDIMMORT))->SetCheck(playerPed->Invulnerability);
+	}
+
+	if (trafficManager)
+	{
+		((CButton*)GetDlgItem(IDC_FREESHOP))->SetCheck(trafficManager->do_free_shoping);
+	}
+
+	((CButton*)GetDlgItem(IDC_SHOWPEDIDS))->SetCheck(*(bool*)0x5EADA1);
+	((CButton*)GetDlgItem(IDC_BEAHUMAN))->SetCheck(beAHuman);
+	//slow walking isn't beeing fixed
+	((CButton*)GetDlgItem(IDC_KEEPWEAPONS))->SetCheck(*(bool*)0x5EAD9E);
+	((CButton*)GetDlgItem(IDC_SHOWCOUNTERS))->SetCheck(*(bool*)0x5EAD95);
+	((CButton*)GetDlgItem(IDC_MOUSECTRL))->SetCheck(captureMouse);
+
 }
 
 void Strafe(bool right, bool movingBackward) {
@@ -1692,67 +1831,11 @@ void MainWindow::OnGTAGameTick(Game* game)
 	//OnTimer moved here, it's more stable now
 	CopLockETC();
 	PedInfo();
-
-	//auto p = fnGetPlayerSlotByIndex(0);
-
 	if (captureMouse) CaptureMouse();
-
-	BYTE keyboard[256];
-	GetKeyboardState(keyboard);
-
-	auto p = fnGetPlayerSlotByIndex(0);
-
-	auto keyUp = p->keyUp;
-	auto keyDown = p->keyDown;
-	auto keyAttack = p->keyAttack;
-
-	if (keyboard['D'] & 0x80) {
-		p->keyUp = 0;
-		p->keyDown = 0;
-		p->keyAttack = 0;
-		Strafe(true, keyDown);
-	}
-	else if (keyboard['A'] & 0x80) {
-		p->keyUp = 0;
-		p->keyDown = 0;
-		p->keyAttack = 0;
-		Strafe(false, keyDown);
-	}
-
-	if (keyboard['W'] & 0x80) {
-		p->keyUp = 1;
-	} else {
-		p->keyUp = keyUp;
-	}
-
-	if (keyboard['S'] & 0x80) {
-		p->keyDown = 1;
-	} else {
-		p->keyDown = keyDown;
-	}
-
-	if (keyboard[VK_LBUTTON] & 0x80) {
-		p->keyAttack = 1;
-	} else {
-		p->keyAttack = keyAttack;
-	}
-
+	FixCheckboxes();
 }
 
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
-	EnginesDataHolder* engines = (EnginesDataHolder*)*(DWORD*)ptrToCarEngines;
-	auto engine = engines->engineArray[TANK];
-
-	//Game* game = ByPtr(Game, ptrToGame);
-	auto game = fnGetGame();
-	//fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
-	/*
-	auto angle = ped->pedSprite->spriteRotation;
-
-	ped->pedSprite->spriteRotation -= 180;
-	fnMovePedForward(ped, 0);
-	ped->pedSprite->spriteRotation = angle;
-	*/
 }

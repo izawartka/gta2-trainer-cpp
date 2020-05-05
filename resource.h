@@ -1,15 +1,13 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by gta2dll.rc
+// Plik do³¹czany wygenerowany przez œrodowisko Microsoft Visual C++.
+// U¿ywany przez: gta2dll.rc
 //
 #define IDD_DIALOG1                     3000
 #define IDC_EDIT1                       3000
 #define IDC_PEDX                        3001
-#define IDR_MENU1                       3002
 #define IDC_PEDHEALTH                   3002
 #define IDC_PEDY                        3003
 #define IDC_PEDZ                        3004
-#define IDC_EDIT5                       3005
 #define IDC_PEDARMOR                    3005
 #define IDC_PEDROT                      3006
 #define IDC_PEDSAMMO                    3007
@@ -27,25 +25,18 @@
 #define IDC_LOCKCOPLEVEL                3019
 #define IDC_CARENGINEOFF                3020
 #define IDC_CARFIX                      3021
-#define IDC_PEDSHAPCLOTHR               3021
 #define IDC_CARVISFIX                   3022
 #define IDC_CARDAMAGE                   3023
 #define IDC_LOCKCARDAMAGE               3024
-#define IDC_CARVISFIX2                  3025
 #define IDC_CARID                       3025
 #define IDC_TPPOPEN                     3026
 #define IDC_TPPLAYER                    3026
 #define IDC_CARLASTTP                   3027
-#define IDC_STAR7                       3028
-#define IDC_CARVISBRK3                  3028
 #define IDC_CARVIS                      3028
-#define IDC_STAR8                       3029
 #define IDC_PEDMONEY                    3029
 #define IDC_PEDIDS                      3030
 #define IDC_PEDS0TIME                   3031
 #define IDC_PEDIMMORT                   3032
-#define IDC_STAR9                       3033
-#define IDC_UNLMAMMO2                   3033
 #define IDC_PEDHAMSET                   3033
 #define IDC_BEAHUMAN                    3034
 #define IDC_GANG1V                      3035
@@ -68,7 +59,6 @@
 #define IDC_CARCOLM                     3052
 #define IDC_CARCOLP                     3053
 #define IDC_CARCOLV                     3054
-#define IDC_CARCOLP2                    3055
 #define IDC_CARCOLR                     3055
 #define IDC_GOSLOW                      3056
 #define IDC_PEDSHAPEM                   3057
@@ -81,6 +71,12 @@
 #define IDC_BIGTEXTSHOW                 3064
 #define IDC_CARCOLR2                    3065
 #define IDC_PEDSHAPECLOTHR              3066
+#define IDC_SPRUN                       3067
+#define IDC_SPWLK                       3068
+#define IDC_SPSTD                       3069
+#define IDC_SPSET                       3070
+#define IDC_MOUSECTRL                   3071
+#define IDC_PEDSHAPCLOTHR               3072
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774
@@ -101,7 +97,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3006
 #define _APS_NEXT_COMMAND_VALUE         32787
-#define _APS_NEXT_CONTROL_VALUE         3064
+#define _APS_NEXT_CONTROL_VALUE         3073
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
