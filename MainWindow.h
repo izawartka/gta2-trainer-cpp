@@ -1,7 +1,7 @@
 #pragma once
 
 // MainWindow dialog
-#include "gta2.h"
+#include "gta2-helper.h"
 
 enum TIMER {
 	TIMER_CAPTURE_MOUSE,
@@ -36,7 +36,7 @@ public:
 	HWND m_gtaWindow;
 	void log(const WCHAR* fmt, ...);
 	afx_msg void OnCommandsHello();
-	afx_msg void OnCommandsCaptureMouse();
+	afx_msg void MouseControl();
 	bool captureMouse = 0;
 	void CaptureMouse();
 	afx_msg void OnSpawncarTank();
@@ -66,6 +66,9 @@ public:
 	CEdit m_pedClothes;
 	CEdit m_pedShape;
 	CEdit m_BigText;
+	CEdit m_pedals[3];
+	CEdit m_gangRespect[3];
+	CEdit m_globalPedSpeeds[3];
 	void CarEngineOff();
 	bool starsLocked = 0;
 	short startCopValue = 0;
@@ -95,6 +98,7 @@ public:
 	Car* currLastCarOld = 0;
 	int pedXOld = 0, pedYOld = 0, pedZOld = 0, pedRotOld = 0;
 	int pedHOld = 1, pedAOld = 1, pedMOld = 1; // 1 not 0 because it has to be different than the actual value in the first tick
+	int globalPedSpeedsOld[3] = { 1,1,1 }; // same here
 	void TeleportAllPeds();
 	Ped* selectedPed = 0;
 	bool beAHuman = false;
@@ -102,7 +106,6 @@ public:
 	void NextHuman();
 	int pedXPreHuman = 0, pedYPreHuman = 0, pedZPreHuman = 0;
 	void GangRespect(UINT nID);
-	CEdit m_gangRespect[3];
 	int currLastCarXOld = 0, currLastCarYOld = 0, currLastCarXYShift;
 	void ShowIDs();
 	void ShowCounters();
@@ -112,6 +115,7 @@ public:
 	void CarColorMinus();
 	void CarColorReset();
 	void PedClothesPlus();
+	void FixCheckboxes();
 	void PedClothesMinus();
 	void PedShapePlus();
 	void PedShapeMinus();
@@ -119,11 +123,9 @@ public:
 	void ShowBigText();
 	void GoSlow();
 	int* walkingSpeed = nullptr;
-	bool* showIDs = false;
-	bool* showCounters = false;
-	bool* keepWeapons = false;
 	void TeleportPlayer();
 	void SetHealthArmorMoney();
+	void SetGlobalPedSpeeds();
 
 	void OnGTADraw();
 	void OnGTAGameTick(Game* game);
