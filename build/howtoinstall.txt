@@ -1,2 +1,0 @@
-just copy it to game root folder and run gta-trainer.exe instead of gta.exe
-This works with version 11.44

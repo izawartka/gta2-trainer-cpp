@@ -1,12 +1,7 @@
 # gta2-trainer-cpp
 
-## Faeatures
-Player ped controlling, Cars spawning n' fixing, Weapons giving, Vocals playing, Important info showing, Non-stop crashing ultimate GTA2 trainer with so many features, I can't list them all!!! (or i'm just too lazy nevermind)
-
-## Fast install
-If you just want to play it, download and copy content of the "build" directory to your game root folder. Next, just run (in window mode) gta-trainer.exe instead of gta.exe and you should see trainer window under the GTA2 window.
-
-Oh and i've made it on GTA 11.44, if you've got other version I don't promise it will work :<
+## DEVELOPMENT BRANCH!
+Many things may not work, work too much, work glitchy, crash your game, be updated twice a minute. Believe me, it's better for you not to try to compile and run this. Probably all the features from there will be included in the official release at the master branch so don't worry you miss something.
 
 ## Playing with code
 If you want to build it on your own, there is VS solution inside so it shouldn't be a problem to compile it.
