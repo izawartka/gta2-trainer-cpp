@@ -12,6 +12,7 @@ static DWORD ptrToGame = 0x005eb4fc;
 static DWORD ptrToS3 = 0x00670684;
 static DWORD ptrToCarEngines = 0x005e5488;
 static DWORD ptrToMapRelatedStruct = 0x00662c08;
+static DWORD ptrToS10 = 0x00672f40;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
 #define FloatEncode(x) (int)(x * 16384)
@@ -81,5 +82,12 @@ fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
 // bool __fastcall PedTick(Ped *ped)
 typedef void(__fastcall PedTick)(Ped*, DWORD edx);
 static PedTick* fnPedTickRaw = (PedTick*)0x004454e0;
+
+
+// void __fastcall showMessageToPlayer(DWORD* param_1, undefined edx, int timeInSeconds, char* messageCode)
+typedef void(__fastcall ShowMessageToPlayer)(undefined4*, DWORD edx, int timeInSeconds, char* messageCode);
+static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x004c6750;
+// example: fnShowMessageToPlayer(3, "nespray");
+#define fnShowMessageToPlayer(seconds, messageCode) fnShowMessageToPlayerRaw(&(ByPtr(S10, ptrToS10))->relToMessages, 0, seconds, messageCode)
 
 #endif // !GTA_H

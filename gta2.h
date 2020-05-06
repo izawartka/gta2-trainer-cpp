@@ -32,37 +32,6 @@ typedef enum CAR_REL_TO_COLOR_ENUM {
     CAR_REL_TO_COLOR_ENUM_5=5
 } CAR_REL_TO_COLOR_ENUM;
 
-struct Position {
-    short rotation;
-    undefined field_0x2;
-    undefined field_0x3;
-    struct Position* prev;
-    struct Sprite* sprite;
-    struct Position* next;
-    int field_0x10;
-    int x; /* Created by retype action */
-    int y; /* Created by retype action */
-    int z; /* Created by retype action */
-    short incFromS20;
-    short field_0x22;
-    short carColor;
-    undefined field_0x26;
-    undefined field_0x27;
-    int field_0x28;
-    byte field_0x2c;
-    undefined field_0x2d;
-    undefined field_0x2e;
-    undefined field_0x2f;
-    enum CAR_REL_TO_COLOR_ENUM relToCarColor;
-    int lockPalleteMaybe; /* 2 - uses default pallete for this vehicle // 3 - uses paintjob pallete (carColor variable) */
-    byte field_0x38;
-    byte field_0x39;
-    undefined field_0x3a;
-    undefined field_0x3b;
-};
-
-
-typedef undefined1 u1;
 typedef enum PED_STATE {
     PED_STATE_DRIVING_A_CAR=10,
     PED_STATE_ENTERING_INTO_CAR=3,
@@ -78,7 +47,6 @@ typedef enum PED_STATE {
     PED_STATE_WASTED=9
 } PED_STATE;
 
-typedef undefined2 u2;
 typedef enum PED_STATE2 {
     PED_STATE2_0_WALKING=0,
     PED_STATE2_1=1,
@@ -112,95 +80,6 @@ typedef enum SPRITE_BIT1 : unsigned char {
 
 typedef struct Ped Ped, *PPed;
 
-typedef enum CAR_MODEL : unsigned char {
-    ALFA=0,
-    ALLARD=1,
-    AMDB4=2,
-    APC=3,
-    BANKVAN=4,
-    BMW=5,
-    BOXCAR=6,
-    BOXTRUCK=7,
-    BUG=8,
-    BUICK=10,
-    BUS=11,
-    CAR15=15,
-    CAR20=20,
-    CAR43=43,
-    CAR9=9,
-    COPCAR=12,
-    DART=13,
-    EDSEL=14,
-    EDSELFBI=84,
-    FIAT=16,
-    FIRETRUK=17,
-    GRAHAM=18,
-    GT24640=19,
-    GTRUCK=21,
-    GUNJEEP=22,
-    HOTDOG=23,
-    HOTDOG_D1=24,
-    HOTDOG_D2=25,
-    HOTDOG_D3=26,
-    HOTDOG_D4=85,
-    ICECREAM=27,
-    ISETLIMO=28,
-    ISETTA=29,
-    JEEP=30,
-    JEFFREY=31,
-    KRSNABUS=86,
-    LIMO=32,
-    LIMO2=33,
-    MEDICAR=34,
-    MERC=35,
-    MESSER=36,
-    MIURA=37,
-    MONSTER=38,
-    MORGAN=39,
-    MORRIS=40,
-    PICKUP=41,
-    RTYPE=42,
-    SPIDER=44,
-    SPRITE=45,
-    STINGRAY=46,
-    STRATOS=47,
-    STRATOSB=48,
-    STRIPETB=49,
-    STYPE=50,
-    STYPECAB=51,
-    SWATVAN=52,
-    T2000GT=53,
-    TANK=54,
-    TANKER=55,
-    TAXI=56,
-    TBIRD=57,
-    TOWTRUCK=58,
-    TRAIN=59,
-    TRAINCAB=60,
-    TRAINFB=61,
-    TRANCEAM=62,
-    TRUKCAB1=63,
-    TRUKCAB2=64,
-    TRUKCONT=65,
-    TRUKTRNS=66,
-    TVVAN=67,
-    VAN=68,
-    VESPA=69,
-    VTYPE=70,
-    WBTWIN=71,
-    WRECK0=72,
-    WRECK1=73,
-    WRECK2=74,
-    WRECK3=75,
-    WRECK4=76,
-    WRECK5=77,
-    WRECK6=78,
-    WRECK7=79,
-    WRECK8=80,
-    WRECK9=81,
-    XK120=82,
-    ZCX5=83
-} CAR_MODEL;
 typedef int Sint32;
 
 typedef Sint32 SCR_f;
@@ -389,6 +268,96 @@ typedef enum PED_REMAP2 {
     PED_REMAP2_HEAVY_ARMOUR=2
 } PED_REMAP2;
 
+typedef enum CAR_MODEL : unsigned char {
+    ALFA=0,
+    ALLARD=1,
+    AMDB4=2,
+    APC=3,
+    BANKVAN=4,
+    BMW=5,
+    BOXCAR=6,
+    BOXTRUCK=7,
+    BUG=8,
+    BUICK=10,
+    BUS=11,
+    CAR15=15,
+    CAR20=20,
+    CAR43=43,
+    CAR9=9,
+    COPCAR=12,
+    DART=13,
+    EDSEL=14,
+    EDSELFBI=84,
+    FIAT=16,
+    FIRETRUK=17,
+    GRAHAM=18,
+    GT24640=19,
+    GTRUCK=21,
+    GUNJEEP=22,
+    HOTDOG=23,
+    HOTDOG_D1=24,
+    HOTDOG_D2=25,
+    HOTDOG_D3=26,
+    HOTDOG_D4=85,
+    ICECREAM=27,
+    ISETLIMO=28,
+    ISETTA=29,
+    JEEP=30,
+    JEFFREY=31,
+    KRSNABUS=86,
+    LIMO=32,
+    LIMO2=33,
+    MEDICAR=34,
+    MERC=35,
+    MESSER=36,
+    MIURA=37,
+    MONSTER=38,
+    MORGAN=39,
+    MORRIS=40,
+    PICKUP=41,
+    RTYPE=42,
+    SPIDER=44,
+    SPRITE=45,
+    STINGRAY=46,
+    STRATOS=47,
+    STRATOSB=48,
+    STRIPETB=49,
+    STYPE=50,
+    STYPECAB=51,
+    SWATVAN=52,
+    T2000GT=53,
+    TANK=54,
+    TANKER=55,
+    TAXI=56,
+    TBIRD=57,
+    TOWTRUCK=58,
+    TRAIN=59,
+    TRAINCAB=60,
+    TRAINFB=61,
+    TRANCEAM=62,
+    TRUKCAB1=63,
+    TRUKCAB2=64,
+    TRUKCONT=65,
+    TRUKTRNS=66,
+    TVVAN=67,
+    VAN=68,
+    VESPA=69,
+    VTYPE=70,
+    WBTWIN=71,
+    WRECK0=72,
+    WRECK1=73,
+    WRECK2=74,
+    WRECK3=75,
+    WRECK4=76,
+    WRECK5=77,
+    WRECK6=78,
+    WRECK7=79,
+    WRECK8=80,
+    WRECK9=81,
+    XK120=82,
+    ZCX5=83
+} CAR_MODEL;
+
 typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
     BAGAGE_DOORS_OPEN1=2048,
     BAGAGE_DOORS_OPEN2=4096,
@@ -430,6 +399,96 @@ typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar
 typedef struct MaybeCarEngine MaybeCarEngine, *PMaybeCarEngine;
 
 typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
+
+typedef enum CAR_MODEL4 {
+    CAR_MODEL4_ALFA=0,
+    CAR_MODEL4_ALLARD=1,
+    CAR_MODEL4_AMDB4=2,
+    CAR_MODEL4_APC=3,
+    CAR_MODEL4_BANKVAN=4,
+    CAR_MODEL4_BMW=5,
+    CAR_MODEL4_BOXCAR=6,
+    CAR_MODEL4_BOXTRUCK=7,
+    CAR_MODEL4_BUG=8,
+    CAR_MODEL4_BUICK=10,
+    CAR_MODEL4_BUS=11,
+    CAR_MODEL4_CAR15=15,
+    CAR_MODEL4_CAR20=20,
+    CAR_MODEL4_CAR43=43,
+    CAR_MODEL4_CAR9=9,
+    CAR_MODEL4_COPCAR=12,
+    CAR_MODEL4_DART=13,
+    CAR_MODEL4_EDSEL=14,
+    CAR_MODEL4_EDSELFBI=84,
+    CAR_MODEL4_FIAT=16,
+    CAR_MODEL4_FIRETRUCK=17,
+    CAR_MODEL4_GRAHAM=18,
+    CAR_MODEL4_GT24640=19,
+    CAR_MODEL4_GTRUCK=21,
+    CAR_MODEL4_GUNJEEP=22,
+    CAR_MODEL4_HOTDOG=23,
+    CAR_MODEL4_HOTDOG_D1=24,
+    CAR_MODEL4_HOTDOG_D2=25,
+    CAR_MODEL4_HOTDOG_D3=26,
+    CAR_MODEL4_HOTDOG_D4=85,
+    CAR_MODEL4_ICECREAM=27,
+    CAR_MODEL4_ISETLIMO=28,
+    CAR_MODEL4_ISETTA=29,
+    CAR_MODEL4_JEEP=30,
+    CAR_MODEL4_JEFFREY=31,
+    CAR_MODEL4_KRSNABUS=86,
+    CAR_MODEL4_LIMO=32,
+    CAR_MODEL4_LIMO2=33,
+    CAR_MODEL4_MEDICAR=34,
+    CAR_MODEL4_MERC=35,
+    CAR_MODEL4_MESSER=36,
+    CAR_MODEL4_MIURA=37,
+    CAR_MODEL4_MONSTER=38,
+    CAR_MODEL4_MORGAN=39,
+    CAR_MODEL4_MORRIS=40,
+    CAR_MODEL4_PICKUP=41,
+    CAR_MODEL4_RTYPE=42,
+    CAR_MODEL4_SPIDER=44,
+    CAR_MODEL4_SPRITE=45,
+    CAR_MODEL4_STINGRAY=46,
+    CAR_MODEL4_STRATOS=47,
+    CAR_MODEL4_STRATOSB=48,
+    CAR_MODEL4_STRIPETB=49,
+    CAR_MODEL4_STYPE=50,
+    CAR_MODEL4_STYPECAB=51,
+    CAR_MODEL4_SWATVAN=52,
+    CAR_MODEL4_T2000GT=53,
+    CAR_MODEL4_TANK=54,
+    CAR_MODEL4_TANKER=55,
+    CAR_MODEL4_TAXI=56,
+    CAR_MODEL4_TBIRD=57,
+    CAR_MODEL4_TOWTRUCK=58,
+    CAR_MODEL4_TRAIN=59,
+    CAR_MODEL4_TRAINCAB=60,
+    CAR_MODEL4_TRAINFB=61,
+    CAR_MODEL4_TRANCEAM=62,
+    CAR_MODEL4_TRUKCAB1=63,
+    CAR_MODEL4_TRUKCAB2=64,
+    CAR_MODEL4_TRUKCONT=65,
+    CAR_MODEL4_TRUKTRNS=66,
+    CAR_MODEL4_TVVAN=67,
+    CAR_MODEL4_VAN=68,
+    CAR_MODEL4_VESPA=69,
+    CAR_MODEL4_VTYPE=70,
+    CAR_MODEL4_WBTWIN=71,
+    CAR_MODEL4_WRECK0=72,
+    CAR_MODEL4_WRECK1=73,
+    CAR_MODEL4_WRECK2=74,
+    CAR_MODEL4_WRECK3=75,
+    CAR_MODEL4_WRECK4=76,
+    CAR_MODEL4_WRECK5=77,
+    CAR_MODEL4_WRECK6=78,
+    CAR_MODEL4_WRECK7=79,
+    CAR_MODEL4_WRECK8=80,
+    CAR_MODEL4_WRECK9=81,
+    CAR_MODEL4_XK120=82,
+    CAR_MODEL4_ZCX5=83
+} CAR_MODEL4;
 
 typedef enum CAR_ENGINE_STATE {
     BROKEN_DOESNT_WORK=0,
@@ -681,6 +740,35 @@ struct SomeStructInsideACar {
     undefined field_0xf;
 };
 
+struct Position {
+    short rotation;
+    undefined field_0x2;
+    undefined field_0x3;
+    struct Position * prev;
+    struct Sprite * sprite;
+    struct Position * next;
+    int field_0x10;
+    int x; /* Created by retype action */
+    int y; /* Created by retype action */
+    int z; /* Created by retype action */
+    short incFromS20;
+    short field_0x22;
+    short carColor;
+    undefined field_0x26;
+    undefined field_0x27;
+    int field_0x28;
+    byte field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+    enum CAR_REL_TO_COLOR_ENUM relToCarColor;
+    int lockPalleteMaybe; /* 2 - uses default pallete for this vehicle // 3 - uses paintjob pallete (carColor variable) */
+    byte field_0x38;
+    byte field_0x39;
+    undefined field_0x3a;
+    undefined field_0x3b;
+};
+
 struct Car {
     undefined4 field_0x0;
     undefined4 field_0x4;
@@ -706,10 +794,7 @@ struct Car {
     undefined field_0x81;
     undefined field_0x82;
     undefined field_0x83;
-    enum CAR_MODEL carModel;
-    undefined field_0x85;
-    undefined field_0x86;
-    undefined field_0x87;
+    enum CAR_MODEL4 carModel;
     uint mask;
     u1 field_0x8c;
     byte field_0x8d;
@@ -1422,96 +1507,6 @@ typedef enum CAR_DOOR_STATE {
     CAR_DOOR_STATE_LOCKED=1,
     CAR_DOOR_STATE_UNLOCKED=2
 } CAR_DOOR_STATE;
-
-typedef enum CAR_MODEL4 {
-    CAR_MODEL4_ALFA=0,
-    CAR_MODEL4_ALLARD=1,
-    CAR_MODEL4_AMDB4=2,
-    CAR_MODEL4_APC=3,
-    CAR_MODEL4_BANKVAN=4,
-    CAR_MODEL4_BMW=5,
-    CAR_MODEL4_BOXCAR=6,
-    CAR_MODEL4_BOXTRUCK=7,
-    CAR_MODEL4_BUG=8,
-    CAR_MODEL4_BUICK=10,
-    CAR_MODEL4_BUS=11,
-    CAR_MODEL4_CAR15=15,
-    CAR_MODEL4_CAR20=20,
-    CAR_MODEL4_CAR43=43,
-    CAR_MODEL4_CAR9=9,
-    CAR_MODEL4_COPCAR=12,
-    CAR_MODEL4_DART=13,
-    CAR_MODEL4_EDSEL=14,
-    CAR_MODEL4_EDSELFBI=84,
-    CAR_MODEL4_FIAT=16,
-    CAR_MODEL4_FIRETRUCK=17,
-    CAR_MODEL4_GRAHAM=18,
-    CAR_MODEL4_GT24640=19,
-    CAR_MODEL4_GTRUCK=21,
-    CAR_MODEL4_GUNJEEP=22,
-    CAR_MODEL4_HOTDOG=23,
-    CAR_MODEL4_HOTDOG_D1=24,
-    CAR_MODEL4_HOTDOG_D2=25,
-    CAR_MODEL4_HOTDOG_D3=26,
-    CAR_MODEL4_HOTDOG_D4=85,
-    CAR_MODEL4_ICECREAM=27,
-    CAR_MODEL4_ISETLIMO=28,
-    CAR_MODEL4_ISETTA=29,
-    CAR_MODEL4_JEEP=30,
-    CAR_MODEL4_JEFFREY=31,
-    CAR_MODEL4_KRSNABUS=86,
-    CAR_MODEL4_LIMO=32,
-    CAR_MODEL4_LIMO2=33,
-    CAR_MODEL4_MEDICAR=34,
-    CAR_MODEL4_MERC=35,
-    CAR_MODEL4_MESSER=36,
-    CAR_MODEL4_MIURA=37,
-    CAR_MODEL4_MONSTER=38,
-    CAR_MODEL4_MORGAN=39,
-    CAR_MODEL4_MORRIS=40,
-    CAR_MODEL4_PICKUP=41,
-    CAR_MODEL4_RTYPE=42,
-    CAR_MODEL4_SPIDER=44,
-    CAR_MODEL4_SPRITE=45,
-    CAR_MODEL4_STINGRAY=46,
-    CAR_MODEL4_STRATOS=47,
-    CAR_MODEL4_STRATOSB=48,
-    CAR_MODEL4_STRIPETB=49,
-    CAR_MODEL4_STYPE=50,
-    CAR_MODEL4_STYPECAB=51,
-    CAR_MODEL4_SWATVAN=52,
-    CAR_MODEL4_T2000GT=53,
-    CAR_MODEL4_TANK=54,
-    CAR_MODEL4_TANKER=55,
-    CAR_MODEL4_TAXI=56,
-    CAR_MODEL4_TBIRD=57,
-    CAR_MODEL4_TOWTRUCK=58,
-    CAR_MODEL4_TRAIN=59,
-    CAR_MODEL4_TRAINCAB=60,
-    CAR_MODEL4_TRAINFB=61,
-    CAR_MODEL4_TRANCEAM=62,
-    CAR_MODEL4_TRUKCAB1=63,
-    CAR_MODEL4_TRUKCAB2=64,
-    CAR_MODEL4_TRUKCONT=65,
-    CAR_MODEL4_TRUKTRNS=66,
-    CAR_MODEL4_TVVAN=67,
-    CAR_MODEL4_VAN=68,
-    CAR_MODEL4_VESPA=69,
-    CAR_MODEL4_VTYPE=70,
-    CAR_MODEL4_WBTWIN=71,
-    CAR_MODEL4_WRECK0=72,
-    CAR_MODEL4_WRECK1=73,
-    CAR_MODEL4_WRECK2=74,
-    CAR_MODEL4_WRECK3=75,
-    CAR_MODEL4_WRECK4=76,
-    CAR_MODEL4_WRECK5=77,
-    CAR_MODEL4_WRECK6=78,
-    CAR_MODEL4_WRECK7=79,
-    CAR_MODEL4_WRECK8=80,
-    CAR_MODEL4_WRECK9=81,
-    CAR_MODEL4_XK120=82,
-    CAR_MODEL4_ZCX5=83
-} CAR_MODEL4;
 
 typedef enum CAR_UNK_TYPE {
     FIRE_TRACK_CARS=5,
@@ -2363,7 +2358,7 @@ struct Player { /* Player actually */
     u1 field_0x8b;
     u1 field_0x8c;
     undefined field_0x8d;
-    undefined field_0x8e;
+    undefined1 field_0x8e;
     byte field_0x8f;
     struct PlayerPhysics ph1; /* player ped related */
     struct PlayerPhysics ph2; /* camera related, for example teleport use this struct */
@@ -3572,6 +3567,24 @@ struct S26 {
     undefined field_0x36;
     undefined field_0x37;
     int relToCopStars;
+};
+
+typedef struct Game2 Game2, *PGame2;
+
+struct Game2 {
+    undefined field_0x0[40];
+    struct Car * car;
+    undefined field_0x2c[80];
+    undefined4 field_0x7c;
+    undefined field_0x80[3355];
+    undefined field_0xd9b;
+};
+
+typedef struct Game2Holder Game2Holder, *PGame2Holder;
+
+struct Game2Holder {
+    struct Game2 arr[10];
+    struct Game2 * last;
 };
 
 typedef struct Gang Gang, *PGang;
@@ -4974,6 +4987,199 @@ struct BitMap {
     int field_0x10;
 };
 
+typedef struct BusAndTrains BusAndTrains, *PBusAndTrains;
+
+struct BusAndTrains {
+    undefined4 field_0x0;
+    undefined4 field_0x4;
+    undefined4 field_0x8;
+    undefined4 field_0xc;
+    undefined4 field_0x10;
+    undefined4 field_0x14;
+    undefined4 field_0x18;
+    undefined4 field_0x1c;
+    undefined4 field_0x20;
+    undefined4 field_0x24;
+    undefined4 field_0x28;
+    undefined2 field_0x2c;
+    u1 field_0x2e;
+    u1 field_0x2f;
+    undefined field_0x30;
+    undefined field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+};
+
+typedef struct BusAndTrains2 BusAndTrains2, *PBusAndTrains2;
+
+struct BusAndTrains2 {
+    u1 field_0x0;
+    u1 field_0x1;
+    u1 field_0x2;
+    undefined field_0x3;
+    undefined2 field_0x4;
+    undefined field_0x6;
+    undefined field_0x7;
+    undefined4 field_0x8;
+    undefined4 field_0xc;
+    undefined4 field_0x10;
+    undefined4 field_0x14;
+    undefined field_0x18;
+    undefined field_0x19;
+    undefined field_0x1a;
+    undefined field_0x1b;
+    undefined field_0x1c;
+    undefined field_0x1d;
+    undefined field_0x1e;
+    undefined field_0x1f;
+    undefined field_0x20;
+    undefined field_0x21;
+    undefined field_0x22;
+    undefined field_0x23;
+    undefined field_0x24;
+    undefined field_0x25;
+    undefined field_0x26;
+    undefined field_0x27;
+    undefined field_0x28;
+    undefined field_0x29;
+    undefined field_0x2a;
+    undefined field_0x2b;
+    undefined field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+    undefined field_0x30;
+    undefined field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+    undefined field_0x34;
+    undefined field_0x35;
+    undefined field_0x36;
+    undefined field_0x37;
+    undefined field_0x38;
+    undefined field_0x39;
+    undefined field_0x3a;
+    undefined field_0x3b;
+    undefined field_0x3c;
+    undefined field_0x3d;
+    undefined field_0x3e;
+    undefined field_0x3f;
+    undefined field_0x40;
+    undefined field_0x41;
+    u1 field_0x42;
+    u1 field_0x43;
+    u1 field_0x44;
+    undefined field_0x45;
+    undefined field_0x46;
+    undefined field_0x47;
+    undefined4 field_0x48;
+    undefined4 field_0x4c;
+    undefined4 field_0x50;
+    u1 field_0x54;
+    u1 field_0x55;
+    u1 field_0x56;
+    u1 field_0x57;
+};
+
+typedef struct BusAndTrainsHolder BusAndTrainsHolder, *PBusAndTrainsHolder;
+
+struct BusAndTrainsHolder {
+    struct BusAndTrains arr[100];
+    struct BusAndTrains2 arr2[10];
+    undefined field_0x17c0;
+    undefined field_0x17c1;
+    undefined field_0x17c2;
+    undefined field_0x17c3;
+    undefined field_0x17c4;
+    undefined field_0x17c5;
+    undefined field_0x17c6;
+    undefined field_0x17c7;
+    undefined field_0x17c8;
+    undefined field_0x17c9;
+    undefined field_0x17ca;
+    undefined field_0x17cb;
+    undefined field_0x17cc;
+    undefined field_0x17cd;
+    undefined field_0x17ce;
+    undefined field_0x17cf;
+    undefined field_0x17d0;
+    undefined field_0x17d1;
+    undefined field_0x17d2;
+    undefined field_0x17d3;
+    undefined field_0x17d4;
+    undefined field_0x17d5;
+    undefined field_0x17d6;
+    undefined field_0x17d7;
+    undefined field_0x17d8;
+    undefined field_0x17d9;
+    undefined field_0x17da;
+    undefined field_0x17db;
+    undefined field_0x17dc;
+    undefined field_0x17dd;
+    undefined field_0x17de;
+    undefined field_0x17df;
+    undefined field_0x17e0;
+    undefined field_0x17e1;
+    undefined field_0x17e2;
+    undefined field_0x17e3;
+    undefined field_0x17e4;
+    undefined field_0x17e5;
+    undefined field_0x17e6;
+    undefined field_0x17e7;
+    undefined field_0x17e8;
+    undefined field_0x17e9;
+    undefined field_0x17ea;
+    undefined field_0x17eb;
+    undefined field_0x17ec;
+    undefined field_0x17ed;
+    undefined field_0x17ee;
+    undefined field_0x17ef;
+    undefined field_0x17f0;
+    undefined field_0x17f1;
+    undefined field_0x17f2;
+    undefined field_0x17f3;
+    undefined field_0x17f4;
+    undefined field_0x17f5;
+    undefined field_0x17f6;
+    undefined field_0x17f7;
+    undefined field_0x17f8;
+    undefined field_0x17f9;
+    undefined field_0x17fa;
+    undefined field_0x17fb;
+    undefined field_0x17fc;
+    undefined field_0x17fd;
+    undefined field_0x17fe;
+    undefined field_0x17ff;
+    undefined field_0x1800;
+    undefined field_0x1801;
+    undefined field_0x1802;
+    undefined field_0x1803;
+    undefined field_0x1804;
+    undefined field_0x1805;
+    undefined field_0x1806;
+    undefined field_0x1807;
+    undefined field_0x1808;
+    undefined field_0x1809;
+    undefined field_0x180a;
+    undefined field_0x180b;
+    undefined field_0x180c;
+    undefined field_0x180d;
+    undefined field_0x180e;
+    undefined field_0x180f;
+    undefined field_0x1810;
+    undefined field_0x1811;
+    undefined field_0x1812;
+    undefined field_0x1813;
+    undefined field_0x1814;
+    undefined field_0x1815;
+    undefined field_0x1816;
+    undefined field_0x1817;
+    undefined field_0x1818;
+    undefined field_0x1819;
+    undefined field_0x181a;
+    undefined field_0x181b;
+};
+
 typedef struct C1 C1, *PC1;
 
 typedef struct S5 S5, *PS5;
@@ -5009,6 +5215,33 @@ struct C1 { /* PlaceHolder Class Structure */
     undefined field_0x1486;
     undefined field_0x1487;
     struct S5 * s5Arr1020[1020];
+};
+
+typedef struct CarInfoChunk CarInfoChunk, *PCarInfoChunk;
+
+struct CarInfoChunk {
+    struct CarInfo * last;
+    struct CarInfo * carInfoArray[256]; /* 256 elements */
+};
+
+typedef struct Collide Collide, *PCollide;
+
+struct Collide {
+    undefined field_0x0;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    undefined field_0x4;
+    undefined field_0x5;
+    undefined field_0x6;
+    undefined field_0x7;
+    struct Collide * next;
+};
+
+typedef struct CollideArray256 CollideArray256, *PCollideArray256;
+
+struct CollideArray256 { /* Collisions */
+    struct Collide * arr[256];
 };
 
 typedef struct D3DContext D3DContext, *PD3DContext;
@@ -6303,7 +6536,9 @@ struct S10 {
     char field_0x2e;
     undefined field_0x2f[29];
     void * field_0x4c;
-    undefined field_0x50[10000];
+    undefined field_0x50[148];
+    undefined4 relToMessages; /* Created by retype action */
+    undefined field_0xe8[9848];
     void * field_0x2760;
     undefined field_0x2764[81];
     undefined1 displayDebugPedInfo; /* Created by retype action */
@@ -9037,8 +9272,8 @@ struct Style_S3 {
     int i9;
     void * sprite_graphics;
     undefined4 i13;
-    int tiles;
-    void * ptr;
+    void * tiles;
+    void * bufSize_0x800; /* 0x800 size */
     undefined4 i11;
     undefined4 i14;
     undefined4 i18;
@@ -9237,4 +9472,3 @@ struct TrafficLigthStruct {
     enum TRAFFIC_PHASE phase;
     byte timer;
 };
-
