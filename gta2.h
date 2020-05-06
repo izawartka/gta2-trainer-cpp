@@ -6536,7 +6536,9 @@ struct S10 {
     char field_0x2e;
     undefined field_0x2f[29];
     void * field_0x4c;
-    undefined field_0x50[10000];
+    undefined field_0x50[148];
+    undefined4 relToMessages; /* Created by retype action */
+    undefined field_0xe8[9848];
     void * field_0x2760;
     undefined field_0x2764[81];
     undefined1 displayDebugPedInfo; /* Created by retype action */
@@ -9470,11 +9472,3 @@ struct TrafficLigthStruct {
     enum TRAFFIC_PHASE phase;
     byte timer;
 };
-
-typedef struct IDirectDraw IDirectDraw, *PIDirectDraw;
-
-struct IDirectDraw {
-};
-
-typedef struct IDirectDraw * LPDIRECTDRAW;
-
