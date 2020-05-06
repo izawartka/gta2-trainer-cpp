@@ -3569,6 +3569,24 @@ struct S26 {
     int relToCopStars;
 };
 
+typedef struct Game2 Game2, *PGame2;
+
+struct Game2 {
+    undefined field_0x0[40];
+    struct Car * car;
+    undefined field_0x2c[80];
+    undefined4 field_0x7c;
+    undefined field_0x80[3355];
+    undefined field_0xd9b;
+};
+
+typedef struct Game2Holder Game2Holder, *PGame2Holder;
+
+struct Game2Holder {
+    struct Game2 arr[10];
+    struct Game2 * last;
+};
+
 typedef struct Gang Gang, *PGang;
 
 struct Gang {
@@ -5204,6 +5222,26 @@ typedef struct CarInfoChunk CarInfoChunk, *PCarInfoChunk;
 struct CarInfoChunk {
     struct CarInfo * last;
     struct CarInfo * carInfoArray[256]; /* 256 elements */
+};
+
+typedef struct Collide Collide, *PCollide;
+
+struct Collide {
+    undefined field_0x0;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    undefined field_0x4;
+    undefined field_0x5;
+    undefined field_0x6;
+    undefined field_0x7;
+    struct Collide * next;
+};
+
+typedef struct CollideArray256 CollideArray256, *PCollideArray256;
+
+struct CollideArray256 { /* Collisions */
+    struct Collide * arr[256];
 };
 
 typedef struct D3DContext D3DContext, *PD3DContext;
@@ -9233,7 +9271,7 @@ struct Style_S3 {
     void * sprite_graphics;
     undefined4 i13;
     void * tiles;
-    void * ptr;
+    void * bufSize_0x800; /* 0x800 size */
     undefined4 i11;
     undefined4 i14;
     undefined4 i18;
@@ -9432,4 +9470,11 @@ struct TrafficLigthStruct {
     enum TRAFFIC_PHASE phase;
     byte timer;
 };
+
+typedef struct IDirectDraw IDirectDraw, *PIDirectDraw;
+
+struct IDirectDraw {
+};
+
+typedef struct IDirectDraw * LPDIRECTDRAW;
 
