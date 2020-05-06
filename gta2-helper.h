@@ -13,6 +13,7 @@ static DWORD ptrToS3 = 0x00670684;
 static DWORD ptrToCarEngines = 0x005e5488;
 static DWORD ptrToMapRelatedStruct = 0x00662c08;
 static DWORD ptrToS10 = 0x00672f40;
+static DWORD ptrToS2LocalesSettings = 0x00671550;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
 #define FloatEncode(x) (int)(x * 16384)
@@ -85,9 +86,11 @@ static PedTick* fnPedTickRaw = (PedTick*)0x004454e0;
 
 
 // void __fastcall showMessageToPlayer(DWORD* param_1, undefined edx, int timeInSeconds, char* messageCode)
-typedef void(__fastcall ShowMessageToPlayer)(undefined4*, DWORD edx, int timeInSeconds, char* messageCode);
+typedef void(__fastcall ShowMessageToPlayer)(S10_TxtMessage*, DWORD edx, int timeInSeconds, char* messageCode);
 static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x004c6750;
 // example: fnShowMessageToPlayer(3, "nespray");
-#define fnShowMessageToPlayer(seconds, messageCode) fnShowMessageToPlayerRaw(&(ByPtr(S10, ptrToS10))->relToMessages, 0, seconds, messageCode)
+#define fnShowMessageToPlayer(seconds, messageCode) fnShowMessageToPlayerRaw(&(ByPtr(S10, ptrToS10))->txtMessage, 0, seconds, messageCode)
+
+void fnShowCustomTextMessage(WCHAR* message);
 
 #endif // !GTA_H

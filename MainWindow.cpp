@@ -1,4 +1,4 @@
-// MainWindow.cpp : implementation file
+﻿// MainWindow.cpp : implementation file
 //
 
 #include "pch.h"
