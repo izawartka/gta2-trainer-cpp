@@ -962,24 +962,16 @@ struct MaybeCarEngine {
     undefined field_0x55;
     undefined field_0x56;
     undefined field_0x57;
-    undefined2 field_0x58;
+    undefined2 alsoRefToAnotherEngine2;
     undefined field_0x5a;
     undefined field_0x5b;
-    void * prev;
+    struct MaybeCarEngine * prev;
     undefined field_0x60;
     short gasLevel; /* acceleration pedal */
     undefined field_0x63;
-    undefined field_0x64;
-    short brakeLevel;
-    undefined field_0x67;
-    undefined field_0x68;
-    undefined field_0x69;
-    undefined field_0x6a;
-    undefined field_0x6b;
-    undefined field_0x6c;
-    undefined field_0x6d;
-    undefined field_0x6e;
-    undefined field_0x6f;
+    struct MaybeCarEngine * alsoRefToAnotherEngine; /* Created by retype action */
+    undefined4 field_0x68;
+    undefined4 field_0x6c;
     undefined4 field_0x70;
     undefined4 wheelPanProbably;
     undefined4 rotationForce;
