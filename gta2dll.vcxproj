@@ -199,6 +199,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gta2-helper.cpp" />
     <ClCompile Include="gta2dll.cpp" />
     <ClCompile Include="Hooking.Patterns.cpp" />
     <ClCompile Include="MainWindow.cpp" />

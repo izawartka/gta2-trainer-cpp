@@ -962,24 +962,16 @@ struct MaybeCarEngine {
     undefined field_0x55;
     undefined field_0x56;
     undefined field_0x57;
-    undefined2 field_0x58;
+    undefined2 alsoRefToAnotherEngine2;
     undefined field_0x5a;
     undefined field_0x5b;
-    void * prev;
+    struct MaybeCarEngine * prev;
     undefined field_0x60;
     short gasLevel; /* acceleration pedal */
     undefined field_0x63;
-    undefined field_0x64;
-    short brakeLevel;
-    undefined field_0x67;
-    undefined field_0x68;
-    undefined field_0x69;
-    undefined field_0x6a;
-    undefined field_0x6b;
-    undefined field_0x6c;
-    undefined field_0x6d;
-    undefined field_0x6e;
-    undefined field_0x6f;
+    struct MaybeCarEngine * alsoRefToAnotherEngine; /* Created by retype action */
+    undefined4 field_0x68;
+    undefined4 field_0x6c;
     undefined4 field_0x70;
     undefined4 wheelPanProbably;
     undefined4 rotationForce;
@@ -6427,6 +6419,8 @@ struct GtaStringsHolder {
 
 typedef struct LocaleSettings LocaleSettings, *PLocaleSettings;
 
+typedef struct LocaleSingle LocaleSingle, *PLocaleSingle;
+
 typedef struct S2 S2, *PS2;
 
 struct S2 {
@@ -6435,10 +6429,15 @@ struct S2 {
 };
 
 struct LocaleSettings {
-    void * ptrToLocales;
+    struct LocaleSingle * ptrToLocales;
     int length; /* Created by retype action */
     struct S2 s2;
     char language; /* Created by retype action */
+};
+
+struct LocaleSingle {
+    WCHAR * text;
+    char id[8];
 };
 
 typedef struct MapRelated_S11 MapRelated_S11, *PMapRelated_S11;
@@ -6531,14 +6530,58 @@ struct PaletteTexture {
 
 typedef struct S10 S10, *PS10;
 
+typedef struct S10_TxtMessage S10_TxtMessage, *PS10_TxtMessage;
+
+struct S10_TxtMessage {
+    WCHAR message[640];
+    undefined field_0x500;
+    undefined field_0x501;
+    undefined field_0x502;
+    undefined field_0x503;
+    undefined2 field_0x504;
+    undefined field_0x506;
+    undefined field_0x507;
+    undefined4 field_0x508;
+    undefined4 field_0x50c;
+    undefined4 field_0x510;
+    undefined4 field_0x514;
+    undefined field_0x518;
+    undefined field_0x519;
+    undefined field_0x51a;
+    undefined field_0x51b;
+    undefined field_0x51c;
+    undefined field_0x51d;
+    undefined field_0x51e;
+    undefined field_0x51f;
+    undefined field_0x520;
+    undefined field_0x521;
+    undefined field_0x522;
+    undefined field_0x523;
+    int * field_0x524;
+    undefined field_0x528[452];
+    undefined4 field_0x6ec;
+    undefined field_0x6f0;
+    undefined field_0x6f1;
+    undefined field_0x6f2;
+    undefined field_0x6f3;
+    undefined field_0x6f4;
+    undefined field_0x6f5;
+    undefined field_0x6f6;
+    undefined field_0x6f7;
+    struct S10_TxtMessage * prev;
+    int field_0x6fc;
+    char * messageCode; /* 12 chars max */
+};
+
 struct S10 {
-    undefined field_0x0[46];
+    undefined1 field_0x0;
+    undefined field_0x1[45];
     char field_0x2e;
     undefined field_0x2f[29];
     void * field_0x4c;
     undefined field_0x50[148];
-    undefined4 relToMessages; /* Created by retype action */
-    undefined field_0xe8[9848];
+    struct S10_TxtMessage txtMessage; /* Created by retype action */
+    undefined field_0x7e8[8056];
     void * field_0x2760;
     undefined field_0x2764[81];
     undefined1 displayDebugPedInfo; /* Created by retype action */
@@ -9472,3 +9515,11 @@ struct TrafficLigthStruct {
     enum TRAFFIC_PHASE phase;
     byte timer;
 };
+
+typedef struct IDirectDraw_ IDirectDraw_, *PIDirectDraw_;
+
+struct IDirectDraw_ {
+};
+
+typedef struct IDirectDraw_ * LPDIRECTDRAW;
+
