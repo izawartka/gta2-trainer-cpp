@@ -829,7 +829,7 @@
     <CheatEntry>
       <ID>62</ID>
       <Description>"someIdDecr"</Description>
-      <LastState Value="191028" RealAddress="03E73E4C"/>
+      <LastState Value="196269" RealAddress="03E73E4C"/>
       <VariableType>4 Bytes</VariableType>
       <Address>"d3ddll.dll"+43e4c</Address>
     </CheatEntry>
@@ -1225,7 +1225,7 @@
     <CheatEntry>
       <ID>66</ID>
       <Description>"ptrToPedManager"</Description>
-      <LastState Value="136C74BC" RealAddress="136C3968"/>
+      <LastState Value="136C5AF4" RealAddress="136C3968"/>
       <ShowAsHex>1</ShowAsHex>
       <VariableType>4 Bytes</VariableType>
       <Address>005e5bbc</Address>
@@ -1236,14 +1236,14 @@
     <CheatEntry>
       <ID>68</ID>
       <Description>"nextSpriteId"</Description>
-      <LastState Value="8691" RealAddress="0066A3BC"/>
+      <LastState Value="9303" RealAddress="0066A3BC"/>
       <VariableType>4 Bytes</VariableType>
       <Address>0066a3bc</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>69</ID>
       <Description>"ptrToSpriteManager-&gt;last-&gt;id"</Description>
-      <LastState Value="8686" RealAddress="138129E0"/>
+      <LastState Value="9302" RealAddress="13813034"/>
       <VariableType>4 Bytes</VariableType>
       <Address>0066a3b4</Address>
       <Offsets>
@@ -1261,7 +1261,7 @@
         <CheatEntry>
           <ID>72</ID>
           <Description>"ptrToTrafficLights-&gt;timer"</Description>
-          <LastState Value="52" RealAddress="13876AF3"/>
+          <LastState Value="39" RealAddress="13876AF3"/>
           <VariableType>Byte</VariableType>
           <Address>006721cc</Address>
           <Offsets>
@@ -1297,7 +1297,7 @@
     <CheatEntry>
       <ID>84</ID>
       <Description>"random seed"</Description>
-      <LastState Value="3289677328" RealAddress="00595410"/>
+      <LastState Value="1886991888" RealAddress="00595410"/>
       <VariableType>4 Bytes</VariableType>
       <Address>00595410</Address>
     </CheatEntry>
@@ -1311,7 +1311,7 @@
         <CheatEntry>
           <ID>92</ID>
           <Description>"ptrToTrafficManager-&gt;nextCarId"</Description>
-          <LastState Value="2924" RealAddress="00AE1BBC"/>
+          <LastState Value="3048" RealAddress="00AE1BBC"/>
           <VariableType>4 Bytes</VariableType>
           <Address>005e4ca4</Address>
           <Offsets>
@@ -1378,7 +1378,7 @@
     <CheatEntry>
       <ID>94</ID>
       <Description>"nextPedId"</Description>
-      <LastState Value="10706" RealAddress="00591E84"/>
+      <LastState Value="11490" RealAddress="00591E84"/>
       <VariableType>4 Bytes</VariableType>
       <Address>00591e84</Address>
     </CheatEntry>
@@ -1853,7 +1853,7 @@
     <CheatEntry>
       <ID>208</ID>
       <Description>"No description"</Description>
-      <LastState Value="335750232" RealAddress="00662B90"/>
+      <LastState Value="0" RealAddress="00662B90"/>
       <VariableType>4 Bytes</VariableType>
       <Address>00662b90</Address>
     </CheatEntry>
@@ -1945,7 +1945,7 @@
     <CheatEntry>
       <ID>217</ID>
       <Description>"ptrToS19-&gt;18"</Description>
-      <LastState Value="304697" RealAddress="00AEEF38"/>
+      <LastState Value="833060" RealAddress="00AEEF38"/>
       <VariableType>4 Bytes</VariableType>
       <Address>00671e9c</Address>
       <Offsets>
@@ -1955,7 +1955,7 @@
     <CheatEntry>
       <ID>218</ID>
       <Description>"lastFrameTime"</Description>
-      <LastState Value="86433376" RealAddress="00662748"/>
+      <LastState Value="86607385" RealAddress="00662748"/>
       <VariableType>4 Bytes</VariableType>
       <Address>00662748</Address>
     </CheatEntry>
@@ -2026,4 +2026,20 @@
   </Structures>
   <Comments>Info about this table:
 </Comments>
+  <LuaScript>--Note: keep the function base name unique.
+typename="SCR_f" --shown as the typename in ce
+bytecount=4  --number of bytes of this type
+functionbasename="SCR_f"
+
+function SCR_f_bytestovalue(b1,b2,b3,b4,address)
+  local a = b4 * 256 * 256 * 256 + b3 * 256 * 256 + b2 * 256 + b1
+  return a / 16384.0
+end
+
+function SCR_f_valuetobytes(i,address)
+  return math.floor(i*16384)
+end
+
+registerCustomTypeLua(typename, bytecount, SCR_f_bytestovalue, SCR_f_valuetobytes, true)
+</LuaScript>
 </CheatTable>
