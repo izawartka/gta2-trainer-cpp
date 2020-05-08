@@ -1762,12 +1762,12 @@ void MainWindow::TeleportPlayer()
 	{
 		m_pedX.GetWindowTextW(buffer);
 		fesetround(FE_TONEAREST);
-		playerPed->currentCar->maybeEngine->x = (int)(_wtof(buffer) * 16384.0);
+		playerPed->currentCar->physics->X_CM = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedY.GetWindowTextW(buffer);
-		playerPed->currentCar->maybeEngine->y = (int)(_wtof(buffer) * 16384.0);
+		playerPed->currentCar->physics->Y_CM = (int)(_wtof(buffer) * 16384.0);
 
-		log(L"Player car teleported to %f, %f!", ((float)playerPed->currentCar->maybeEngine->x) / 16384.0f, ((float)playerPed->currentCar->maybeEngine->y) / 16384.0f);
+		log(L"Player car teleported to %f, %f!", ((float)playerPed->currentCar->physics->X_CM) / 16384.0f, ((float)playerPed->currentCar->physics->Y_CM) / 16384.0f);
 
 	}
 	else
