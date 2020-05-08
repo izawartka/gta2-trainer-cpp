@@ -831,7 +831,7 @@ struct Car {
 struct PlayerPhysics {
     SCR_f x;
     SCR_f y;
-    SCR_f z;
+    SCR_f z; /* camera z offset */
     undefined4 field_0xc;
     SCR_f x2;
     SCR_f y2;
@@ -939,11 +939,30 @@ struct MaybeCarEngine {
     undefined field_0xa;
     undefined field_0xb;
     struct MaybeCarEngine * next;
-    int field_0x10[2][4];
-    int x;
-    int y;
-    int xReadOnly;
-    int yReadOnly;
+    undefined field_0x10;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined field_0x14;
+    undefined field_0x15;
+    undefined field_0x16;
+    undefined field_0x17;
+    undefined field_0x18;
+    undefined field_0x19;
+    undefined field_0x1a;
+    undefined field_0x1b;
+    undefined field_0x1c;
+    undefined field_0x1d;
+    undefined field_0x1e;
+    undefined field_0x1f;
+    SCR_f Xskid1;
+    SCR_f Yskid1;
+    SCR_f Xskid2;
+    SCR_f Yskid2;
+    int X_CM;
+    int Y_CM;
+    int X_CP;
+    int Y_CP;
     int xVelocityReadOnly;
     int yVelocityReadOnly;
     undefined field_0x48;
@@ -962,7 +981,7 @@ struct MaybeCarEngine {
     undefined field_0x55;
     undefined field_0x56;
     undefined field_0x57;
-    undefined2 alsoRefToAnotherEngine2;
+    undefined2 angle;
     undefined field_0x5a;
     undefined field_0x5b;
     struct MaybeCarEngine * prev;
@@ -973,7 +992,7 @@ struct MaybeCarEngine {
     undefined4 field_0x68;
     undefined4 field_0x6c;
     undefined4 field_0x70;
-    undefined4 wheelPanProbably;
+    undefined4 pointingAngle;
     undefined4 rotationForce;
     undefined field_0x7c;
     undefined field_0x7d;
@@ -983,8 +1002,8 @@ struct MaybeCarEngine {
     undefined field_0x81;
     undefined field_0x82;
     undefined field_0x83;
-    undefined4 field_0x84;
-    undefined4 field_0x88;
+    undefined4 frontSkid;
+    undefined4 rearSkid;
     undefined4 field_0x8c;
     byte isBrakeOn;
     byte isHandbrakeOn;
@@ -9515,3 +9534,4 @@ struct TrafficLigthStruct {
     enum TRAFFIC_PHASE phase;
     byte timer;
 };
+
