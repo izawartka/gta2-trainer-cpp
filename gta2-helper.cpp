@@ -17,7 +17,7 @@ Car* fnGetCarById(int id) {
 	Car* car = 0;
 	while (tcar)
 	{
-		if (tcar->id == 13) {
+		if (tcar->id == id) {
 			car = tcar;
 			break;
 		}
