@@ -250,7 +250,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(ID_SPAWNCAR_TANK, &MainWindow::OnSpawncarTank)
 	ON_WM_HOTKEY()
 	ON_COMMAND(ID_SPAWNCAR_GT, &MainWindow::OnSpawncarGt)
-	ON_COMMAND_RANGE(35000, 35000 + 83, &OnSpawnCarClick)
+	ON_COMMAND_RANGE(35000, 35000 + 86, &OnSpawnCarClick)
 	ON_COMMAND_RANGE(45000, 45000 + 15, &OnGetWeaponClick)
 	ON_COMMAND_RANGE(55000, 55000 + 62, &OnPlayVocalClick)
 	ON_COMMAND(ID_SPAWNCAR_GUNJEEP, &MainWindow::OnSpawncarGunjeep)
@@ -393,13 +393,11 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D1", 24));
 	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D2", 25));
 	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D3", 26));
-	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D4", 85));
 	cars.insert(std::pair<std::wstring, DWORD>(L"ICECREAM", 27));
 	cars.insert(std::pair<std::wstring, DWORD>(L"ISETLIMO", 28));
 	cars.insert(std::pair<std::wstring, DWORD>(L"ISETTA", 29));
 	cars.insert(std::pair<std::wstring, DWORD>(L"JEEP", 30));
 	cars.insert(std::pair<std::wstring, DWORD>(L"JEFFREY", 31));
-	cars.insert(std::pair<std::wstring, DWORD>(L"KRSNABUS", 86));
 	cars.insert(std::pair<std::wstring, DWORD>(L"LIMO", 32));
 	cars.insert(std::pair<std::wstring, DWORD>(L"LIMO2", 33));
 	cars.insert(std::pair<std::wstring, DWORD>(L"MEDICAR", 34));
@@ -452,6 +450,8 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cars.insert(std::pair<std::wstring, DWORD>(L"XK120", 82));
 	cars.insert(std::pair<std::wstring, DWORD>(L"ZCX5", 83));
 	cars.insert(std::pair<std::wstring, DWORD>(L"EDSELFBI", 84));
+	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D4", 85));
+	cars.insert(std::pair<std::wstring, DWORD>(L"KRSNABUS", 86));
 
 	std::map<std::wstring, DWORD>::iterator itr;
 	for (itr = cars.begin(); itr != cars.end(); ++itr) {
