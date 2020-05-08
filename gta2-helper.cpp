@@ -10,3 +10,18 @@ void fnShowCustomTextMessage(WCHAR* message) {
 	fnShowMessageToPlayer(3, "1001");
 	locale->text = original;
 }
+
+Car* fnGetCarById(int id) {
+	auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
+	auto tcar = prefab->lastCar;
+	Car* car = 0;
+	while (tcar)
+	{
+		if (tcar->id == 13) {
+			car = tcar;
+			break;
+		}
+		tcar = tcar->lastCar;
+	}
+	return car;
+}

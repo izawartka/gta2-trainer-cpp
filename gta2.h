@@ -9515,11 +9515,3 @@ struct TrafficLigthStruct {
     enum TRAFFIC_PHASE phase;
     byte timer;
 };
-
-typedef struct IDirectDraw_ IDirectDraw_, *PIDirectDraw_;
-
-struct IDirectDraw_ {
-};
-
-typedef struct IDirectDraw_ * LPDIRECTDRAW;
-
