@@ -741,7 +741,7 @@ struct SomeStructInsideACar {
 };
 
 struct Position {
-    short rotation;
+    ushort rotation;
     undefined field_0x2;
     undefined field_0x3;
     struct Position * prev;
@@ -770,7 +770,7 @@ struct Position {
 };
 
 struct Car {
-    undefined4 field_0x0;
+    void * ptr;
     undefined4 field_0x4;
     enum CAR_LIGHTS_AND_DOORS_BITSTATE carLights;
     struct SomeStructInsideACar arr4[4];
@@ -931,7 +931,7 @@ struct PlayerPhysics {
     SCR_f x;
     SCR_f y;
     SCR_f z; /* camera z offset */
-    undefined4 field_0xc;
+    struct Sprite * sprite2;
     SCR_f x2;
     SCR_f y2;
     SCR_f z2;
@@ -989,10 +989,7 @@ struct PlayerPhysics {
     SCR_f xCameraVelocity;
     SCR_f yCameraVelocity;
     undefined4 cameraHeadVelocity; /* changed when driving car */
-    undefined field_0xb8;
-    undefined field_0xb9;
-    undefined field_0xba;
-    undefined field_0xbb;
+    SCR_f field_0xb8;
 };
 
 struct WEAPON_STRUCT {
@@ -1391,7 +1388,7 @@ struct Ped {
     struct Ped * pedRef;
     int field_0x14c;
     struct Car * armyCarRef;
-    struct Car * carRef;
+    struct Car * targetCarForEnter;
     int field_0x158;
     struct WEAPON_PLAYER_LIST * playerWeapons;
     struct Ped * nextPed;
@@ -1599,7 +1596,7 @@ struct CarManager5 {
 typedef struct CarsPrefab CarsPrefab, *PCarsPrefab;
 
 struct CarsPrefab { /* ptr is here 005e4ca0 */
-    struct Car * firstCar;
+    struct Car * nextFreeCar;
     struct Car * lastCar;
     struct Car arr306Cars[306];
     u2 carsCount;
@@ -2374,8 +2371,8 @@ struct Player { /* Player actually */
     struct PlayerPhysics ph1; /* player ped related */
     struct PlayerPhysics ph2; /* camera related, for example teleport use this struct */
     struct PlayerPhysics ph3;
-    struct Ped * playerPed2;
-    struct Ped * playerPed4;
+    struct PlayerPhysics * ph4;
+    struct Ped * ped2;
     void * field_0x2cc;
     byte field_0x2d0;
     undefined field_0x2d1;
@@ -4882,8 +4879,8 @@ typedef enum CarInfoFlags2 {
 typedef struct DoorInfo DoorInfo, *PDoorInfo;
 
 struct DoorInfo {
-    INT8_ rx;
-    INT8_ ry;
+    INT8 rx;
+    INT8 ry;
 };
 
 struct CarInfo {
@@ -4895,10 +4892,10 @@ struct CarInfo {
     UINT8 passengers;
     byte wreck;
     byte rating;
-    INT8_ front_wheel_offset;
-    INT8_ rear_wheel_offset;
-    INT8_ front_window_offset;
-    INT8_ rear_window_offset;
+    INT8 front_wheel_offset;
+    INT8 rear_wheel_offset;
+    INT8 front_window_offset;
+    INT8 rear_window_offset;
     enum CarInfoFlags info_flags;
     enum CarInfoFlags2 info_flags_2;
     UINT8 remap[22]; /* variable size */
@@ -5298,10 +5295,6 @@ struct DirectDrawDevices {
     char arg3[8];
 };
 
-struct HINSTANCE___ {
-    int unused;
-};
-
 struct D3DContext {
     undefined4 field_0x0;
     byte mask1;
@@ -5370,7 +5363,7 @@ struct D3DContext {
     undefined field_0x76;
     undefined field_0x77;
     undefined4 field_0x78;
-    HMODULE___ hModuleOfVidDll;
+    HMODULE hModuleOfVidDll;
     undefined field_0x80;
     undefined field_0x81;
     undefined field_0x82;
@@ -7003,7 +6996,7 @@ typedef struct S24_char S24_char, *PS24_char;
 
 struct S24_char {
     short PedCapacity;
-    byte field_0x2;
+    byte dummy_chars;
     byte field_0x3;
     byte field_0x4;
     byte field_0x5;
@@ -7107,73 +7100,57 @@ typedef enum S4_ENUM1 {
 typedef struct S6 S6, *PS6;
 
 struct S6 {
-    undefined field_0x0[5240];
+    undefined field_0x0[5224];
+    SCR_f gameCameraX; /* Created by retype action */
+    SCR_f gameCameraY; /* Created by retype action */
+    SCR_f pedZ;
+    ushort rotation; /* Created by retype action */
+    undefined field_0x1476;
+    undefined field_0x1477;
     uint length; /* Created by retype action */
-    undefined field_0x147c;
-    undefined field_0x147d;
-    undefined field_0x147e;
-    undefined field_0x147f;
-    undefined field_0x1480;
-    undefined field_0x1481;
-    undefined field_0x1482;
-    undefined field_0x1483;
-    undefined field_0x1484;
-    undefined field_0x1485;
-    undefined field_0x1486;
-    undefined field_0x1487;
-    struct S5 arrS5_1020[1020];
-    undefined field_0x4458[4240];
+    undefined field_0x147c[16340];
+    int relToAudio;
+    undefined field_0x5454;
+    undefined field_0x5455;
+    undefined field_0x5456;
+    undefined field_0x5457;
+    undefined field_0x5458;
+    undefined field_0x5459;
+    undefined field_0x545a;
+    undefined field_0x545b;
+    undefined field_0x545c;
+    undefined field_0x545d;
+    undefined field_0x545e;
+    undefined field_0x545f;
+    undefined field_0x5460;
+    undefined field_0x5461;
+    undefined field_0x5462;
+    undefined field_0x5463;
+    enum VOCAL vocal;
+    undefined field_0x5468;
+    undefined field_0x5469;
+    undefined field_0x546a;
+    undefined field_0x546b;
+    undefined field_0x546c;
+    undefined field_0x546d;
+    undefined field_0x546e;
+    undefined field_0x546f;
+    undefined field_0x5470;
+    undefined field_0x5471;
+    undefined field_0x5472;
+    undefined field_0x5473;
+    undefined field_0x5474;
+    undefined field_0x5475;
+    undefined field_0x5476;
+    undefined field_0x5477;
+    undefined1 someArray; /* Created by retype action */
+    undefined field_0x5479[111];
     short field_0x54e8;
     undefined field_0x54ea[30];
     int field_0x5508;
-    undefined field_0x550c;
-    undefined field_0x550d;
-    undefined field_0x550e;
-    undefined field_0x550f;
-    undefined field_0x5510;
-    undefined field_0x5511;
-    undefined field_0x5512;
-    undefined field_0x5513;
-    undefined field_0x5514;
-    undefined field_0x5515;
-    undefined field_0x5516;
-    undefined field_0x5517;
-    undefined field_0x5518;
-    undefined field_0x5519;
-    undefined field_0x551a;
-    undefined field_0x551b;
+    undefined field_0x550c[16];
     int field_0x551c;
-    undefined field_0x5520;
-    undefined field_0x5521;
-    undefined field_0x5522;
-    undefined field_0x5523;
-    undefined field_0x5524;
-    undefined field_0x5525;
-    undefined field_0x5526;
-    undefined field_0x5527;
-    undefined field_0x5528;
-    undefined field_0x5529;
-    undefined field_0x552a;
-    undefined field_0x552b;
-    undefined field_0x552c;
-    undefined field_0x552d;
-    undefined field_0x552e;
-    undefined field_0x552f;
-    undefined field_0x5530;
-    undefined field_0x5531;
-    undefined field_0x5532;
-    undefined field_0x5533;
-    undefined field_0x5534;
-    undefined field_0x5535;
-    undefined field_0x5536;
-    undefined field_0x5537;
-    undefined field_0x5538;
-    undefined field_0x5539;
-    undefined field_0x553a;
-    undefined field_0x553b;
-    undefined field_0x553c;
-    undefined field_0x553d;
-    undefined field_0x553e;
+    undefined field_0x5520[31];
     undefined field_0x553f;
 };
 
