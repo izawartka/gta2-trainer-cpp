@@ -14,6 +14,7 @@ static DWORD ptrToCarEngines = 0x005e5488;
 static DWORD ptrToMapRelatedStruct = 0x00662c08;
 static DWORD ptrToS10 = 0x00672f40;
 static DWORD ptrToS2LocalesSettings = 0x00671550;
+static DWORD ptrToCarsPrefabs = 0x005e4ca0;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
 #define FloatEncode(x) (int)(x * 16384)
@@ -92,5 +93,6 @@ static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x0
 #define fnShowMessageToPlayer(seconds, messageCode) fnShowMessageToPlayerRaw(&(ByPtr(S10, ptrToS10))->txtMessage, 0, seconds, messageCode)
 
 void fnShowCustomTextMessage(WCHAR* message);
+Car* fnGetCarById(int id);
 
 #endif // !GTA_H
