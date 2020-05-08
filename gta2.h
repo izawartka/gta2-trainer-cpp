@@ -396,7 +396,7 @@ typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
 
 typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
 
-typedef struct MaybeCarEngine MaybeCarEngine, *PMaybeCarEngine;
+typedef struct CarPhysics CarPhysics, *PCarPhysics;
 
 typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
 
@@ -777,7 +777,7 @@ struct Car {
     struct Car * lastCar;
     struct Position * position;
     struct Ped * driver; /* Created by retype action */
-    struct MaybeCarEngine * maybeEngine;
+    struct CarPhysics * physics;
     struct CarManager4_S1 * notEngineStruct;
     void * field_0x60;
     void * field_0x64;
@@ -826,6 +826,105 @@ struct Car {
     undefined field_0xb9;
     undefined field_0xba;
     undefined field_0xbb;
+};
+
+struct CarPhysics {
+    int xVelocity;
+    int yVelocity;
+    undefined field_0x8;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
+    struct CarPhysics * next;
+    undefined field_0x10;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined field_0x14;
+    undefined field_0x15;
+    undefined field_0x16;
+    undefined field_0x17;
+    undefined field_0x18;
+    undefined field_0x19;
+    undefined field_0x1a;
+    undefined field_0x1b;
+    undefined field_0x1c;
+    undefined field_0x1d;
+    undefined field_0x1e;
+    undefined field_0x1f;
+    SCR_f Xskid1;
+    SCR_f Yskid1;
+    SCR_f Xskid2;
+    SCR_f Yskid2;
+    int X_CM;
+    int Y_CM;
+    int X_CP;
+    int Y_CP;
+    int xVelocityReadOnly;
+    int yVelocityReadOnly;
+    undefined field_0x48;
+    undefined field_0x49;
+    undefined field_0x4a;
+    undefined field_0x4b;
+    undefined field_0x4c;
+    undefined field_0x4d;
+    undefined field_0x4e;
+    undefined field_0x4f;
+    undefined field_0x50;
+    undefined field_0x51;
+    undefined field_0x52;
+    undefined field_0x53;
+    undefined field_0x54;
+    undefined field_0x55;
+    undefined field_0x56;
+    undefined field_0x57;
+    undefined2 angle;
+    undefined field_0x5a;
+    undefined field_0x5b;
+    struct CarPhysics * prev;
+    undefined field_0x60;
+    short gasLevel; /* acceleration pedal */
+    undefined field_0x63;
+    struct CarPhysics * alsoRefToAnotherEngine; /* Created by retype action */
+    undefined4 field_0x68;
+    undefined4 field_0x6c;
+    undefined4 field_0x70;
+    undefined4 pointingAngle;
+    undefined4 rotationForce;
+    undefined field_0x7c;
+    undefined field_0x7d;
+    undefined field_0x7e;
+    undefined field_0x7f;
+    undefined field_0x80;
+    undefined field_0x81;
+    undefined field_0x82;
+    undefined field_0x83;
+    undefined4 frontSkid;
+    undefined4 rearSkid;
+    undefined4 field_0x8c;
+    byte isBrakeOn;
+    byte isHandbrakeOn;
+    byte isForwardGasOn;
+    byte isBackwardGasOn;
+    u1 field_0x94;
+    u1 field_0x95;
+    undefined field_0x96;
+    undefined field_0x97;
+    undefined4 field_0x98;
+    undefined4 field_0x9c;
+    undefined4 field_0xa0;
+    u1 field_0xa4;
+    u1 field_0xa5;
+    u1 field_0xa6;
+    undefined field_0xa7;
+    byte handbrakeForce;
+    u1 field_0xa9;
+    u1 field_0xaa;
+    u1 field_0xab;
+    byte driveWheelsLockedProbably;
+    char steering; /* 1 left and -1 right */
+    undefined field_0xae;
+    undefined field_0xaf;
 };
 
 struct PlayerPhysics {
@@ -929,105 +1028,6 @@ struct WEAPON_STRUCT {
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-};
-
-struct MaybeCarEngine {
-    int xVelocity;
-    int yVelocity;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-    struct MaybeCarEngine * next;
-    undefined field_0x10;
-    undefined field_0x11;
-    undefined field_0x12;
-    undefined field_0x13;
-    undefined field_0x14;
-    undefined field_0x15;
-    undefined field_0x16;
-    undefined field_0x17;
-    undefined field_0x18;
-    undefined field_0x19;
-    undefined field_0x1a;
-    undefined field_0x1b;
-    undefined field_0x1c;
-    undefined field_0x1d;
-    undefined field_0x1e;
-    undefined field_0x1f;
-    SCR_f Xskid1;
-    SCR_f Yskid1;
-    SCR_f Xskid2;
-    SCR_f Yskid2;
-    int X_CM;
-    int Y_CM;
-    int X_CP;
-    int Y_CP;
-    int xVelocityReadOnly;
-    int yVelocityReadOnly;
-    undefined field_0x48;
-    undefined field_0x49;
-    undefined field_0x4a;
-    undefined field_0x4b;
-    undefined field_0x4c;
-    undefined field_0x4d;
-    undefined field_0x4e;
-    undefined field_0x4f;
-    undefined field_0x50;
-    undefined field_0x51;
-    undefined field_0x52;
-    undefined field_0x53;
-    undefined field_0x54;
-    undefined field_0x55;
-    undefined field_0x56;
-    undefined field_0x57;
-    undefined2 angle;
-    undefined field_0x5a;
-    undefined field_0x5b;
-    struct MaybeCarEngine * prev;
-    undefined field_0x60;
-    short gasLevel; /* acceleration pedal */
-    undefined field_0x63;
-    struct MaybeCarEngine * alsoRefToAnotherEngine; /* Created by retype action */
-    undefined4 field_0x68;
-    undefined4 field_0x6c;
-    undefined4 field_0x70;
-    undefined4 pointingAngle;
-    undefined4 rotationForce;
-    undefined field_0x7c;
-    undefined field_0x7d;
-    undefined field_0x7e;
-    undefined field_0x7f;
-    undefined field_0x80;
-    undefined field_0x81;
-    undefined field_0x82;
-    undefined field_0x83;
-    undefined4 frontSkid;
-    undefined4 rearSkid;
-    undefined4 field_0x8c;
-    byte isBrakeOn;
-    byte isHandbrakeOn;
-    byte isForwardGasOn;
-    byte isBackwardGasOn;
-    u1 field_0x94;
-    u1 field_0x95;
-    undefined field_0x96;
-    undefined field_0x97;
-    undefined4 field_0x98;
-    undefined4 field_0x9c;
-    undefined4 field_0xa0;
-    u1 field_0xa4;
-    u1 field_0xa5;
-    u1 field_0xa6;
-    undefined field_0xa7;
-    byte handbrakeForce;
-    u1 field_0xa9;
-    u1 field_0xaa;
-    u1 field_0xab;
-    byte driveWheelsLockedProbably;
-    char steering; /* 1 left and -1 right */
-    undefined field_0xae;
-    undefined field_0xaf;
 };
 
 struct CarManager4_S1 {
@@ -1569,8 +1569,8 @@ struct CarEngineData {
 typedef struct CarEnginePrefab CarEnginePrefab, *PCarEnginePrefab;
 
 struct CarEnginePrefab { /* 0066ab7c */
-    struct MaybeCarEngine * first;
-    struct MaybeCarEngine arr306[306];
+    struct CarPhysics * first;
+    struct CarPhysics arr306[306];
 };
 
 typedef struct CarManager4 CarManager4, *PCarManager4;
@@ -1619,8 +1619,8 @@ struct EnginesDataHolder {
 typedef struct MaybeCarEngineHolder MaybeCarEngineHolder, *PMaybeCarEngineHolder;
 
 struct MaybeCarEngineHolder {
-    struct MaybeCarEngine * firstElement;
-    struct MaybeCarEngine * arr306;
+    struct CarPhysics * firstElement;
+    struct CarPhysics * arr306;
 };
 
 typedef struct TrafficManager TrafficManager, *PTrafficManager;
