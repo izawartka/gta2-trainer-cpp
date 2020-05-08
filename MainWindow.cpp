@@ -383,7 +383,6 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cars.insert(std::pair<std::wstring, DWORD>(L"COPCAR", 12));
 	cars.insert(std::pair<std::wstring, DWORD>(L"DART", 13));
 	cars.insert(std::pair<std::wstring, DWORD>(L"EDSEL", 14));
-	cars.insert(std::pair<std::wstring, DWORD>(L"EDSELFBI", 84));
 	cars.insert(std::pair<std::wstring, DWORD>(L"FIAT", 16));
 	cars.insert(std::pair<std::wstring, DWORD>(L"FIRETRUK", 17));
 	cars.insert(std::pair<std::wstring, DWORD>(L"GRAHAM", 18));
@@ -452,6 +451,7 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK9", 81));
 	cars.insert(std::pair<std::wstring, DWORD>(L"XK120", 82));
 	cars.insert(std::pair<std::wstring, DWORD>(L"ZCX5", 83));
+	cars.insert(std::pair<std::wstring, DWORD>(L"EDSELFBI", 84));
 
 	std::map<std::wstring, DWORD>::iterator itr;
 	for (itr = cars.begin(); itr != cars.end(); ++itr) {
@@ -939,10 +939,7 @@ UINT SpawnCarThread(LPVOID data)
 
 void MainWindow::OnSpawncarTank()
 {
-	SPAWNCAR* info = new SPAWNCAR;
-	info->win = this;
-	info->model = TANK;
-	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
+	wtSpawnCar = TANK;
 }
 
 
@@ -979,20 +976,12 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 
 void MainWindow::OnSpawncarGt()
 {
-	SPAWNCAR* info = new SPAWNCAR;
-	info->win = this;
-	info->model = GT24640;
-	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
+	wtSpawnCar = GT24640;
 }
 
 
 void MainWindow::OnSpawnCarClick(UINT nID) {
-	log(L"Car 3%d spawned", nID);
-
-	SPAWNCAR* info = new SPAWNCAR;
-	info->win = this;
-	info->model = (CAR_MODEL)(nID - 35000);
-	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
+	wtSpawnCar = (nID - 35000);
 }
 
 void MainWindow::OnGetWeaponClick(UINT nID) {
@@ -1019,10 +1008,7 @@ void MainWindow::OnPlayVocalClick(UINT nID) {
 
 void MainWindow::OnSpawncarGunjeep()
 {
-	SPAWNCAR* info = new SPAWNCAR;
-	info->win = this;
-	info->model = GUNJEEP;
-	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
+	wtSpawnCar = GUNJEEP;
 }
 
 void MainWindow::CarEngineOff()
@@ -1821,6 +1807,17 @@ void Strafe(bool right, bool movingBackward) {
 	ped->pedSprite->spriteRotation = original;
 }
 
+void MainWindow::WantToSpawnCar()
+{
+	SPAWNCAR* info = new SPAWNCAR;
+	info->win = this;
+	info->model = (CAR_MODEL)(wtSpawnCar);
+	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
+	log(L"Car %d spawned", (wtSpawnCar));
+
+	wtSpawnCar = -1;
+}
+
 void MainWindow::OnGTADraw()
 {
 
@@ -1833,6 +1830,7 @@ void MainWindow::OnGTAGameTick(Game* game)
 	PedInfo();
 	if (captureMouse) CaptureMouse();
 	FixCheckboxes();
+	if(wtSpawnCar+1) WantToSpawnCar();
 }
 
 void MainWindow::NewFunction()

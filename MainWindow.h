@@ -99,6 +99,7 @@ public:
 	int pedXOld = 0, pedYOld = 0, pedZOld = 0, pedRotOld = 0;
 	int pedHOld = 1, pedAOld = 1, pedMOld = 1; // 1 not 0 because it has to be different than the actual value in the first tick
 	int globalPedSpeedsOld[3] = { 1,1,1 }; // same here
+	int wtSpawnCar = -1;
 	void TeleportAllPeds();
 	Ped* selectedPed = 0;
 	bool beAHuman = false;
@@ -126,6 +127,7 @@ public:
 	void TeleportPlayer();
 	void SetHealthArmorMoney();
 	void SetGlobalPedSpeeds();
+	void WantToSpawnCar();
 
 	void OnGTADraw();
 	void OnGTAGameTick(Game* game);
