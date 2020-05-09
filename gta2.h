@@ -634,7 +634,7 @@ struct Sprite {
     enum PED_STATE2 state2;
     uint relToId;
     int xxx;
-    uint yyy;
+    uint someTypeEnum;
     struct PlayerPhysics * probablyPhysics;
     undefined field_0x20;
     undefined field_0x21;
@@ -767,6 +767,19 @@ struct Position {
     byte field_0x39;
     undefined field_0x3a;
     undefined field_0x3b;
+    undefined field_0x3c;
+    undefined field_0x3d;
+    undefined field_0x3e;
+    undefined field_0x3f;
+    undefined field_0x40;
+    undefined field_0x41;
+    undefined field_0x42;
+    undefined field_0x43;
+    undefined field_0x44;
+    undefined field_0x45;
+    undefined field_0x46;
+    undefined field_0x47;
+    bool field_0x48;
 };
 
 struct Car {
@@ -1593,6 +1606,28 @@ struct CarManager5 {
     struct CarManager5_S1 arr10[10];
 };
 
+typedef struct CarPhysicsData CarPhysicsData, *PCarPhysicsData;
+
+struct CarPhysicsData {
+    undefined4 field_0x0;
+    undefined4 front_wheel_offset;
+    undefined4 rear_wheel_offset;
+    undefined field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+    undefined field_0x10;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined4 thrust1;
+    undefined4 thrust2;
+    undefined4 field_0x1c;
+    undefined4 field_0x20;
+    SCR_f skid_threshhold1;
+    SCR_f skid_threshhold2;
+};
+
 typedef struct CarsPrefab CarsPrefab, *PCarsPrefab;
 
 struct CarsPrefab { /* ptr is here 005e4ca0 */
@@ -1607,8 +1642,8 @@ struct CarsPrefab { /* ptr is here 005e4ca0 */
 typedef struct EnginesDataHolder EnginesDataHolder, *PEnginesDataHolder;
 
 struct EnginesDataHolder {
-    undefined4 maybeAlsoCars;
-    undefined4 alsoSomeArray[256];
+    void * maybeAlsoCars;
+    struct CarPhysicsData * physicsArray[256];
     struct CarEngineData * engineArray[256];
     undefined4 counter2; /* Created by retype action */
 };
@@ -5235,6 +5270,44 @@ struct CarInfoChunk {
 typedef struct Collide Collide, *PCollide;
 
 struct Collide {
+    struct Position * ptr1;
+    void * ptr2;
+    struct Collide * ptr3;
+};
+
+typedef struct Collide1 Collide1, *PCollide1;
+
+struct Collide1 {
+    void * field_0x0;
+    undefined field_0x4[32764];
+    void * field_0x8000;
+};
+
+typedef struct Collide2 Collide2, *PCollide2;
+
+struct Collide2 {
+    void * field_0x0;
+    undefined field_0x4[71996];
+    void * field_0x11940;
+};
+
+typedef struct CollideArray256 CollideArray256, *PCollideArray256;
+
+struct CollideArray256 { /* Collisions */
+    undefined field_0x0[1024];
+};
+
+typedef struct CollideTopLevel CollideTopLevel, *PCollideTopLevel;
+
+struct CollideTopLevel {
+    uint length;
+    uint someIncrement;
+    undefined4 field_0x8;
+};
+
+typedef struct CollisionBox CollisionBox, *PCollisionBox;
+
+struct CollisionBox {
     undefined field_0x0;
     undefined field_0x1;
     undefined field_0x2;
@@ -5243,24 +5316,58 @@ struct Collide {
     undefined field_0x5;
     undefined field_0x6;
     undefined field_0x7;
-    struct Collide * next;
-};
-
-typedef struct CollideArray256 CollideArray256, *PCollideArray256;
-
-struct CollideArray256 { /* Collisions */
-    struct Collide * arr[256];
+    undefined field_0x8;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
+    undefined4 field_0xc;
+    undefined4 field_0x10;
+    undefined4 field_0x14;
+    undefined4 field_0x18;
+    undefined4 field_0x1c;
+    undefined4 field_0x20;
+    undefined4 field_0x24;
+    undefined4 field_0x28;
+    undefined field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+    undefined field_0x30;
+    undefined field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+    undefined field_0x34;
+    undefined field_0x35;
+    undefined field_0x36;
+    undefined field_0x37;
+    undefined field_0x38;
+    undefined field_0x39;
+    undefined field_0x3a;
+    undefined field_0x3b;
+    undefined field_0x3c;
+    undefined field_0x3d;
+    undefined field_0x3e;
+    undefined field_0x3f;
+    undefined field_0x40;
+    undefined field_0x41;
+    undefined field_0x42;
+    undefined field_0x43;
+    undefined field_0x44;
+    undefined field_0x45;
+    undefined field_0x46;
+    undefined field_0x47;
+    bool field_0x48;
 };
 
 typedef struct D3DContext D3DContext, *PD3DContext;
 
 typedef struct DirectDrawDevices DirectDrawDevices, *PDirectDrawDevices;
 
-typedef struct HINSTANCE___ HINSTANCE___, *PHINSTANCE___;
+typedef struct HINSTANCE__ HINSTANCE__, *PHINSTANCE__;
 
-typedef struct HINSTANCE___ * HINSTANCE_;
+typedef struct HINSTANCE__ * HINSTANCE;
 
-typedef HINSTANCE_ HMODULE___;
+typedef HINSTANCE HMODULE;
 
 struct DirectDrawDevices {
     undefined4 field_0x0;
@@ -6517,29 +6624,6 @@ struct MaybeWeaponStruct {
     byte field_0x2c;
 };
 
-typedef struct PaletteTexture PaletteTexture, *PPaletteTexture;
-
-struct PaletteTexture {
-    undefined field_0x0;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    undefined field_0x4;
-    undefined field_0x5;
-    ushort field_0x6;
-    uint field_0x8;
-    undefined field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-    ushort field_0x10;
-    byte field_0x12;
-    byte field_0x13;
-    undefined4 field_0x14;
-    undefined4 field_0x18;
-    undefined4 field_0x1c;
-};
-
 typedef struct S10 S10, *PS10;
 
 typedef struct S10_TxtMessage S10_TxtMessage, *PS10_TxtMessage;
@@ -6633,7 +6717,34 @@ struct S12 {
 typedef struct S13 S13, *PS13;
 
 struct S13 { /* Display.cpp */
-    int field_0x0[7];
+    undefined field_0x0;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    undefined field_0x4;
+    undefined field_0x5;
+    undefined field_0x6;
+    undefined field_0x7;
+    undefined field_0x8;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
+    undefined field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+    undefined field_0x10;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined field_0x14;
+    undefined field_0x15;
+    undefined field_0x16;
+    undefined field_0x17;
+    undefined field_0x18;
+    undefined field_0x19;
+    undefined field_0x1a;
+    undefined field_0x1b;
 };
 
 typedef struct S14 S14, *PS14;
@@ -9287,6 +9398,29 @@ struct SRelToBonus2 {
     undefined field_0x2a;
     undefined field_0x2b;
     byte mask;
+};
+
+typedef struct STexture STexture, *PSTexture;
+
+typedef uchar BYTE;
+
+typedef ushort WORD;
+
+struct STexture {
+    ushort id;
+    undefined2 field_0x2;
+    undefined2 pal_is_trans;
+    ushort pal_size;
+    void * locked_pixels_ptr;
+    undefined field_0xc;
+    undefined field_0xd;
+    ushort width;
+    ushort height;
+    byte bPalIsValid;
+    byte flags;
+    BYTE * original_pixel_data_ptr;
+    WORD * pPaltData;
+    void * cachePtr;
 };
 
 typedef struct Style_S3 Style_S3, *PStyle_S3;
