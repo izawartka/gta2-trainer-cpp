@@ -15,10 +15,9 @@ static DWORD ptrToMapRelatedStruct = 0x00662c08;
 static DWORD ptrToS10 = 0x00672f40;
 static DWORD ptrToS2LocalesSettings = 0x00671550;
 static DWORD ptrToCarsPrefabs = 0x005e4ca0;
+static DWORD ptrToPlayerPhysics = 0x005e3cc4;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
-#define FloatEncode(x) (int)(x * 16384)
-#define FloatDecode(x) (double)x / 16384.0
 // Usage: auto game = fnGetGame();
 #define fnGetGame() ByPtr(Game, ptrToGame)
 
@@ -68,6 +67,10 @@ typedef void (__fastcall FindMaxZForTile)(void* ptrToMapRelatedStruct, DWORD edx
 static FindMaxZForTile* fnFindMaxZForTileRaw = (FindMaxZForTile*)0x00466990;
 #define fnFindMaxZForTile(x, y, z) fnFindMaxZForTileRaw(ByPtr(ptrToMapRelatedStruct), 0, x, y, z);
 
+// SCR_f * __fastcall WorldCoordinateToScreenCoord(SCR_f* axisValue, undefined edx, SCR_f* outVal, int eq_0x6666)
+typedef void(__fastcall WorldCoordinateToScreenCoord)(SCR_f* axisValue, undefined edx, SCR_f* outVal, int *eq_0x6666);
+static WorldCoordinateToScreenCoord* fnWorldCoordinateToScreenCoordRaw = (WorldCoordinateToScreenCoord*)0x00401b60;
+
 // void __fastcall DoTeleport(Player *param_1)
 typedef void (__fastcall DoTeleport)(Player*, DWORD edx);
 static DoTeleport* fnDoTeleportRaw = (DoTeleport*)0x004a5ad0;
@@ -94,5 +97,8 @@ static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x0
 
 void fnShowCustomTextMessage(WCHAR* message);
 Car* fnGetCarById(int id);
+SCR_f FloatEncode(double x);
+double FloatDecode(SCR_f x);
+POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
 
 #endif // !GTA_H

@@ -47,6 +47,34 @@ void DrawRect(LPDIRECTDRAWSURFACE7 surf, int X, int Y, int L, int H, D3DCOLOR co
 	::FillRect(dc, &rect, (HBRUSH)::GetStockObject(GRAY_BRUSH));
 	surf->ReleaseDC(dc);
 }
+*/
+
+void MarkPed(HDC dc, Ped* ped, COLORREF color) {
+	auto car = ped->currentCar;
+	auto p = ConvertGameWorldCoordinateToScreen(car && car->position ? car->position->x : ped->x, car && car->position ? car->position->y : ped->y);
+
+	const auto size = 20;
+	auto hPen = CreatePen(PS_DOT, 1, color);
+	SelectObject(dc, hPen);
+	SetBkColor(dc, TRANSPARENT);
+	RECT rect;
+	rect.left = p.x - size;
+	rect.right = p.x + size;
+	rect.top = p.y - size;
+	rect.bottom = p.y + size;
+	
+	MoveToEx(dc, rect.left, rect.top, NULL);
+	LineTo(dc, rect.right, rect.top);
+	LineTo(dc, rect.right, rect.bottom);
+	LineTo(dc, rect.left, rect.bottom);
+	LineTo(dc, rect.left, rect.top);
+
+
+	DeleteObject(hPen);
+
+	GetStockObject(WHITE_BRUSH);
+	GetStockObject(DC_PEN);
+}
 
 void myVid_FlipBuffers(D3DContext* context) {
 	OutputDebugStringA("myVid_FlipBuffers\n");
@@ -62,6 +90,8 @@ void myVid_FlipBuffers(D3DContext* context) {
 	HRESULT hr = surf->GetDC(&dc);
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 	if (hr == DD_OK && pGame && pGame->gameStatus) {
+		
+		/*
 		RECT rect = { screenCenterX - 150, screenCenterY, screenCenterX + 300, screenCenterY + 300 };
 		SetBkMode(dc, TRANSPARENT);
 		SetTextColor(dc, RGB(50, 100, 250));
@@ -75,8 +105,18 @@ void myVid_FlipBuffers(D3DContext* context) {
 			DT_CENTER | DT_VCENTER
 		);
 		DeleteObject(SelectObject(dc, hTmp));
+		*/
 
-		SetPixel(dc, width / 2, height / 2, RGB(255, 50, 50));
+		MarkPed(dc, fnGetPedByID(1), RGB(50, 50, 200));
+
+		auto manager = ByPtr(PedManager_S25, ptrToPedManager);
+		auto ped = manager->lastPedInArray;
+		while (ped)
+		{
+			if(ped->id != 1)
+				MarkPed(dc, ped, RGB(255, 50, 50));
+			ped = ped->nextPed;
+		}
 
 		surf->ReleaseDC(dc);
 	}
@@ -84,6 +124,7 @@ void myVid_FlipBuffers(D3DContext* context) {
 	fnVid_FlipBuffers(context);
 }
 
+/*
 void __fastcall myStartMapPlaySound(void* _this, DWORD edx) {
 	HMODULE dmaLib = LoadLibrary(L"dmavideo.dll");
 	fnVid_FlipBuffers = (Vid_FlipBuffers*)GetProcAddress(dmaLib, "Vid_FlipBuffers");
@@ -193,13 +234,7 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	//MessageBoxW(0, L"aaa");
 	mainWnd = this;
 	DetourFunc(pGameTick, (DWORD)gameTick);
-	DetourFunc(pDraw, (DWORD)draw, 6);
-
-	DetourRestoreAfterWith();
-
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
-	DetourTransactionCommit();
+//	DetourFunc(pDraw, (DWORD)draw, 6);
 }
 
 MainWindow::~MainWindow()
@@ -1829,6 +1864,22 @@ void MainWindow::OnGTADraw()
 void MainWindow::OnGTAGameTick(Game* game)
 {
 	//OnTimer moved here, it's more stable now
+
+	static bool hookToD3d = false;
+	if (!hookToD3d) {
+		HMODULE dmaLib = LoadLibrary(L"dmavideo.dll");
+		fnVid_FlipBuffers = (Vid_FlipBuffers*)GetProcAddress(dmaLib, "Vid_FlipBuffers");
+		DetourRestoreAfterWith();
+
+		DetourTransactionBegin();
+		DetourUpdateThread(GetCurrentThread());
+
+		DetourAttach(&(PVOID&)fnVid_FlipBuffers, myVid_FlipBuffers);
+
+		DetourTransactionCommit();
+		hookToD3d = true;
+	}
+
 	CopLockETC();
 	PedInfo();
 	if (captureMouse) CaptureMouse();

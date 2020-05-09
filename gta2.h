@@ -973,10 +973,10 @@ struct PlayerPhysics {
     uint field_0x6c;
     uint field_0x70;
     uint field_0x74;
-    SCR_f bottomOfTheSceenY; /* Created by retype action */
+    SCR_f leftOfTheScreenX; /* Created by retype action */
     SCR_f rightOfTheScreenX; /* Created by retype action */
     SCR_f topOfTheScreenY; /* Created by retype action */
-    SCR_f leftOfTheScreenX; /* Created by retype action */
+    SCR_f bottomOfTheSceenY; /* Created by retype action */
     SCR_f xx;
     SCR_f yy;
     SCR_f zz;
