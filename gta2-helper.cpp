@@ -42,10 +42,10 @@ Ped* FindTheNearestPed(Ped* basePed)
 	int nearestPedDistance = 16384000;
 	Ped* nearestPed = 0;
 
-	for (int i = 2; i < 255; i++)
+	for (int i = 0; i < 255; i++)
 	{
 		tempped = fnGetPedByID(i);
-		if (tempped && tempped->x)
+		if (tempped && tempped->x && tempped != basePed)
 		{
 			distancefromPed =
 				sqrt(
