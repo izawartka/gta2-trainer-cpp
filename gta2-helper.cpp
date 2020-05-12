@@ -41,8 +41,10 @@ Ped* FindTheNearestPed(Ped* basePed)
 	int distancefromPed = 0;
 	int nearestPedDistance = 16384000;
 	Ped* nearestPed = 0;
+	PedManager_S25* manager = ByPtr(PedManager_S25, ptrToPedManager);
+	Ped* lastPed = manager->lastPedInArray;
 
-	for (int i = 0; i < 255; i++)
+	for (int i = 0; i <= lastPed->id; i++)
 	{
 		tempped = fnGetPedByID(i);
 		if (tempped && tempped->x && tempped != basePed)
