@@ -24,7 +24,6 @@ BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
 
 MainWindow* mainWnd = nullptr;
 
-/*
 void DrawText3(LPDIRECTDRAWSURFACE7 surf, int X, int Y, WCHAR* txt, COLORREF color) {
 	HDC dc;
 	HRESULT hr = surf->GetDC(&dc);
@@ -47,11 +46,9 @@ void DrawRect(LPDIRECTDRAWSURFACE7 surf, int X, int Y, int L, int H, D3DCOLOR co
 	::FillRect(dc, &rect, (HBRUSH)::GetStockObject(GRAY_BRUSH));
 	surf->ReleaseDC(dc);
 }
-*/
 
 void MarkPed(HDC dc, Ped* ped, COLORREF color) {
-	auto car = ped->currentCar;
-	auto p = ConvertGameWorldCoordinateToScreen(car && car->position ? car->position->x : ped->x, car && car->position ? car->position->y : ped->y);
+	auto p = ConvertGameWorldCoordinateToScreen(ped->x, ped->y);
 
 	const auto size = 20;
 	auto hPen = CreatePen(PS_DOT, 1, color);
@@ -74,6 +71,50 @@ void MarkPed(HDC dc, Ped* ped, COLORREF color) {
 
 	GetStockObject(WHITE_BRUSH);
 	GetStockObject(DC_PEN);
+
+	RECT textrect = { p.x - 20, p.y - 20, p.x + 30, p.y + 30 };
+	SetBkMode(dc, TRANSPARENT);
+	SetTextColor(dc, RGB(50, 100, 250));
+	HFONT hFont = CreateFont(16, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 2, 0, L"SYSTEM_FIXED_FONT");
+	HFONT hTmp = (HFONT)SelectObject(dc, hFont);
+	wchar_t* text = L"ped";
+	//wsprintfW(text, L"%i", 3);
+	DrawText(
+		dc,
+		text,
+		wcslen(text),
+		&textrect,
+		DT_CENTER | DT_VCENTER
+	);
+	DeleteObject(SelectObject(dc, hTmp));
+}
+
+void MarkCar(HDC dc, Car* car, COLORREF color) {
+	auto p = ConvertGameWorldCoordinateToScreen(car->position->x, car->position->y);
+	int angle = 0.1;
+
+	const auto size = 20;
+	auto hPen = CreatePen(PS_DOT, 1, color);
+	SelectObject(dc, hPen);
+	SetBkColor(dc, TRANSPARENT);
+	RECT rect;
+	rect.left = p.x - size;
+	rect.right = p.x + size;
+	rect.top = p.y - size;
+	rect.bottom = p.y + size;
+
+	MoveToEx(dc, rect.left, rect.top, NULL);
+	LineTo(dc, rect.right, rect.top);
+	LineTo(dc, rect.right, rect.bottom);
+	LineTo(dc, rect.left, rect.bottom);
+	LineTo(dc, rect.left, rect.top);
+
+
+	DeleteObject(hPen);
+
+	GetStockObject(WHITE_BRUSH);
+	GetStockObject(DC_PEN);
+
 }
 
 void myVid_FlipBuffers(D3DContext* context) {
@@ -91,22 +132,6 @@ void myVid_FlipBuffers(D3DContext* context) {
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 	if (hr == DD_OK && pGame && pGame->gameStatus) {
 		
-		/*
-		RECT rect = { screenCenterX - 150, screenCenterY, screenCenterX + 300, screenCenterY + 300 };
-		SetBkMode(dc, TRANSPARENT);
-		SetTextColor(dc, RGB(50, 100, 250));
-		HFONT hFont = CreateFont(30, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 2, 0, L"SYSTEM_FIXED_FONT");
-		HFONT hTmp = (HFONT)SelectObject(dc, hFont);
-		DrawText(
-			dc,
-			L"Ped",
-			3,
-			&rect,
-			DT_CENTER | DT_VCENTER
-		);
-		DeleteObject(SelectObject(dc, hTmp));
-		*/
-
 		MarkPed(dc, fnGetPedByID(1), RGB(50, 50, 200));
 
 		auto manager = ByPtr(PedManager_S25, ptrToPedManager);
@@ -116,6 +141,14 @@ void myVid_FlipBuffers(D3DContext* context) {
 			if(ped->id != 1)
 				MarkPed(dc, ped, RGB(255, 50, 50));
 			ped = ped->nextPed;
+		}
+
+		auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
+		auto car = prefab->lastCar;
+		while (car)
+		{
+			MarkCar(dc, car, RGB(255, 255, 255));
+			car = car->lastCar;
 		}
 
 		surf->ReleaseDC(dc);
@@ -1887,4 +1920,7 @@ void MainWindow::OnGTAGameTick(Game* game)
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
+
+	Ped* ped = FindTheNearestPed(fnGetPedByID(1));
+	log(L"id: %d; remap: %d; occupation: %d; aimode: %d", ped->id, ped->remap, ped->occupation, ped->aiMode);
 }

@@ -23,7 +23,8 @@ Car* fnGetCarById(int id) {
 		}
 		tcar = tcar->lastCar;
 	}
-	return car;
+	if (car) return car;
+	else return 0;
 }
 
 SCR_f FloatEncode(double x) {
@@ -32,6 +33,33 @@ SCR_f FloatEncode(double x) {
 
 double FloatDecode(SCR_f x) {
 	return (double)x / 16384.0;
+}
+
+Ped* FindTheNearestPed(Ped* basePed)
+{
+	Ped* tempped = 0;
+	int distancefromPed = 0;
+	int nearestPedDistance = 16384000;
+	Ped* nearestPed = 0;
+
+	for (int i = 2; i < 255; i++)
+	{
+		tempped = fnGetPedByID(i);
+		if (tempped && tempped->x)
+		{
+			distancefromPed =
+				sqrt(
+					pow(tempped->x - basePed->x, 2) +
+					pow(tempped->y - basePed->y, 2)
+				);
+			if (distancefromPed <= nearestPedDistance)
+			{
+				nearestPedDistance = distancefromPed;
+				nearestPed = tempped;
+			}
+		}
+	}
+	return nearestPed;
 }
 
 POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY) {

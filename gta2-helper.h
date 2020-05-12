@@ -88,7 +88,6 @@ fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
 typedef void(__fastcall PedTick)(Ped*, DWORD edx);
 static PedTick* fnPedTickRaw = (PedTick*)0x004454e0;
 
-
 // void __fastcall showMessageToPlayer(DWORD* param_1, undefined edx, int timeInSeconds, char* messageCode)
 typedef void(__fastcall ShowMessageToPlayer)(S10_TxtMessage*, DWORD edx, int timeInSeconds, char* messageCode);
 static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x004c6750;
@@ -97,6 +96,7 @@ static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x0
 
 void fnShowCustomTextMessage(WCHAR* message);
 Car* fnGetCarById(int id);
+Ped* FindTheNearestPed(Ped* basePed);
 SCR_f FloatEncode(double x);
 double FloatDecode(SCR_f x);
 POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
