@@ -106,30 +106,14 @@ void MarkPed(HDC dc, Ped* ped, COLORREF color) {
 
 	GetStockObject(WHITE_BRUSH);
 	GetStockObject(DC_PEN);
-
-	RECT textrect = { p.x - 20, p.y - 20, p.x + 30, p.y + 30 };
-	SetBkMode(dc, TRANSPARENT);
-	SetTextColor(dc, RGB(50, 100, 250));
-	HFONT hFont = CreateFont(16, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 2, 0, L"SYSTEM_FIXED_FONT");
-	HFONT hTmp = (HFONT)SelectObject(dc, hFont);
-	wchar_t* text = L"ped";
-	//wsprintfW(text, L"%i", 3);
-	DrawText(
-		dc,
-		text,
-		wcslen(text),
-		&textrect,
-		DT_CENTER | DT_VCENTER
-	);
-	DeleteObject(SelectObject(dc, hTmp));
 }
 
 void MarkCar(HDC dc, Car* car, COLORREF color) {
 	auto p = ConvertGameWorldCoordinateToScreen(car->position->x, car->position->y);
 	int angle = 0.1;
 
-	const auto size = 20;
-	auto hPen = CreatePen(PS_DOT, 1, color);
+	const auto size = 25;
+	auto hPen = CreatePen(PS_DASH, 1, color);
 	SelectObject(dc, hPen);
 	SetBkColor(dc, TRANSPARENT);
 	RECT rect;
