@@ -1448,7 +1448,7 @@ typedef enum CAR_DOOR_STATE {
     CAR_DOOR_STATE_UNLOCKED=2
 } CAR_DOOR_STATE;
 
-typedef enum CAR_MODEL {
+typedef enum CAR_MODEL : unsigned char {
     ALFA=0,
     ALLARD=1,
     AMDB4=2,
@@ -1845,7 +1845,7 @@ typedef enum SAVE_SLOT_UNCLEAR_UI_OR_SCRIPTS_VALUE_ID { /* Maybe used in scrtipt
     PLAYER_MONEY=158
 } SAVE_SLOT_UNCLEAR_UI_OR_SCRIPTS_VALUE_ID;
 
-typedef enum TRAFFIC_PHASE {
+typedef enum TRAFFIC_PHASE : unsigned char {
     TRAFFIC_PHASE_HORIZONTAL_GREEN=4,
     TRAFFIC_PHASE_HORIZONTAL_RED=6,
     TRAFFIC_PHASE_HORIZONTAL_YELLOW=5,

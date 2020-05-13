@@ -5,6 +5,13 @@
 
 static_assert(sizeof(Car) == 0xbc, "Wrong size of Car struct");
 static_assert(sizeof(Ped) == 0x294, "Wrong size of Ped struct");
+static_assert(sizeof(HORN) == 0x1, "Wrong size of HORN enum");
+static_assert(sizeof(CAR_SIREN_STATE) == 0x1, "Wrong size of CAR_SIREN_STATE enum");
+static_assert(sizeof(CAR_MODEL4) == 0x4, "Wrong size of CAR_MODEL4 enum");
+static_assert(sizeof(CAR_MODEL) == 0x1, "Wrong size of CAR_MODEL enum");
+static_assert(sizeof(PED_REMAP) == 0x1, "Wrong size of PED_REMAP enum");
+static_assert(sizeof(SPRITE_BIT1) == 0x1, "Wrong size of SPRITE_BIT1 enum");
+static_assert(sizeof(TRAFFIC_PHASE) == 0x1, "Wrong size of TRAFFIC_PHASE enum");
 
 const DWORD pGameTick = (DWORD)0x0045c1f0;
 const DWORD pDraw = (DWORD)0x00461960;
