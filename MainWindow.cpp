@@ -75,21 +75,23 @@ void MarkPed(HDC dc, Ped* ped, COLORREF color) {
 	HFONT hTmp = (HFONT)SelectObject(dc, hFont);
 	rect.top -= 20;
 	rect.left += 50;
-	rect.right += 150;
+	rect.right += 250;
 	rect.bottom += 70;
 	WCHAR buf[256];
 	wsprintf(
 		buf,
-		L"Ped %d\r\nOcupation: %d\r\nRemap: %d / %d\r\ntimerToAction %d\r\narmyCarRef: %08x\r\npedRef: %08x\r\nstate %04X / %04X / %04X",
+		L"Ped %d\r\nOcupation: %d\r\nRemap: %d / %d\r\ntimerToAction %d / %d\r\narmyCarRef: %08x\r\npedRef: %08x\r\nstate %d / %d / %d / %d",
 		ped->id,
 		ped->occupation,
 		ped->remap,
 		ped->remap2,
 		ped->timerToAction,
+		ped->field_0x1c4,
 		ped->armyCarRef,
 		ped->pedRef,
 		ped->state,
 		ped->state2,
+		ped->state2_2,
 		ped->state3
 	);
 	if (ped->occupation == 3) {
@@ -151,7 +153,7 @@ void myVid_FlipBuffers(SVideo* context) {
 	HRESULT hr = surf->GetDC(&dc);
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 	if (hr == DD_OK && pGame && pGame->gameStatus) {
-		MarkPed(dc, fnGetPedByID(1), RGB(50, 255, 255));
+		//MarkPed(dc, fnGetPedByID(1), RGB(50, 255, 255));
 
 		auto manager = ByPtr(PedManager_S25, ptrToPedManager);
 		auto ped = manager->lastPedInArray;
@@ -1941,6 +1943,6 @@ void MainWindow::NewFunction()
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
 	auto ped = fnGetPedByID(1);
 	auto ped2 = fnSpawnPedAtPosition(ped->x, ped->y, ped->z + 16384, PED_REMAP_CARTHIEF, 1);
-	ped2->occupation = CARTHIEF;
+	ped2->occupation = (OCUPATION)14;
 	ped2->timerToAction = 100;
 }
