@@ -33,28 +33,35 @@ typedef enum CAR_REL_TO_COLOR_ENUM {
 } CAR_REL_TO_COLOR_ENUM;
 
 typedef enum PED_STATE {
-    PED_STATE_DRIVING_A_CAR=10,
-    PED_STATE_ENTERING_INTO_CAR=3,
-    PED_STATE_FALL_ON_GROUND=8,
-    PED_STATE_GETTING_OUT_FROM_CAR=4,
-    PED_STATE_GOING_TO_CAR=2,
-    PED_STATE_INITIAL=11,
-    PED_STATE_STAYING=7,
-    PED_STATE_UNK1=1,
-    PED_STATE_UNK5=5,
-    PED_STATE_UNK6=6,
-    PED_STATE_WALK=0,
-    PED_STATE_WASTED=9
+    PED_STATE_0_WALK=0,
+    PED_STATE_16_FALL_ON_GROUND_FROM_HOOK=22,
+    PED_STATE_1_UNK_PROBABLY_RUN=1,
+    PED_STATE_2_GOING_TO_TARGET=2,
+    PED_STATE_3_ENTERING_INTO_CAR_OR_JUST_RUN_AWAY=3,
+    PED_STATE_4_GETTING_OUT_FROM_CAR=4,
+    PED_STATE_5_UNK=5,
+    PED_STATE_6_UNK=6,
+    PED_STATE_7_STAYING=7,
+    PED_STATE_8_FALL_ON_GROUND=8,
+    PED_STATE_9_WASTED=9,
+    PED_STATE_a_DRIVING_A_CAR=10,
+    PED_STATE_b_INITIAL=11,
+    PED_STATE_c=12,
+    PED_STATE_d=13,
+    PED_STATE_e_WAITING_FOR_BUS_OR_STEALING_MONEY=14,
+    PED_STATE_f_SHOT_ON_THE_GROUND=15
 } PED_STATE;
 
 typedef enum PED_STATE2 {
     PED_STATE2_0_WALKING=0,
-    PED_STATE2_1=1,
     PED_STATE2_11=17,
+    PED_STATE2_12=18,
     PED_STATE2_13=19,
     PED_STATE2_14=20,
+    PED_STATE2_15=21,
     PED_STATE2_1A_SMOKE=26,
-    PED_STATE2_2=2,
+    PED_STATE2_1_electrocuted=1,
+    PED_STATE2_2_electrocuted=2,
     PED_STATE2_3=3,
     PED_STATE2_4_FOLLOWING_A_CAR=4,
     PED_STATE2_5=5,
@@ -62,10 +69,11 @@ typedef enum PED_STATE2 {
     PED_STATE2_7_GETTING_OUT_FROM_CAR=7,
     PED_STATE2_8=8,
     PED_STATE2_9=9,
-    PED_STATE2_DRIVING=10,
-    PED_STATE2_STAYING=14,
     PED_STATE2_UNK_16=22,
-    PED_STATE2_UNK_f=15
+    PED_STATE2_a_DRIVING=10,
+    PED_STATE2_b_WAITING_FOR_BUS=11,
+    PED_STATE2_e_STAYING=14,
+    PED_STATE2_f_UNK=15
 } PED_STATE2;
 
 typedef struct PlayerPhysics PlayerPhysics, *PPlayerPhysics;
@@ -105,12 +113,6 @@ typedef struct Car Car, *PCar;
 typedef struct WEAPON_PLAYER_LIST WEAPON_PLAYER_LIST, *PWEAPON_PLAYER_LIST;
 
 typedef struct WEAPON_STRUCT WEAPON_STRUCT, *PWEAPON_STRUCT;
-
-typedef enum PED_AI_MODE : unsigned short {
-    PED_AI_MODE_0_DUMMY=0,
-    PED_AI_MODE_CARTHIEF_MUGGER=40,
-    PED_AI_MODE_PLAYER=9999
-} PED_AI_MODE;
 
 typedef enum PED_BIT_STATE {
     PED_BIT_STATE_2000000=33554432,
@@ -160,6 +162,13 @@ typedef enum OCUPATION {
     GUARD_AGAINST_PLAYER=32,
     MUGGER=15,
     NO_OCCUPATION=51,
+    OCUPATION_13=19,
+    OCUPATION_28=40,
+    OCUPATION_7=7,
+    OCUPATION_ANGRY_DRIVER=13,
+    OCUPATION_PSYCHO=14,
+    OCUPATION_b=11,
+    OCUPATION_c=12,
     PLAYER=0,
     POLICE=24,
     PSYCHO=14,
@@ -169,7 +178,6 @@ typedef enum OCUPATION {
     STAND_STILL_BLOKE=43,
     SWAT=25,
     TANK_DRIVER=36,
-    UNKNOWN_OCUPATION13=19,
     UNKNOWN_OCUPATION17=23,
     UNKNOWN_OCUPATION2=2,
     UNKNOWN_OCUPATION8=8,
@@ -222,7 +230,11 @@ typedef enum PED_REMAP : unsigned char {
 } PED_REMAP;
 
 typedef enum PED_STATE3 {
+    PED_STATE3_1f_SIT_IN_TAXY_OR_IN_STEALED_CAR=31,
+    PED_STATE3_2_DRIVER_RUN_AWAY=2,
+    PED_STATE3_32_WASTED=50,
     PED_STATE3_COP=54,
+    PED_STATE3_DO_NOTHING=0,
     PED_STATE3_ENTERING_TO_CAR=35,
     PED_STATE3_GANG_MEMBER=13,
     PED_STATE3_GETTING_OUT_FROM_CAR=36,
@@ -236,8 +248,6 @@ typedef enum PED_STATE3 {
     PED_STATE3_UNK19=25,
     PED_STATE3_UNK1a=26,
     PED_STATE3_UNK1b=27,
-    PED_STATE3_UNK1f=31,
-    PED_STATE3_UNK2=2,
     PED_STATE3_UNK20=32,
     PED_STATE3_UNK21=33,
     PED_STATE3_UNK22=34,
@@ -245,7 +255,6 @@ typedef enum PED_STATE3 {
     PED_STATE3_UNK26=38,
     PED_STATE3_UNK2a=42,
     PED_STATE3_UNK2b=43,
-    PED_STATE3_UNK3=3,
     PED_STATE3_UNK33=51,
     PED_STATE3_UNK34=52,
     PED_STATE3_UNK37=55,
@@ -256,10 +265,13 @@ typedef enum PED_STATE3 {
     PED_STATE3_UNK3c=60,
     PED_STATE3_UNK3d_REL_TO_MISSION_ARROWS=61,
     PED_STATE3_UNK6=6,
+    PED_STATE3_UNK7=7,
     PED_STATE3_UNK8=8,
+    PED_STATE3_UNK9=9,
     PED_STATE3_UNKa=10,
     PED_STATE3_UNKc=12,
-    PED_STATE3_UNKe=14
+    PED_STATE3_UNKe=14,
+    PEF_STATE3_1c_DEAD=28
 } PED_STATE3;
 
 typedef enum PED_REMAP2 {
@@ -267,138 +279,6 @@ typedef enum PED_REMAP2 {
     PED_REMAP2_1=1,
     PED_REMAP2_HEAVY_ARMOUR=2
 } PED_REMAP2;
-
-typedef enum CAR_MODEL : unsigned char {
-    ALFA=0,
-    ALLARD=1,
-    AMDB4=2,
-    APC=3,
-    BANKVAN=4,
-    BMW=5,
-    BOXCAR=6,
-    BOXTRUCK=7,
-    BUG=8,
-    BUICK=10,
-    BUS=11,
-    CAR15=15,
-    CAR20=20,
-    CAR43=43,
-    CAR9=9,
-    COPCAR=12,
-    DART=13,
-    EDSEL=14,
-    EDSELFBI=84,
-    FIAT=16,
-    FIRETRUK=17,
-    GRAHAM=18,
-    GT24640=19,
-    GTRUCK=21,
-    GUNJEEP=22,
-    HOTDOG=23,
-    HOTDOG_D1=24,
-    HOTDOG_D2=25,
-    HOTDOG_D3=26,
-    HOTDOG_D4=85,
-    ICECREAM=27,
-    ISETLIMO=28,
-    ISETTA=29,
-    JEEP=30,
-    JEFFREY=31,
-    KRSNABUS=86,
-    LIMO=32,
-    LIMO2=33,
-    MEDICAR=34,
-    MERC=35,
-    MESSER=36,
-    MIURA=37,
-    MONSTER=38,
-    MORGAN=39,
-    MORRIS=40,
-    PICKUP=41,
-    RTYPE=42,
-    SPIDER=44,
-    SPRITE=45,
-    STINGRAY=46,
-    STRATOS=47,
-    STRATOSB=48,
-    STRIPETB=49,
-    STYPE=50,
-    STYPECAB=51,
-    SWATVAN=52,
-    T2000GT=53,
-    TANK=54,
-    TANKER=55,
-    TAXI=56,
-    TBIRD=57,
-    TOWTRUCK=58,
-    TRAIN=59,
-    TRAINCAB=60,
-    TRAINFB=61,
-    TRANCEAM=62,
-    TRUKCAB1=63,
-    TRUKCAB2=64,
-    TRUKCONT=65,
-    TRUKTRNS=66,
-    TVVAN=67,
-    VAN=68,
-    VESPA=69,
-    VTYPE=70,
-    WBTWIN=71,
-    WRECK0=72,
-    WRECK1=73,
-    WRECK2=74,
-    WRECK3=75,
-    WRECK4=76,
-    WRECK5=77,
-    WRECK6=78,
-    WRECK7=79,
-    WRECK8=80,
-    WRECK9=81,
-    XK120=82,
-    ZCX5=83
-} CAR_MODEL;
-
-typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
-    BAGAGE_DOORS_OPEN1=2048,
-    BAGAGE_DOORS_OPEN2=4096,
-    BAGAGE_DOORS_OPEN3=8192,
-    BAGAGE_DOORS_OPEN4=16384,
-    BAGAGE_DOORS_SET2_OPEN1=268435456,
-    BAGAGE_DOORS_SET2_OPEN2=536870912,
-    BAGAGE_DOORS_SET2_OPEN3=1073741824,
-    BAGAGE_DOORS_SET2_OPEN4=2147483648,
-    BRAKES_LIGHT_LEFT=32,
-    BRAKES_LIGHT_RIGHT=4194304,
-    CABIN_FRONT_LEFT_LIGHT_IS_ON=65536,
-    CABIN_REAR_LEFT_LIGHT_IS_ON=262144,
-    CABIN_REAR_RIGHT_LIGHT_IS_ON=131072,
-    CABIN__FRONT_RIGHT_LIGHT_IS_ON=32768,
-    FRONT_GLASS_IS_BROKEN=16,
-    FRONT_LEFT_LIGHT_IS_TURNED_ON=64,
-    LEFT_FRONT_DOOR_IS_OPEN1=128,
-    LEFT_FRONT_DOOR_IS_OPEN2=256,
-    LEFT_FRONT_DOOR_IS_OPEN3=512,
-    LEFT_FRONT_DOOR_IS_OPEN4=1024,
-    LEFT_FRONT_LIGHT_IS_BROKEN=4,
-    LEFT_REAR_LIGHT_IS_BROKEN=2,
-    RIGHT_FRONT_DOOR_OPEN1=16777216,
-    RIGHT_FRONT_DOOR_OPEN2=33554432,
-    RIGHT_FRONT_DOOR_OPEN3=67108864,
-    RIGHT_FRONT_DOOR_OPEN4=134217728,
-    RIGHT_FRONT_LIGHT_IS_BROKEN=8,
-    RIGHT_FRONT_LIGHT_IS_ON=8388608,
-    RIGHT_REAR_LIGHT_IS_BROKEN=1,
-    UNBROKEN_TURNED_OFF=0,
-    UNK_100000=1048576,
-    UNK_200000=2097152,
-    UNK_80000=524288
-} CAR_LIGHTS_AND_DOORS_BITSTATE;
-
-typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
-
-typedef struct CarPhysics CarPhysics, *PCarPhysics;
-
-typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
 
 typedef enum CAR_MODEL4 {
     CAR_MODEL4_ALFA=0,
@@ -490,6 +370,48 @@ typedef enum CAR_MODEL4 {
     CAR_MODEL4_ZCX5=83
 } CAR_MODEL4;
 
+typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
+    BAGAGE_DOORS_OPEN1=2048,
+    BAGAGE_DOORS_OPEN2=4096,
+    BAGAGE_DOORS_OPEN3=8192,
+    BAGAGE_DOORS_OPEN4=16384,
+    BAGAGE_DOORS_SET2_OPEN1=268435456,
+    BAGAGE_DOORS_SET2_OPEN2=536870912,
+    BAGAGE_DOORS_SET2_OPEN3=1073741824,
+    BAGAGE_DOORS_SET2_OPEN4=2147483648,
+    BRAKES_LIGHT_LEFT=32,
+    BRAKES_LIGHT_RIGHT=4194304,
+    CABIN_FRONT_LEFT_LIGHT_IS_ON=65536,
+    CABIN_REAR_LEFT_LIGHT_IS_ON=262144,
+    CABIN_REAR_RIGHT_LIGHT_IS_ON=131072,
+    CABIN__FRONT_RIGHT_LIGHT_IS_ON=32768,
+    FRONT_GLASS_IS_BROKEN=16,
+    FRONT_LEFT_LIGHT_IS_TURNED_ON=64,
+    LEFT_FRONT_DOOR_IS_OPEN1=128,
+    LEFT_FRONT_DOOR_IS_OPEN2=256,
+    LEFT_FRONT_DOOR_IS_OPEN3=512,
+    LEFT_FRONT_DOOR_IS_OPEN4=1024,
+    LEFT_FRONT_LIGHT_IS_BROKEN=4,
+    LEFT_REAR_LIGHT_IS_BROKEN=2,
+    RIGHT_FRONT_DOOR_OPEN1=16777216,
+    RIGHT_FRONT_DOOR_OPEN2=33554432,
+    RIGHT_FRONT_DOOR_OPEN3=67108864,
+    RIGHT_FRONT_DOOR_OPEN4=134217728,
+    RIGHT_FRONT_LIGHT_IS_BROKEN=8,
+    RIGHT_FRONT_LIGHT_IS_ON=8388608,
+    RIGHT_REAR_LIGHT_IS_BROKEN=1,
+    UNBROKEN_TURNED_OFF=0,
+    UNK_100000=1048576,
+    UNK_200000=2097152,
+    UNK_80000=524288
+} CAR_LIGHTS_AND_DOORS_BITSTATE;
+
+typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
+
+typedef struct CarPhysics CarPhysics, *PCarPhysics;
+
+typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
+
 typedef enum CAR_ENGINE_STATE {
     BROKEN_DOESNT_WORK=0,
     ENGINE_OFF=1,
@@ -513,7 +435,7 @@ typedef enum TRAFFIC_CAR_TYPE {
     TRAFFIC_a=10
 } TRAFFIC_CAR_TYPE;
 
-typedef enum CAR_SIREN_STATE {
+typedef enum CAR_SIREN_STATE : unsigned char {
     CAR_ALARM=8,
     SIREN_OFF=2,
     SIREN_ON=4,
@@ -521,7 +443,7 @@ typedef enum CAR_SIREN_STATE {
     SIREN_UNK_10=16
 } CAR_SIREN_STATE;
 
-typedef enum HORN {
+typedef enum HORN : unsigned char {
     HORN_ON=248
 } HORN;
 
@@ -634,7 +556,7 @@ struct Sprite {
     enum PED_STATE2 state2;
     uint relToId;
     int xxx;
-    uint yyy;
+    uint someTypeEnum;
     struct PlayerPhysics * probablyPhysics;
     undefined field_0x20;
     undefined field_0x21;
@@ -767,6 +689,19 @@ struct Position {
     byte field_0x39;
     undefined field_0x3a;
     undefined field_0x3b;
+    undefined field_0x3c;
+    undefined field_0x3d;
+    undefined field_0x3e;
+    undefined field_0x3f;
+    undefined field_0x40;
+    undefined field_0x41;
+    undefined field_0x42;
+    undefined field_0x43;
+    undefined field_0x44;
+    undefined field_0x45;
+    undefined field_0x46;
+    undefined field_0x47;
+    bool field_0x48;
 };
 
 struct Car {
@@ -1399,7 +1334,7 @@ struct Ped {
     void * ptrToWeapon;
     int field_0x178;
     int field_0x17c;
-    int field_0x180;
+    struct Ped * pedRef2;
     int field_0x184;
     undefined4 field_0x188;
     int field_0x18c;
@@ -1413,9 +1348,9 @@ struct Ped {
     SCR_f x;
     SCR_f y;
     int z;
-    struct Ped * field_0x1b8;
-    struct Ped * field_0x1bc;
-    struct Ped * field_0x1c0;
+    SCR_f xxx;
+    SCR_f yyy;
+    SCR_f zzz;
     struct Ped * field_0x1c4;
     struct Ped * field_0x1c8;
     struct Ped * field_0x1cc;
@@ -1441,12 +1376,12 @@ struct Ped {
     undefined2 eq_100;
     undefined2 field_0x214;
     short health;
-    enum PED_AI_MODE aiMode;
+    ushort timerToAction; /* will be decrement each game tick, when its 0 then ocupation action is done. Fo example: steal a car */
     short field_0x21a;
     enum PED_BIT_STATE bitStateInvisOnFireEtc; /* invisibilty, electrofingers on fire and more  */
     undefined4 field_0x220;
     byte field_0x224;
-    byte field_0x225;
+    byte relatedToTimerToAction;
     byte field_0x226;
     byte field_0x227;
     byte field_0x228;
@@ -1495,10 +1430,7 @@ struct Ped {
     undefined field_0x26b;
     enum PED_REMAP2 remap2;
     int field_0x270;
-    enum CAR_MODEL gangCarModel;
-    undefined field_0x275;
-    undefined field_0x276;
-    undefined field_0x277;
+    enum CAR_MODEL4 gangCarModel;
     enum PED_STATE state;
     enum PED_STATE2 state2;
     enum PED_STATE state1_2; /* 0 on start, 3 when getting to a car */
@@ -1515,6 +1447,96 @@ typedef enum CAR_DOOR_STATE {
     CAR_DOOR_STATE_LOCKED=1,
     CAR_DOOR_STATE_UNLOCKED=2
 } CAR_DOOR_STATE;
+
+typedef enum CAR_MODEL : unsigned char {
+    ALFA=0,
+    ALLARD=1,
+    AMDB4=2,
+    APC=3,
+    BANKVAN=4,
+    BMW=5,
+    BOXCAR=6,
+    BOXTRUCK=7,
+    BUG=8,
+    BUICK=10,
+    BUS=11,
+    CAR15=15,
+    CAR20=20,
+    CAR43=43,
+    CAR9=9,
+    COPCAR=12,
+    DART=13,
+    EDSEL=14,
+    EDSELFBI=84,
+    FIAT=16,
+    FIRETRUK=17,
+    GRAHAM=18,
+    GT24640=19,
+    GTRUCK=21,
+    GUNJEEP=22,
+    HOTDOG=23,
+    HOTDOG_D1=24,
+    HOTDOG_D2=25,
+    HOTDOG_D3=26,
+    HOTDOG_D4=85,
+    ICECREAM=27,
+    ISETLIMO=28,
+    ISETTA=29,
+    JEEP=30,
+    JEFFREY=31,
+    KRSNABUS=86,
+    LIMO=32,
+    LIMO2=33,
+    MEDICAR=34,
+    MERC=35,
+    MESSER=36,
+    MIURA=37,
+    MONSTER=38,
+    MORGAN=39,
+    MORRIS=40,
+    PICKUP=41,
+    RTYPE=42,
+    SPIDER=44,
+    SPRITE=45,
+    STINGRAY=46,
+    STRATOS=47,
+    STRATOSB=48,
+    STRIPETB=49,
+    STYPE=50,
+    STYPECAB=51,
+    SWATVAN=52,
+    T2000GT=53,
+    TANK=54,
+    TANKER=55,
+    TAXI=56,
+    TBIRD=57,
+    TOWTRUCK=58,
+    TRAIN=59,
+    TRAINCAB=60,
+    TRAINFB=61,
+    TRANCEAM=62,
+    TRUKCAB1=63,
+    TRUKCAB2=64,
+    TRUKCONT=65,
+    TRUKTRNS=66,
+    TVVAN=67,
+    VAN=68,
+    VESPA=69,
+    VTYPE=70,
+    WBTWIN=71,
+    WRECK0=72,
+    WRECK1=73,
+    WRECK2=74,
+    WRECK3=75,
+    WRECK4=76,
+    WRECK5=77,
+    WRECK6=78,
+    WRECK7=79,
+    WRECK8=80,
+    WRECK9=81,
+    XK120=82,
+    ZCX5=83
+} CAR_MODEL;
 
 typedef enum CAR_UNK_TYPE {
     FIRE_TRACK_CARS=5,
@@ -1593,6 +1615,28 @@ struct CarManager5 {
     struct CarManager5_S1 arr10[10];
 };
 
+typedef struct CarPhysicsData CarPhysicsData, *PCarPhysicsData;
+
+struct CarPhysicsData {
+    undefined4 field_0x0;
+    undefined4 front_wheel_offset;
+    undefined4 rear_wheel_offset;
+    undefined field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+    undefined field_0x10;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined4 thrust1;
+    undefined4 thrust2;
+    undefined4 field_0x1c;
+    undefined4 field_0x20;
+    SCR_f skid_threshhold1;
+    SCR_f skid_threshhold2;
+};
+
 typedef struct CarsPrefab CarsPrefab, *PCarsPrefab;
 
 struct CarsPrefab { /* ptr is here 005e4ca0 */
@@ -1607,8 +1651,8 @@ struct CarsPrefab { /* ptr is here 005e4ca0 */
 typedef struct EnginesDataHolder EnginesDataHolder, *PEnginesDataHolder;
 
 struct EnginesDataHolder {
-    undefined4 maybeAlsoCars;
-    undefined4 alsoSomeArray[256];
+    void * maybeAlsoCars;
+    struct CarPhysicsData * physicsArray[256];
     struct CarEngineData * engineArray[256];
     undefined4 counter2; /* Created by retype action */
 };
@@ -1801,7 +1845,7 @@ typedef enum SAVE_SLOT_UNCLEAR_UI_OR_SCRIPTS_VALUE_ID { /* Maybe used in scrtipt
     PLAYER_MONEY=158
 } SAVE_SLOT_UNCLEAR_UI_OR_SCRIPTS_VALUE_ID;
 
-typedef enum TRAFFIC_PHASE {
+typedef enum TRAFFIC_PHASE : unsigned char {
     TRAFFIC_PHASE_HORIZONTAL_GREEN=4,
     TRAFFIC_PHASE_HORIZONTAL_RED=6,
     TRAFFIC_PHASE_HORIZONTAL_YELLOW=5,
@@ -5235,6 +5279,44 @@ struct CarInfoChunk {
 typedef struct Collide Collide, *PCollide;
 
 struct Collide {
+    struct Position * ptr1;
+    void * ptr2;
+    struct Collide * ptr3;
+};
+
+typedef struct Collide1 Collide1, *PCollide1;
+
+struct Collide1 {
+    void * field_0x0;
+    undefined field_0x4[32764];
+    void * field_0x8000;
+};
+
+typedef struct Collide2 Collide2, *PCollide2;
+
+struct Collide2 {
+    void * field_0x0;
+    undefined field_0x4[71996];
+    void * field_0x11940;
+};
+
+typedef struct CollideArray256 CollideArray256, *PCollideArray256;
+
+struct CollideArray256 { /* Collisions */
+    undefined field_0x0[1024];
+};
+
+typedef struct CollideTopLevel CollideTopLevel, *PCollideTopLevel;
+
+struct CollideTopLevel {
+    uint length;
+    uint someIncrement;
+    undefined4 field_0x8;
+};
+
+typedef struct CollisionBox CollisionBox, *PCollisionBox;
+
+struct CollisionBox {
     undefined field_0x0;
     undefined field_0x1;
     undefined field_0x2;
@@ -5243,728 +5325,72 @@ struct Collide {
     undefined field_0x5;
     undefined field_0x6;
     undefined field_0x7;
-    struct Collide * next;
-};
-
-typedef struct CollideArray256 CollideArray256, *PCollideArray256;
-
-struct CollideArray256 { /* Collisions */
-    struct Collide * arr[256];
-};
-
-typedef struct D3DContext D3DContext, *PD3DContext;
-
-typedef struct DirectDrawDevices DirectDrawDevices, *PDirectDrawDevices;
-
-typedef struct HINSTANCE___ HINSTANCE___, *PHINSTANCE___;
-
-typedef struct HINSTANCE___ * HINSTANCE_;
-
-typedef HINSTANCE_ HMODULE___;
-
-struct DirectDrawDevices {
-    undefined4 field_0x0;
-    undefined4 field_0x4;
-    char * pArg3;
-    char * pArg2;
-    undefined4 prevOrNext;
-    undefined field_0x14;
-    undefined field_0x15;
-    undefined field_0x16;
-    undefined field_0x17;
-    undefined field_0x18;
-    undefined field_0x19;
-    undefined field_0x1a;
-    undefined field_0x1b;
-    undefined field_0x1c;
-    undefined field_0x1d;
-    undefined field_0x1e;
-    undefined field_0x1f;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    undefined field_0x24;
-    undefined field_0x25;
-    undefined field_0x26;
-    undefined field_0x27;
-    undefined field_0x28;
-    undefined field_0x29;
-    undefined field_0x2a;
-    undefined field_0x2b;
-    char arg3[8];
-};
-
-struct D3DContext {
-    undefined4 field_0x0;
-    byte mask1;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
-    undefined4 field_0x8;
+    undefined field_0x8;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
     undefined4 field_0xc;
     undefined4 field_0x10;
     undefined4 field_0x14;
     undefined4 field_0x18;
     undefined4 field_0x1c;
-    undefined4 DirectDrawEnumerateIncr;
+    undefined4 field_0x20;
     undefined4 field_0x24;
     undefined4 field_0x28;
-    struct DirectDrawDevices * device2;
-    struct DirectDrawDevices * device1;
-    undefined4 field_0x34;
+    undefined field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+    undefined field_0x30;
+    undefined field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+    undefined field_0x34;
+    undefined field_0x35;
+    undefined field_0x36;
+    undefined field_0x37;
     undefined field_0x38;
     undefined field_0x39;
     undefined field_0x3a;
     undefined field_0x3b;
-    undefined4 field_0x3c;
-    undefined4 field_0x40;
-    undefined4 field_0x44;
-    undefined field_0x48;
-    undefined field_0x49;
-    undefined field_0x4a;
-    undefined field_0x4b;
-    undefined field_0x4c;
-    undefined field_0x4d;
-    undefined field_0x4e;
-    undefined field_0x4f;
-    undefined4 field_0x50;
-    undefined4 field_0x54;
-    undefined field_0x58;
-    undefined field_0x59;
-    undefined field_0x5a;
-    undefined field_0x5b;
-    undefined field_0x5c;
-    undefined field_0x5d;
-    undefined field_0x5e;
-    undefined field_0x5f;
-    undefined field_0x60;
-    undefined field_0x61;
-    undefined field_0x62;
-    undefined field_0x63;
-    undefined field_0x64;
-    undefined field_0x65;
-    undefined field_0x66;
-    undefined field_0x67;
-    undefined field_0x68;
-    undefined field_0x69;
-    undefined field_0x6a;
-    undefined field_0x6b;
-    undefined field_0x6c;
-    undefined field_0x6d;
-    undefined field_0x6e;
-    undefined field_0x6f;
-    undefined field_0x70;
-    undefined field_0x71;
-    undefined field_0x72;
-    undefined field_0x73;
-    undefined field_0x74;
-    undefined field_0x75;
-    undefined field_0x76;
-    undefined field_0x77;
-    undefined4 field_0x78;
-    HMODULE hModuleOfVidDll;
-    undefined field_0x80;
-    undefined field_0x81;
-    undefined field_0x82;
-    undefined field_0x83;
-    void * Vid_GetVersion;
-    undefined4 hResult;
-    void * IDirectDraw;
-    undefined field_0x90;
-    undefined field_0x91;
-    undefined field_0x92;
-    undefined field_0x93;
-    undefined field_0x94;
-    undefined field_0x95;
-    undefined field_0x96;
-    undefined field_0x97;
-    undefined field_0x98;
-    undefined field_0x99;
-    undefined field_0x9a;
-    undefined field_0x9b;
-    undefined field_0x9c;
-    undefined field_0x9d;
-    undefined field_0x9e;
-    undefined field_0x9f;
-    undefined field_0xa0;
-    undefined field_0xa1;
-    undefined field_0xa2;
-    undefined field_0xa3;
-    undefined field_0xa4;
-    undefined field_0xa5;
-    undefined field_0xa6;
-    undefined field_0xa7;
-    undefined field_0xa8;
-    undefined field_0xa9;
-    undefined field_0xaa;
-    undefined field_0xab;
-    undefined field_0xac;
-    undefined field_0xad;
-    undefined field_0xae;
-    undefined field_0xaf;
-    undefined field_0xb0;
-    undefined field_0xb1;
-    undefined field_0xb2;
-    undefined field_0xb3;
-    undefined field_0xb4;
-    undefined field_0xb5;
-    undefined field_0xb6;
-    undefined field_0xb7;
-    undefined field_0xb8;
-    undefined field_0xb9;
-    undefined field_0xba;
-    undefined field_0xbb;
-    undefined field_0xbc;
-    undefined field_0xbd;
-    undefined field_0xbe;
-    undefined field_0xbf;
-    undefined field_0xc0;
-    undefined field_0xc1;
-    undefined field_0xc2;
-    undefined field_0xc3;
-    undefined field_0xc4;
-    undefined field_0xc5;
-    undefined field_0xc6;
-    undefined field_0xc7;
-    undefined field_0xc8;
-    undefined field_0xc9;
-    undefined field_0xca;
-    undefined field_0xcb;
-    undefined field_0xcc;
-    undefined field_0xcd;
-    undefined field_0xce;
-    undefined field_0xcf;
-    undefined field_0xd0;
-    undefined field_0xd1;
-    undefined field_0xd2;
-    undefined field_0xd3;
-    undefined field_0xd4;
-    undefined field_0xd5;
-    undefined field_0xd6;
-    undefined field_0xd7;
-    undefined field_0xd8;
-    undefined field_0xd9;
-    undefined field_0xda;
-    undefined field_0xdb;
-    undefined field_0xdc;
-    undefined field_0xdd;
-    undefined field_0xde;
-    undefined field_0xdf;
-    undefined field_0xe0;
-    undefined field_0xe1;
-    undefined field_0xe2;
-    undefined field_0xe3;
-    undefined field_0xe4;
-    undefined field_0xe5;
-    undefined field_0xe6;
-    undefined field_0xe7;
-    undefined field_0xe8;
-    undefined field_0xe9;
-    undefined field_0xea;
-    undefined field_0xeb;
-    undefined field_0xec;
-    undefined field_0xed;
-    undefined field_0xee;
-    undefined field_0xef;
-    undefined field_0xf0;
-    undefined field_0xf1;
-    undefined field_0xf2;
-    undefined field_0xf3;
-    undefined field_0xf4;
-    undefined field_0xf5;
-    undefined field_0xf6;
-    undefined field_0xf7;
-    undefined field_0xf8;
-    undefined field_0xf9;
-    undefined field_0xfa;
-    undefined field_0xfb;
-    undefined field_0xfc;
-    undefined field_0xfd;
-    undefined field_0xfe;
-    undefined field_0xff;
-    undefined field_0x100;
-    undefined field_0x101;
-    undefined field_0x102;
-    undefined field_0x103;
-    undefined field_0x104;
-    undefined field_0x105;
-    undefined field_0x106;
-    undefined field_0x107;
-    undefined field_0x108;
-    undefined field_0x109;
-    undefined field_0x10a;
-    undefined field_0x10b;
-    undefined field_0x10c;
-    undefined field_0x10d;
-    undefined field_0x10e;
-    undefined field_0x10f;
-    undefined field_0x110;
-    undefined field_0x111;
-    undefined field_0x112;
-    undefined field_0x113;
-    undefined field_0x114;
-    undefined field_0x115;
-    undefined field_0x116;
-    undefined field_0x117;
-    undefined field_0x118;
-    undefined field_0x119;
-    undefined field_0x11a;
-    undefined field_0x11b;
-    undefined field_0x11c;
-    undefined field_0x11d;
-    undefined field_0x11e;
-    undefined field_0x11f;
-    void * interface1;
-    undefined field_0x124;
-    undefined field_0x125;
-    undefined field_0x126;
-    undefined field_0x127;
-    undefined field_0x128;
-    undefined field_0x129;
-    undefined field_0x12a;
-    undefined field_0x12b;
-    undefined field_0x12c;
-    undefined field_0x12d;
-    undefined field_0x12e;
-    undefined field_0x12f;
-    undefined field_0x130;
-    undefined field_0x131;
-    undefined field_0x132;
-    undefined field_0x133;
-    void * surface1;
-    int * surface2;
-    undefined4 field_0x13c;
-    undefined4 field_0x140;
-    undefined field_0x144;
-    undefined field_0x145;
-    undefined field_0x146;
-    undefined field_0x147;
-    undefined field_0x148;
-    undefined field_0x149;
-    undefined field_0x14a;
-    undefined field_0x14b;
-    undefined4 field_0x14c;
-    undefined field_0x150;
-    undefined field_0x151;
-    undefined field_0x152;
-    undefined field_0x153;
-    undefined field_0x154;
-    undefined field_0x155;
-    undefined field_0x156;
-    undefined field_0x157;
-    undefined field_0x158;
-    undefined field_0x159;
-    undefined field_0x15a;
-    undefined field_0x15b;
-    undefined field_0x15c;
-    undefined field_0x15d;
-    undefined field_0x15e;
-    undefined field_0x15f;
-    undefined4 field_0x160;
-    undefined field_0x164[100];
-    undefined4 field_0x1c8;
-    undefined field_0x1cc;
-    undefined field_0x1cd;
-    undefined field_0x1ce;
-    undefined field_0x1cf;
-    uint field_0x1d0;
-    undefined field_0x1d4;
-    undefined field_0x1d5;
-    undefined field_0x1d6;
-    undefined field_0x1d7;
-    undefined field_0x1d8;
-    undefined field_0x1d9;
-    undefined field_0x1da;
-    undefined field_0x1db;
-    undefined4 field_0x1dc;
-    undefined field_0x1e0[36];
-    undefined4 field_0x204;
-    undefined field_0x208[316];
-    undefined4 field_0x344;
-    undefined4 field_0x348;
-    undefined field_0x34c;
-    undefined field_0x34d;
-    undefined field_0x34e;
-    undefined field_0x34f;
-    undefined field_0x350;
-    undefined field_0x351;
-    undefined field_0x352;
-    undefined field_0x353;
-    undefined field_0x354;
-    undefined field_0x355;
-    undefined field_0x356;
-    undefined field_0x357;
-    undefined field_0x358;
-    undefined field_0x359;
-    undefined field_0x35a;
-    undefined field_0x35b;
-    undefined field_0x35c;
-    undefined field_0x35d;
-    undefined field_0x35e;
-    undefined field_0x35f;
-    undefined field_0x360;
-    undefined field_0x361;
-    undefined field_0x362;
-    undefined field_0x363;
-    undefined field_0x364;
-    undefined field_0x365;
-    undefined field_0x366;
-    undefined field_0x367;
-    undefined field_0x368;
-    undefined field_0x369;
-    undefined field_0x36a;
-    undefined field_0x36b;
-    undefined field_0x36c;
-    undefined field_0x36d;
-    undefined field_0x36e;
-    undefined field_0x36f;
-    undefined field_0x370;
-    undefined field_0x371;
-    undefined field_0x372;
-    undefined field_0x373;
-    undefined field_0x374;
-    undefined field_0x375;
-    undefined field_0x376;
-    undefined field_0x377;
-    undefined field_0x378;
-    undefined field_0x379;
-    undefined field_0x37a;
-    undefined field_0x37b;
-    undefined field_0x37c;
-    undefined field_0x37d;
-    undefined field_0x37e;
-    undefined field_0x37f;
-    undefined field_0x380;
-    undefined field_0x381;
-    undefined field_0x382;
-    undefined field_0x383;
-    undefined field_0x384;
-    undefined field_0x385;
-    undefined field_0x386;
-    undefined field_0x387;
-    undefined field_0x388;
-    undefined field_0x389;
-    undefined field_0x38a;
-    undefined field_0x38b;
-    undefined field_0x38c;
-    undefined field_0x38d;
-    undefined field_0x38e;
-    undefined field_0x38f;
-    undefined field_0x390;
-    undefined field_0x391;
-    undefined field_0x392;
-    undefined field_0x393;
-    undefined field_0x394;
-    undefined field_0x395;
-    undefined field_0x396;
-    undefined field_0x397;
-    undefined field_0x398;
-    undefined field_0x399;
-    undefined field_0x39a;
-    undefined field_0x39b;
-    undefined field_0x39c;
-    undefined field_0x39d;
-    undefined field_0x39e;
-    undefined field_0x39f;
-    undefined field_0x3a0;
-    undefined field_0x3a1;
-    undefined field_0x3a2;
-    undefined field_0x3a3;
-    undefined field_0x3a4;
-    undefined field_0x3a5;
-    undefined field_0x3a6;
-    undefined field_0x3a7;
-    undefined field_0x3a8;
-    undefined field_0x3a9;
-    undefined field_0x3aa;
-    undefined field_0x3ab;
-    undefined field_0x3ac;
-    undefined field_0x3ad;
-    undefined field_0x3ae;
-    undefined field_0x3af;
-    undefined field_0x3b0;
-    undefined field_0x3b1;
-    undefined field_0x3b2;
-    undefined field_0x3b3;
-    undefined field_0x3b4;
-    undefined field_0x3b5;
-    undefined field_0x3b6;
-    undefined field_0x3b7;
-    undefined field_0x3b8;
-    undefined field_0x3b9;
-    undefined field_0x3ba;
-    undefined field_0x3bb;
-    undefined field_0x3bc;
-    undefined field_0x3bd;
-    undefined field_0x3be;
-    undefined field_0x3bf;
-    undefined field_0x3c0;
-    undefined field_0x3c1;
-    undefined field_0x3c2;
-    undefined field_0x3c3;
-    undefined field_0x3c4;
-    undefined field_0x3c5;
-    undefined field_0x3c6;
-    undefined field_0x3c7;
-    undefined field_0x3c8;
-    undefined field_0x3c9;
-    undefined field_0x3ca;
-    undefined field_0x3cb;
-    undefined field_0x3cc;
-    undefined field_0x3cd;
-    undefined field_0x3ce;
-    undefined field_0x3cf;
-    undefined field_0x3d0;
-    undefined field_0x3d1;
-    undefined field_0x3d2;
-    undefined field_0x3d3;
-    undefined field_0x3d4;
-    undefined field_0x3d5;
-    undefined field_0x3d6;
-    undefined field_0x3d7;
-    undefined field_0x3d8;
-    undefined field_0x3d9;
-    undefined field_0x3da;
-    undefined field_0x3db;
-    undefined field_0x3dc;
-    undefined field_0x3dd;
-    undefined field_0x3de;
-    undefined field_0x3df;
-    undefined field_0x3e0;
-    undefined field_0x3e1;
-    undefined field_0x3e2;
-    undefined field_0x3e3;
-    undefined field_0x3e4;
-    undefined field_0x3e5;
-    undefined field_0x3e6;
-    undefined field_0x3e7;
-    undefined field_0x3e8;
-    undefined field_0x3e9;
-    undefined field_0x3ea;
-    undefined field_0x3eb;
-    undefined field_0x3ec;
-    undefined field_0x3ed;
-    undefined field_0x3ee;
-    undefined field_0x3ef;
-    undefined field_0x3f0;
-    undefined field_0x3f1;
-    undefined field_0x3f2;
-    undefined field_0x3f3;
-    undefined field_0x3f4;
-    undefined field_0x3f5;
-    undefined field_0x3f6;
-    undefined field_0x3f7;
-    undefined field_0x3f8;
-    undefined field_0x3f9;
-    undefined field_0x3fa;
-    undefined field_0x3fb;
-    undefined field_0x3fc;
-    undefined field_0x3fd;
-    undefined field_0x3fe;
-    undefined field_0x3ff;
-    undefined field_0x400;
-    undefined field_0x401;
-    undefined field_0x402;
-    undefined field_0x403;
-    undefined field_0x404;
-    undefined field_0x405;
-    undefined field_0x406;
-    undefined field_0x407;
-    undefined field_0x408;
-    undefined field_0x409;
-    undefined field_0x40a;
-    undefined field_0x40b;
-    undefined field_0x40c;
-    undefined field_0x40d;
-    undefined field_0x40e;
-    undefined field_0x40f;
-    undefined field_0x410;
-    undefined field_0x411;
-    undefined field_0x412;
-    undefined field_0x413;
-    undefined field_0x414;
-    undefined field_0x415;
-    undefined field_0x416;
-    undefined field_0x417;
-    undefined field_0x418;
-    undefined field_0x419;
-    undefined field_0x41a;
-    undefined field_0x41b;
-    undefined field_0x41c;
-    undefined field_0x41d;
-    undefined field_0x41e;
-    undefined field_0x41f;
-    undefined field_0x420;
-    undefined field_0x421;
-    undefined field_0x422;
-    undefined field_0x423;
-    undefined field_0x424;
-    undefined field_0x425;
-    undefined field_0x426;
-    undefined field_0x427;
-    undefined field_0x428;
-    undefined field_0x429;
-    undefined field_0x42a;
-    undefined field_0x42b;
-    undefined field_0x42c;
-    undefined field_0x42d;
-    undefined field_0x42e;
-    undefined field_0x42f;
-    undefined field_0x430;
-    undefined field_0x431;
-    undefined field_0x432;
-    undefined field_0x433;
-    undefined field_0x434;
-    undefined field_0x435;
-    undefined field_0x436;
-    undefined field_0x437;
-    undefined field_0x438;
-    undefined field_0x439;
-    undefined field_0x43a;
-    undefined field_0x43b;
-    undefined field_0x43c;
-    undefined field_0x43d;
-    undefined field_0x43e;
-    undefined field_0x43f;
-    undefined field_0x440;
-    undefined field_0x441;
-    undefined field_0x442;
-    undefined field_0x443;
-    undefined field_0x444;
-    undefined field_0x445;
-    undefined field_0x446;
-    undefined field_0x447;
-    undefined field_0x448;
-    undefined field_0x449;
-    undefined field_0x44a;
-    undefined field_0x44b;
-    undefined field_0x44c;
-    undefined field_0x44d;
-    undefined field_0x44e;
-    undefined field_0x44f;
-    undefined field_0x450;
-    undefined field_0x451;
-    undefined field_0x452;
-    undefined field_0x453;
-    undefined field_0x454;
-    undefined field_0x455;
-    undefined field_0x456;
-    undefined field_0x457;
-    undefined field_0x458;
-    undefined field_0x459;
-    undefined field_0x45a;
-    undefined field_0x45b;
-    undefined field_0x45c;
-    undefined field_0x45d;
-    undefined field_0x45e;
-    undefined field_0x45f;
-    undefined field_0x460;
-    undefined field_0x461;
-    undefined field_0x462;
-    undefined field_0x463;
-    undefined field_0x464;
-    undefined field_0x465;
-    undefined field_0x466;
-    undefined field_0x467;
-    undefined field_0x468;
-    undefined field_0x469;
-    undefined field_0x46a;
-    undefined field_0x46b;
-    undefined field_0x46c;
-    undefined field_0x46d;
-    undefined field_0x46e;
-    undefined field_0x46f;
-    undefined field_0x470;
-    undefined field_0x471;
-    undefined field_0x472;
-    undefined field_0x473;
-    undefined field_0x474;
-    undefined field_0x475;
-    undefined field_0x476;
-    undefined field_0x477;
-    undefined field_0x478;
-    undefined field_0x479;
-    undefined field_0x47a;
-    undefined field_0x47b;
-    undefined field_0x47c;
-    undefined field_0x47d;
-    undefined field_0x47e;
-    undefined field_0x47f;
-    undefined field_0x480;
-    undefined field_0x481;
-    undefined field_0x482;
-    undefined field_0x483;
-    undefined field_0x484;
-    undefined field_0x485;
-    undefined field_0x486;
-    undefined field_0x487;
-    undefined field_0x488;
-    undefined field_0x489;
-    undefined field_0x48a;
-    undefined field_0x48b;
-    undefined field_0x48c;
-    undefined field_0x48d;
-    undefined field_0x48e;
-    undefined field_0x48f;
-    undefined field_0x490;
-    undefined field_0x491;
-    undefined field_0x492;
-    undefined field_0x493;
-    undefined field_0x494;
-    undefined field_0x495;
-    undefined field_0x496;
-    undefined field_0x497;
-    undefined field_0x498;
-    undefined field_0x499;
-    undefined field_0x49a;
-    undefined field_0x49b;
-    undefined field_0x49c;
-    undefined field_0x49d;
-    undefined field_0x49e;
-    undefined field_0x49f;
-    undefined field_0x4a0;
-    undefined field_0x4a1;
-    undefined field_0x4a2;
-    undefined field_0x4a3;
-    undefined field_0x4a4;
-    undefined field_0x4a5;
-    undefined field_0x4a6;
-    undefined field_0x4a7;
-    undefined field_0x4a8;
-    undefined field_0x4a9;
-    undefined field_0x4aa;
-    undefined field_0x4ab;
-    undefined field_0x4ac;
-    undefined field_0x4ad;
-    undefined field_0x4ae;
-    undefined field_0x4af;
-    undefined field_0x4b0;
-    undefined field_0x4b1;
-    undefined field_0x4b2;
-    undefined field_0x4b3;
-    undefined field_0x4b4;
-    undefined field_0x4b5;
-    undefined field_0x4b6;
-    undefined field_0x4b7;
-    undefined field_0x4b8;
-    undefined field_0x4b9;
-    undefined field_0x4ba;
-    undefined field_0x4bb;
-    undefined field_0x4bc;
-    undefined field_0x4bd;
-    undefined field_0x4be;
-    undefined field_0x4bf;
-    undefined1 hwnd; /* Created by retype action */
-    undefined field_0x4c1;
-    undefined field_0x4c2;
-    undefined field_0x4c3;
+    undefined field_0x3c;
+    undefined field_0x3d;
+    undefined field_0x3e;
+    undefined field_0x3f;
+    undefined field_0x40;
+    undefined field_0x41;
+    undefined field_0x42;
+    undefined field_0x43;
+    undefined field_0x44;
+    undefined field_0x45;
+    undefined field_0x46;
+    undefined field_0x47;
+    bool field_0x48;
 };
 
 typedef struct D3DContext_s1 D3DContext_s1, *PD3DContext_s1;
 
+typedef struct SVideo SVideo, *PSVideo;
+
+typedef struct SDisplayMode SDisplayMode, *PSDisplayMode;
+
+typedef struct SDevice SDevice, *PSDevice;
+
+typedef struct HINSTANCE__ HINSTANCE__, *PHINSTANCE__;
+
+typedef struct HINSTANCE__ * HINSTANCE;
+
+typedef long HRESULT;
+
+typedef struct HWND__ HWND__, *PHWND__;
+
+typedef struct HWND__ * HWND;
+
+
+/* WARNING! conflicting data type names: /guiddef.h/GUID - /GUID */
+
 struct D3DContext_s1 {
-    struct D3DContext * field_0x0;
+    struct SVideo * field_0x0;
     undefined4 field_0x4;
     undefined4 field_0x8;
     undefined4 field_0xc;
@@ -6022,6 +5448,108 @@ struct D3DContext_s1 {
     undefined field_0x5b;
     undefined4 field_0x5c;
     undefined4 field_0x60;
+};
+
+struct SVideo {
+    undefined4 field_0x0;
+    uint mask1;
+    undefined4 found_width;
+    undefined4 found_height;
+    undefined4 found_rgb_bit_count;
+    undefined4 display_mode_count_2_q;
+    undefined4 num_guids;
+    undefined4 num_display_modes;
+    undefined4 num_enums;
+    struct SDisplayMode * head_ptr;
+    struct SDisplayMode * display_mode_array;
+    struct SDevice * device_info_head_ptr;
+    struct SDevice * device_info_last;
+    dword active_device_id;
+    dword field_0x38;
+    struct SDisplayMode * current_enum_ptr;
+    undefined4 full_screen;
+    undefined4 field_0x44;
+    dword rect_right;
+    dword rect_bottom;
+    void * surface_pixels_ptr;
+    undefined4 surface_pixels_pitch;
+    undefined field_0x58;
+    undefined field_0x59;
+    undefined field_0x5a;
+    undefined field_0x5b;
+    undefined field_0x5c;
+    undefined field_0x5d;
+    undefined field_0x5e;
+    undefined field_0x5f;
+    dword g;
+    dword r;
+    dword b;
+    undefined field_0x6c;
+    undefined field_0x6d;
+    undefined field_0x6e;
+    undefined field_0x6f;
+    undefined field_0x70;
+    undefined field_0x71;
+    undefined field_0x72;
+    undefined field_0x73;
+    undefined field_0x74;
+    undefined field_0x75;
+    undefined field_0x76;
+    undefined field_0x77;
+    undefined4 field_0x78;
+    HINSTANCE self_dll_handle;
+    undefined field_0x80;
+    undefined field_0x81;
+    undefined field_0x82;
+    undefined field_0x83;
+    void * Vid_GetVersion;
+    HRESULT last_error;
+    void * DirectDraw7; /* IDirectDraw7* */
+    undefined field_0x90[144];
+    void * IDDraw4; /* IDirectDraw4* */
+    GUID field_0x124;
+    void * SurfacePrimary; /* IDirectDrawSurface4* */
+    void * Surface; /* IDirectDrawSurface4* */
+    undefined DDSurfaceDesc7[124]; /* DDSURFACEDESC2 */
+    void * clipper; /* LPDIRECTDRAWCLIPPER */
+    undefined4 field_0x1bc;
+    undefined4 field_0x1c0;
+    undefined4 field_0x1c4;
+    undefined device_caps[380]; /* DDCAPS */
+    undefined hel_caps[380]; /* DDCAPS */
+    HWND hwnd; /* Created by retype action */
+};
+
+struct SDevice {
+    dword id;
+    dword flags;
+    char * name;
+    char * desc;
+    struct SDevice * next_ptr;
+    GUID * pDeviceGuid;
+    GUID guid;
+    dword dwVidMemTotal;
+    dword end_buffer;
+};
+
+
+struct SDisplayMode {
+    undefined4 display_mode_idx;
+    undefined4 deviceId;
+    undefined4 width;
+    undefined4 height;
+    undefined4 pitch;
+    undefined4 rgb_bit_count;
+    dword field_0x18;
+    dword field_0x1c;
+    dword field_0x20;
+    dword field_0x24;
+    dword field_0x28;
+    dword field_0x2c;
+    dword field_0x30;
+    dword field_0x34;
+    struct SDisplayMode * pnext;
+    undefined4 field_0x3c;
 };
 
 typedef struct GangRespect GangRespect, *PGangRespect;
@@ -6517,29 +6045,6 @@ struct MaybeWeaponStruct {
     byte field_0x2c;
 };
 
-typedef struct PaletteTexture PaletteTexture, *PPaletteTexture;
-
-struct PaletteTexture {
-    undefined field_0x0;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    undefined field_0x4;
-    undefined field_0x5;
-    ushort field_0x6;
-    uint field_0x8;
-    undefined field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-    ushort field_0x10;
-    byte field_0x12;
-    byte field_0x13;
-    undefined4 field_0x14;
-    undefined4 field_0x18;
-    undefined4 field_0x1c;
-};
-
 typedef struct S10 S10, *PS10;
 
 typedef struct S10_TxtMessage S10_TxtMessage, *PS10_TxtMessage;
@@ -6633,7 +6138,34 @@ struct S12 {
 typedef struct S13 S13, *PS13;
 
 struct S13 { /* Display.cpp */
-    int field_0x0[7];
+    undefined field_0x0;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    undefined field_0x4;
+    undefined field_0x5;
+    undefined field_0x6;
+    undefined field_0x7;
+    undefined field_0x8;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
+    undefined field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+    undefined field_0x10;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined field_0x14;
+    undefined field_0x15;
+    undefined field_0x16;
+    undefined field_0x17;
+    undefined field_0x18;
+    undefined field_0x19;
+    undefined field_0x1a;
+    undefined field_0x1b;
 };
 
 typedef struct S14 S14, *PS14;
@@ -9052,6 +8584,46 @@ struct S7 {
     undefined2 field_0x788;
 };
 
+typedef struct SGlobals SGlobals, *PSGlobals;
+
+struct SGlobals {
+    int mNumPolysDrawn;
+    int mNumTextureSwaps;
+    int mNumBatchFlushes;
+    dword mSceneTime_2B93EAC;
+    dword gCacheSizes_dword_43EB0[12];
+    dword gCacheSizes_word_10810[12];
+    dword gCacheHitRates_dword_E43F10[12];
+    dword gCacheUnknown_107F8[12];
+    void * cache_12_array_dword_E13D80[12];
+};
+
+typedef struct SImage SImage, *PSImage;
+
+struct SImage {
+    undefined field_0x0;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    u4 field_0x4;
+    u4 field_0x8;
+    ushort width;
+    ushort height;
+    undefined field_0x10;
+    undefined field_0x11;
+    u4 field_0x12;
+};
+
+typedef struct SLight SLight, *PSLight;
+
+struct SLight {
+    dword field_0x0;
+    float x;
+    float y;
+    float z;
+    DWORD rgba;
+};
+
 typedef struct SMission SMission, *PSMission;
 
 struct SMission {
@@ -9289,6 +8861,29 @@ struct SRelToBonus2 {
     byte mask;
 };
 
+typedef struct STexture STexture, *PSTexture;
+
+typedef uchar BYTE;
+
+typedef ushort WORD;
+
+struct STexture {
+    ushort id;
+    undefined2 field_0x2;
+    undefined2 pal_is_trans;
+    ushort pal_size;
+    void * locked_pixels_ptr;
+    undefined field_0xc;
+    undefined field_0xd;
+    ushort width;
+    ushort height;
+    byte bPalIsValid;
+    byte flags;
+    BYTE * original_pixel_data_ptr;
+    WORD * pPaltData;
+    void * cachePtr;
+};
+
 typedef struct Style_S3 Style_S3, *PStyle_S3;
 
 struct Style_S3 {
@@ -9510,5 +9105,24 @@ struct TrafficLigthStruct {
     u2 field_0x190;
     enum TRAFFIC_PHASE phase;
     byte timer;
+};
+
+typedef struct Vert Vert, *PVert;
+
+struct Vert {
+    float x;
+    float y;
+    float z;
+    float w;
+    dword diff;
+    dword spec;
+    float u;
+    float v;
+};
+
+typedef struct Verts Verts, *PVerts;
+
+struct Verts {
+    struct Vert mVerts[4];
 };
 
