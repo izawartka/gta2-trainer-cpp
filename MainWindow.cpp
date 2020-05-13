@@ -80,13 +80,13 @@ void MarkPed(HDC dc, Ped* ped, COLORREF color) {
 	WCHAR buf[256];
 	wsprintf(
 		buf,
-		L"Ped %d\r\nOcupation: %d\r\nRemap: %d / %d\r\ntimerToAction %d / %d\r\narmyCarRef: %08x\r\npedRef: %08x\r\nstate %d / %d / %d / %d",
+		L"Ped %d (0x%08x)\r\nOcupation: %d\r\nRemap: %d / %d\r\ntimerToAction %d\r\narmyCarRef: %08x\r\npedRef: %08x\r\nstate %d / %d / %d / %d",
 		ped->id,
+		ped,
 		ped->occupation,
 		ped->remap,
 		ped->remap2,
 		ped->timerToAction,
-		ped->field_0x1c4,
 		ped->armyCarRef,
 		ped->pedRef,
 		ped->state,
@@ -94,9 +94,6 @@ void MarkPed(HDC dc, Ped* ped, COLORREF color) {
 		ped->state2_2,
 		ped->state3
 	);
-	if (ped->occupation == 3) {
-		//ped->state3 = (PED_STATE3)2;
-	}
 	DrawText(
 		dc,
 		buf,
@@ -132,6 +129,40 @@ void MarkCar(HDC dc, Car* car, COLORREF color) {
 
 
 	DeleteObject(hPen);
+
+	GetStockObject(WHITE_BRUSH);
+	GetStockObject(DC_PEN);
+
+	SetBkMode(dc, TRANSPARENT);
+	SetTextColor(dc, color);
+	HFONT hFont = CreateFont(15, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 2, 0, L"SYSTEM_FIXED_FONT");
+	HFONT hTmp = (HFONT)SelectObject(dc, hFont);
+	rect.top += 60;
+	//rect.left += 60;
+	rect.right += 250;
+	rect.bottom += 150;
+	WCHAR buf[256];
+	wsprintf(
+		buf,
+		L"Car %d (0x%08x)\r\Model: %d\r\ndriver: %08x (id: %d)\r\ntrafficCarType: %d\r\nphysics: %08x gas: %d\r\nphysics: %d",
+		car->id,
+		car,
+		car->carModel,
+		car->driver,
+		car->driver ? car->driver->id : 0,
+		car->trafficCarType,
+		car->physics,
+		car->physics ? car->physics->gasLevel : -1,
+		car->somePedId
+	);
+	DrawText(
+		dc,
+		buf,
+		wcslen(buf),
+		&rect,
+		DT_TOP
+	);
+	DeleteObject(SelectObject(dc, hTmp));
 
 	GetStockObject(WHITE_BRUSH);
 	GetStockObject(DC_PEN);

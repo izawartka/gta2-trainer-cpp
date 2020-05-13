@@ -424,14 +424,14 @@ typedef enum CAR_ENGINE_STATE {
 } CAR_ENGINE_STATE;
 
 typedef enum TRAFFIC_CAR_TYPE {
-    TRAFFIC_4=4,
+    TRAFFIC_1_REGULAR=1,
+    TRAFFIC_2_PROT_RECYCLED_CAR=2,
+    TRAFFIC_4_AMBULANCE=4,
     TRAFFIC_5=5,
+    TRAFFIC_6_POLICE_CAR=6,
     TRAFFIC_7=7,
     TRAFFIC_9=9,
     TRAFFIC_MISSION_CAR=8,
-    TRAFFIC_PROT_RECYCLED_CAR=2,
-    TRAFFIC_REGULAR=1,
-    TRAFFIC_UNIT_CAR=6,
     TRAFFIC_a=10
 } TRAFFIC_CAR_TYPE;
 
@@ -718,7 +718,10 @@ struct Car {
     void * field_0x64;
     undefined4 field_0x68;
     uint id;
-    int driverPedId; /* Created by retype action */
+    undefined field_0x70;
+    undefined field_0x71;
+    undefined field_0x72;
+    undefined field_0x73;
     short carDamage;
     short field_0x76;
     ushort bitMask;
@@ -737,7 +740,7 @@ struct Car {
     undefined field_0x8f;
     undefined4 field_0x90;
     u1 field_0x94;
-    u1 field_0x95;
+    u1 field_0x95; /* player id (ped 1 will be set here if player enter to car) */
     undefined field_0x96;
     undefined field_0x97;
     int locksDoor; /* 1 - locked, 2 - unlocked */
@@ -1007,7 +1010,7 @@ struct CarManager4_S1 {
     undefined4 field_0x64;
     undefined4 field_0x68;
     undefined4 field_0x6c;
-    undefined4 field_0x70;
+    void * ptr;
     undefined4 field_0x74;
 };
 
@@ -6540,7 +6543,9 @@ struct S24_char {
 typedef struct S27 S27, *PS27;
 
 struct S27 {
-    undefined field_0x0[2040];
+    void * field_0x0;
+    undefined field_0x4[2035];
+    undefined field_0x7f7;
 };
 
 typedef struct S28 S28, *PS28;
