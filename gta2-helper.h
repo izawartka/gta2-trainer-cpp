@@ -3,6 +3,9 @@
 
 #include "gta2.h"
 
+static_assert(sizeof(Car) == 0xbc, "Wrong size of Car struct");
+static_assert(sizeof(Ped) == 0x294, "Wrong size of Ped struct");
+
 const DWORD pGameTick = (DWORD)0x0045c1f0;
 const DWORD pDraw = (DWORD)0x00461960;
 static const TrafficLigthStruct* ptrToTrafficLights = (TrafficLigthStruct*)0x006721cc;

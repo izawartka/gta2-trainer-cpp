@@ -435,7 +435,7 @@ typedef enum TRAFFIC_CAR_TYPE {
     TRAFFIC_a=10
 } TRAFFIC_CAR_TYPE;
 
-typedef enum CAR_SIREN_STATE {
+typedef enum CAR_SIREN_STATE : unsigned char {
     CAR_ALARM=8,
     SIREN_OFF=2,
     SIREN_ON=4,
@@ -443,7 +443,7 @@ typedef enum CAR_SIREN_STATE {
     SIREN_UNK_10=16
 } CAR_SIREN_STATE;
 
-typedef enum HORN {
+typedef enum HORN : unsigned char {
     HORN_ON=248
 } HORN;
 
