@@ -8575,6 +8575,36 @@ struct S7 {
     undefined2 field_0x788;
 };
 
+typedef struct SGlobals SGlobals, *PSGlobals;
+
+struct SGlobals {
+    int mNumPolysDrawn;
+    int mNumTextureSwaps;
+    int mNumBatchFlushes;
+    dword mSceneTime_2B93EAC;
+    dword gCacheSizes_dword_43EB0[12];
+    dword gCacheSizes_word_10810[12];
+    dword gCacheHitRates_dword_E43F10[12];
+    dword gCacheUnknown_107F8[12];
+    void * cache_12_array_dword_E13D80[12];
+};
+
+typedef struct SImage SImage, *PSImage;
+
+struct SImage {
+    undefined field_0x0;
+    undefined field_0x1;
+    undefined field_0x2;
+    undefined field_0x3;
+    u4 field_0x4;
+    u4 field_0x8;
+    ushort width;
+    ushort height;
+    undefined field_0x10;
+    undefined field_0x11;
+    u4 field_0x12;
+};
+
 typedef struct SLight SLight, *PSLight;
 
 struct SLight {

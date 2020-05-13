@@ -117,7 +117,7 @@ void MarkCar(HDC dc, Car* car, COLORREF color) {
 
 }
 
-void myVid_FlipBuffers(D3DContext* context) {
+void myVid_FlipBuffers(SVideo* context) {
 	OutputDebugStringA("myVid_FlipBuffers\n");
 
 	int width = *(int*)0x00673578;
@@ -127,7 +127,7 @@ void myVid_FlipBuffers(D3DContext* context) {
 
 	//DrawRect((LPDIRECTDRAWSURFACE7)context->surface2, 100, 200, 100, 100, D3DCOLOR_ARGB(255, 255, 0, 0));
 	HDC dc;
-	LPDIRECTDRAWSURFACE7 surf = (LPDIRECTDRAWSURFACE7)context->surface2;
+	LPDIRECTDRAWSURFACE7 surf = (LPDIRECTDRAWSURFACE7)context->Surface;
 	HRESULT hr = surf->GetDC(&dc);
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 	if (hr == DD_OK && pGame && pGame->gameStatus) {

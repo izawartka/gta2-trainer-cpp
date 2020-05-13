@@ -16,6 +16,7 @@ static DWORD ptrToS10 = 0x00672f40;
 static DWORD ptrToS2LocalesSettings = 0x00671550;
 static DWORD ptrToCarsPrefabs = 0x005e4ca0;
 static DWORD ptrToPlayerPhysics = 0x005e3cc4;
+static DWORD ptrToFrontEnd = 0x005eb160;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
 // Usage: auto game = fnGetGame();
@@ -46,7 +47,7 @@ typedef void* (__fastcall StartMapPlaySound)(void*, DWORD edx);
 static StartMapPlaySound* fnStartMapPlaySound = (StartMapPlaySound*)0x004784d0;
 
 // void Vid_FlipBuffers(D3DContext *param_1)
-typedef void* (Vid_FlipBuffers)(D3DContext* param_1);
+typedef void* (Vid_FlipBuffers)(SVideo* param_1);
 static Vid_FlipBuffers* fnVid_FlipBuffers = 0;
 
 // Ped * SpawnPedAtPosition(int x,int y,int z,PED_REMAP remap,short param_5)
@@ -93,6 +94,12 @@ typedef void(__fastcall ShowMessageToPlayer)(S10_TxtMessage*, DWORD edx, int tim
 static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x004c6750;
 // example: fnShowMessageToPlayer(3, "nespray");
 #define fnShowMessageToPlayer(seconds, messageCode) fnShowMessageToPlayerRaw(&(ByPtr(S10, ptrToS10))->txtMessage, 0, seconds, messageCode)
+
+
+// void __fastcall drawText(FrontEnd* _this, undefined edx, WCHAR* param_3, undefined4 x, SCR_f y, undefined4 length, undefined4 param_7)
+typedef void(DrawGTAText)(WCHAR* str, SCR_f x, SCR_f y, size_t length, undefined4 param_5, S4_ENUM1* param_6,
+	undefined4 param_7, undefined4 param_8, undefined4 param_9);
+static DrawGTAText* fnDrawGTATextRaw = (DrawGTAText*)0x004cc100;
 
 void fnShowCustomTextMessage(WCHAR* message);
 Car* fnGetCarById(int id);
