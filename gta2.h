@@ -33,18 +33,18 @@ typedef enum CAR_REL_TO_COLOR_ENUM {
 } CAR_REL_TO_COLOR_ENUM;
 
 typedef enum PED_STATE {
-    PED_STATE_DRIVING_A_CAR=10,
-    PED_STATE_ENTERING_INTO_CAR=3,
-    PED_STATE_FALL_ON_GROUND=8,
-    PED_STATE_GETTING_OUT_FROM_CAR=4,
-    PED_STATE_GOING_TO_CAR=2,
-    PED_STATE_INITIAL=11,
-    PED_STATE_STAYING=7,
-    PED_STATE_UNK1=1,
-    PED_STATE_UNK5=5,
-    PED_STATE_UNK6=6,
-    PED_STATE_WALK=0,
-    PED_STATE_WASTED=9
+    PED_STATE_0_WALK=0,
+    PED_STATE_1_UNK_PROBABLY_RUN=1,
+    PED_STATE_2_GOING_TO_TARGET=2,
+    PED_STATE_3_ENTERING_INTO_CAR=3,
+    PED_STATE_4_GETTING_OUT_FROM_CAR=4,
+    PED_STATE_5_UNK=5,
+    PED_STATE_6_UNK=6,
+    PED_STATE_7_STAYING=7,
+    PED_STATE_8_FALL_ON_GROUND=8,
+    PED_STATE_9_WASTED=9,
+    PED_STATE_a_DRIVING_A_CAR=10,
+    PED_STATE_b_INITIAL=11
 } PED_STATE;
 
 typedef enum PED_STATE2 {
@@ -105,12 +105,6 @@ typedef struct Car Car, *PCar;
 typedef struct WEAPON_PLAYER_LIST WEAPON_PLAYER_LIST, *PWEAPON_PLAYER_LIST;
 
 typedef struct WEAPON_STRUCT WEAPON_STRUCT, *PWEAPON_STRUCT;
-
-typedef enum PED_AI_MODE : unsigned short {
-    PED_AI_MODE_0_DUMMY=0,
-    PED_AI_MODE_CARTHIEF_MUGGER=40,
-    PED_AI_MODE_PLAYER=9999
-} PED_AI_MODE;
 
 typedef enum PED_BIT_STATE {
     PED_BIT_STATE_2000000=33554432,
@@ -222,7 +216,11 @@ typedef enum PED_REMAP : unsigned char {
 } PED_REMAP;
 
 typedef enum PED_STATE3 {
+    PED_STATE3_1f_SIT_IN_TAXY_OR_IN_STEALED_CAR=31,
+    PED_STATE3_2_DRIVER_RUN_AWAY=2,
+    PED_STATE3_32_WASTED=50,
     PED_STATE3_COP=54,
+    PED_STATE3_DO_NOTHING=0,
     PED_STATE3_ENTERING_TO_CAR=35,
     PED_STATE3_GANG_MEMBER=13,
     PED_STATE3_GETTING_OUT_FROM_CAR=36,
@@ -236,8 +234,6 @@ typedef enum PED_STATE3 {
     PED_STATE3_UNK19=25,
     PED_STATE3_UNK1a=26,
     PED_STATE3_UNK1b=27,
-    PED_STATE3_UNK1f=31,
-    PED_STATE3_UNK2=2,
     PED_STATE3_UNK20=32,
     PED_STATE3_UNK21=33,
     PED_STATE3_UNK22=34,
@@ -245,7 +241,6 @@ typedef enum PED_STATE3 {
     PED_STATE3_UNK26=38,
     PED_STATE3_UNK2a=42,
     PED_STATE3_UNK2b=43,
-    PED_STATE3_UNK3=3,
     PED_STATE3_UNK33=51,
     PED_STATE3_UNK34=52,
     PED_STATE3_UNK37=55,
@@ -256,10 +251,13 @@ typedef enum PED_STATE3 {
     PED_STATE3_UNK3c=60,
     PED_STATE3_UNK3d_REL_TO_MISSION_ARROWS=61,
     PED_STATE3_UNK6=6,
+    PED_STATE3_UNK7=7,
     PED_STATE3_UNK8=8,
+    PED_STATE3_UNK9=9,
     PED_STATE3_UNKa=10,
     PED_STATE3_UNKc=12,
-    PED_STATE3_UNKe=14
+    PED_STATE3_UNKe=14,
+    PEF_STATE3_1c_DEAD=28
 } PED_STATE3;
 
 typedef enum PED_REMAP2 {
@@ -268,7 +266,7 @@ typedef enum PED_REMAP2 {
     PED_REMAP2_HEAVY_ARMOUR=2
 } PED_REMAP2;
 
-typedef enum CAR_MODEL : unsigned char {
+typedef enum CAR_MODEL {
     ALFA=0,
     ALLARD=1,
     AMDB4=2,
@@ -1454,7 +1452,7 @@ struct Ped {
     undefined2 eq_100;
     undefined2 field_0x214;
     short health;
-    enum PED_AI_MODE aiMode;
+    ushort timerToAction; /* will be decrement each game tick, when its 0 then ocupation action is done. Fo example: steal a car */
     short field_0x21a;
     enum PED_BIT_STATE bitStateInvisOnFireEtc; /* invisibilty, electrofingers on fire and more  */
     undefined4 field_0x220;
@@ -5495,7 +5493,7 @@ struct SVideo {
     undefined field_0x83;
     void * Vid_GetVersion;
     HRESULT last_error;
-    void * DirectDraw7;
+    void * DirectDraw7; /* IDirectDraw7* */
     undefined field_0x90[144];
     void * IDDraw4; /* IDirectDraw4* */
     GUID field_0x124;

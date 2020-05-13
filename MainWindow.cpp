@@ -59,7 +59,7 @@ void MarkPed(HDC dc, Ped* ped, COLORREF color) {
 	rect.right = p.x + size;
 	rect.top = p.y - size;
 	rect.bottom = p.y + size;
-	
+
 	MoveToEx(dc, rect.left, rect.top, NULL);
 	LineTo(dc, rect.right, rect.top);
 	LineTo(dc, rect.right, rect.bottom);
@@ -68,6 +68,41 @@ void MarkPed(HDC dc, Ped* ped, COLORREF color) {
 
 
 	DeleteObject(hPen);
+
+	SetBkMode(dc, TRANSPARENT);
+	SetTextColor(dc, color);
+	HFONT hFont = CreateFont(15, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 2, 0, L"SYSTEM_FIXED_FONT");
+	HFONT hTmp = (HFONT)SelectObject(dc, hFont);
+	rect.top -= 20;
+	rect.left += 50;
+	rect.right += 150;
+	rect.bottom += 70;
+	WCHAR buf[256];
+	wsprintf(
+		buf,
+		L"Ped %d\r\nOcupation: %d\r\nRemap: %d / %d\r\ntimerToAction %d\r\narmyCarRef: %08x\r\npedRef: %08x\r\nstate %04X / %04X / %04X",
+		ped->id,
+		ped->occupation,
+		ped->remap,
+		ped->remap2,
+		ped->timerToAction,
+		ped->armyCarRef,
+		ped->pedRef,
+		ped->state,
+		ped->state2,
+		ped->state3
+	);
+	if (ped->occupation == 3) {
+		//ped->state3 = (PED_STATE3)2;
+	}
+	DrawText(
+		dc,
+		buf,
+		wcslen(buf),
+		&rect,
+		DT_VCENTER
+	);
+	DeleteObject(SelectObject(dc, hTmp));
 
 	GetStockObject(WHITE_BRUSH);
 	GetStockObject(DC_PEN);
@@ -127,12 +162,12 @@ void myVid_FlipBuffers(SVideo* context) {
 
 	//DrawRect((LPDIRECTDRAWSURFACE7)context->surface2, 100, 200, 100, 100, D3DCOLOR_ARGB(255, 255, 0, 0));
 	HDC dc;
+
 	LPDIRECTDRAWSURFACE7 surf = (LPDIRECTDRAWSURFACE7)context->Surface;
 	HRESULT hr = surf->GetDC(&dc);
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 	if (hr == DD_OK && pGame && pGame->gameStatus) {
-		
-		MarkPed(dc, fnGetPedByID(1), RGB(50, 50, 200));
+		MarkPed(dc, fnGetPedByID(1), RGB(50, 255, 255));
 
 		auto manager = ByPtr(PedManager_S25, ptrToPedManager);
 		auto ped = manager->lastPedInArray;
@@ -1857,7 +1892,7 @@ void MainWindow::FixCheckboxes()
 void Strafe(bool right, bool movingBackward) {
 	Ped* ped = fnGetPedByID(1);
 
-	ped->state = PED_STATE_WALK;
+	ped->state = PED_STATE_0_WALK;
 	ped->state2 = (PED_STATE2)0;
 	bool* IsPlayerPedMoving = (bool*)0x0066a3c7;
 	*IsPlayerPedMoving = true;
@@ -1920,7 +1955,8 @@ void MainWindow::OnGTAGameTick(Game* game)
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
-
-	Ped* ped = FindTheNearestPed(fnGetPedByID(1));
-	log(L"id: %d; remap: %d; occupation: %d; aimode: %d", ped->id, ped->remap, ped->occupation, ped->aiMode);
+	auto ped = fnGetPedByID(1);
+	auto ped2 = fnSpawnPedAtPosition(ped->x, ped->y, ped->z + 16384, PED_REMAP_CARTHIEF, 1);
+	ped2->occupation = CARTHIEF;
+	ped2->timerToAction = 100;
 }

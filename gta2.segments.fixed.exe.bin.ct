@@ -11,63 +11,54 @@
         <CheatEntry>
           <ID>7</ID>
           <Description>"tagsGtaCollected"</Description>
-          <LastState Value="0" RealAddress="005EC5E4"/>
           <VariableType>4 Bytes</VariableType>
           <Address>005ec070+574</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>62</ID>
           <Description>"someIdDecr"</Description>
-          <LastState Value="210692" RealAddress="042D3E4C"/>
           <VariableType>4 Bytes</VariableType>
           <Address>"d3ddll.dll"+43e4c</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>68</ID>
           <Description>"nextSpriteId"</Description>
-          <LastState Value="126" RealAddress="0066A3BC"/>
           <VariableType>4 Bytes</VariableType>
           <Address>0066a3bc</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>74</ID>
           <Description>"do_show_timing"</Description>
-          <LastState Value="0" RealAddress="005EAD79"/>
           <VariableType>Byte</VariableType>
           <Address>005ead79</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>75</ID>
           <Description>"do_show_junc_ids"</Description>
-          <LastState Value="0" RealAddress="005EAD89"/>
           <VariableType>Byte</VariableType>
           <Address>005ead89</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>84</ID>
           <Description>"random seed"</Description>
-          <LastState Value="2470701764" RealAddress="00595410"/>
           <VariableType>4 Bytes</VariableType>
           <Address>00595410</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>96</ID>
           <Description>"window_width"</Description>
-          <LastState Value="1024" RealAddress="00673578"/>
           <VariableType>4 Bytes</VariableType>
           <Address>00673578</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>97</ID>
           <Description>"window_height"</Description>
-          <LastState Value="768" RealAddress="006732E8"/>
           <VariableType>4 Bytes</VariableType>
           <Address>006732e8</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>98</ID>
           <Description>"lastFormat"</Description>
-          <LastState RealAddress="0056E788"/>
           <VariableType>String</VariableType>
           <Length>10</Length>
           <Unicode>1</Unicode>
@@ -78,7 +69,6 @@
         <CheatEntry>
           <ID>99</ID>
           <Description>"lastBuf"</Description>
-          <LastState RealAddress="005E9F08"/>
           <VariableType>String</VariableType>
           <Length>10</Length>
           <Unicode>1</Unicode>
@@ -89,7 +79,6 @@
         <CheatEntry>
           <ID>126</ID>
           <Description>"gciLocation"</Description>
-          <LastState RealAddress="00676DDC"/>
           <VariableType>String</VariableType>
           <Length>10</Length>
           <Unicode>0</Unicode>
@@ -100,7 +89,6 @@
         <CheatEntry>
           <ID>127</ID>
           <Description>"gciLocation2"</Description>
-          <LastState RealAddress="00676EF1"/>
           <VariableType>String</VariableType>
           <Length>10</Length>
           <Unicode>0</Unicode>
@@ -111,7 +99,6 @@
         <CheatEntry>
           <ID>128</ID>
           <Description>"locales-&gt;length"</Description>
-          <LastState Value="2595" RealAddress="02B01B04"/>
           <VariableType>4 Bytes</VariableType>
           <Address>00671550</Address>
           <Offsets>
@@ -121,7 +108,6 @@
         <CheatEntry>
           <ID>129</ID>
           <Description>"locales-&gt;language"</Description>
-          <LastState RealAddress="02B01B10"/>
           <VariableType>String</VariableType>
           <Length>1</Length>
           <Unicode>0</Unicode>
@@ -135,7 +121,6 @@
         <CheatEntry>
           <ID>130</ID>
           <Description>"locales-&gt;ptrToLocales"</Description>
-          <LastState Value="12719E60" RealAddress="02B01B00"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00671550</Address>
@@ -146,7 +131,6 @@
         <CheatEntry>
           <ID>131</ID>
           <Description>"locales-&gt;ptrToLocales"</Description>
-          <LastState RealAddress="1272D54A"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>String</VariableType>
           <Length>24</Length>
@@ -163,7 +147,6 @@
         <CheatEntry>
           <ID>132</ID>
           <Description>"gciLocation3"</Description>
-          <LastState RealAddress="00676EEC"/>
           <VariableType>String</VariableType>
           <Length>10</Length>
           <Unicode>0</Unicode>
@@ -174,7 +157,6 @@
         <CheatEntry>
           <ID>217</ID>
           <Description>"ptrToS19-&gt;18"</Description>
-          <LastState Value="1248608" RealAddress="02B0EF38"/>
           <VariableType>4 Bytes</VariableType>
           <Address>00671e9c</Address>
           <Offsets>
@@ -184,21 +166,18 @@
         <CheatEntry>
           <ID>218</ID>
           <Description>"lastFrameTime"</Description>
-          <LastState Value="334565828" RealAddress="00662748"/>
           <VariableType>4 Bytes</VariableType>
           <Address>00662748</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>274</ID>
           <Description>"CurrentTickCount"</Description>
-          <LastState Value="3775727809" RealAddress="005E8B7C"/>
           <VariableType>4 Bytes</VariableType>
           <Address>005e8b7c</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>275</ID>
           <Description>"roofDecals"</Description>
-          <LastState Value="00C00060" RealAddress="00591E98"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00591e98</Address>
@@ -206,7 +185,6 @@
         <CheatEntry>
           <ID>276</ID>
           <Description>"decalsMask"</Description>
-          <LastState Value="00C78060" RealAddress="005E85BC"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>005e85bc</Address>
@@ -214,7 +192,6 @@
         <CheatEntry>
           <ID>277</ID>
           <Description>"FBIDecals"</Description>
-          <LastState Value="00C70060" RealAddress="00591E94"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00591e94</Address>
@@ -231,7 +208,6 @@
         <CheatEntry>
           <ID>51</ID>
           <Description>"RenderDLL"</Description>
-          <LastState RealAddress="00673478"/>
           <VariableType>String</VariableType>
           <Length>10</Length>
           <Unicode>0</Unicode>
@@ -242,7 +218,6 @@
         <CheatEntry>
           <ID>53</ID>
           <Description>"ptrToD3d"</Description>
-          <LastState Value="03A80498" RealAddress="00673D20"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00673d20</Address>
@@ -250,7 +225,6 @@
         <CheatEntry>
           <ID>54</ID>
           <Description>"ptrToD3d-&gt;84"</Description>
-          <LastState Value="00675300" RealAddress="03A8051C"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00673d20</Address>
@@ -261,7 +235,6 @@
         <CheatEntry>
           <ID>59</ID>
           <Description>"ptrToD3d-&gt;hResult"</Description>
-          <LastState Value="00000000" RealAddress="03A80520"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00673d20</Address>
@@ -272,7 +245,6 @@
         <CheatEntry>
           <ID>60</ID>
           <Description>"ptrToD3d-&gt;directDrawInterface"</Description>
-          <LastState Value="0EDC9FD8" RealAddress="03A80524"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00673d20</Address>
@@ -283,7 +255,6 @@
         <CheatEntry>
           <ID>55</ID>
           <Description>"ptrToD3d-&gt;DirectDrawEnumerateIncr"</Description>
-          <LastState Value="00000001" RealAddress="03A804B8"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00673d20</Address>
@@ -294,7 +265,6 @@
         <CheatEntry>
           <ID>56</ID>
           <Description>"ptrToD3d-&gt;30"</Description>
-          <LastState Value="03A909B0" RealAddress="03A804C8"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00673d20</Address>
@@ -305,7 +275,6 @@
         <CheatEntry>
           <ID>57</ID>
           <Description>"ptrToD3d-&gt;30-&gt;pArg3"</Description>
-          <LastState RealAddress="03A909DC"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>String</VariableType>
           <Length>10</Length>
@@ -322,7 +291,6 @@
         <CheatEntry>
           <ID>58</ID>
           <Description>"ptrToD3d-&gt;30-&gt;pArg2"</Description>
-          <LastState Value="03A909E4" RealAddress="03A909BC"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00673d20</Address>
@@ -334,14 +302,12 @@
         <CheatEntry>
           <ID>61</ID>
           <Description>"skip_tiles"</Description>
-          <LastState Value="0" RealAddress="005EAD90"/>
           <VariableType>Byte</VariableType>
           <Address>005ead90</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>100</ID>
           <Description>"D3D"</Description>
-          <LastState Value="03A80498" RealAddress="00673D20"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>00673d20</Address>
@@ -358,7 +324,6 @@
         <CheatEntry>
           <ID>26</ID>
           <Description>"ptrToGame"</Description>
-          <LastState Value="02B00EA0" RealAddress="005EB4FC"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>005eb4fc</Address>
@@ -366,7 +331,6 @@
             <CheatEntry>
               <ID>27</ID>
               <Description>"ptrToGame-&gt;players"</Description>
-              <LastState Value="01" RealAddress="02B00EC3"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>Byte</VariableType>
               <Address>005eb4fc</Address>
@@ -377,7 +341,6 @@
             <CheatEntry>
               <ID>28</ID>
               <Description>"ptrToGame-&gt;player[0]"</Description>
-              <LastState Value="02B0B788" RealAddress="02B00EA4"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>4 Bytes</VariableType>
               <Address>005eb4fc</Address>
@@ -388,7 +351,6 @@
             <CheatEntry>
               <ID>29</ID>
               <Description>"ptrToGame-&gt;player[0]-&gt;some_bool"</Description>
-              <LastState Value="01" RealAddress="02B0B816"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>Byte</VariableType>
               <Address>005eb4fc</Address>
@@ -400,7 +362,6 @@
             <CheatEntry>
               <ID>30</ID>
               <Description>"ptrToGame-&gt;player[0]-&gt;health"</Description>
-              <LastState Value="0" RealAddress="02B0B99E"/>
               <VariableType>2 Bytes</VariableType>
               <Address>005eb4fc</Address>
               <Offsets>
@@ -411,7 +372,6 @@
             <CheatEntry>
               <ID>31</ID>
               <Description>"ptrToGame-&gt;player[0]-&gt;2c"</Description>
-              <LastState Value="0" RealAddress="02B0B7B4"/>
               <VariableType>2 Bytes</VariableType>
               <Address>005eb4fc</Address>
               <Offsets>
@@ -422,7 +382,6 @@
             <CheatEntry>
               <ID>32</ID>
               <Description>"ptrToGame-&gt;player[0]-&gt;elvis_d"</Description>
-              <LastState Value="0" RealAddress="02B0B80C"/>
               <VariableType>2 Bytes</VariableType>
               <Address>005eb4fc</Address>
               <Offsets>
@@ -433,7 +392,6 @@
             <CheatEntry>
               <ID>33</ID>
               <Description>"ptrToGame-&gt;player[0]-&gt;money"</Description>
-              <LastState Value="180" RealAddress="02B0BA5C"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005eb4fc</Address>
               <Offsets>
@@ -444,7 +402,6 @@
             <CheatEntry>
               <ID>21</ID>
               <Description>"ptrToGame-&gt;CurrentPlayer"</Description>
-              <LastState Value="02B0B788" RealAddress="02B00ED8"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>4 Bytes</VariableType>
               <Address>005eb4fc</Address>
@@ -455,7 +412,6 @@
                 <CheatEntry>
                   <ID>23</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;moneyMultiplier"</Description>
-                  <LastState Value="1" RealAddress="02B0BE44"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -466,7 +422,6 @@
                 <CheatEntry>
                   <ID>63</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;health"</Description>
-                  <LastState Value="0" RealAddress="02B0B99E"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>2 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -478,7 +433,6 @@
                 <CheatEntry>
                   <ID>67</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;playerPed"</Description>
-                  <LastState Value="0FE63970" RealAddress="02B0B84C"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -490,7 +444,6 @@
                 <CheatEntry>
                   <ID>102</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;cameraX"</Description>
-                  <LastState Value="2581546" RealAddress="02B0B8B0"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -501,7 +454,6 @@
                 <CheatEntry>
                   <ID>150</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;relToKeyUp"</Description>
-                  <LastState Value="0" RealAddress="02B0B800"/>
                   <VariableType>Byte</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -512,7 +464,6 @@
                 <CheatEntry>
                   <ID>156</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;physics-&gt;x"</Description>
-                  <LastState Value="2581546" RealAddress="02B0B8D4"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -523,7 +474,6 @@
                 <CheatEntry>
                   <ID>158</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;physics-&gt;xx"</Description>
-                  <LastState Value="2581546" RealAddress="02B0B8E4"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -534,7 +484,6 @@
                 <CheatEntry>
                   <ID>157</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;14c"</Description>
-                  <LastState Value="2581546" RealAddress="02B0B8D4"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -545,7 +494,6 @@
                 <CheatEntry>
                   <ID>165</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;6c"</Description>
-                  <LastState Value="0" RealAddress="02B0B7F4"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -556,7 +504,6 @@
                 <CheatEntry>
                   <ID>177</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;2cc"</Description>
-                  <LastState Value="0" RealAddress="02B0BA54"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -567,7 +514,6 @@
                 <CheatEntry>
                   <ID>166</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;someState"</Description>
-                  <LastState Value="0" RealAddress="02B0B7F0"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -578,7 +524,6 @@
                 <CheatEntry>
                   <ID>167</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;ped"</Description>
-                  <LastState Value="0FE63970" RealAddress="02B0B84C"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -590,7 +535,6 @@
                 <CheatEntry>
                   <ID>175</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph2-&gt;ped"</Description>
-                  <LastState Value="0FE63970" RealAddress="02B0B908"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -602,7 +546,6 @@
                 <CheatEntry>
                   <ID>192</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph2-&gt;y2"</Description>
-                  <LastState Value="002319CF" RealAddress="02B0B8E8"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -614,7 +557,6 @@
                 <CheatEntry>
                   <ID>172</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph2-&gt;sprite"</Description>
-                  <LastState Value="000038CC" RealAddress="02B0B8F0"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -626,7 +568,6 @@
                 <CheatEntry>
                   <ID>176</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph3-&gt;ped"</Description>
-                  <LastState Value="0FE63970" RealAddress="02B0B9C4"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -638,7 +579,6 @@
                 <CheatEntry>
                   <ID>268</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph3-&gt;xCameraVelocity"</Description>
-                  <LastState Value="0" RealAddress="02B0BA3C"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>Custom</VariableType>
                   <CustomType>SCR_f</CustomType>
@@ -651,7 +591,6 @@
                 <CheatEntry>
                   <ID>173</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph3-&gt;sprite"</Description>
-                  <LastState Value="000038CC" RealAddress="02B0B9AC"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -663,7 +602,6 @@
                 <CheatEntry>
                   <ID>174</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;sprite"</Description>
-                  <LastState Value="000038CC" RealAddress="02B0B834"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -675,7 +613,6 @@
                 <CheatEntry>
                   <ID>178</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;encodedCameraOrTeleportX"</Description>
-                  <LastState Value="2581546" RealAddress="02B0B8B0"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -687,7 +624,6 @@
                 <CheatEntry>
                   <ID>181</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;xVelocity"</Description>
-                  <LastState Value="00000000" RealAddress="02B0B8C4"/>
                   <ShowAsHex>1</ShowAsHex>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>4 Bytes</VariableType>
@@ -700,7 +636,6 @@
                 <CheatEntry>
                   <ID>180</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;yVelocity"</Description>
-                  <LastState Value="0" RealAddress="02B0B8C8"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -712,7 +647,6 @@
                 <CheatEntry>
                   <ID>182</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;x"</Description>
-                  <LastState Value="157.5650635" RealAddress="02B0B818"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>Custom</VariableType>
                   <CustomType>SCR_f</CustomType>
@@ -725,7 +659,6 @@
                 <CheatEntry>
                   <ID>267</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;x2"</Description>
-                  <LastState Value="157.5650635" RealAddress="02B0B828"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>Custom</VariableType>
                   <CustomType>SCR_f</CustomType>
@@ -738,7 +671,6 @@
                 <CheatEntry>
                   <ID>183</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;xx"</Description>
-                  <LastState Value="157.5650635" RealAddress="02B0B8A0"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>Custom</VariableType>
                   <CustomType>SCR_f</CustomType>
@@ -751,7 +683,6 @@
                 <CheatEntry>
                   <ID>179</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;b4"</Description>
-                  <LastState Value="0" RealAddress="02B0B8CC"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -763,7 +694,6 @@
                 <CheatEntry>
                   <ID>184</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;3c"</Description>
-                  <LastState Value="1" RealAddress="02B0B854"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -775,7 +705,6 @@
                 <CheatEntry>
                   <ID>186</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ph1-&gt;movementBitmask"</Description>
-                  <LastState Value="00000000" RealAddress="02B0B848"/>
                   <ShowAsHex>1</ShowAsHex>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>4 Bytes</VariableType>
@@ -788,7 +717,6 @@
                 <CheatEntry>
                   <ID>187</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;state1"</Description>
-                  <LastState Value="00000000" RealAddress="02B0B7F0"/>
                   <ShowAsHex>1</ShowAsHex>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>4 Bytes</VariableType>
@@ -801,7 +729,6 @@
                 <CheatEntry>
                   <ID>188</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;2f"</Description>
-                  <LastState Value="00000000" RealAddress="02B0B7B7"/>
                   <ShowAsHex>1</ShowAsHex>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>4 Bytes</VariableType>
@@ -814,7 +741,6 @@
                 <CheatEntry>
                   <ID>168</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;208"</Description>
-                  <LastState Value="2613248" RealAddress="02B0B990"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -825,7 +751,6 @@
                 <CheatEntry>
                   <ID>189</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;2d0"</Description>
-                  <LastState Value="4980736" RealAddress="02B0BA58"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -836,7 +761,6 @@
                 <CheatEntry>
                   <ID>190</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;playerPed4"</Description>
-                  <LastState Value="0" RealAddress="02B0BA50"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -847,7 +771,6 @@
                 <CheatEntry>
                   <ID>191</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;2cc"</Description>
-                  <LastState Value="0" RealAddress="02B0BA54"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -858,7 +781,6 @@
                 <CheatEntry>
                   <ID>171</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;34"</Description>
-                  <LastState Value="00000000" RealAddress="02B0B7BC"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -870,7 +792,6 @@
                 <CheatEntry>
                   <ID>185</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;up"</Description>
-                  <LastState Value="00" RealAddress="02B0B7F8"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>Byte</VariableType>
                   <Address>005eb4fc</Address>
@@ -882,7 +803,6 @@
                 <CheatEntry>
                   <ID>35</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;moneyMultiplier"</Description>
-                  <LastState Value="1" RealAddress="02B0BE44"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
                   <Offsets>
@@ -893,7 +813,6 @@
                 <CheatEntry>
                   <ID>36</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;ptrToCurrentPlayer"</Description>
-                  <LastState Value="03030300" RealAddress="02B0BAF0"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -905,7 +824,6 @@
                 <CheatEntry>
                   <ID>37</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;788"</Description>
-                  <LastState Value="-1" RealAddress="02B0BF10"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>2 Bytes</VariableType>
                   <Address>005eb4fc</Address>
@@ -917,7 +835,6 @@
                 <CheatEntry>
                   <ID>38</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;8b"</Description>
-                  <LastState Value="0" RealAddress="02B0B800"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>Byte</VariableType>
                   <Address>005eb4fc</Address>
@@ -929,7 +846,6 @@
                 <CheatEntry>
                   <ID>118</ID>
                   <Description>"ptrToGame-&gt;CurrentPlayer-&gt;8b"</Description>
-                  <LastState Value="1" RealAddress="02B0B788"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>Byte</VariableType>
                   <Address>005eb4fc</Address>
@@ -954,7 +870,6 @@
         <CheatEntry>
           <ID>80</ID>
           <Description>"ptrToPed"</Description>
-          <LastState Value="0FE63970" RealAddress="005E5BC4"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>005e5bc4</Address>
@@ -963,7 +878,6 @@
               <ID>65</ID>
               <Description>"ptrToPed-&gt;currentCar"</Description>
               <Options moHideChildren="1" moActivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
-              <LastState Value="0FD99D00" RealAddress="0FE63ADC"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5bc4</Address>
@@ -974,7 +888,6 @@
                 <CheatEntry>
                   <ID>90</ID>
                   <Description>"ptrToPed-&gt;currentCar-&gt;position"</Description>
-                  <LastState Value="0FDD0D5C" RealAddress="0FD99D50"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005e5bc4</Address>
@@ -986,7 +899,6 @@
                     <CheatEntry>
                       <ID>281</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;position-&gt;next"</Description>
-                      <LastState Value="0FE181B4" RealAddress="0FDD0D68"/>
                       <ShowAsHex>1</ShowAsHex>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -999,7 +911,6 @@
                         <CheatEntry>
                           <ID>280</ID>
                           <Description>"ptrToPed-&gt;currentCar-&gt;position-&gt;next-&gt;48"</Description>
-                          <LastState Value="01" RealAddress="0FE181FC"/>
                           <ShowAsHex>1</ShowAsHex>
                           <VariableType>Byte</VariableType>
                           <Address>005e5bc4</Address>
@@ -1017,7 +928,6 @@
                 <CheatEntry>
                   <ID>117</ID>
                   <Description>"ptrToPed-&gt;currentCar-&gt;carModel"</Description>
-                  <LastState Value="56" RealAddress="0FD99D84"/>
                   <ShowAsSigned>1</ShowAsSigned>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005e5bc4</Address>
@@ -1029,7 +939,6 @@
                 <CheatEntry>
                   <ID>112</ID>
                   <Description>"ptrToPed-&gt;currentCar-&gt;angle"</Description>
-                  <LastState Value="0" RealAddress="0FD99D00"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005e5bc4</Address>
                   <Offsets>
@@ -1041,7 +950,6 @@
                   <ID>121</ID>
                   <Description>"ptrToPed-&gt;currentCar-&gt;engine"</Description>
                   <Options moHideChildren="1"/>
-                  <LastState Value="0FDA54FC" RealAddress="0FD99D58"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005e5bc4</Address>
@@ -1053,7 +961,6 @@
                     <CheatEntry>
                       <ID>113</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;xVelocity"</Description>
-                      <LastState Value="0" RealAddress="0FDA54FC"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1066,7 +973,6 @@
                     <CheatEntry>
                       <ID>114</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;yVelocity"</Description>
-                      <LastState Value="0" RealAddress="0FDA5500"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1079,7 +985,6 @@
                     <CheatEntry>
                       <ID>233</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;damage"</Description>
-                      <LastState Value="110608" RealAddress="0FDA5504"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1092,7 +997,6 @@
                     <CheatEntry>
                       <ID>234</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;Xskid1"</Description>
-                      <LastState Value="0" RealAddress="0FDA551C"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>Custom</VariableType>
                       <CustomType>SCR_f</CustomType>
@@ -1106,7 +1010,6 @@
                     <CheatEntry>
                       <ID>235</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;Yskid1"</Description>
-                      <LastState Value="0" RealAddress="0FDA5520"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>Custom</VariableType>
                       <CustomType>SCR_f</CustomType>
@@ -1120,7 +1023,6 @@
                     <CheatEntry>
                       <ID>243</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;Xskid2"</Description>
-                      <LastState Value="0" RealAddress="0FDA5524"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>Custom</VariableType>
                       <CustomType>SCR_f</CustomType>
@@ -1134,7 +1036,6 @@
                     <CheatEntry>
                       <ID>244</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;Yskid2"</Description>
-                      <LastState Value="0" RealAddress="0FDA5528"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>Custom</VariableType>
                       <CustomType>SCR_f</CustomType>
@@ -1148,7 +1049,6 @@
                     <CheatEntry>
                       <ID>236</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;X_CM"</Description>
-                      <LastState Value="157.5786743" RealAddress="0FDA552C"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>Custom</VariableType>
                       <CustomType>SCR_f</CustomType>
@@ -1162,7 +1062,6 @@
                     <CheatEntry>
                       <ID>237</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;Y_CM"</Description>
-                      <LastState Value="140.3823853" RealAddress="0FDA5530"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>Custom</VariableType>
                       <CustomType>SCR_f</CustomType>
@@ -1176,7 +1075,6 @@
                     <CheatEntry>
                       <ID>238</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;X_CP"</Description>
-                      <LastState Value="157.5650635" RealAddress="0FDA5534"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>Custom</VariableType>
                       <CustomType>SCR_f</CustomType>
@@ -1190,7 +1088,6 @@
                     <CheatEntry>
                       <ID>239</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;Y_CP"</Description>
-                      <LastState Value="140.4032593" RealAddress="0FDA5538"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>Custom</VariableType>
                       <CustomType>SCR_f</CustomType>
@@ -1204,7 +1101,6 @@
                     <CheatEntry>
                       <ID>240</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;xVelocity2"</Description>
-                      <LastState Value="0" RealAddress="0FDA553C"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1217,7 +1113,6 @@
                     <CheatEntry>
                       <ID>241</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;yVelocity2"</Description>
-                      <LastState Value="0" RealAddress="0FDA5540"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1230,7 +1125,6 @@
                     <CheatEntry>
                       <ID>242</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;unknown"</Description>
-                      <LastState Value="0" RealAddress="0FDA5550"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1243,7 +1137,6 @@
                     <CheatEntry>
                       <ID>232</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;angle"</Description>
-                      <LastState Value="588" RealAddress="0FDA5554"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1256,7 +1149,6 @@
                     <CheatEntry>
                       <ID>231</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;angVelocity"</Description>
-                      <LastState Value="0" RealAddress="0FDA5570"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1269,7 +1161,6 @@
                     <CheatEntry>
                       <ID>228</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;pointingAng"</Description>
-                      <LastState Value="0" RealAddress="0FDA5574"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1282,7 +1173,6 @@
                     <CheatEntry>
                       <ID>229</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;frontSkid"</Description>
-                      <LastState Value="0" RealAddress="0FDA5580"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1295,7 +1185,6 @@
                     <CheatEntry>
                       <ID>230</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;rearSkid"</Description>
-                      <LastState Value="0" RealAddress="0FDA5584"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>4 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1308,7 +1197,6 @@
                     <CheatEntry>
                       <ID>115</ID>
                       <Description>"ptrToPed-&gt;currentCar-&gt;engine-&gt;gasLevel"</Description>
-                      <LastState Value="0" RealAddress="0FDA555D"/>
                       <ShowAsSigned>1</ShowAsSigned>
                       <VariableType>2 Bytes</VariableType>
                       <Address>005e5bc4</Address>
@@ -1323,7 +1211,6 @@
                 <CheatEntry>
                   <ID>257</ID>
                   <Description>"ptrToPed-&gt;currentCar-&gt;lockPalleteMaybe"</Description>
-                  <LastState Value="2" RealAddress="0FDD0D90"/>
                   <VariableType>4 Bytes</VariableType>
                   <Address>005e5bc4</Address>
                   <Offsets>
@@ -1335,7 +1222,6 @@
                 <CheatEntry>
                   <ID>111</ID>
                   <Description>"ptrToPed-&gt;currentCar-&gt;color"</Description>
-                  <LastState Value="0" RealAddress="0FDD0D80"/>
                   <VariableType>2 Bytes</VariableType>
                   <Address>005e5bc4</Address>
                   <Offsets>
@@ -1347,7 +1233,6 @@
                 <CheatEntry>
                   <ID>110</ID>
                   <Description>"ptrToPed-&gt;currentCar-&gt;sirenPhase"</Description>
-                  <LastState Value="00" RealAddress="0FD99DA5"/>
                   <ShowAsHex>1</ShowAsHex>
                   <VariableType>Byte</VariableType>
                   <Address>005e5bc4</Address>
@@ -1361,7 +1246,6 @@
             <CheatEntry>
               <ID>64</ID>
               <Description>"ptrToPed-&gt;health"</Description>
-              <LastState Value="100" RealAddress="0FE63B86"/>
               <VariableType>2 Bytes</VariableType>
               <Address>005e5bc4</Address>
               <Offsets>
@@ -1371,7 +1255,6 @@
             <CheatEntry>
               <ID>106</ID>
               <Description>"ptrToPed-&gt;remap"</Description>
-              <LastState Value="25" RealAddress="0FE63BB4"/>
               <VariableType>Byte</VariableType>
               <Address>005e5bc4</Address>
               <Offsets>
@@ -1381,7 +1264,6 @@
             <CheatEntry>
               <ID>103</ID>
               <Description>"ptrToPed-&gt;remap2"</Description>
-              <LastState Value="1" RealAddress="0FE63BDC"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5bc4</Address>
               <Offsets>
@@ -1391,7 +1273,6 @@
             <CheatEntry>
               <ID>101</ID>
               <Description>"ptrToPed-&gt;bitStateInvisOnFireEtc"</Description>
-              <LastState Value="1" RealAddress="0FE63B8C"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5bc4</Address>
               <Offsets>
@@ -1401,7 +1282,6 @@
             <CheatEntry>
               <ID>199</ID>
               <Description>"ptrToPed-&gt;state"</Description>
-              <LastState Value="10" RealAddress="0FE63BE8"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5bc4</Address>
               <Offsets>
@@ -1411,7 +1291,6 @@
             <CheatEntry>
               <ID>194</ID>
               <Description>"ptrToPed-&gt;state2"</Description>
-              <LastState Value="10" RealAddress="0FE63BEC"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5bc4</Address>
               <Offsets>
@@ -1431,7 +1310,6 @@
             <CheatEntry>
               <ID>151</ID>
               <Description>"ptrToPed-&gt;carRef"</Description>
-              <LastState Value="0" RealAddress="0FE63AC4"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5bc4</Address>
               <Offsets>
@@ -1441,7 +1319,6 @@
             <CheatEntry>
               <ID>271</ID>
               <Description>"ptrToPed-&gt;x"</Description>
-              <LastState Value="157.5650635" RealAddress="0FE63B1C"/>
               <VariableType>Custom</VariableType>
               <CustomType>SCR_f</CustomType>
               <Address>005e5bc4</Address>
@@ -1452,7 +1329,6 @@
             <CheatEntry>
               <ID>152</ID>
               <Description>"ptrToPed-&gt;xx"</Description>
-              <LastState Value="0" RealAddress="0FE63B4C"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5bc4</Address>
               <Offsets>
@@ -1462,7 +1338,6 @@
             <CheatEntry>
               <ID>193</ID>
               <Description>"ptrToPed-&gt;1b8"</Description>
-              <LastState Value="FFFFC000" RealAddress="0FE63B28"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5bc4</Address>
@@ -1473,7 +1348,6 @@
             <CheatEntry>
               <ID>81</ID>
               <Description>"ptrToPed-&gt;state4"</Description>
-              <LastState Value="2" RealAddress="0FE63BA8"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5bc4</Address>
               <Offsets>
@@ -1483,7 +1357,6 @@
             <CheatEntry>
               <ID>76</ID>
               <Description>"ptrToPed-&gt;sprite"</Description>
-              <LastState Value="00000000" RealAddress="0FE63AD8"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>4 Bytes</VariableType>
               <Address>5e5bc4</Address>
@@ -1613,28 +1486,24 @@
         <CheatEntry>
           <ID>198</ID>
           <Description>"globalPlayerCurrentX"</Description>
-          <LastState Value="2527995" RealAddress="0066A480"/>
           <VariableType>4 Bytes</VariableType>
           <Address>0066a480</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>197</ID>
           <Description>"globalPlayerCurrentY"</Description>
-          <LastState Value="2410368" RealAddress="0066A74C"/>
           <VariableType>4 Bytes</VariableType>
           <Address>0066a74c</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>196</ID>
           <Description>"globalPlayerCurrentZ"</Description>
-          <LastState Value="32768" RealAddress="0066A754"/>
           <VariableType>4 Bytes</VariableType>
           <Address>0066a754</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>66</ID>
           <Description>"ptrToPedManager"</Description>
-          <LastState Value="0FE648E8" RealAddress="0FE63968"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>005e5bbc</Address>
@@ -1645,7 +1514,6 @@
         <CheatEntry>
           <ID>69</ID>
           <Description>"ptrToSpriteManager-&gt;last-&gt;id"</Description>
-          <LastState Value="122" RealAddress="12672440"/>
           <VariableType>4 Bytes</VariableType>
           <Address>0066a3b4</Address>
           <Offsets>
@@ -1656,7 +1524,6 @@
         <CheatEntry>
           <ID>94</ID>
           <Description>"nextPedId"</Description>
-          <LastState Value="167" RealAddress="00591E84"/>
           <VariableType>4 Bytes</VariableType>
           <Address>00591e84</Address>
         </CheatEntry>
@@ -1664,7 +1531,6 @@
           <ID>209</ID>
           <Description>"ptrToPlayerPhysics"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="02B0B8D4" RealAddress="005E3CC4"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>005e3cc4</Address>
@@ -1672,7 +1538,6 @@
             <CheatEntry>
               <ID>245</ID>
               <Description>"ptrToPlayerPhysics-&gt;cameraZ"</Description>
-              <LastState Value="1" RealAddress="02B0B8DC"/>
               <VariableType>Custom</VariableType>
               <CustomType>SCR_f</CustomType>
               <Address>005e3cc4</Address>
@@ -1683,7 +1548,6 @@
             <CheatEntry>
               <ID>215</ID>
               <Description>"ptrToPlayerPhysics-&gt;leftOfTheSceenX"</Description>
-              <LastState Value="153.0579834" RealAddress="02B0B94C"/>
               <VariableType>Custom</VariableType>
               <CustomType>SCR_f</CustomType>
               <Address>005e3cc4</Address>
@@ -1694,7 +1558,6 @@
             <CheatEntry>
               <ID>212</ID>
               <Description>"ptrToPlayerPhysics-&gt;rightOfTheScreenX"</Description>
-              <LastState Value="162.0721436" RealAddress="02B0B950"/>
               <VariableType>Custom</VariableType>
               <CustomType>SCR_f</CustomType>
               <Address>005e3cc4</Address>
@@ -1705,7 +1568,6 @@
             <CheatEntry>
               <ID>213</ID>
               <Description>"ptrToPlayerPhysics-&gt;topOfTheScreenY"</Description>
-              <LastState Value="137.0229492" RealAddress="02B0B954"/>
               <VariableType>Custom</VariableType>
               <CustomType>SCR_f</CustomType>
               <Address>005e3cc4</Address>
@@ -1716,7 +1578,6 @@
             <CheatEntry>
               <ID>214</ID>
               <Description>"ptrToPlayerPhysics-&gt;bottomOfTheScreenY"</Description>
-              <LastState Value="143.7835693" RealAddress="02B0B958"/>
               <VariableType>Custom</VariableType>
               <CustomType>SCR_f</CustomType>
               <Address>005e3cc4</Address>
@@ -1727,7 +1588,6 @@
             <CheatEntry>
               <ID>216</ID>
               <Description>"ptrToPlayerPhysics-&gt;ac"</Description>
-              <LastState Value="0" RealAddress="02B0B980"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e3cc4</Address>
               <Offsets>
@@ -1739,7 +1599,6 @@
         <CheatEntry>
           <ID>226</ID>
           <Description>"defaultPedSpeed"</Description>
-          <LastState Value="1024" RealAddress="0066A504"/>
           <VariableType>4 Bytes</VariableType>
           <Address>0066a504</Address>
         </CheatEntry>
@@ -1749,20 +1608,18 @@
       <ID>286</ID>
       <Description>"Car related"</Description>
       <Options moHideChildren="1"/>
-      <LastState Value="" Activated="1" RealAddress="00000000"/>
+      <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
           <ID>71</ID>
           <Description>"do_show_traffic_lights_info"</Description>
-          <LastState Value="0" RealAddress="005EAD96"/>
           <VariableType>Byte</VariableType>
           <Address>005ead96</Address>
           <CheatEntries>
             <CheatEntry>
               <ID>72</ID>
               <Description>"ptrToTrafficLights-&gt;timer"</Description>
-              <LastState Value="41" RealAddress="126D6AF3"/>
               <VariableType>Byte</VariableType>
               <Address>006721cc</Address>
               <Offsets>
@@ -1772,7 +1629,6 @@
             <CheatEntry>
               <ID>73</ID>
               <Description>"ptrToTrafficLights-&gt;phase"</Description>
-              <LastState Value="1" RealAddress="126D6AF2"/>
               <VariableType>Byte</VariableType>
               <Address>006721cc</Address>
               <Offsets>
@@ -1784,14 +1640,12 @@
         <CheatEntry>
           <ID>85</ID>
           <Description>"ptrToTrafficManager"</Description>
-          <LastState Value="45095848" RealAddress="005E4CA4"/>
           <VariableType>4 Bytes</VariableType>
           <Address>005e4ca4</Address>
           <CheatEntries>
             <CheatEntry>
               <ID>92</ID>
               <Description>"ptrToTrafficManager-&gt;nextCarId"</Description>
-              <LastState Value="125" RealAddress="02B01BBC"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e4ca4</Address>
               <Offsets>
@@ -1801,7 +1655,6 @@
             <CheatEntry>
               <ID>91</ID>
               <Description>"ptrToTrafficManager-&gt;minimalSpawnDelay"</Description>
-              <LastState Value="0" RealAddress="02B01BFC"/>
               <VariableType>Byte</VariableType>
               <Address>005e4ca4</Address>
               <Offsets>
@@ -1811,7 +1664,6 @@
             <CheatEntry>
               <ID>93</ID>
               <Description>"ptrToTrafficManager-&gt;carModel"</Description>
-              <LastState Value="00000057" RealAddress="02B01C00"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>4 Bytes</VariableType>
               <Address>005e4ca4</Address>
@@ -1824,21 +1676,18 @@
         <CheatEntry>
           <ID>86</ID>
           <Description>"someCar"</Description>
-          <LastState Value="0" RealAddress="005E4DA4"/>
           <VariableType>4 Bytes</VariableType>
           <Address>005e4da4</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>89</ID>
           <Description>"someCar2"</Description>
-          <LastState Value="0" RealAddress="005E4E44"/>
           <VariableType>4 Bytes</VariableType>
           <Address>005e4e44</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>87</ID>
           <Description>"ptrToCarManager2-&gt;arr306Cars[0]-&gt;id"</Description>
-          <LastState Value="1" RealAddress="0FD96E6C"/>
           <VariableType>4 Bytes</VariableType>
           <Address>005e4ca0</Address>
           <Offsets>
@@ -1848,7 +1697,6 @@
         <CheatEntry>
           <ID>88</ID>
           <Description>"ptrToCarManager2-&gt;arr306Cars[7]-&gt;id"</Description>
-          <LastState Value="8" RealAddress="0FD97390"/>
           <VariableType>4 Bytes</VariableType>
           <Address>005e4ca0</Address>
           <Offsets>
@@ -1858,7 +1706,6 @@
         <CheatEntry>
           <ID>122</ID>
           <Description>"s3-&gt;AllCarsInfo-&gt;cars[19]-&gt;id"</Description>
-          <LastState Value="25" RealAddress="1280D20E"/>
           <VariableType>Byte</VariableType>
           <Address>00670684</Address>
           <Offsets>
@@ -1870,7 +1717,6 @@
         <CheatEntry>
           <ID>123</ID>
           <Description>"s3-&gt;AllCarsInfo-&gt;cars[19]-&gt;width"</Description>
-          <LastState Value="44" RealAddress="1280D210"/>
           <VariableType>Byte</VariableType>
           <Address>00670684</Address>
           <Offsets>
@@ -1882,7 +1728,6 @@
         <CheatEntry>
           <ID>124</ID>
           <Description>"s3-&gt;AllCarsInfo-&gt;cars[19]-&gt;height"</Description>
-          <LastState Value="86" RealAddress="1280D211"/>
           <VariableType>Byte</VariableType>
           <Address>00670684</Address>
           <Offsets>
@@ -1894,7 +1739,6 @@
         <CheatEntry>
           <ID>125</ID>
           <Description>"s3-&gt;AllCarsInfo-&gt;cars[19]-&gt;num_remaps"</Description>
-          <LastState Value="0" RealAddress="1280D212"/>
           <VariableType>Byte</VariableType>
           <Address>00670684</Address>
           <Offsets>
@@ -1906,8 +1750,8 @@
         <CheatEntry>
           <ID>136</ID>
           <Description>"ptrToCarEngines-&gt;engines"</Description>
-          <LastState Value="152" RealAddress="126E88E0"/>
-          <VariableType>Byte</VariableType>
+          <ShowAsHex>1</ShowAsHex>
+          <VariableType>4 Bytes</VariableType>
           <Address>005e5488</Address>
           <Offsets>
             <Offset>408</Offset>
@@ -1916,7 +1760,6 @@
             <CheatEntry>
               <ID>308</ID>
               <Description>"ptrToCarEngines-&gt;engines[0]-&gt;id"</Description>
-              <LastState Value="1" RealAddress="1281A198"/>
               <VariableType>Byte</VariableType>
               <Address>005e5488</Address>
               <Offsets>
@@ -1927,7 +1770,6 @@
             <CheatEntry>
               <ID>137</ID>
               <Description>"ptrToCarEngines-&gt;engines[0]-&gt;max_speed"</Description>
-              <LastState Value="6225" RealAddress="1281A1C0"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5488</Address>
               <Offsets>
@@ -1938,7 +1780,6 @@
             <CheatEntry>
               <ID>143</ID>
               <Description>"ptrToCarEngines-&gt;engines[0]-&gt;thrust"</Description>
-              <LastState Value="3604" RealAddress="1281A1BC"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5488</Address>
               <Offsets>
@@ -1949,7 +1790,6 @@
             <CheatEntry>
               <ID>146</ID>
               <Description>"ptrToCarEngines-&gt;engines[0]-&gt;gear1_multiplier"</Description>
-              <LastState Value="8192" RealAddress="1281A1CC"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5488</Address>
               <Offsets>
@@ -1960,7 +1800,6 @@
             <CheatEntry>
               <ID>148</ID>
               <Description>"ptrToCarEngines-&gt;engines[0]-&gt;gear2_multiplier"</Description>
-              <LastState Value="10649" RealAddress="1281A1D0"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5488</Address>
               <Offsets>
@@ -1971,7 +1810,6 @@
             <CheatEntry>
               <ID>147</ID>
               <Description>"ptrToCarEngines-&gt;engines[0]-&gt;gear3_multiplier"</Description>
-              <LastState Value="16384" RealAddress="1281A1D4"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5488</Address>
               <Offsets>
@@ -1982,7 +1820,6 @@
             <CheatEntry>
               <ID>145</ID>
               <Description>"ptrToCarEngines-&gt;engines[0]-&gt;gear2_speed"</Description>
-              <LastState Value="2048" RealAddress="1281A1D8"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5488</Address>
               <Offsets>
@@ -1993,12 +1830,34 @@
             <CheatEntry>
               <ID>144</ID>
               <Description>"ptrToCarEngines-&gt;engines[0]-&gt;gear3_speed"</Description>
-              <LastState Value="3735" RealAddress="1281A1DC"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e5488</Address>
               <Offsets>
                 <Offset>44</Offset>
                 <Offset>408</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>309</ID>
+          <Description>"ptrToCarEngines-&gt;physics"</Description>
+          <ShowAsHex>1</ShowAsHex>
+          <VariableType>4 Bytes</VariableType>
+          <Address>005e5488</Address>
+          <Offsets>
+            <Offset>4</Offset>
+          </Offsets>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>310</ID>
+              <Description>"ptrToCarEngines-&gt;physics[2]-&gt;id"</Description>
+              <VariableType>Custom</VariableType>
+              <CustomType>SCR_f</CustomType>
+              <Address>005e5488</Address>
+              <Offsets>
+                <Offset>4</Offset>
+                <Offset>4+4</Offset>
               </Offsets>
             </CheatEntry>
           </CheatEntries>
@@ -2015,14 +1874,12 @@
         <CheatEntry>
           <ID>288</ID>
           <Description>"No description"</Description>
-          <LastState Value="239" RealAddress="00662BD4"/>
           <VariableType>4 Bytes</VariableType>
           <Address>00662bd4</Address>
         </CheatEntry>
         <CheatEntry>
           <ID>289</ID>
           <Description>"ptrToCollideArray"</Description>
-          <LastState Value="12695250" RealAddress="005E668C"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>005e668c</Address>
@@ -2030,7 +1887,6 @@
             <CheatEntry>
               <ID>290</ID>
               <Description>"ptrToCollideArray-&gt;arr[1]-&gt;0"</Description>
-              <LastState Value="12" RealAddress="1269525C"/>
               <ShowAsSigned>1</ShowAsSigned>
               <VariableType>Byte</VariableType>
               <Address>005e668c</Address>
@@ -2041,7 +1897,6 @@
             <CheatEntry>
               <ID>293</ID>
               <Description>"ptrToCollideArray-&gt;arr[1]-&gt;1"</Description>
-              <LastState Value="100" RealAddress="1269525D"/>
               <ShowAsSigned>1</ShowAsSigned>
               <VariableType>Byte</VariableType>
               <Address>005e668c</Address>
@@ -2052,7 +1907,6 @@
             <CheatEntry>
               <ID>294</ID>
               <Description>"ptrToCollideArray-&gt;arr[1]-&gt;2"</Description>
-              <LastState Value="104" RealAddress="1269525E"/>
               <ShowAsSigned>1</ShowAsSigned>
               <VariableType>Byte</VariableType>
               <Address>005e668c</Address>
@@ -2063,7 +1917,6 @@
             <CheatEntry>
               <ID>295</ID>
               <Description>"ptrToCollideArray-&gt;arr[1]-&gt;3"</Description>
-              <LastState Value="18" RealAddress="1269525F"/>
               <ShowAsSigned>1</ShowAsSigned>
               <VariableType>Byte</VariableType>
               <Address>005e668c</Address>
@@ -2074,7 +1927,6 @@
             <CheatEntry>
               <ID>292</ID>
               <Description>"ptrToCollideArray-&gt;arr[1]-&gt;4"</Description>
-              <LastState Value="12686418" RealAddress="12695260"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>4 Bytes</VariableType>
               <Address>005e668c</Address>
@@ -2085,7 +1937,6 @@
             <CheatEntry>
               <ID>291</ID>
               <Description>"ptrToCollideArray-&gt;arr[1]-&gt;8"</Description>
-              <LastState Value="12686394" RealAddress="12695264"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>4 Bytes</VariableType>
               <Address>005e668c</Address>
@@ -2098,7 +1949,6 @@
         <CheatEntry>
           <ID>296</ID>
           <Description>"ptrToCollideArray3"</Description>
-          <LastState Value="12695A60" RealAddress="005E6694"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>005e6694</Address>
@@ -2106,7 +1956,6 @@
             <CheatEntry>
               <ID>297</ID>
               <Description>"ptrToCollideArray2-&gt;arr[1]-&gt;0"</Description>
-              <LastState Value="0" RealAddress="12695A6C"/>
               <ShowAsSigned>1</ShowAsSigned>
               <VariableType>Byte</VariableType>
               <Address>005e6694</Address>
@@ -2117,7 +1966,6 @@
             <CheatEntry>
               <ID>300</ID>
               <Description>"ptrToCollideArray2-&gt;arr[1]-&gt;1"</Description>
-              <LastState Value="0" RealAddress="12695A6D"/>
               <ShowAsSigned>1</ShowAsSigned>
               <VariableType>Byte</VariableType>
               <Address>005e6694</Address>
@@ -2128,7 +1976,6 @@
             <CheatEntry>
               <ID>299</ID>
               <Description>"ptrToCollideArray2-&gt;arr[1]-&gt;2"</Description>
-              <LastState Value="0" RealAddress="12695A6E"/>
               <ShowAsSigned>1</ShowAsSigned>
               <VariableType>Byte</VariableType>
               <Address>005e6694</Address>
@@ -2139,7 +1986,6 @@
             <CheatEntry>
               <ID>298</ID>
               <Description>"ptrToCollideArray2-&gt;arr[1]-&gt;3"</Description>
-              <LastState Value="0" RealAddress="12695A6F"/>
               <ShowAsSigned>1</ShowAsSigned>
               <VariableType>Byte</VariableType>
               <Address>005e6694</Address>
@@ -2152,7 +1998,6 @@
         <CheatEntry>
           <ID>301</ID>
           <Description>"ptrToCollideTopLevel"</Description>
-          <LastState Value="02B0EFA8" RealAddress="005E6680"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>005e6680</Address>
@@ -2160,7 +2005,6 @@
             <CheatEntry>
               <ID>302</ID>
               <Description>"ptrToCollideTopLevel-&gt;activeCollides"</Description>
-              <LastState Value="33" RealAddress="02B0EFA8"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e6680</Address>
               <Offsets>
@@ -2170,7 +2014,6 @@
             <CheatEntry>
               <ID>304</ID>
               <Description>"ptrToCollideTopLevel-&gt;someIncrement"</Description>
-              <LastState Value="3856916" RealAddress="02B0EFAC"/>
               <VariableType>4 Bytes</VariableType>
               <Address>005e6680</Address>
               <Offsets>
@@ -2180,7 +2023,6 @@
             <CheatEntry>
               <ID>303</ID>
               <Description>"ptrToCollideTopLevel-&gt;8"</Description>
-              <LastState Value="00000000" RealAddress="02B0EFB0"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>4 Bytes</VariableType>
               <Address>005e6680</Address>
@@ -2194,10 +2036,23 @@
     </CheatEntry>
     <CheatEntry>
       <ID>307</ID>
-      <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="006639A0"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>006639a0</Address>
+      <Description>"Vert_006733f0-&gt;x"</Description>
+      <VariableType>Float</VariableType>
+      <Address>006733f0+0</Address>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>311</ID>
+          <Description>"vert1-&gt;y"</Description>
+          <VariableType>Float</VariableType>
+          <Address>006733f0+4</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>312</ID>
+          <Description>"vert1-&gt;z"</Description>
+          <VariableType>Float</VariableType>
+          <Address>006733f0+8</Address>
+        </CheatEntry>
+      </CheatEntries>
     </CheatEntry>
   </CheatEntries>
   <UserdefinedSymbols/>
