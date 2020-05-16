@@ -27,9 +27,6 @@ typedef undefined1 u1;
 
 typedef undefined4 u4;
 
-typedef enum SPRITE_BIT1 : unsigned char {
-    SPRITE_BIT1_1=1
-} SPRITE_BIT1;
 typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
     BAGAGE_DOORS_OPEN1=2048,
     BAGAGE_DOORS_OPEN2=4096,
@@ -431,6 +428,9 @@ typedef enum PED_STATE2 {
 typedef enum HORN : unsigned char {
     HORN_ON=248
 } HORN;
+typedef enum SPRITE_BIT1 : unsigned char {
+    SPRITE_BIT1_1=1
+} SPRITE_BIT1;
 
 typedef enum WEAPON_INDEX {
     ARMY_GUN_JEEP=22,
