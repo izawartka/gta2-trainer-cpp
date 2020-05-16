@@ -877,6 +877,41 @@ struct GameObject {
     int field_0xb0;
 };
 
+struct WEAPON_STRUCT {
+    short ammo;
+    byte timeToReload;
+    undefined field_0x3;
+    int field_0x4;
+    undefined field_0x8;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
+    undefined field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+    undefined field_0x10;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    int carId; /* Created by retype action */
+    struct WEAPON_STRUCT * nextWeapon;
+    enum WEAPON_INDEX id;
+    undefined field_0x20;
+    undefined field_0x21;
+    undefined field_0x22;
+    undefined field_0x23;
+    struct Ped * ped;
+    undefined field_0x28;
+    undefined field_0x29;
+    undefined field_0x2a;
+    undefined field_0x2b;
+    byte field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+};
+
 struct PlayerPhysics {
     SCR_f x;
     SCR_f y;
@@ -940,41 +975,6 @@ struct PlayerPhysics {
     SCR_f yCameraVelocity;
     undefined4 cameraHeadVelocity; /* changed when driving car */
     SCR_f field_0xb8;
-};
-
-struct WEAPON_STRUCT {
-    short ammo;
-    byte timeToReload;
-    undefined field_0x3;
-    int field_0x4;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-    undefined field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-    undefined field_0x10;
-    undefined field_0x11;
-    undefined field_0x12;
-    undefined field_0x13;
-    int carId; /* Created by retype action */
-    struct WEAPON_STRUCT * nextWeapon;
-    enum WEAPON_INDEX id;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    struct Ped * ped;
-    undefined field_0x28;
-    undefined field_0x29;
-    undefined field_0x2a;
-    undefined field_0x2b;
-    byte field_0x2c;
-    undefined field_0x2d;
-    undefined field_0x2e;
-    undefined field_0x2f;
 };
 
 struct CarManager4_S1 {
