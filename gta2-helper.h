@@ -3,6 +3,12 @@
 
 #include "gta2.h"
 
+static_assert(sizeof(u4) == 4, "Wrong size of u4 struct");
+static_assert(sizeof(u2) == 2, "Wrong size of u2 struct");
+static_assert(sizeof(u1) == 1, "Wrong size of u1 struct");
+static_assert(sizeof(byte) == 1, "Wrong size of byte struct");
+static_assert(sizeof(bool) == 1, "Wrong size of bool struct");
+
 static_assert(sizeof(Car) == 0xbc, "Wrong size of Car struct");
 static_assert(sizeof(Ped) == 0x294, "Wrong size of Ped struct");
 static_assert(sizeof(HORN) == 0x1, "Wrong size of HORN enum");
