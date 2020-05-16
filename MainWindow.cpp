@@ -108,7 +108,7 @@ void MarkPed(HDC dc, Ped* ped, COLORREF color) {
 }
 
 void MarkCar(HDC dc, Car* car, COLORREF color) {
-	auto p = ConvertGameWorldCoordinateToScreen(car->position->x, car->position->y);
+	auto p = ConvertGameWorldCoordinateToScreen(car->sprite->x, car->sprite->y);
 	int angle = 0.1;
 
 	const auto size = 25;
@@ -870,9 +870,9 @@ void MainWindow::CopLockETC()
 
 			if (selectedPed && selectedPed->gameObject)
 			{
-				playerPed->gameObject->actualPosition->x = selectedPed->gameObject->actualPosition->x;
-				playerPed->gameObject->actualPosition->y = selectedPed->gameObject->actualPosition->y;
-				playerPed->gameObject->actualPosition->z = selectedPed->gameObject->actualPosition->z;
+				playerPed->gameObject->sprite->x = selectedPed->gameObject->sprite->x;
+				playerPed->gameObject->sprite->y = selectedPed->gameObject->sprite->y;
+				playerPed->gameObject->sprite->z = selectedPed->gameObject->sprite->z;
 			}
 			else
 			{
@@ -1028,7 +1028,7 @@ UINT SpawnCarThread(LPVOID data)
 
 
 
-		if (!playerPed || !playerPed->gameObject || !playerPed->gameObject->actualPosition) {
+		if (!playerPed || !playerPed->gameObject || !playerPed->gameObject->sprite) {
 			//info->win->log(L"Cannot find ped location");
 			return 0;
 		}
@@ -1037,12 +1037,12 @@ UINT SpawnCarThread(LPVOID data)
 
 
 		//info->win->log(L"Spawn %d", info->model);
-		double nAngle = playerPed->gameObject->actualPosition->rotation / 4.0 + 270.0;
+		double nAngle = playerPed->gameObject->sprite->rotation / 4.0 + 270.0;
 		const double distance = 1;
 		Car* car = fnSpawnCar(
-			playerPed->gameObject->actualPosition->x + (int)(cos(nAngle * (M_PI / 180.0)) * distance * 16384.0),
-			playerPed->gameObject->actualPosition->y - (int)(sin(nAngle * (M_PI / 180.0)) * distance * 16384.0),
-			playerPed->gameObject->actualPosition->z,
+			playerPed->gameObject->sprite->x + (int)(cos(nAngle * (M_PI / 180.0)) * distance * 16384.0),
+			playerPed->gameObject->sprite->y - (int)(sin(nAngle * (M_PI / 180.0)) * distance * 16384.0),
+			playerPed->gameObject->sprite->z,
 			180 * 4,
 			info->model
 		);
@@ -1231,9 +1231,9 @@ void MainWindow::TpToLastCar()
 
 	if (currLastCar && playerPed && playerPed->gameObject)
 	{
-		playerPed->gameObject->actualPosition->x = currLastCar->position->x;
-		playerPed->gameObject->actualPosition->y = currLastCar->position->y;
-		playerPed->gameObject->actualPosition->z = currLastCar->position->z + 10;
+		playerPed->gameObject->sprite->x = currLastCar->sprite->x;
+		playerPed->gameObject->sprite->y = currLastCar->sprite->y;
+		playerPed->gameObject->sprite->z = currLastCar->sprite->z + 10;
 
 		log(L"Teleported the player to the car");
 	}
@@ -1376,7 +1376,7 @@ void MainWindow::PedInfo()
 
 		m_pedCopLevel.SetWindowTextW(buf);
 
-		if (currLastCar && !currLastCar->position) currLastCar = 0; //without this the game crashes after some missions and after WCB
+		if (currLastCar && !currLastCar->sprite) currLastCar = 0; //without this the game crashes after some missions and after WCB
 
 		if (currLastCar)
 		{
@@ -1386,15 +1386,15 @@ void MainWindow::PedInfo()
 			swprintf(buf, 256, L"%d", currLastCar->id);
 			m_carID.SetWindowTextW(buf);
 
-			currLastCarXYShift = (int)sqrt(pow(currLastCar->position->x - currLastCarXOld, 2) + pow(currLastCar->position->y - currLastCarYOld, 2));
-			currLastCarXOld = currLastCar->position->x;
-			currLastCarYOld = currLastCar->position->y;
+			currLastCarXYShift = (int)sqrt(pow(currLastCar->sprite->x - currLastCarXOld, 2) + pow(currLastCar->sprite->y - currLastCarYOld, 2));
+			currLastCarXOld = currLastCar->sprite->x;
+			currLastCarYOld = currLastCar->sprite->y;
 			swprintf(buf, 256, L"%d", currLastCarXYShift);
 			m_carVelocity.SetWindowTextW(buf);
 
-			if (currLastCar->position)
+			if (currLastCar->sprite)
 			{
-				swprintf(buf, 256, L"%d", currLastCar->position->carColor);
+				swprintf(buf, 256, L"%d", currLastCar->sprite->carColor);
 				m_carColor.SetWindowTextW(buf);
 			}
 			
@@ -1417,44 +1417,44 @@ void MainWindow::PedInfo()
 		{
 			m_pedZ.SetReadOnly(true);
 	
-			if (playerPed->currentCar->position->x != pedXOld)
+			if (playerPed->currentCar->sprite->x != pedXOld)
 			{
-				swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->x / 16384.0);
+				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->x / 16384.0);
 				m_pedX.SetWindowTextW(buf);
 			}
 
-			if (playerPed->currentCar->position->y != pedYOld)
+			if (playerPed->currentCar->sprite->y != pedYOld)
 			{
-				swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->y / 16384.0);
+				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->y / 16384.0);
 				m_pedY.SetWindowTextW(buf);
 			}
 
-			if (playerPed->currentCar->position->z != pedZOld)
+			if (playerPed->currentCar->sprite->z != pedZOld)
 			{
-				swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->z / 16384.0);
+				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->z / 16384.0);
 				m_pedZ.SetWindowTextW(buf);
 			}
 
-			if (playerPed->currentCar->position->rotation != pedRotOld)
+			if (playerPed->currentCar->sprite->rotation != pedRotOld)
 			{
-				swprintf(buf, 256, L"%d", playerPed->currentCar->position->rotation);
+				swprintf(buf, 256, L"%d", playerPed->currentCar->sprite->rotation);
 				m_pedRot.SetWindowTextW(buf);
 			}
 
 			swprintf(buf, 256, L"%X", playerPed->currentCar->carLights);
 			m_carVisualData.SetWindowTextW(buf);
 			
-			pedXOld = playerPed->currentCar->position->x;
-			pedYOld = playerPed->currentCar->position->y;
-			pedZOld = playerPed->currentCar->position->z;
-			pedRotOld = playerPed->currentCar->position->rotation;
+			pedXOld = playerPed->currentCar->sprite->x;
+			pedYOld = playerPed->currentCar->sprite->y;
+			pedZOld = playerPed->currentCar->sprite->z;
+			pedRotOld = playerPed->currentCar->sprite->rotation;
 
 		}
 		else
 		{
 			m_pedZ.SetReadOnly(false);
 
-			if (!playerPed->gameObject || !playerPed->gameObject->actualPosition) {
+			if (!playerPed->gameObject || !playerPed->gameObject->sprite) {
 
 				m_pedX.SetWindowTextW(L"");
 				m_pedY.SetWindowTextW(L"");
@@ -1468,38 +1468,38 @@ void MainWindow::PedInfo()
 				if (playerPed->gameObject->cigaretteIdleTimer == 1)
 					log(L"Smokin' time ;3");
 
-				if (playerPed->gameObject->actualPosition->x != pedXOld)
+				if (playerPed->gameObject->sprite->x != pedXOld)
 				{
-					swprintf(buf, 256, L"%.2f", playerPed->gameObject->actualPosition->x / 16384.0);
+					swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->x / 16384.0);
 					m_pedX.SetWindowTextW(buf);
 					
 				}
 				
-				if (playerPed->gameObject->actualPosition->y != pedYOld)
+				if (playerPed->gameObject->sprite->y != pedYOld)
 				{
-					swprintf(buf, 256, L"%.2f", playerPed->gameObject->actualPosition->y / 16384.0);
+					swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->y / 16384.0);
 					m_pedY.SetWindowTextW(buf);
 					
 				}
 
-				if (playerPed->gameObject->actualPosition->z != pedZOld)
+				if (playerPed->gameObject->sprite->z != pedZOld)
 				{
-					swprintf(buf, 256, L"%.2f", playerPed->gameObject->actualPosition->z / 16384.0);
+					swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->z / 16384.0);
 					m_pedZ.SetWindowTextW(buf);
 					
 				}
 
-				if (playerPed->gameObject->actualPosition->rotation != pedRotOld)
+				if (playerPed->gameObject->sprite->rotation != pedRotOld)
 				{
-					swprintf(buf, 256, L"%d", playerPed->gameObject->actualPosition->rotation);
+					swprintf(buf, 256, L"%d", playerPed->gameObject->sprite->rotation);
 					m_pedRot.SetWindowTextW(buf);
 
 				}
 
-				pedXOld = playerPed->gameObject->actualPosition->x;
-				pedYOld = playerPed->gameObject->actualPosition->y;
-				pedZOld = playerPed->gameObject->actualPosition->z;
-				pedRotOld = playerPed->gameObject->actualPosition->rotation;
+				pedXOld = playerPed->gameObject->sprite->x;
+				pedYOld = playerPed->gameObject->sprite->y;
+				pedZOld = playerPed->gameObject->sprite->z;
+				pedRotOld = playerPed->gameObject->sprite->rotation;
 			}
 		}
 
@@ -1545,9 +1545,9 @@ void MainWindow::TeleportAllPeds()
 
 			if (currentPed && currentPed->gameObject)
 			{
-				currentPed->gameObject->actualPosition->x = playerPed->gameObject->actualPosition->x;
-				currentPed->gameObject->actualPosition->y = playerPed->gameObject->actualPosition->y;
-				currentPed->gameObject->actualPosition->z = playerPed->gameObject->actualPosition->z;
+				currentPed->gameObject->sprite->x = playerPed->gameObject->sprite->x;
+				currentPed->gameObject->sprite->y = playerPed->gameObject->sprite->y;
+				currentPed->gameObject->sprite->z = playerPed->gameObject->sprite->z;
 			}
 		}
 		log(L"Teleported");
@@ -1564,9 +1564,9 @@ void MainWindow::BeAHuman()
 		beAHuman = false;
 		log(L"You are no longer a human");
 
-		playerPed->gameObject->actualPosition->x = pedXPreHuman;
-		playerPed->gameObject->actualPosition->y = pedYPreHuman;
-		playerPed->gameObject->actualPosition->z = pedZPreHuman;
+		playerPed->gameObject->sprite->x = pedXPreHuman;
+		playerPed->gameObject->sprite->y = pedYPreHuman;
+		playerPed->gameObject->sprite->z = pedZPreHuman;
 
 
 	}
@@ -1576,9 +1576,9 @@ void MainWindow::BeAHuman()
 		log(L"Congratulations! You are a human now");
 		log(L"You can change your identity by pressing ALT + N");
 
-		pedXPreHuman = playerPed->gameObject->actualPosition->x;
-		pedYPreHuman = playerPed->gameObject->actualPosition->y;
-		pedZPreHuman = playerPed->gameObject->actualPosition->z;
+		pedXPreHuman = playerPed->gameObject->sprite->x;
+		pedYPreHuman = playerPed->gameObject->sprite->y;
+		pedZPreHuman = playerPed->gameObject->sprite->z;
 
 		NextHuman();
 	}
@@ -1665,12 +1665,12 @@ void MainWindow::GangRespect(UINT nID)
 
 void MainWindow::CarColorPlus()
 {
-	if (currLastCar && currLastCar->position)
+	if (currLastCar && currLastCar->sprite)
 	{
-		currLastCar->position->lockPalleteMaybe = 3;
+		currLastCar->sprite->lockPalleteMaybe = 3;
 
-		currLastCar->position->carColor++;
-		if (currLastCar->position->carColor >35) currLastCar->position->carColor = 0;
+		currLastCar->sprite->carColor++;
+		if (currLastCar->sprite->carColor >35) currLastCar->sprite->carColor = 0;
 
 		log(L"Car color changed");
 	}
@@ -1678,12 +1678,12 @@ void MainWindow::CarColorPlus()
 
 void MainWindow::CarColorMinus()
 {
-	if (currLastCar && currLastCar->position)
+	if (currLastCar && currLastCar->sprite)
 	{
-		currLastCar->position->lockPalleteMaybe = 3;
+		currLastCar->sprite->lockPalleteMaybe = 3;
 
-		currLastCar->position->carColor--;
-		if (currLastCar->position->carColor <0) currLastCar->position->carColor = 35;
+		currLastCar->sprite->carColor--;
+		if (currLastCar->sprite->carColor <0) currLastCar->sprite->carColor = 35;
 
 		log(L"Car color changed");
 	}
@@ -1691,10 +1691,10 @@ void MainWindow::CarColorMinus()
 
 void MainWindow::CarColorReset()
 {
-	if (currLastCar && currLastCar->position)
+	if (currLastCar && currLastCar->sprite)
 	{
-		currLastCar->position->lockPalleteMaybe = 2;
-		currLastCar->position->carColor = 0;
+		currLastCar->sprite->lockPalleteMaybe = 2;
+		currLastCar->sprite->carColor = 0;
 
 		log(L"Car color changed");
 	}
@@ -1852,19 +1852,19 @@ void MainWindow::TeleportPlayer()
 	Ped* playerPed = fnGetPedByID(1);
 	CString buffer;
 
-	if (playerPed && playerPed->gameObject && playerPed->gameObject->actualPosition)
+	if (playerPed && playerPed->gameObject && playerPed->gameObject->sprite)
 	{
 		m_pedX.GetWindowTextW(buffer);
 		fesetround(FE_TONEAREST);
-		playerPed->gameObject->actualPosition->x = (int)(_wtof(buffer) * 16384.0);
+		playerPed->gameObject->sprite->x = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedY.GetWindowTextW(buffer);
-		playerPed->gameObject->actualPosition->y = (int)(_wtof(buffer) * 16384.0);
+		playerPed->gameObject->sprite->y = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedZ.GetWindowTextW(buffer);
-		playerPed->gameObject->actualPosition->z = (int)(_wtof(buffer) * 16384.0) + 10;
+		playerPed->gameObject->sprite->z = (int)(_wtof(buffer) * 16384.0) + 10;
 
-		log(L"Player teleported to %f, %f, %f!", ((float)playerPed->gameObject->actualPosition->x)/16384.0f, ((float)playerPed->gameObject->actualPosition->y) / 16384.0f, ((float)playerPed->gameObject->actualPosition->z) / 16384.0f);
+		log(L"Player teleported to %f, %f, %f!", ((float)playerPed->gameObject->sprite->x)/16384.0f, ((float)playerPed->gameObject->sprite->y) / 16384.0f, ((float)playerPed->gameObject->sprite->z) / 16384.0f);
 
 	}
 	else if (playerPed && playerPed->currentCar)

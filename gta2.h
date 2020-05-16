@@ -18,9 +18,6 @@ typedef unsigned short    ushort;
 typedef unsigned short    word;
 typedef uchar bbool;
 
-typedef struct Position Position, *PPosition;
-
-typedef struct Position Pos;
 
 typedef struct GameObject GameObject, *PGameObject;
 
@@ -188,6 +185,7 @@ typedef enum OCUPATION {
     UNK_REL_TO_POLICE3=31,
     UNK_REL_TO_POLICE4=37
 } OCUPATION;
+typedef struct Sprite Sprite, *PSprite;
 
 typedef enum PED_REMAP : unsigned char {
     PED_REMAP_1=1,
@@ -578,13 +576,13 @@ struct SomeStructInsideACar {
     undefined field_0xf;
 };
 
-struct Position {
+struct Sprite {
     ushort rotation;
     undefined field_0x2;
     undefined field_0x3;
-    struct Position * prev;
+    struct Sprite * prev;
     struct GameObject * gameObject;
-    struct Position * next;
+    struct Sprite * next;
     int field_0x10;
     int x; /* Created by retype action */
     int y; /* Created by retype action */
@@ -626,7 +624,7 @@ struct Car {
     enum CAR_LIGHTS_AND_DOORS_BITSTATE carLights;
     struct SomeStructInsideACar arr4[4];
     struct Car * lastCar;
-    struct Position * position;
+    struct Sprite * sprite;
     struct Ped * driver; /* Created by retype action */
     struct CarPhysics * physics;
     struct CarManager4_S1 * notEngineStruct;
@@ -854,7 +852,7 @@ struct GameObject {
     undefined field_0x77;
     struct GameObject * MaybeNext;
     struct Ped * ped;
-    struct Position * actualPosition;
+    struct Sprite * sprite;
     undefined field_0x84;
     undefined field_0x85;
     undefined field_0x86;
@@ -5305,7 +5303,7 @@ struct CarInfoChunk {
 typedef struct Collide Collide, *PCollide;
 
 struct Collide {
-    struct Position * ptr1;
+    struct Sprite * ptr1;
     void * ptr2;
     struct Collide * ptr3;
 };
@@ -6444,8 +6442,8 @@ struct S20 {
 typedef struct S21 S21, *PS21;
 
 struct S21 {
-    struct Position * last;
-    struct Position arr[5031];
+    struct Sprite * last;
+    struct Sprite arr[5031];
 };
 
 typedef struct S21_1 S21_1, *PS21_1;
@@ -6567,7 +6565,7 @@ struct S24_char {
     byte field_0x5;
     byte field_0x6;
     byte field_0x7;
-    struct Position * position;
+    struct Sprite * position;
 };
 
 typedef struct S27 S27, *PS27;
