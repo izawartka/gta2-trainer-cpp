@@ -185,6 +185,14 @@ typedef enum TRAFFIC_CAR_TYPE {
     TRAFFIC_a=10
 } TRAFFIC_CAR_TYPE;
 
+typedef enum CAR_SIREN_STATE : unsigned char {
+    CAR_ALARM=8,
+    SIREN_OFF=2,
+    SIREN_ON=4,
+    SIREN_UNK1=1,
+    SIREN_UNK_10=16
+} CAR_SIREN_STATE;
+
 
 typedef struct Car Car, *PCar;
 typedef enum CAR_REL_TO_COLOR_ENUM {
@@ -419,13 +427,6 @@ typedef enum PED_STATE2 {
     PED_STATE2_f_UNK=15
 } PED_STATE2;
 
-typedef enum CAR_SIREN_STATE : unsigned char {
-    CAR_ALARM=8,
-    SIREN_OFF=2,
-    SIREN_ON=4,
-    SIREN_UNK1=1,
-    SIREN_UNK_10=16
-} CAR_SIREN_STATE;
 
 typedef enum HORN : unsigned char {
     HORN_ON=248
