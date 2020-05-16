@@ -22,7 +22,7 @@ typedef struct Position Position, *PPosition;
 
 typedef struct Position Pos;
 
-typedef struct Sprite Sprite, *PSprite;
+typedef struct GameObject GameObject, *PGameObject;
 
 typedef enum CAR_REL_TO_COLOR_ENUM {
     CAR_REL_TO_COLOR_ENUM_1=1,
@@ -565,106 +565,6 @@ struct Roof {
     undefined field_0x17;
 };
 
-struct Sprite {
-    uint id;
-    int field_0x4;
-    enum PED_STATE state1;
-    enum PED_STATE2 state2;
-    uint relToId;
-    int xxx;
-    uint someTypeEnum;
-    struct PlayerPhysics * probablyPhysics;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    ushort maybe_id; /* maybe color */
-    undefined field_0x26;
-    undefined field_0x27;
-    undefined field_0x28;
-    undefined field_0x29;
-    undefined field_0x2a;
-    undefined field_0x2b;
-    undefined field_0x2c;
-    undefined field_0x2d;
-    undefined field_0x2e;
-    undefined field_0x2f;
-    undefined field_0x30;
-    undefined field_0x31;
-    undefined field_0x32;
-    undefined field_0x33;
-    undefined field_0x34;
-    undefined field_0x35;
-    undefined field_0x36;
-    undefined field_0x37;
-    int speed;
-    int field_0x3c;
-    short spriteRotation;
-    short field_0x42;
-    u1 field_0x44;
-    u1 field_0x45;
-    short field_0x46;
-    undefined field_0x48;
-    undefined field_0x49;
-    short cigaretteIdleTimer;
-    u4 field_0x4c;
-    u4 field_0x50;
-    undefined field_0x54;
-    undefined field_0x55;
-    undefined field_0x56;
-    undefined field_0x57;
-    enum SPRITE_BIT1 bit1;
-    undefined field_0x59;
-    undefined field_0x5a;
-    undefined field_0x5b;
-    undefined field_0x5c;
-    undefined field_0x5d;
-    undefined field_0x5e;
-    undefined field_0x5f;
-    undefined4 field_0x60;
-    undefined4 field_0x64;
-    byte field_0x68;
-    undefined field_0x69;
-    undefined field_0x6a;
-    undefined field_0x6b;
-    int field_0x6c;
-    undefined field_0x70;
-    undefined field_0x71;
-    undefined field_0x72;
-    undefined field_0x73;
-    undefined field_0x74;
-    undefined field_0x75;
-    undefined field_0x76;
-    undefined field_0x77;
-    struct Sprite * MaybeNext;
-    struct Ped * ped;
-    struct Position * actualPosition;
-    undefined field_0x84;
-    undefined field_0x85;
-    undefined field_0x86;
-    undefined field_0x87;
-    undefined field_0x88;
-    undefined field_0x89;
-    undefined field_0x8a;
-    undefined field_0x8b;
-    undefined field_0x8c;
-    undefined field_0x8d;
-    undefined field_0x8e;
-    undefined field_0x8f;
-    int field_0x90;
-    void * field_0x94;
-    SCR_f deltaX;
-    SCR_f deltaY;
-    undefined field_0xa0;
-    undefined field_0xa1;
-    undefined field_0xa2;
-    undefined field_0xa3;
-    undefined4 teleportX; /* Created by retype action */
-    undefined4 teleportY; /* Created by retype action */
-    undefined4 teleportZ; /* Created by retype action */
-    int field_0xb0;
-};
-
 struct SomeStructInsideACar {
     byte field_0x0;
     byte field_0x1; /* equal to 3 on start */
@@ -683,7 +583,7 @@ struct Position {
     undefined field_0x2;
     undefined field_0x3;
     struct Position * prev;
-    struct Sprite * sprite;
+    struct GameObject * gameObject;
     struct Position * next;
     int field_0x10;
     int x; /* Created by retype action */
@@ -881,15 +781,115 @@ struct CarPhysics {
     undefined field_0xaf;
 };
 
+struct GameObject {
+    uint id;
+    int field_0x4;
+    enum PED_STATE state1;
+    enum PED_STATE2 state2;
+    uint relToId;
+    int xxx;
+    uint someTypeEnum;
+    struct PlayerPhysics * probablyPhysics;
+    undefined field_0x20;
+    undefined field_0x21;
+    undefined field_0x22;
+    undefined field_0x23;
+    ushort maybe_id; /* maybe color */
+    undefined field_0x26;
+    undefined field_0x27;
+    undefined field_0x28;
+    undefined field_0x29;
+    undefined field_0x2a;
+    undefined field_0x2b;
+    undefined field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+    undefined field_0x30;
+    undefined field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+    undefined field_0x34;
+    undefined field_0x35;
+    undefined field_0x36;
+    undefined field_0x37;
+    int speed;
+    int field_0x3c;
+    short spriteRotation;
+    short field_0x42;
+    u1 field_0x44;
+    u1 field_0x45;
+    short field_0x46;
+    undefined field_0x48;
+    undefined field_0x49;
+    short cigaretteIdleTimer;
+    u4 field_0x4c;
+    u4 field_0x50;
+    undefined field_0x54;
+    undefined field_0x55;
+    undefined field_0x56;
+    undefined field_0x57;
+    enum SPRITE_BIT1 bit1;
+    undefined field_0x59;
+    undefined field_0x5a;
+    undefined field_0x5b;
+    undefined field_0x5c;
+    undefined field_0x5d;
+    undefined field_0x5e;
+    undefined field_0x5f;
+    undefined4 field_0x60;
+    undefined4 field_0x64;
+    byte field_0x68;
+    undefined field_0x69;
+    undefined field_0x6a;
+    undefined field_0x6b;
+    int field_0x6c;
+    undefined field_0x70;
+    undefined field_0x71;
+    undefined field_0x72;
+    undefined field_0x73;
+    undefined field_0x74;
+    undefined field_0x75;
+    undefined field_0x76;
+    undefined field_0x77;
+    struct GameObject * MaybeNext;
+    struct Ped * ped;
+    struct Position * actualPosition;
+    undefined field_0x84;
+    undefined field_0x85;
+    undefined field_0x86;
+    undefined field_0x87;
+    undefined field_0x88;
+    undefined field_0x89;
+    undefined field_0x8a;
+    undefined field_0x8b;
+    undefined field_0x8c;
+    undefined field_0x8d;
+    undefined field_0x8e;
+    undefined field_0x8f;
+    int field_0x90;
+    void * field_0x94;
+    SCR_f deltaX;
+    SCR_f deltaY;
+    undefined field_0xa0;
+    undefined field_0xa1;
+    undefined field_0xa2;
+    undefined field_0xa3;
+    undefined4 teleportX; /* Created by retype action */
+    undefined4 teleportY; /* Created by retype action */
+    undefined4 teleportZ; /* Created by retype action */
+    int field_0xb0;
+};
+
 struct PlayerPhysics {
     SCR_f x;
     SCR_f y;
     SCR_f z; /* camera z offset */
-    struct Sprite * sprite2;
+    struct GameObject * gameObject;
     SCR_f x2;
     SCR_f y2;
     SCR_f z2;
-    struct Sprite * sprite;
+    struct GameObject * gameObject2;
     undefined field_0x20;
     undefined field_0x21;
     undefined field_0x22;
@@ -1347,7 +1347,7 @@ struct Ped {
     struct WEAPON_PLAYER_LIST * playerWeapons;
     struct Ped * nextPed;
     struct Ped * ElvisOrTarget; /* Created by retype action */
-    struct Sprite * pedSprite;
+    struct GameObject * gameObject;
     struct Car * currentCar;
     struct WEAPON_STRUCT * selectedWeapon;
     void * ptrToWeapon;
@@ -5578,6 +5578,13 @@ struct SDisplayMode {
     undefined4 field_0x3c;
 };
 
+typedef struct GameObjectsManager GameObjectsManager, *PGameObjectsManager;
+
+struct GameObjectsManager {
+    struct GameObject * last;
+    struct GameObject arr[400];
+};
+
 typedef struct GangRespect GangRespect, *PGangRespect;
 
 struct GangRespect {
@@ -8815,14 +8822,6 @@ struct SPolice {
     undefined field_0x7b5;
     undefined field_0x7b6;
     undefined field_0x7b7;
-};
-
-typedef struct SpriteManager SpriteManager, *PSpriteManager;
-
-struct SpriteManager {
-    struct Sprite * lastSprite;
-    undefined field_0x4[71999];
-    undefined field_0x11943;
 };
 
 typedef struct SRelateToNight SRelateToNight, *PSRelateToNight;

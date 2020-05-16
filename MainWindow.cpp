@@ -807,8 +807,8 @@ void MainWindow::CaptureMouse()
 		//log(L"cursor at %dx%d angle is %f", relX, relY, angle);
 	}
 
-	if (playerPed->pedSprite) {
-		playerPed->pedSprite->spriteRotation = gtaAngle;
+	if (playerPed->gameObject) {
+		playerPed->gameObject->spriteRotation = gtaAngle;
 	}
 
 	BYTE keyboard[256];
@@ -868,11 +868,11 @@ void MainWindow::CopLockETC()
 		{
 			//Ped* lastped = fnGetPedByID((int)*nextpedid - 1);
 
-			if (selectedPed && selectedPed->pedSprite)
+			if (selectedPed && selectedPed->gameObject)
 			{
-				playerPed->pedSprite->actualPosition->x = selectedPed->pedSprite->actualPosition->x;
-				playerPed->pedSprite->actualPosition->y = selectedPed->pedSprite->actualPosition->y;
-				playerPed->pedSprite->actualPosition->z = selectedPed->pedSprite->actualPosition->z;
+				playerPed->gameObject->actualPosition->x = selectedPed->gameObject->actualPosition->x;
+				playerPed->gameObject->actualPosition->y = selectedPed->gameObject->actualPosition->y;
+				playerPed->gameObject->actualPosition->z = selectedPed->gameObject->actualPosition->z;
 			}
 			else
 			{
@@ -1028,7 +1028,7 @@ UINT SpawnCarThread(LPVOID data)
 
 
 
-		if (!playerPed || !playerPed->pedSprite || !playerPed->pedSprite->actualPosition) {
+		if (!playerPed || !playerPed->gameObject || !playerPed->gameObject->actualPosition) {
 			//info->win->log(L"Cannot find ped location");
 			return 0;
 		}
@@ -1037,12 +1037,12 @@ UINT SpawnCarThread(LPVOID data)
 
 
 		//info->win->log(L"Spawn %d", info->model);
-		double nAngle = playerPed->pedSprite->actualPosition->rotation / 4.0 + 270.0;
+		double nAngle = playerPed->gameObject->actualPosition->rotation / 4.0 + 270.0;
 		const double distance = 1;
 		Car* car = fnSpawnCar(
-			playerPed->pedSprite->actualPosition->x + (int)(cos(nAngle * (M_PI / 180.0)) * distance * 16384.0),
-			playerPed->pedSprite->actualPosition->y - (int)(sin(nAngle * (M_PI / 180.0)) * distance * 16384.0),
-			playerPed->pedSprite->actualPosition->z,
+			playerPed->gameObject->actualPosition->x + (int)(cos(nAngle * (M_PI / 180.0)) * distance * 16384.0),
+			playerPed->gameObject->actualPosition->y - (int)(sin(nAngle * (M_PI / 180.0)) * distance * 16384.0),
+			playerPed->gameObject->actualPosition->z,
 			180 * 4,
 			info->model
 		);
@@ -1229,11 +1229,11 @@ void MainWindow::TpToLastCar()
 {
 	Ped* playerPed = fnGetPedByID(1);
 
-	if (currLastCar && playerPed && playerPed->pedSprite)
+	if (currLastCar && playerPed && playerPed->gameObject)
 	{
-		playerPed->pedSprite->actualPosition->x = currLastCar->position->x;
-		playerPed->pedSprite->actualPosition->y = currLastCar->position->y;
-		playerPed->pedSprite->actualPosition->z = currLastCar->position->z + 10;
+		playerPed->gameObject->actualPosition->x = currLastCar->position->x;
+		playerPed->gameObject->actualPosition->y = currLastCar->position->y;
+		playerPed->gameObject->actualPosition->z = currLastCar->position->z + 10;
 
 		log(L"Teleported the player to the car");
 	}
@@ -1454,7 +1454,7 @@ void MainWindow::PedInfo()
 		{
 			m_pedZ.SetReadOnly(false);
 
-			if (!playerPed->pedSprite || !playerPed->pedSprite->actualPosition) {
+			if (!playerPed->gameObject || !playerPed->gameObject->actualPosition) {
 
 				m_pedX.SetWindowTextW(L"");
 				m_pedY.SetWindowTextW(L"");
@@ -1465,41 +1465,41 @@ void MainWindow::PedInfo()
 			}
 			else
 			{
-				if (playerPed->pedSprite->cigaretteIdleTimer == 1)
+				if (playerPed->gameObject->cigaretteIdleTimer == 1)
 					log(L"Smokin' time ;3");
 
-				if (playerPed->pedSprite->actualPosition->x != pedXOld)
+				if (playerPed->gameObject->actualPosition->x != pedXOld)
 				{
-					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->x / 16384.0);
+					swprintf(buf, 256, L"%.2f", playerPed->gameObject->actualPosition->x / 16384.0);
 					m_pedX.SetWindowTextW(buf);
 					
 				}
 				
-				if (playerPed->pedSprite->actualPosition->y != pedYOld)
+				if (playerPed->gameObject->actualPosition->y != pedYOld)
 				{
-					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->y / 16384.0);
+					swprintf(buf, 256, L"%.2f", playerPed->gameObject->actualPosition->y / 16384.0);
 					m_pedY.SetWindowTextW(buf);
 					
 				}
 
-				if (playerPed->pedSprite->actualPosition->z != pedZOld)
+				if (playerPed->gameObject->actualPosition->z != pedZOld)
 				{
-					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->z / 16384.0);
+					swprintf(buf, 256, L"%.2f", playerPed->gameObject->actualPosition->z / 16384.0);
 					m_pedZ.SetWindowTextW(buf);
 					
 				}
 
-				if (playerPed->pedSprite->actualPosition->rotation != pedRotOld)
+				if (playerPed->gameObject->actualPosition->rotation != pedRotOld)
 				{
-					swprintf(buf, 256, L"%d", playerPed->pedSprite->actualPosition->rotation);
+					swprintf(buf, 256, L"%d", playerPed->gameObject->actualPosition->rotation);
 					m_pedRot.SetWindowTextW(buf);
 
 				}
 
-				pedXOld = playerPed->pedSprite->actualPosition->x;
-				pedYOld = playerPed->pedSprite->actualPosition->y;
-				pedZOld = playerPed->pedSprite->actualPosition->z;
-				pedRotOld = playerPed->pedSprite->actualPosition->rotation;
+				pedXOld = playerPed->gameObject->actualPosition->x;
+				pedYOld = playerPed->gameObject->actualPosition->y;
+				pedZOld = playerPed->gameObject->actualPosition->z;
+				pedRotOld = playerPed->gameObject->actualPosition->rotation;
 			}
 		}
 
@@ -1537,17 +1537,17 @@ void MainWindow::TeleportAllPeds()
 	int* nextpedid = (int*)0x591e84;
 	Ped* currentPed;
 	Ped* playerPed = fnGetPedByID(1);
-	if (playerPed && playerPed->pedSprite)
+	if (playerPed && playerPed->gameObject)
 	{
 		for (int i = 1; i < *nextpedid; i++)
 		{
 			currentPed = fnGetPedByID(i);
 
-			if (currentPed && currentPed->pedSprite)
+			if (currentPed && currentPed->gameObject)
 			{
-				currentPed->pedSprite->actualPosition->x = playerPed->pedSprite->actualPosition->x;
-				currentPed->pedSprite->actualPosition->y = playerPed->pedSprite->actualPosition->y;
-				currentPed->pedSprite->actualPosition->z = playerPed->pedSprite->actualPosition->z;
+				currentPed->gameObject->actualPosition->x = playerPed->gameObject->actualPosition->x;
+				currentPed->gameObject->actualPosition->y = playerPed->gameObject->actualPosition->y;
+				currentPed->gameObject->actualPosition->z = playerPed->gameObject->actualPosition->z;
 			}
 		}
 		log(L"Teleported");
@@ -1564,21 +1564,21 @@ void MainWindow::BeAHuman()
 		beAHuman = false;
 		log(L"You are no longer a human");
 
-		playerPed->pedSprite->actualPosition->x = pedXPreHuman;
-		playerPed->pedSprite->actualPosition->y = pedYPreHuman;
-		playerPed->pedSprite->actualPosition->z = pedZPreHuman;
+		playerPed->gameObject->actualPosition->x = pedXPreHuman;
+		playerPed->gameObject->actualPosition->y = pedYPreHuman;
+		playerPed->gameObject->actualPosition->z = pedZPreHuman;
 
 
 	}
-	else if (playerPed && playerPed->pedSprite)
+	else if (playerPed && playerPed->gameObject)
 	{
 		beAHuman = true;
 		log(L"Congratulations! You are a human now");
 		log(L"You can change your identity by pressing ALT + N");
 
-		pedXPreHuman = playerPed->pedSprite->actualPosition->x;
-		pedYPreHuman = playerPed->pedSprite->actualPosition->y;
-		pedZPreHuman = playerPed->pedSprite->actualPosition->z;
+		pedXPreHuman = playerPed->gameObject->actualPosition->x;
+		pedYPreHuman = playerPed->gameObject->actualPosition->y;
+		pedZPreHuman = playerPed->gameObject->actualPosition->z;
 
 		NextHuman();
 	}
@@ -1610,7 +1610,7 @@ void MainWindow::NextHuman()
 		{
 			currentPed = fnGetPedByID(i);
 
-			if (currentPed && currentPed->pedSprite)
+			if (currentPed && currentPed->gameObject)
 			{
 				newSelectedPed = currentPed;
 				break;
@@ -1625,7 +1625,7 @@ void MainWindow::NextHuman()
 			{
 				currentPed = fnGetPedByID(i);
 
-				if (currentPed && currentPed->pedSprite)
+				if (currentPed && currentPed->gameObject)
 				{
 					newSelectedPed = currentPed;
 					break;
@@ -1852,19 +1852,19 @@ void MainWindow::TeleportPlayer()
 	Ped* playerPed = fnGetPedByID(1);
 	CString buffer;
 
-	if (playerPed && playerPed->pedSprite && playerPed->pedSprite->actualPosition)
+	if (playerPed && playerPed->gameObject && playerPed->gameObject->actualPosition)
 	{
 		m_pedX.GetWindowTextW(buffer);
 		fesetround(FE_TONEAREST);
-		playerPed->pedSprite->actualPosition->x = (int)(_wtof(buffer) * 16384.0);
+		playerPed->gameObject->actualPosition->x = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedY.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->y = (int)(_wtof(buffer) * 16384.0);
+		playerPed->gameObject->actualPosition->y = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedZ.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->z = (int)(_wtof(buffer) * 16384.0) + 10;
+		playerPed->gameObject->actualPosition->z = (int)(_wtof(buffer) * 16384.0) + 10;
 
-		log(L"Player teleported to %f, %f, %f!", ((float)playerPed->pedSprite->actualPosition->x)/16384.0f, ((float)playerPed->pedSprite->actualPosition->y) / 16384.0f, ((float)playerPed->pedSprite->actualPosition->z) / 16384.0f);
+		log(L"Player teleported to %f, %f, %f!", ((float)playerPed->gameObject->actualPosition->x)/16384.0f, ((float)playerPed->gameObject->actualPosition->y) / 16384.0f, ((float)playerPed->gameObject->actualPosition->z) / 16384.0f);
 
 	}
 	else if (playerPed && playerPed->currentCar)
@@ -1916,18 +1916,18 @@ void Strafe(bool right, bool movingBackward) {
 	ped->state2 = (PED_STATE2)0;
 	bool* IsPlayerPedMoving = (bool*)0x0066a3c7;
 	*IsPlayerPedMoving = true;
-	ped->pedSprite->speed = 1024;
+	ped->gameObject->speed = 1024;
 
 	DWORD* pedDefaultSpeedForStaying = (DWORD*)0x0066a634;
 	*pedDefaultSpeedForStaying = 1024;
-	auto original = ped->pedSprite->spriteRotation;
+	auto original = ped->gameObject->spriteRotation;
 	if (right)
-		ped->pedSprite->spriteRotation -= 360;
+		ped->gameObject->spriteRotation -= 360;
 	else
-		ped->pedSprite->spriteRotation += 360;
+		ped->gameObject->spriteRotation += 360;
 	fnPedTickRaw(ped, 0);
 	*pedDefaultSpeedForStaying = 0;
-	ped->pedSprite->spriteRotation = original;
+	ped->gameObject->spriteRotation = original;
 }
 
 void MainWindow::WantToSpawnCar()
