@@ -18,11 +18,188 @@ typedef unsigned short    ushort;
 typedef unsigned short    word;
 typedef uchar bbool;
 
-typedef struct Position Position, *PPosition;
+typedef undefined1 u1;
 
-typedef struct Position Pos;
+typedef undefined2 u2;
+
+typedef undefined4 u4;
+
+typedef struct Car Car, *PCar;
+
+typedef struct Roof Roof, *PRoof;
+
+typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
+    BAGAGE_DOORS_OPEN1=2048,
+    BAGAGE_DOORS_OPEN2=4096,
+    BAGAGE_DOORS_OPEN3=8192,
+    BAGAGE_DOORS_OPEN4=16384,
+    BAGAGE_DOORS_SET2_OPEN1=268435456,
+    BAGAGE_DOORS_SET2_OPEN2=536870912,
+    BAGAGE_DOORS_SET2_OPEN3=1073741824,
+    BAGAGE_DOORS_SET2_OPEN4=2147483648,
+    BRAKES_LIGHT_LEFT=32,
+    BRAKES_LIGHT_RIGHT=4194304,
+    CABIN_FRONT_LEFT_LIGHT_IS_ON=65536,
+    CABIN_REAR_LEFT_LIGHT_IS_ON=262144,
+    CABIN_REAR_RIGHT_LIGHT_IS_ON=131072,
+    CABIN__FRONT_RIGHT_LIGHT_IS_ON=32768,
+    FRONT_GLASS_IS_BROKEN=16,
+    FRONT_LEFT_LIGHT_IS_TURNED_ON=64,
+    LEFT_FRONT_DOOR_IS_OPEN1=128,
+    LEFT_FRONT_DOOR_IS_OPEN2=256,
+    LEFT_FRONT_DOOR_IS_OPEN3=512,
+    LEFT_FRONT_DOOR_IS_OPEN4=1024,
+    LEFT_FRONT_LIGHT_IS_BROKEN=4,
+    LEFT_REAR_LIGHT_IS_BROKEN=2,
+    RIGHT_FRONT_DOOR_OPEN1=16777216,
+    RIGHT_FRONT_DOOR_OPEN2=33554432,
+    RIGHT_FRONT_DOOR_OPEN3=67108864,
+    RIGHT_FRONT_DOOR_OPEN4=134217728,
+    RIGHT_FRONT_LIGHT_IS_BROKEN=8,
+    RIGHT_FRONT_LIGHT_IS_ON=8388608,
+    RIGHT_REAR_LIGHT_IS_BROKEN=1,
+    UNBROKEN_TURNED_OFF=0,
+    UNK_100000=1048576,
+    UNK_200000=2097152,
+    UNK_80000=524288
+} CAR_LIGHTS_AND_DOORS_BITSTATE;
+
+typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
 
 typedef struct Sprite Sprite, *PSprite;
+
+typedef struct Ped Ped, *PPed;
+
+typedef struct CarPhysics CarPhysics, *PCarPhysics;
+
+typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
+
+typedef enum CAR_MODEL4 {
+    CAR_MODEL4_ALFA=0,
+    CAR_MODEL4_ALLARD=1,
+    CAR_MODEL4_AMDB4=2,
+    CAR_MODEL4_APC=3,
+    CAR_MODEL4_BANKVAN=4,
+    CAR_MODEL4_BMW=5,
+    CAR_MODEL4_BOXCAR=6,
+    CAR_MODEL4_BOXTRUCK=7,
+    CAR_MODEL4_BUG=8,
+    CAR_MODEL4_BUICK=10,
+    CAR_MODEL4_BUS=11,
+    CAR_MODEL4_CAR15=15,
+    CAR_MODEL4_CAR20=20,
+    CAR_MODEL4_CAR43=43,
+    CAR_MODEL4_CAR9=9,
+    CAR_MODEL4_COPCAR=12,
+    CAR_MODEL4_DART=13,
+    CAR_MODEL4_EDSEL=14,
+    CAR_MODEL4_EDSELFBI=84,
+    CAR_MODEL4_FIAT=16,
+    CAR_MODEL4_FIRETRUCK=17,
+    CAR_MODEL4_GRAHAM=18,
+    CAR_MODEL4_GT24640=19,
+    CAR_MODEL4_GTRUCK=21,
+    CAR_MODEL4_GUNJEEP=22,
+    CAR_MODEL4_HOTDOG=23,
+    CAR_MODEL4_HOTDOG_D1=24,
+    CAR_MODEL4_HOTDOG_D2=25,
+    CAR_MODEL4_HOTDOG_D3=26,
+    CAR_MODEL4_HOTDOG_D4=85,
+    CAR_MODEL4_ICECREAM=27,
+    CAR_MODEL4_ISETLIMO=28,
+    CAR_MODEL4_ISETTA=29,
+    CAR_MODEL4_JEEP=30,
+    CAR_MODEL4_JEFFREY=31,
+    CAR_MODEL4_KRSNABUS=86,
+    CAR_MODEL4_LIMO=32,
+    CAR_MODEL4_LIMO2=33,
+    CAR_MODEL4_MEDICAR=34,
+    CAR_MODEL4_MERC=35,
+    CAR_MODEL4_MESSER=36,
+    CAR_MODEL4_MIURA=37,
+    CAR_MODEL4_MONSTER=38,
+    CAR_MODEL4_MORGAN=39,
+    CAR_MODEL4_MORRIS=40,
+    CAR_MODEL4_PICKUP=41,
+    CAR_MODEL4_RTYPE=42,
+    CAR_MODEL4_SPIDER=44,
+    CAR_MODEL4_SPRITE=45,
+    CAR_MODEL4_STINGRAY=46,
+    CAR_MODEL4_STRATOS=47,
+    CAR_MODEL4_STRATOSB=48,
+    CAR_MODEL4_STRIPETB=49,
+    CAR_MODEL4_STYPE=50,
+    CAR_MODEL4_STYPECAB=51,
+    CAR_MODEL4_SWATVAN=52,
+    CAR_MODEL4_T2000GT=53,
+    CAR_MODEL4_TANK=54,
+    CAR_MODEL4_TANKER=55,
+    CAR_MODEL4_TAXI=56,
+    CAR_MODEL4_TBIRD=57,
+    CAR_MODEL4_TOWTRUCK=58,
+    CAR_MODEL4_TRAIN=59,
+    CAR_MODEL4_TRAINCAB=60,
+    CAR_MODEL4_TRAINFB=61,
+    CAR_MODEL4_TRANCEAM=62,
+    CAR_MODEL4_TRUKCAB1=63,
+    CAR_MODEL4_TRUKCAB2=64,
+    CAR_MODEL4_TRUKCONT=65,
+    CAR_MODEL4_TRUKTRNS=66,
+    CAR_MODEL4_TVVAN=67,
+    CAR_MODEL4_VAN=68,
+    CAR_MODEL4_VESPA=69,
+    CAR_MODEL4_VTYPE=70,
+    CAR_MODEL4_WBTWIN=71,
+    CAR_MODEL4_WRECK0=72,
+    CAR_MODEL4_WRECK1=73,
+    CAR_MODEL4_WRECK2=74,
+    CAR_MODEL4_WRECK3=75,
+    CAR_MODEL4_WRECK4=76,
+    CAR_MODEL4_WRECK5=77,
+    CAR_MODEL4_WRECK6=78,
+    CAR_MODEL4_WRECK7=79,
+    CAR_MODEL4_WRECK8=80,
+    CAR_MODEL4_WRECK9=81,
+    CAR_MODEL4_XK120=82,
+    CAR_MODEL4_ZCX5=83
+} CAR_MODEL4;
+
+typedef enum CAR_ENGINE_STATE {
+    BROKEN_DOESNT_WORK=0,
+    ENGINE_OFF=1,
+    ENGINE_OFF2=6,
+    ENGINE_ON=3,
+    LIGHTS_ON_BUT_ENGINE_OFF_NO_FUEL=7,
+    REL_TO_CAR_SIREN=4,
+    TURNING_OFF=2,
+    TURN_ENGINE_OFF=5
+} CAR_ENGINE_STATE;
+
+typedef enum TRAFFIC_CAR_TYPE {
+    TRAFFIC_1_REGULAR=1,
+    TRAFFIC_2_PROT_RECYCLED_CAR=2,
+    TRAFFIC_4_AMBULANCE=4,
+    TRAFFIC_5=5,
+    TRAFFIC_6_POLICE_CAR=6,
+    TRAFFIC_7=7,
+    TRAFFIC_9=9,
+    TRAFFIC_MISSION_CAR=8,
+    TRAFFIC_a=10
+} TRAFFIC_CAR_TYPE;
+
+typedef enum CAR_SIREN_STATE : unsigned char {
+    CAR_ALARM=8,
+    SIREN_OFF=2,
+    SIREN_ON=4,
+    SIREN_UNK1=1,
+    SIREN_UNK_10=16
+} CAR_SIREN_STATE;
+
+typedef enum HORN : unsigned char {
+    HORN_ON=248
+} HORN;
+
+typedef struct GameObject GameObject, *PGameObject;
 
 typedef enum CAR_REL_TO_COLOR_ENUM {
     CAR_REL_TO_COLOR_ENUM_1=1,
@@ -32,87 +209,13 @@ typedef enum CAR_REL_TO_COLOR_ENUM {
     CAR_REL_TO_COLOR_ENUM_5=5
 } CAR_REL_TO_COLOR_ENUM;
 
-typedef enum PED_STATE {
-    PED_STATE_0_WALK=0,
-    PED_STATE_16_FALL_ON_GROUND_FROM_HOOK=22,
-    PED_STATE_1_UNK_PROBABLY_RUN=1,
-    PED_STATE_2_GOING_TO_TARGET=2,
-    PED_STATE_3_ENTERING_INTO_CAR_OR_JUST_RUN_AWAY=3,
-    PED_STATE_4_GETTING_OUT_FROM_CAR=4,
-    PED_STATE_5_UNK=5,
-    PED_STATE_6_UNK=6,
-    PED_STATE_7_STAYING=7,
-    PED_STATE_8_FALL_ON_GROUND=8,
-    PED_STATE_9_WASTED=9,
-    PED_STATE_a_DRIVING_A_CAR=10,
-    PED_STATE_b_INITIAL=11,
-    PED_STATE_c=12,
-    PED_STATE_d=13,
-    PED_STATE_e_WAITING_FOR_BUS_OR_STEALING_MONEY=14,
-    PED_STATE_f_SHOT_ON_THE_GROUND=15
-} PED_STATE;
+typedef struct WEAPON_PLAYER_LIST WEAPON_PLAYER_LIST, *PWEAPON_PLAYER_LIST;
 
-typedef enum PED_STATE2 {
-    PED_STATE2_0_WALKING=0,
-    PED_STATE2_11=17,
-    PED_STATE2_12=18,
-    PED_STATE2_13=19,
-    PED_STATE2_14=20,
-    PED_STATE2_15=21,
-    PED_STATE2_1A_SMOKE=26,
-    PED_STATE2_1_electrocuted=1,
-    PED_STATE2_2_electrocuted=2,
-    PED_STATE2_3=3,
-    PED_STATE2_4_FOLLOWING_A_CAR=4,
-    PED_STATE2_5=5,
-    PED_STATE2_6_ENTERING_TO_CAR=6,
-    PED_STATE2_7_GETTING_OUT_FROM_CAR=7,
-    PED_STATE2_8=8,
-    PED_STATE2_9=9,
-    PED_STATE2_UNK_16=22,
-    PED_STATE2_a_DRIVING=10,
-    PED_STATE2_b_WAITING_FOR_BUS=11,
-    PED_STATE2_e_STAYING=14,
-    PED_STATE2_f_UNK=15
-} PED_STATE2;
-
-typedef struct PlayerPhysics PlayerPhysics, *PPlayerPhysics;
-
-typedef undefined1 u1;
-
-typedef undefined4 u4;
-
-typedef enum SPRITE_BIT1 : unsigned char {
-    SPRITE_BIT1_1=1
-} SPRITE_BIT1;
-
-typedef struct Ped Ped, *PPed;
+typedef struct WEAPON_STRUCT WEAPON_STRUCT, *PWEAPON_STRUCT;
 
 typedef int Sint32;
 
 typedef Sint32 SCR_f;
-
-typedef enum PLAYER_PHYSICS_MOVEMENT {
-    PLAYER_PHYSICS_MOVEMENT_BACKWARD=256,
-    PLAYER_PHYSICS_MOVEMENT_DO_NOTHING=0,
-    PLAYER_PHYSICS_MOVEMENT_FORWARD=1,
-    PLAYER_PHYSICS_MOVEMENT_LEFT=65536,
-    PLAYER_PHYSICS_MOVEMENT_RIGHT=16777216,
-    PLAYER_PHYSICS_MOVEMENT_UNK2=2
-} PLAYER_PHYSICS_MOVEMENT;
-
-typedef enum PLAYER_PHYSICS_STATE2 {
-    PLAYER_PHYSICS_STATE2_190=400,
-    PLAYER_PHYSICS_STATE2_258=600,
-    PLAYER_PHYSICS_STATE2_NO_TELEPORT=2,
-    PLAYER_PHYSICS_STATE2_TELEPORT=1
-} PLAYER_PHYSICS_STATE2;
-
-typedef struct Car Car, *PCar;
-
-typedef struct WEAPON_PLAYER_LIST WEAPON_PLAYER_LIST, *PWEAPON_PLAYER_LIST;
-
-typedef struct WEAPON_STRUCT WEAPON_STRUCT, *PWEAPON_STRUCT;
 
 typedef enum PED_BIT_STATE {
     PED_BIT_STATE_2000000=33554432,
@@ -280,174 +383,55 @@ typedef enum PED_REMAP2 {
     PED_REMAP2_HEAVY_ARMOUR=2
 } PED_REMAP2;
 
-typedef enum CAR_MODEL4 {
-    CAR_MODEL4_ALFA=0,
-    CAR_MODEL4_ALLARD=1,
-    CAR_MODEL4_AMDB4=2,
-    CAR_MODEL4_APC=3,
-    CAR_MODEL4_BANKVAN=4,
-    CAR_MODEL4_BMW=5,
-    CAR_MODEL4_BOXCAR=6,
-    CAR_MODEL4_BOXTRUCK=7,
-    CAR_MODEL4_BUG=8,
-    CAR_MODEL4_BUICK=10,
-    CAR_MODEL4_BUS=11,
-    CAR_MODEL4_CAR15=15,
-    CAR_MODEL4_CAR20=20,
-    CAR_MODEL4_CAR43=43,
-    CAR_MODEL4_CAR9=9,
-    CAR_MODEL4_COPCAR=12,
-    CAR_MODEL4_DART=13,
-    CAR_MODEL4_EDSEL=14,
-    CAR_MODEL4_EDSELFBI=84,
-    CAR_MODEL4_FIAT=16,
-    CAR_MODEL4_FIRETRUCK=17,
-    CAR_MODEL4_GRAHAM=18,
-    CAR_MODEL4_GT24640=19,
-    CAR_MODEL4_GTRUCK=21,
-    CAR_MODEL4_GUNJEEP=22,
-    CAR_MODEL4_HOTDOG=23,
-    CAR_MODEL4_HOTDOG_D1=24,
-    CAR_MODEL4_HOTDOG_D2=25,
-    CAR_MODEL4_HOTDOG_D3=26,
-    CAR_MODEL4_HOTDOG_D4=85,
-    CAR_MODEL4_ICECREAM=27,
-    CAR_MODEL4_ISETLIMO=28,
-    CAR_MODEL4_ISETTA=29,
-    CAR_MODEL4_JEEP=30,
-    CAR_MODEL4_JEFFREY=31,
-    CAR_MODEL4_KRSNABUS=86,
-    CAR_MODEL4_LIMO=32,
-    CAR_MODEL4_LIMO2=33,
-    CAR_MODEL4_MEDICAR=34,
-    CAR_MODEL4_MERC=35,
-    CAR_MODEL4_MESSER=36,
-    CAR_MODEL4_MIURA=37,
-    CAR_MODEL4_MONSTER=38,
-    CAR_MODEL4_MORGAN=39,
-    CAR_MODEL4_MORRIS=40,
-    CAR_MODEL4_PICKUP=41,
-    CAR_MODEL4_RTYPE=42,
-    CAR_MODEL4_SPIDER=44,
-    CAR_MODEL4_SPRITE=45,
-    CAR_MODEL4_STINGRAY=46,
-    CAR_MODEL4_STRATOS=47,
-    CAR_MODEL4_STRATOSB=48,
-    CAR_MODEL4_STRIPETB=49,
-    CAR_MODEL4_STYPE=50,
-    CAR_MODEL4_STYPECAB=51,
-    CAR_MODEL4_SWATVAN=52,
-    CAR_MODEL4_T2000GT=53,
-    CAR_MODEL4_TANK=54,
-    CAR_MODEL4_TANKER=55,
-    CAR_MODEL4_TAXI=56,
-    CAR_MODEL4_TBIRD=57,
-    CAR_MODEL4_TOWTRUCK=58,
-    CAR_MODEL4_TRAIN=59,
-    CAR_MODEL4_TRAINCAB=60,
-    CAR_MODEL4_TRAINFB=61,
-    CAR_MODEL4_TRANCEAM=62,
-    CAR_MODEL4_TRUKCAB1=63,
-    CAR_MODEL4_TRUKCAB2=64,
-    CAR_MODEL4_TRUKCONT=65,
-    CAR_MODEL4_TRUKTRNS=66,
-    CAR_MODEL4_TVVAN=67,
-    CAR_MODEL4_VAN=68,
-    CAR_MODEL4_VESPA=69,
-    CAR_MODEL4_VTYPE=70,
-    CAR_MODEL4_WBTWIN=71,
-    CAR_MODEL4_WRECK0=72,
-    CAR_MODEL4_WRECK1=73,
-    CAR_MODEL4_WRECK2=74,
-    CAR_MODEL4_WRECK3=75,
-    CAR_MODEL4_WRECK4=76,
-    CAR_MODEL4_WRECK5=77,
-    CAR_MODEL4_WRECK6=78,
-    CAR_MODEL4_WRECK7=79,
-    CAR_MODEL4_WRECK8=80,
-    CAR_MODEL4_WRECK9=81,
-    CAR_MODEL4_XK120=82,
-    CAR_MODEL4_ZCX5=83
-} CAR_MODEL4;
+typedef enum PED_STATE {
+    PED_STATE_0_WALK=0,
+    PED_STATE_16_FALL_ON_GROUND_FROM_HOOK=22,
+    PED_STATE_1_UNK_PROBABLY_RUN=1,
+    PED_STATE_2_GOING_TO_TARGET=2,
+    PED_STATE_3_ENTERING_INTO_CAR_OR_JUST_RUN_AWAY=3,
+    PED_STATE_4_GETTING_OUT_FROM_CAR=4,
+    PED_STATE_5_UNK=5,
+    PED_STATE_6_UNK=6,
+    PED_STATE_7_STAYING=7,
+    PED_STATE_8_FALL_ON_GROUND=8,
+    PED_STATE_9_WASTED=9,
+    PED_STATE_a_DRIVING_A_CAR=10,
+    PED_STATE_b_INITIAL=11,
+    PED_STATE_c=12,
+    PED_STATE_d=13,
+    PED_STATE_e_WAITING_FOR_BUS_OR_STEALING_MONEY=14,
+    PED_STATE_f_SHOT_ON_THE_GROUND=15
+} PED_STATE;
 
-typedef struct Roof Roof, *PRoof;
+typedef enum PED_STATE2 {
+    PED_STATE2_0_WALKING=0,
+    PED_STATE2_11=17,
+    PED_STATE2_12=18,
+    PED_STATE2_13=19,
+    PED_STATE2_14=20,
+    PED_STATE2_15=21,
+    PED_STATE2_1A_SMOKE=26,
+    PED_STATE2_1_electrocuted=1,
+    PED_STATE2_2_electrocuted=2,
+    PED_STATE2_3=3,
+    PED_STATE2_4_FOLLOWING_A_CAR=4,
+    PED_STATE2_5=5,
+    PED_STATE2_6_ENTERING_TO_CAR=6,
+    PED_STATE2_7_GETTING_OUT_FROM_CAR=7,
+    PED_STATE2_8=8,
+    PED_STATE2_9=9,
+    PED_STATE2_UNK_16=22,
+    PED_STATE2_a_DRIVING=10,
+    PED_STATE2_b_WAITING_FOR_BUS=11,
+    PED_STATE2_e_STAYING=14,
+    PED_STATE2_f_UNK=15
+} PED_STATE2;
 
-typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
-    BAGAGE_DOORS_OPEN1=2048,
-    BAGAGE_DOORS_OPEN2=4096,
-    BAGAGE_DOORS_OPEN3=8192,
-    BAGAGE_DOORS_OPEN4=16384,
-    BAGAGE_DOORS_SET2_OPEN1=268435456,
-    BAGAGE_DOORS_SET2_OPEN2=536870912,
-    BAGAGE_DOORS_SET2_OPEN3=1073741824,
-    BAGAGE_DOORS_SET2_OPEN4=2147483648,
-    BRAKES_LIGHT_LEFT=32,
-    BRAKES_LIGHT_RIGHT=4194304,
-    CABIN_FRONT_LEFT_LIGHT_IS_ON=65536,
-    CABIN_REAR_LEFT_LIGHT_IS_ON=262144,
-    CABIN_REAR_RIGHT_LIGHT_IS_ON=131072,
-    CABIN__FRONT_RIGHT_LIGHT_IS_ON=32768,
-    FRONT_GLASS_IS_BROKEN=16,
-    FRONT_LEFT_LIGHT_IS_TURNED_ON=64,
-    LEFT_FRONT_DOOR_IS_OPEN1=128,
-    LEFT_FRONT_DOOR_IS_OPEN2=256,
-    LEFT_FRONT_DOOR_IS_OPEN3=512,
-    LEFT_FRONT_DOOR_IS_OPEN4=1024,
-    LEFT_FRONT_LIGHT_IS_BROKEN=4,
-    LEFT_REAR_LIGHT_IS_BROKEN=2,
-    RIGHT_FRONT_DOOR_OPEN1=16777216,
-    RIGHT_FRONT_DOOR_OPEN2=33554432,
-    RIGHT_FRONT_DOOR_OPEN3=67108864,
-    RIGHT_FRONT_DOOR_OPEN4=134217728,
-    RIGHT_FRONT_LIGHT_IS_BROKEN=8,
-    RIGHT_FRONT_LIGHT_IS_ON=8388608,
-    RIGHT_REAR_LIGHT_IS_BROKEN=1,
-    UNBROKEN_TURNED_OFF=0,
-    UNK_100000=1048576,
-    UNK_200000=2097152,
-    UNK_80000=524288
-} CAR_LIGHTS_AND_DOORS_BITSTATE;
+typedef struct PlayerPhysics PlayerPhysics, *PPlayerPhysics;
 
-typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
-
-typedef struct CarPhysics CarPhysics, *PCarPhysics;
-
-typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
-
-typedef enum CAR_ENGINE_STATE {
-    BROKEN_DOESNT_WORK=0,
-    ENGINE_OFF=1,
-    ENGINE_OFF2=6,
-    ENGINE_ON=3,
-    LIGHTS_ON_BUT_ENGINE_OFF_NO_FUEL=7,
-    REL_TO_CAR_SIREN=4,
-    TURNING_OFF=2,
-    TURN_ENGINE_OFF=5
-} CAR_ENGINE_STATE;
-
-typedef enum TRAFFIC_CAR_TYPE {
-    TRAFFIC_1_REGULAR=1,
-    TRAFFIC_2_PROT_RECYCLED_CAR=2,
-    TRAFFIC_4_AMBULANCE=4,
-    TRAFFIC_5=5,
-    TRAFFIC_6_POLICE_CAR=6,
-    TRAFFIC_7=7,
-    TRAFFIC_9=9,
-    TRAFFIC_MISSION_CAR=8,
-    TRAFFIC_a=10
-} TRAFFIC_CAR_TYPE;
-
-typedef enum CAR_SIREN_STATE : unsigned char {
-    CAR_ALARM=8,
-    SIREN_OFF=2,
-    SIREN_ON=4,
-    SIREN_UNK1=1,
-    SIREN_UNK_10=16
-} CAR_SIREN_STATE;
-
-typedef enum HORN : unsigned char {
-    HORN_ON=248
-} HORN;
+typedef enum SPRITE_BIT1 : unsigned char {
+    SPRITE_BIT1_1=1
+} SPRITE_BIT1;
 
 typedef enum WEAPON_INDEX {
     ARMY_GUN_JEEP=22,
@@ -464,6 +448,22 @@ typedef enum WEAPON_INDEX {
     SMG=1,
     TANK_MAIN_GUN=19
 } WEAPON_INDEX;
+
+typedef enum PLAYER_PHYSICS_MOVEMENT {
+    PLAYER_PHYSICS_MOVEMENT_BACKWARD=256,
+    PLAYER_PHYSICS_MOVEMENT_DO_NOTHING=0,
+    PLAYER_PHYSICS_MOVEMENT_FORWARD=1,
+    PLAYER_PHYSICS_MOVEMENT_LEFT=65536,
+    PLAYER_PHYSICS_MOVEMENT_RIGHT=16777216,
+    PLAYER_PHYSICS_MOVEMENT_UNK2=2
+} PLAYER_PHYSICS_MOVEMENT;
+
+typedef enum PLAYER_PHYSICS_STATE2 {
+    PLAYER_PHYSICS_STATE2_190=400,
+    PLAYER_PHYSICS_STATE2_258=600,
+    PLAYER_PHYSICS_STATE2_NO_TELEPORT=2,
+    PLAYER_PHYSICS_STATE2_TELEPORT=1
+} PLAYER_PHYSICS_STATE2;
 
 struct WEAPON_PLAYER_LIST {
     undefined field_0x0;
@@ -565,106 +565,6 @@ struct Roof {
     undefined field_0x17;
 };
 
-struct Sprite {
-    uint id;
-    int field_0x4;
-    enum PED_STATE state1;
-    enum PED_STATE2 state2;
-    uint relToId;
-    int xxx;
-    uint someTypeEnum;
-    struct PlayerPhysics * probablyPhysics;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    ushort maybe_id; /* maybe color */
-    undefined field_0x26;
-    undefined field_0x27;
-    undefined field_0x28;
-    undefined field_0x29;
-    undefined field_0x2a;
-    undefined field_0x2b;
-    undefined field_0x2c;
-    undefined field_0x2d;
-    undefined field_0x2e;
-    undefined field_0x2f;
-    undefined field_0x30;
-    undefined field_0x31;
-    undefined field_0x32;
-    undefined field_0x33;
-    undefined field_0x34;
-    undefined field_0x35;
-    undefined field_0x36;
-    undefined field_0x37;
-    int speed;
-    int field_0x3c;
-    short spriteRotation;
-    short field_0x42;
-    u1 field_0x44;
-    u1 field_0x45;
-    short field_0x46;
-    undefined field_0x48;
-    undefined field_0x49;
-    short cigaretteIdleTimer;
-    u4 field_0x4c;
-    u4 field_0x50;
-    undefined field_0x54;
-    undefined field_0x55;
-    undefined field_0x56;
-    undefined field_0x57;
-    enum SPRITE_BIT1 bit1;
-    undefined field_0x59;
-    undefined field_0x5a;
-    undefined field_0x5b;
-    undefined field_0x5c;
-    undefined field_0x5d;
-    undefined field_0x5e;
-    undefined field_0x5f;
-    undefined4 field_0x60;
-    undefined4 field_0x64;
-    byte field_0x68;
-    undefined field_0x69;
-    undefined field_0x6a;
-    undefined field_0x6b;
-    int field_0x6c;
-    undefined field_0x70;
-    undefined field_0x71;
-    undefined field_0x72;
-    undefined field_0x73;
-    undefined field_0x74;
-    undefined field_0x75;
-    undefined field_0x76;
-    undefined field_0x77;
-    struct Sprite * MaybeNext;
-    struct Ped * ped;
-    struct Position * actualPosition;
-    undefined field_0x84;
-    undefined field_0x85;
-    undefined field_0x86;
-    undefined field_0x87;
-    undefined field_0x88;
-    undefined field_0x89;
-    undefined field_0x8a;
-    undefined field_0x8b;
-    undefined field_0x8c;
-    undefined field_0x8d;
-    undefined field_0x8e;
-    undefined field_0x8f;
-    int field_0x90;
-    void * field_0x94;
-    SCR_f deltaX;
-    SCR_f deltaY;
-    undefined field_0xa0;
-    undefined field_0xa1;
-    undefined field_0xa2;
-    undefined field_0xa3;
-    undefined4 teleportX; /* Created by retype action */
-    undefined4 teleportY; /* Created by retype action */
-    undefined4 teleportZ; /* Created by retype action */
-    int field_0xb0;
-};
-
 struct SomeStructInsideACar {
     byte field_0x0;
     byte field_0x1; /* equal to 3 on start */
@@ -678,13 +578,13 @@ struct SomeStructInsideACar {
     undefined field_0xf;
 };
 
-struct Position {
+struct Sprite {
     ushort rotation;
     undefined field_0x2;
     undefined field_0x3;
-    struct Position * prev;
-    struct Sprite * sprite;
-    struct Position * next;
+    struct Sprite * prev;
+    struct GameObject * gameObject;
+    struct Sprite * next;
     int field_0x10;
     int x; /* Created by retype action */
     int y; /* Created by retype action */
@@ -726,7 +626,7 @@ struct Car {
     enum CAR_LIGHTS_AND_DOORS_BITSTATE carLights;
     struct SomeStructInsideACar arr4[4];
     struct Car * lastCar;
-    struct Position * position;
+    struct Sprite * sprite;
     struct Ped * driver; /* Created by retype action */
     struct CarPhysics * physics;
     struct CarManager4_S1 * notEngineStruct;
@@ -881,15 +781,150 @@ struct CarPhysics {
     undefined field_0xaf;
 };
 
+struct GameObject {
+    uint id;
+    int field_0x4;
+    enum PED_STATE state1;
+    enum PED_STATE2 state2;
+    uint relToId;
+    int xxx;
+    uint someTypeEnum;
+    struct PlayerPhysics * probablyPhysics;
+    undefined field_0x20;
+    undefined field_0x21;
+    undefined field_0x22;
+    undefined field_0x23;
+    ushort maybe_id; /* maybe color */
+    undefined field_0x26;
+    undefined field_0x27;
+    undefined field_0x28;
+    undefined field_0x29;
+    undefined field_0x2a;
+    undefined field_0x2b;
+    undefined field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+    undefined field_0x30;
+    undefined field_0x31;
+    undefined field_0x32;
+    undefined field_0x33;
+    undefined field_0x34;
+    undefined field_0x35;
+    undefined field_0x36;
+    undefined field_0x37;
+    int speed;
+    int field_0x3c;
+    short spriteRotation;
+    short field_0x42;
+    u1 field_0x44;
+    u1 field_0x45;
+    short field_0x46;
+    undefined field_0x48;
+    undefined field_0x49;
+    short cigaretteIdleTimer;
+    u4 field_0x4c;
+    u4 field_0x50;
+    undefined field_0x54;
+    undefined field_0x55;
+    undefined field_0x56;
+    undefined field_0x57;
+    enum SPRITE_BIT1 bit1;
+    undefined field_0x59;
+    undefined field_0x5a;
+    undefined field_0x5b;
+    undefined field_0x5c;
+    undefined field_0x5d;
+    undefined field_0x5e;
+    undefined field_0x5f;
+    undefined4 field_0x60;
+    undefined4 field_0x64;
+    byte field_0x68;
+    undefined field_0x69;
+    undefined field_0x6a;
+    undefined field_0x6b;
+    int field_0x6c;
+    undefined field_0x70;
+    undefined field_0x71;
+    undefined field_0x72;
+    undefined field_0x73;
+    undefined field_0x74;
+    undefined field_0x75;
+    undefined field_0x76;
+    undefined field_0x77;
+    struct GameObject * MaybeNext;
+    struct Ped * ped;
+    struct Sprite * sprite;
+    undefined field_0x84;
+    undefined field_0x85;
+    undefined field_0x86;
+    undefined field_0x87;
+    undefined field_0x88;
+    undefined field_0x89;
+    undefined field_0x8a;
+    undefined field_0x8b;
+    undefined field_0x8c;
+    undefined field_0x8d;
+    undefined field_0x8e;
+    undefined field_0x8f;
+    int field_0x90;
+    void * field_0x94;
+    SCR_f deltaX;
+    SCR_f deltaY;
+    undefined field_0xa0;
+    undefined field_0xa1;
+    undefined field_0xa2;
+    undefined field_0xa3;
+    undefined4 teleportX; /* Created by retype action */
+    undefined4 teleportY; /* Created by retype action */
+    undefined4 teleportZ; /* Created by retype action */
+    int field_0xb0;
+};
+
+struct WEAPON_STRUCT {
+    short ammo;
+    byte timeToReload;
+    undefined field_0x3;
+    int field_0x4;
+    undefined field_0x8;
+    undefined field_0x9;
+    undefined field_0xa;
+    undefined field_0xb;
+    undefined field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+    undefined field_0x10;
+    undefined field_0x11;
+    undefined field_0x12;
+    undefined field_0x13;
+    int carId; /* Created by retype action */
+    struct WEAPON_STRUCT * nextWeapon;
+    enum WEAPON_INDEX id;
+    undefined field_0x20;
+    undefined field_0x21;
+    undefined field_0x22;
+    undefined field_0x23;
+    struct Ped * ped;
+    undefined field_0x28;
+    undefined field_0x29;
+    undefined field_0x2a;
+    undefined field_0x2b;
+    byte field_0x2c;
+    undefined field_0x2d;
+    undefined field_0x2e;
+    undefined field_0x2f;
+};
+
 struct PlayerPhysics {
     SCR_f x;
     SCR_f y;
     SCR_f z; /* camera z offset */
-    struct Sprite * sprite2;
+    struct GameObject * gameObject;
     SCR_f x2;
     SCR_f y2;
     SCR_f z2;
-    struct Sprite * sprite;
+    struct GameObject * gameObject2;
     undefined field_0x20;
     undefined field_0x21;
     undefined field_0x22;
@@ -944,41 +979,6 @@ struct PlayerPhysics {
     SCR_f yCameraVelocity;
     undefined4 cameraHeadVelocity; /* changed when driving car */
     SCR_f field_0xb8;
-};
-
-struct WEAPON_STRUCT {
-    short ammo;
-    byte timeToReload;
-    undefined field_0x3;
-    int field_0x4;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-    undefined field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
-    undefined field_0x10;
-    undefined field_0x11;
-    undefined field_0x12;
-    undefined field_0x13;
-    int carId; /* Created by retype action */
-    struct WEAPON_STRUCT * nextWeapon;
-    enum WEAPON_INDEX id;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    struct Ped * ped;
-    undefined field_0x28;
-    undefined field_0x29;
-    undefined field_0x2a;
-    undefined field_0x2b;
-    byte field_0x2c;
-    undefined field_0x2d;
-    undefined field_0x2e;
-    undefined field_0x2f;
 };
 
 struct CarManager4_S1 {
@@ -1347,7 +1347,7 @@ struct Ped {
     struct WEAPON_PLAYER_LIST * playerWeapons;
     struct Ped * nextPed;
     struct Ped * ElvisOrTarget; /* Created by retype action */
-    struct Sprite * pedSprite;
+    struct GameObject * gameObject;
     struct Car * currentCar;
     struct WEAPON_STRUCT * selectedWeapon;
     void * ptrToWeapon;
@@ -1458,8 +1458,6 @@ struct Ped {
     int field_0x28c;
     int relToMultiplayer;
 };
-
-typedef undefined2 u2;
 
 typedef enum CAR_DOOR_STATE {
     CAR_DOOR_STATE_INITIAL_UNK3=3,
@@ -5305,7 +5303,7 @@ struct CarInfoChunk {
 typedef struct Collide Collide, *PCollide;
 
 struct Collide {
-    struct Position * ptr1;
+    struct Sprite * ptr1;
     void * ptr2;
     struct Collide * ptr3;
 };
@@ -5576,6 +5574,13 @@ struct SDisplayMode {
     dword field_0x34;
     struct SDisplayMode * pnext;
     undefined4 field_0x3c;
+};
+
+typedef struct GameObjectsManager GameObjectsManager, *PGameObjectsManager;
+
+struct GameObjectsManager {
+    struct GameObject * last;
+    struct GameObject arr[400];
 };
 
 typedef struct GangRespect GangRespect, *PGangRespect;
@@ -6437,8 +6442,8 @@ struct S20 {
 typedef struct S21 S21, *PS21;
 
 struct S21 {
-    struct Position * last;
-    struct Position arr[5031];
+    struct Sprite * last;
+    struct Sprite arr[5031];
 };
 
 typedef struct S21_1 S21_1, *PS21_1;
@@ -6560,7 +6565,7 @@ struct S24_char {
     byte field_0x5;
     byte field_0x6;
     byte field_0x7;
-    struct Position * position;
+    struct Sprite * position;
 };
 
 typedef struct S27 S27, *PS27;
@@ -8815,14 +8820,6 @@ struct SPolice {
     undefined field_0x7b5;
     undefined field_0x7b6;
     undefined field_0x7b7;
-};
-
-typedef struct SpriteManager SpriteManager, *PSpriteManager;
-
-struct SpriteManager {
-    struct Sprite * lastSprite;
-    undefined field_0x4[71999];
-    undefined field_0x11943;
 };
 
 typedef struct SRelateToNight SRelateToNight, *PSRelateToNight;
