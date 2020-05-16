@@ -144,7 +144,7 @@ void MarkCar(HDC dc, Car* car, COLORREF color) {
 	WCHAR buf[256];
 	wsprintf(
 		buf,
-		L"Car %d (0x%08x)\r\Model: %d\r\ndriver: %08x (id: %d)\r\ntrafficCarType: %d\r\nphysics: %08x gas: %d\r\nphysics: %d",
+		L"Car %d (0x%08x)\r\Model: %d\r\ndriver: %08x (id: %d)\r\ntrafficCarType: %d\r\nphysics: %08x gas: %d\r\nturret: %08x rotation: %d offsets: %d/%d",
 		car->id,
 		car,
 		car->carModel,
@@ -153,7 +153,10 @@ void MarkCar(HDC dc, Car* car, COLORREF color) {
 		car->trafficCarType,
 		car->physics,
 		car->physics ? car->physics->gasLevel : -1,
-		car->somePedId
+		car->roof,
+		car->roof ? car->roof->rotation : -1,
+		car->roof ? car->roof->xOffset : -1,
+		car->roof ? car->roof->yOffset : -1
 	);
 	DrawText(
 		dc,

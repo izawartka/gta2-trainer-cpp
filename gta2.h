@@ -370,6 +370,8 @@ typedef enum CAR_MODEL4 {
     CAR_MODEL4_ZCX5=83
 } CAR_MODEL4;
 
+typedef struct Roof Roof, *PRoof;
+
 typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
     BAGAGE_DOORS_OPEN1=2048,
     BAGAGE_DOORS_OPEN2=4096,
@@ -549,6 +551,20 @@ struct WEAPON_PLAYER_LIST {
     short count; /* Created by retype action */
 };
 
+struct Roof {
+    void * maybePrev;
+    struct Roof * next; /* Created by retype action */
+    int xOffset;
+    int yOffset;
+    short rotation;
+    undefined field_0x12;
+    undefined field_0x13;
+    undefined field_0x14;
+    undefined field_0x15;
+    undefined field_0x16;
+    undefined field_0x17;
+};
+
 struct Sprite {
     uint id;
     int field_0x4;
@@ -705,7 +721,7 @@ struct Position {
 };
 
 struct Car {
-    void * ptr;
+    struct Roof * roof; /* turret */
     undefined4 field_0x4;
     enum CAR_LIGHTS_AND_DOORS_BITSTATE carLights;
     struct SomeStructInsideACar arr4[4];
@@ -1665,6 +1681,13 @@ typedef struct MaybeCarEngineHolder MaybeCarEngineHolder, *PMaybeCarEngineHolder
 struct MaybeCarEngineHolder {
     struct CarPhysics * firstElement;
     struct CarPhysics * arr306;
+};
+
+typedef struct RoofSpritesHolder RoofSpritesHolder, *PRoofSpritesHolder;
+
+struct RoofSpritesHolder {
+    struct Roof * last;
+    struct Roof arr[300];
 };
 
 typedef struct TrafficManager TrafficManager, *PTrafficManager;
