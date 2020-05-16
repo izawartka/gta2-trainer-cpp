@@ -18,14 +18,15 @@ typedef unsigned short    ushort;
 typedef unsigned short    word;
 typedef uchar bbool;
 
-
-typedef struct GameObject GameObject, *PGameObject;
-
-typedef struct PlayerPhysics PlayerPhysics, *PPlayerPhysics;
-
 typedef undefined1 u1;
 
+typedef undefined2 u2;
+
 typedef undefined4 u4;
+
+typedef struct Car Car, *PCar;
+
+typedef struct Roof Roof, *PRoof;
 
 typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
     BAGAGE_DOORS_OPEN1=2048,
@@ -63,11 +64,15 @@ typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
     UNK_80000=524288
 } CAR_LIGHTS_AND_DOORS_BITSTATE;
 
+typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
+
+typedef struct Sprite Sprite, *PSprite;
+
 typedef struct Ped Ped, *PPed;
 
-typedef int Sint32;
+typedef struct CarPhysics CarPhysics, *PCarPhysics;
 
-typedef Sint32 SCR_f;
+typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
 
 typedef enum CAR_MODEL4 {
     CAR_MODEL4_ALFA=0,
@@ -190,8 +195,12 @@ typedef enum CAR_SIREN_STATE : unsigned char {
     SIREN_UNK_10=16
 } CAR_SIREN_STATE;
 
+typedef enum HORN : unsigned char {
+    HORN_ON=248
+} HORN;
 
-typedef struct Car Car, *PCar;
+typedef struct GameObject GameObject, *PGameObject;
+
 typedef enum CAR_REL_TO_COLOR_ENUM {
     CAR_REL_TO_COLOR_ENUM_1=1,
     CAR_REL_TO_COLOR_ENUM_2=2,
@@ -203,6 +212,10 @@ typedef enum CAR_REL_TO_COLOR_ENUM {
 typedef struct WEAPON_PLAYER_LIST WEAPON_PLAYER_LIST, *PWEAPON_PLAYER_LIST;
 
 typedef struct WEAPON_STRUCT WEAPON_STRUCT, *PWEAPON_STRUCT;
+
+typedef int Sint32;
+
+typedef Sint32 SCR_f;
 
 typedef enum PED_BIT_STATE {
     PED_BIT_STATE_2000000=33554432,
@@ -278,7 +291,6 @@ typedef enum OCUPATION {
     UNK_REL_TO_POLICE3=31,
     UNK_REL_TO_POLICE4=37
 } OCUPATION;
-typedef struct Sprite Sprite, *PSprite;
 
 typedef enum PED_REMAP : unsigned char {
     PED_REMAP_1=1,
@@ -371,15 +383,6 @@ typedef enum PED_REMAP2 {
     PED_REMAP2_HEAVY_ARMOUR=2
 } PED_REMAP2;
 
-
-typedef struct Roof Roof, *PRoof;
-
-
-typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
-
-typedef struct CarPhysics CarPhysics, *PCarPhysics;
-
-typedef struct CarManager4_S1 CarManager4_S1, *PCarManager4_S1;
 typedef enum PED_STATE {
     PED_STATE_0_WALK=0,
     PED_STATE_16_FALL_ON_GROUND_FROM_HOOK=22,
@@ -424,10 +427,8 @@ typedef enum PED_STATE2 {
     PED_STATE2_f_UNK=15
 } PED_STATE2;
 
+typedef struct PlayerPhysics PlayerPhysics, *PPlayerPhysics;
 
-typedef enum HORN : unsigned char {
-    HORN_ON=248
-} HORN;
 typedef enum SPRITE_BIT1 : unsigned char {
     SPRITE_BIT1_1=1
 } SPRITE_BIT1;
@@ -1457,8 +1458,6 @@ struct Ped {
     int field_0x28c;
     int relToMultiplayer;
 };
-
-typedef undefined2 u2;
 
 typedef enum CAR_DOOR_STATE {
     CAR_DOOR_STATE_INITIAL_UNK3=3,
