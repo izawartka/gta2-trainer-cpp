@@ -193,7 +193,7 @@ void myVid_FlipBuffers(SVideo* context) {
 		auto ped = manager->lastPedInArray;
 		while (ped)
 		{
-			if(ped->id != 1)
+			if(ped->id != 1 && mainWnd->pedsInfo)
 				MarkPed(dc, ped, RGB(255, 50, 50));
 			ped = ped->nextPed;
 		}
@@ -202,7 +202,8 @@ void myVid_FlipBuffers(SVideo* context) {
 		auto car = prefab->lastCar;
 		while (car)
 		{
-			MarkCar(dc, car, RGB(255, 255, 255));
+			if(mainWnd->carsInfo)
+				MarkCar(dc, car, RGB(255, 255, 255));
 			car = car->lastCar;
 		}
 
@@ -1906,6 +1907,8 @@ void MainWindow::FixCheckboxes()
 	((CButton*)GetDlgItem(IDC_KEEPWEAPONS))->SetCheck(*(bool*)0x5EAD9E);
 	((CButton*)GetDlgItem(IDC_SHOWCOUNTERS))->SetCheck(*(bool*)0x5EAD95);
 	((CButton*)GetDlgItem(IDC_MOUSECTRL))->SetCheck(captureMouse);
+	carsInfo = ((CButton*)GetDlgItem(IDC_CARSINFO))->GetCheck();
+	pedsInfo = ((CButton*)GetDlgItem(IDC_PEDSINFO))->GetCheck();
 
 }
 

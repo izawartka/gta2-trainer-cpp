@@ -77,6 +77,8 @@
 #define IDC_SPSET                       3070
 #define IDC_MOUSECTRL                   3071
 #define IDC_PEDSHAPCLOTHR               3072
+#define IDC_PEDSINFO                    3073
+#define IDC_CARSINFO                    3074
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774

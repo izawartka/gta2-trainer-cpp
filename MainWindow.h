@@ -128,6 +128,7 @@ public:
 	void SetHealthArmorMoney();
 	void SetGlobalPedSpeeds();
 	void WantToSpawnCar();
+	bool pedsInfo = false, carsInfo = false;
 
 	void OnGTADraw();
 	void OnGTAGameTick(Game* game);
