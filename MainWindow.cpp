@@ -35,7 +35,7 @@ void DrawText3(LPDIRECTDRAWSURFACE7 surf, int X, int Y, WCHAR* txt, COLORREF col
 	surf->ReleaseDC(dc);
 }
 
-void DrawRect(LPDIRECTDRAWSURFACE7 surf, int X, int Y, int L, int H, D3DCOLOR color)
+void DrawRect(LPDIRECTDRAWSURFACE7 surf, int X, int Y, int L, int H, COLORREF color)
 {
 	RECT rect = { X, Y, X + L, Y + H };
 	HDC dc;
@@ -43,7 +43,8 @@ void DrawRect(LPDIRECTDRAWSURFACE7 surf, int X, int Y, int L, int H, D3DCOLOR co
 	if (hr != DD_OK) {
 		return;
 	}
-	::FillRect(dc, &rect, (HBRUSH)::GetStockObject(GRAY_BRUSH));
+	SetDCBrushColor(dc, color);
+	::FillRect(dc, &rect, (HBRUSH)::GetStockObject(DC_BRUSH));
 	surf->ReleaseDC(dc);
 }
 
@@ -172,6 +173,26 @@ void MarkCar(HDC dc, Car* car, COLORREF color) {
 
 }
 
+void DrawOptions(LPDIRECTDRAWSURFACE7 surf, HDC dc, int length, int x, int y)
+{
+	
+	DrawRect(surf, 10, 160, 128, 256, RGB(30, 30, 60));
+	/*
+	RECT rect;
+	rect.left = x;
+	rect.top = y;
+	rect.right = x+128;
+	rect.bottom = y+length*16;
+
+	DrawText(
+		dc,
+		L"Hejka",
+		wcslen(L"Hejka"),
+		rect,
+		DT_TOP
+	);*/
+}
+
 void myVid_FlipBuffers(SVideo* context) {
 	OutputDebugStringA("myVid_FlipBuffers\n");
 
@@ -180,12 +201,12 @@ void myVid_FlipBuffers(SVideo* context) {
 	int screenCenterX = width >> 1;
 	int screenCenterY = height >> 1;
 
-	//DrawRect((LPDIRECTDRAWSURFACE7)context->surface2, 100, 200, 100, 100, D3DCOLOR_ARGB(255, 255, 0, 0));
 	HDC dc;
-
+	
 	LPDIRECTDRAWSURFACE7 surf = (LPDIRECTDRAWSURFACE7)context->Surface;
 	HRESULT hr = surf->GetDC(&dc);
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
+
 	if (hr == DD_OK && pGame && pGame->gameStatus) {
 		//MarkPed(dc, fnGetPedByID(1), RGB(50, 255, 255));
 
@@ -1978,8 +1999,6 @@ void MainWindow::OnGTAGameTick(Game* game)
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
-	auto ped = fnGetPedByID(1);
-	auto ped2 = fnSpawnPedAtPosition(ped->x, ped->y, ped->z + 16384, PED_REMAP_CARTHIEF, 1);
-	ped2->occupation = (OCUPATION)14;
-	ped2->timerToAction = 100;
+
+	log(L"Nearest ped: %d Nearest car: %d", FindTheNearestPed(fnGetPedByID(1))->id, FindTheNearestCar(fnGetPedByID(1))->id);
 }

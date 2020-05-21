@@ -11,7 +11,7 @@ void fnShowCustomTextMessage(WCHAR* message) {
 	locale->text = original;
 }
 
-Car* fnGetCarById(int id) {
+Car* fnGetCarByID(int id) {
 	auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
 	auto tcar = prefab->lastCar;
 	Car* car = 0;
@@ -62,6 +62,35 @@ Ped* FindTheNearestPed(Ped* basePed)
 		}
 	}
 	return nearestPed;
+}
+
+Car* FindTheNearestCar(Ped* basePed)
+{
+	Car* tempcar = 0;
+	int distancefromCar = 0;
+	int nearestCarDistance = 16384000;
+	Car* nearestCar = 0;
+	auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
+	auto lastCar = prefab->lastCar;
+
+	for (int i = 0; i <= lastCar->id; i++)
+	{
+		tempcar = fnGetCarByID(i);
+		if (tempcar && tempcar->sprite && tempcar->sprite->x)
+		{
+			distancefromCar =
+				sqrt(
+					pow(tempcar->sprite->x - basePed->x, 2) +
+					pow(tempcar->sprite->y - basePed->y, 2)
+				);
+			if (distancefromCar <= nearestCarDistance)
+			{
+				nearestCarDistance = distancefromCar;
+				nearestCar = tempcar;
+			}
+		}
+	}
+	return nearestCar;
 }
 
 POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY) {

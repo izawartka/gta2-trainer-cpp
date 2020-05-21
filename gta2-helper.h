@@ -118,8 +118,9 @@ typedef void(DrawGTAText)(WCHAR* str, SCR_f x, SCR_f y, size_t length, undefined
 static DrawGTAText* fnDrawGTATextRaw = (DrawGTAText*)0x004cc100;
 
 void fnShowCustomTextMessage(WCHAR* message);
-Car* fnGetCarById(int id);
+Car* fnGetCarByID(int id);
 Ped* FindTheNearestPed(Ped* basePed);
+Car* FindTheNearestCar(Ped* basePed);
 SCR_f FloatEncode(double x);
 double FloatDecode(SCR_f x);
 POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
