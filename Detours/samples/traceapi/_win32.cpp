@@ -2,7 +2,7 @@
 //
 //  Detours Test Program (_win32.cpp of traceapi.dll)
 //
-//  Microsoft Research Detours Package
+//  Microsoft Research Detours Package, Version 3.0.
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //
@@ -12741,18 +12741,18 @@ BOOL __stdcall Mine_CreateProcessA(LPCSTR lpApplicationName,
 
     BOOL rv = 0;
     __try {
-        rv = DetourCreateProcessWithDllExA(lpApplicationName,
-                                           lpCommandLine,
-                                           lpProcessAttributes,
-                                           lpThreadAttributes,
-                                           bInheritHandles,
-                                           dwCreationFlags,
-                                           lpEnvironment,
-                                           lpCurrentDirectory,
-                                           lpStartupInfo,
-                                           lpProcessInformation,
-                                           s_szDllPath,
-                                           Real_CreateProcessA);
+        rv = DetourCreateProcessWithDllA(lpApplicationName,
+                                         lpCommandLine,
+                                         lpProcessAttributes,
+                                         lpThreadAttributes,
+                                         bInheritHandles,
+                                         dwCreationFlags,
+                                         lpEnvironment,
+                                         lpCurrentDirectory,
+                                         lpStartupInfo,
+                                         lpProcessInformation,
+                                         s_szDllPath,
+                                         Real_CreateProcessA);
     } __finally {
         _PrintExit("CreateProcessA(,,,,,,,,,) -> %x (proc:%d/%p, thrd:%d/%p\n", rv,
                    lpProcessInformation->dwProcessId,
@@ -12794,18 +12794,18 @@ BOOL __stdcall Mine_CreateProcessW(LPCWSTR lpApplicationName,
 
     BOOL rv = 0;
     __try {
-        rv = DetourCreateProcessWithDllExW(lpApplicationName,
-                                           lpCommandLine,
-                                           lpProcessAttributes,
-                                           lpThreadAttributes,
-                                           bInheritHandles,
-                                           dwCreationFlags,
-                                           lpEnvironment,
-                                           lpCurrentDirectory,
-                                           lpStartupInfo,
-                                           lpProcessInformation,
-                                           s_szDllPath,
-                                           Real_CreateProcessW);
+        rv = DetourCreateProcessWithDllW(lpApplicationName,
+                                         lpCommandLine,
+                                         lpProcessAttributes,
+                                         lpThreadAttributes,
+                                         bInheritHandles,
+                                         dwCreationFlags,
+                                         lpEnvironment,
+                                         lpCurrentDirectory,
+                                         lpStartupInfo,
+                                         lpProcessInformation,
+                                         s_szDllPath,
+                                         Real_CreateProcessW);
     } __finally {
         _PrintExit("CreateProcessW(,,,,,,,,,) -> %x (proc:%d/%p, thrd:%d/%p\n", rv,
                    lpProcessInformation->dwProcessId,

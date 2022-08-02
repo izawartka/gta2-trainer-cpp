@@ -2,7 +2,7 @@
 //
 //  Module: cping.cpp (cping.exe)
 //
-//  Microsoft Research Detours Package
+//  Microsoft Research Detours Package, Version 3.0.
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //
@@ -115,7 +115,6 @@ STDAPI PingMessage(PCSTR msg, ...)
 
     va_start(args, msg);
     hr = StringCchVPrintfA(s_szMessageBuf, ARRAYSIZE(s_szMessageBuf), msg, args);
-    va_end(args);
     if (FAILED(hr)) {
         return hr;
     }
@@ -141,7 +140,6 @@ BOOLEAN CheckResult(HRESULT hr, PCSTR pszMsg, ...)
 
         va_start(args, pszMsg);
         ihr = StringCchVPrintfA(s_szMessageBuf, ARRAYSIZE(s_szMessageBuf), pszMsg, args);
-        va_end(args);
         if (FAILED(ihr)) {
             return FALSE;
         }
@@ -1412,9 +1410,10 @@ HRESULT CSampleRecord::Measure(IPing *pIPing, LONG cbToClient, LONG cbToServer)
         hr = Catch_IPing_PingToClient(pIPing, &pszString);
         llEnd = GetTimeStamp();
 
+        LONG cb = (LONG)strlen(pszString) + 1;
+        ASSERT(cb == cbToClient);
+
         if (pszString) {
-            LONG cb = (LONG)strlen(pszString) + 1;
-            ASSERT(cb == cbToClient);
             CoTaskMemFree(pszString);
             pszString = NULL;
         }

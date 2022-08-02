@@ -27,6 +27,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	//std::map<std::wstring, DWORD> cars;
+	HMENU ncHMenu;
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -41,10 +42,10 @@ public:
 	void CaptureMouse();
 	afx_msg void OnSpawncarTank();
 	afx_msg void OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2);
-	afx_msg void OnSpawncarGt();
 	afx_msg void OnSpawnCarClick(UINT nID);
 	afx_msg void OnGetWeaponClick(UINT nID);
 	afx_msg void OnPlayVocalClick(UINT nID);
+	afx_msg void OnNativeCheatClick(UINT nID);
 	uint frames;
 	afx_msg void OnSpawncarGunjeep();
 	CEdit m_pedX;
@@ -108,10 +109,9 @@ public:
 	int pedXPreHuman = 0, pedYPreHuman = 0, pedZPreHuman = 0;
 	void GangRespect(UINT nID);
 	int currLastCarXOld = 0, currLastCarYOld = 0, currLastCarXYShift;
-	void ShowIDs();
-	void ShowCounters();
 	void FreeShopping();
-	void KeepWeapons();
+	void PrintCarInfo();
+	void SyncTrailerColor();
 	void CarColorPlus();
 	void CarColorMinus();
 	void CarColorReset();
@@ -122,15 +122,14 @@ public:
 	void PedShapeMinus();
 	void PedShapeClothesReset();
 	void ShowBigText();
+	void HijackTrain();
 	void GoSlow();
 	int* walkingSpeed = nullptr;
 	void TeleportPlayer();
 	void SetHealthArmorMoney();
 	void SetGlobalPedSpeeds();
 	void WantToSpawnCar();
-	bool pedsInfo = false, carsInfo = false;
 
-	void OnGTADraw();
 	void OnGTAGameTick(Game* game);
 	void NewFunction();
 };

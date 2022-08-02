@@ -74,9 +74,9 @@ sleepold.exe: Done sleeping.
 
 -------- Adding slept32.dll to sleepold.exe -------------------------------
     ..\..\bin.X86\setdll.exe -d:..\..\bin.X86\slept32.dll ..\..\bin.X86\sleepold.exe
-Adding c:\Code\detours\bin.X86\slept32.dll to binary files.
+Adding c:\Code\detours\3.0\bin.X86\slept32.dll to binary files.
   ..\..\bin.X86\sleepold.exe:
-    c:\Code\detours\bin.X86\slept32.dll
+    c:\Code\detours\3.0\bin.X86\slept32.dll
     KERNEL32.dll -> KERNEL32.dll
 
 -------- Should load slept32.dll statically -------------------------------
@@ -108,9 +108,9 @@ Removing extra DLLs from binary files.
   ..\..\bin.X86\sleepold.exe:
     KERNEL32.dll -> KERNEL32.dll
     ..\..\bin.X86\setdll.exe -d:..\..\bin.X86\dslept32.dll ..\..\bin.X86\sleepold.exe
-Adding c:\Code\detours\bin.X86\dslept32.dll to binary files.
+Adding c:\Code\detours\3.0\bin.X86\dslept32.dll to binary files.
   ..\..\bin.X86\sleepold.exe:
-    c:\Code\detours\bin.X86\dslept32.dll
+    c:\Code\detours\3.0\bin.X86\dslept32.dll
     KERNEL32.dll -> KERNEL32.dll
 
 -------- Should load dslept32.dll instead of slept32.dll --------------------
@@ -177,7 +177,7 @@ sleepold.exe: Done sleeping.
 -------- Should load slept32.dll dynamically using withdll.exe ------------
     ..\..\bin.X86\withdll.exe -d:..\..\bin.X86\slept32.dll ..\..\bin.X86\sleepold.exe
 withdll.exe: Starting: `..\..\bin.X86\sleepold.exe'
-withdll.exe:   with `c:\Code\detours\bin.X86\slept32.dll'
+withdll.exe:   with `c:\Code\detours\3.0\bin.X86\slept32.dll'
 slept32.dll:  Starting.
 slept32.dll:  ExeEntry=011A3D4C, DllEntry=7248702E
   SleepEx = 74F51215

@@ -35,9 +35,6 @@
     <None Include="gta2dll.def">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="res\gta2dll.rc2">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">

@@ -2,7 +2,7 @@
 ##
 ##  Establish build target type for Detours.
 ##
-##  Microsoft Research Detours Package
+##  Microsoft Research Detours Package, Version 3.0.
 ##
 ##  Copyright (c) Microsoft Corporation.  All rights reserved.
 ##
@@ -88,7 +88,7 @@ DETOURS_OPTION_BITS=64
 !MESSAGE Note: To select the target processor architecture set either
 !MESSAGE       PROCESSOR_ARCHITECTURE or DETOURS_TARGET_PROCESSOR.
 !MESSAGE
-!ERROR Unknown target processor: "$(DETOURS_TARGET_PROCESSOR)"
+!ERROR Unknown target processor: $(DETOURS_TARGET_ARCHITECTURE)
 !ENDIF
 
 ##############################################################################

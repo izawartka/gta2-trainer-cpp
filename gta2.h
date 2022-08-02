@@ -619,6 +619,15 @@ struct Sprite {
     undefined field_0x47;
     bool field_0x48;
 };
+ 
+// ADDED IN FILE //
+struct TrailerController {
+    undefined4 field_0x0;
+    undefined4 field_0x4;
+    undefined4 field_0x8;
+    Car* trailer;
+};
+// END OF ADDED IN FILE //
 
 struct Car {
     struct Roof * roof; /* turret */
@@ -631,7 +640,7 @@ struct Car {
     struct CarPhysics * physics;
     struct CarManager4_S1 * notEngineStruct;
     void * field_0x60;
-    void * field_0x64;
+    TrailerController* trailerController; // ADDED IN FILE //
     undefined4 field_0x68;
     uint id;
     undefined field_0x70;

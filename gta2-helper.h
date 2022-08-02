@@ -62,10 +62,6 @@ static PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
 typedef void* (__fastcall StartMapPlaySound)(void*, DWORD edx);
 static StartMapPlaySound* fnStartMapPlaySound = (StartMapPlaySound*)0x004784d0;
 
-// void Vid_FlipBuffers(D3DContext *param_1)
-typedef void* (Vid_FlipBuffers)(SVideo* param_1);
-static Vid_FlipBuffers* fnVid_FlipBuffers = 0;
-
 // Ped * SpawnPedAtPosition(int x,int y,int z,PED_REMAP remap,short param_5)
 typedef Ped* (SpawnPedAtPosition)(int x, int y, int z, PED_REMAP remap, short param_5);
 static SpawnPedAtPosition* fnSpawnPedAtPosition = (SpawnPedAtPosition*)0x0043db40;

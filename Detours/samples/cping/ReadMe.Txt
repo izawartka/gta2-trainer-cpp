@@ -1,4 +1,4 @@
-Microsoft Research Detours Package
+Microsoft Research Detours Package, Version 3.0.
 ==============================================================================
 4/2/98
 

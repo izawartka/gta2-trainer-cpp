@@ -2,7 +2,7 @@
 //
 //  Detours Test Program (tdll9x.cpp of talloc.exe/tdll9x.dll)
 //
-//  Microsoft Research Detours Package
+//  Microsoft Research Detours Package, Version 3.0.
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //
