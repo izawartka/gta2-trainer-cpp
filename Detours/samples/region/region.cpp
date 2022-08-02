@@ -2,7 +2,7 @@
 //
 //  Test the different system region bounds (region.cpp of region.exe)
 //
-//  Microsoft Research Detours Package
+//  Microsoft Research Detours Package, Version 3.0.
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //

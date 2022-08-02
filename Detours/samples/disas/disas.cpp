@@ -2,15 +2,19 @@
 //
 //  Module: disas.cpp (disas.exe - Detours Test Program)
 //
-//  Microsoft Research Detours Package
+//  Microsoft Research Detours Package, Version 3.0.
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //
 
-#define DETOURS_INTERNAL
-#include <detours.h>
+#define _CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS 1
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
+
+#define DETOURS_INTERNAL
+
+#include <detours.h>
 
 ///////////////////////////////////////////////////////////////////////// ARM.
 //

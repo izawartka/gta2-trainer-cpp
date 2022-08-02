@@ -2,7 +2,7 @@
 //
 //  Detour Test Program (dslept.cpp of dslept.dll)
 //
-//  Microsoft Research Detours Package
+//  Microsoft Research Detours Package, Version 3.0.
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //

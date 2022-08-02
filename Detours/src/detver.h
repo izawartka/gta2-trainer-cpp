@@ -2,7 +2,7 @@
 //
 //  Common version parameters.
 //
-//  Microsoft Research Detours Package, Version 4.0.1
+//  Microsoft Research Detours Package, Version 3.0 Build_343.
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //
@@ -14,8 +14,8 @@
 #include <detours.h>
 #else
 #ifndef DETOURS_STRINGIFY
-#define DETOURS_STRINGIFY_(x)    #x
 #define DETOURS_STRINGIFY(x)    DETOURS_STRINGIFY_(x)
+#define DETOURS_STRINGIFY_(x)    #x
 #endif
 
 #define VER_FILEFLAGSMASK   0x3fL
@@ -24,4 +24,4 @@
 #define VER_FILETYPE        0x00000002L
 #define VER_FILESUBTYPE     0x00000000L
 #endif
-#define VER_DETOURS_BITS    DETOURS_STRINGIFY(DETOURS_BITS)
+#define VER_DETOURS_BITS    DETOUR_STRINGIFY(DETOURS_BITS)

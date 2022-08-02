@@ -2,7 +2,7 @@
 //
 //  Detour Test Program (slept.cpp of slept.dll)
 //
-//  Microsoft Research Detours Package
+//  Microsoft Research Detours Package, Version 3.0.
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //
@@ -67,7 +67,7 @@ DWORD WINAPI TestTicksEx(DWORD Add)
 
         Add = pdw[Add] - Add;
 
-        delete [] pdw;
+        delete pdw;
     }
     else {
         Add = dwSlept + Add;

@@ -2,7 +2,7 @@
 //
 //  Detours Test Program (edll2x.cpp of einst.exe/edll2x.dll)
 //
-//  Microsoft Research Detours Package
+//  Microsoft Research Detours Package, Version 3.0.
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //

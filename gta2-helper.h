@@ -3,6 +3,22 @@
 
 #include "gta2.h"
 
+static_assert(sizeof(u4) == 4, "Wrong size of u4 struct");
+static_assert(sizeof(u2) == 2, "Wrong size of u2 struct");
+static_assert(sizeof(u1) == 1, "Wrong size of u1 struct");
+static_assert(sizeof(byte) == 1, "Wrong size of byte struct");
+static_assert(sizeof(bool) == 1, "Wrong size of bool struct");
+
+static_assert(sizeof(Car) == 0xbc, "Wrong size of Car struct");
+static_assert(sizeof(Ped) == 0x294, "Wrong size of Ped struct");
+static_assert(sizeof(HORN) == 0x1, "Wrong size of HORN enum");
+static_assert(sizeof(CAR_SIREN_STATE) == 0x1, "Wrong size of CAR_SIREN_STATE enum");
+static_assert(sizeof(CAR_MODEL4) == 0x4, "Wrong size of CAR_MODEL4 enum");
+static_assert(sizeof(CAR_MODEL) == 0x1, "Wrong size of CAR_MODEL enum");
+static_assert(sizeof(PED_REMAP) == 0x1, "Wrong size of PED_REMAP enum");
+static_assert(sizeof(SPRITE_BIT1) == 0x1, "Wrong size of SPRITE_BIT1 enum");
+static_assert(sizeof(TRAFFIC_PHASE) == 0x1, "Wrong size of TRAFFIC_PHASE enum");
+
 const DWORD pGameTick = (DWORD)0x0045c1f0;
 const DWORD pDraw = (DWORD)0x00461960;
 static const TrafficLigthStruct* ptrToTrafficLights = (TrafficLigthStruct*)0x006721cc;
@@ -12,10 +28,13 @@ static DWORD ptrToGame = 0x005eb4fc;
 static DWORD ptrToS3 = 0x00670684;
 static DWORD ptrToCarEngines = 0x005e5488;
 static DWORD ptrToMapRelatedStruct = 0x00662c08;
+static DWORD ptrToS10 = 0x00672f40;
+static DWORD ptrToS2LocalesSettings = 0x00671550;
+static DWORD ptrToCarsPrefabs = 0x005e4ca0;
+static DWORD ptrToPlayerPhysics = 0x005e3cc4;
+static DWORD ptrToFrontEnd = 0x005eb160;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
-#define FloatEncode(x) (int)(x * 16384)
-#define FloatDecode(x) (double)x / 16384.0
 // Usage: auto game = fnGetGame();
 #define fnGetGame() ByPtr(Game, ptrToGame)
 
@@ -43,10 +62,6 @@ static PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
 typedef void* (__fastcall StartMapPlaySound)(void*, DWORD edx);
 static StartMapPlaySound* fnStartMapPlaySound = (StartMapPlaySound*)0x004784d0;
 
-// void Vid_FlipBuffers(D3DContext *param_1)
-typedef void* (Vid_FlipBuffers)(D3DContext* param_1);
-static Vid_FlipBuffers* fnVid_FlipBuffers = 0;
-
 // Ped * SpawnPedAtPosition(int x,int y,int z,PED_REMAP remap,short param_5)
 typedef Ped* (SpawnPedAtPosition)(int x, int y, int z, PED_REMAP remap, short param_5);
 static SpawnPedAtPosition* fnSpawnPedAtPosition = (SpawnPedAtPosition*)0x0043db40;
@@ -65,6 +80,10 @@ typedef void (__fastcall FindMaxZForTile)(void* ptrToMapRelatedStruct, DWORD edx
 static FindMaxZForTile* fnFindMaxZForTileRaw = (FindMaxZForTile*)0x00466990;
 #define fnFindMaxZForTile(x, y, z) fnFindMaxZForTileRaw(ByPtr(ptrToMapRelatedStruct), 0, x, y, z);
 
+// SCR_f * __fastcall WorldCoordinateToScreenCoord(SCR_f* axisValue, undefined edx, SCR_f* outVal, int eq_0x6666)
+typedef void(__fastcall WorldCoordinateToScreenCoord)(SCR_f* axisValue, undefined edx, SCR_f* outVal, int *eq_0x6666);
+static WorldCoordinateToScreenCoord* fnWorldCoordinateToScreenCoordRaw = (WorldCoordinateToScreenCoord*)0x00401b60;
+
 // void __fastcall DoTeleport(Player *param_1)
 typedef void (__fastcall DoTeleport)(Player*, DWORD edx);
 static DoTeleport* fnDoTeleportRaw = (DoTeleport*)0x004a5ad0;
@@ -81,5 +100,25 @@ fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
 // bool __fastcall PedTick(Ped *ped)
 typedef void(__fastcall PedTick)(Ped*, DWORD edx);
 static PedTick* fnPedTickRaw = (PedTick*)0x004454e0;
+
+// void __fastcall showMessageToPlayer(DWORD* param_1, undefined edx, int timeInSeconds, char* messageCode)
+typedef void(__fastcall ShowMessageToPlayer)(S10_TxtMessage*, DWORD edx, int timeInSeconds, char* messageCode);
+static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x004c6750;
+// example: fnShowMessageToPlayer(3, "nespray");
+#define fnShowMessageToPlayer(seconds, messageCode) fnShowMessageToPlayerRaw(&(ByPtr(S10, ptrToS10))->txtMessage, 0, seconds, messageCode)
+
+
+// void __fastcall drawText(FrontEnd* _this, undefined edx, WCHAR* param_3, undefined4 x, SCR_f y, undefined4 length, undefined4 param_7)
+typedef void(DrawGTAText)(WCHAR* str, SCR_f x, SCR_f y, size_t length, undefined4 param_5, S4_ENUM1* param_6,
+	undefined4 param_7, undefined4 param_8, undefined4 param_9);
+static DrawGTAText* fnDrawGTATextRaw = (DrawGTAText*)0x004cc100;
+
+void fnShowCustomTextMessage(WCHAR* message);
+Car* fnGetCarByID(int id);
+Ped* FindTheNearestPed(Ped* basePed);
+Car* FindTheNearestCar(Ped* basePed);
+SCR_f FloatEncode(double x);
+double FloatDecode(SCR_f x);
+POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
 
 #endif // !GTA_H

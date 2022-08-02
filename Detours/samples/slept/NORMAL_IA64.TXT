@@ -74,9 +74,9 @@ sleepold.exe: Done sleeping.
 
 -------- Adding slept64.dll to sleepold.exe -------------------------------
     ..\..\bin.IA64\setdll.exe -d:..\..\bin.IA64\slept64.dll ..\..\bin.IA64\sleepold.exe
-Adding c:\Code\Detours\bin.IA64\slept64.dll to binary files.
+Adding c:\Code\Detours\3.0\bin.IA64\slept64.dll to binary files.
   ..\..\bin.IA64\sleepold.exe:
-    c:\Code\Detours\bin.IA64\slept64.dll
+    c:\Code\Detours\3.0\bin.IA64\slept64.dll
     KERNEL32.dll -> KERNEL32.dll
 
 -------- Should load slept64.dll statically -------------------------------
@@ -108,9 +108,9 @@ Removing extra DLLs from binary files.
   ..\..\bin.IA64\sleepold.exe:
     KERNEL32.dll -> KERNEL32.dll
     ..\..\bin.IA64\setdll.exe -d:..\..\bin.IA64\dslept64.dll ..\..\bin.IA64\sleepold.exe
-Adding c:\Code\Detours\bin.IA64\dslept64.dll to binary files.
+Adding c:\Code\Detours\3.0\bin.IA64\dslept64.dll to binary files.
   ..\..\bin.IA64\sleepold.exe:
-    c:\Code\Detours\bin.IA64\dslept64.dll
+    c:\Code\Detours\3.0\bin.IA64\dslept64.dll
     KERNEL32.dll -> KERNEL32.dll
 
 -------- Should load dslept64.dll instead of slept64.dll --------------------
@@ -177,7 +177,7 @@ sleepold.exe: Done sleeping.
 -------- Should load slept64.dll dynamically using withdll.exe ------------
     ..\..\bin.IA64\withdll.exe -d:..\..\bin.IA64\slept64.dll ..\..\bin.IA64\sleepold.exe
 withdll.exe: Starting: `..\..\bin.IA64\sleepold.exe'
-withdll.exe:   with `c:\Code\Detours\bin.IA64\slept64.dll'
+withdll.exe:   with `c:\Code\Detours\3.0\bin.IA64\slept64.dll'
 slept64.dll:  Starting.
 slept64.dll:  ExeEntry=000000013FBFCAB0, DllEntry=000006FAEE9F6D80
   SleepEx = 0000000077898980 [0000000077845300]

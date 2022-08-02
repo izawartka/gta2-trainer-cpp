@@ -2,7 +2,7 @@
 ##
 ##  Makefile for Detours Test Programs.
 ##
-##  Microsoft Research Detours Package
+##  Microsoft Research Detours Package, Version 3.0.
 ##
 ##  Copyright (c) Microsoft Corporation.  All rights reserved.
 ##
@@ -39,10 +39,8 @@ all:
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
     cd "$(MAKEDIR)\echo"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
     cd "$(MAKEDIR)\einst"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
-!ENDIF
 !IF "$(DETOURS_TARGET_PROCESSOR)" == "X86"
     cd "$(MAKEDIR)\excep"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
@@ -51,11 +49,9 @@ all:
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
     cd "$(MAKEDIR)\commem"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
     cd "$(MAKEDIR)\findfunc"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
-!ENDIF
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM" && "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
+!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM"
     cd "$(MAKEDIR)\member"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
 !ENDIF
@@ -81,13 +77,11 @@ all:
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
     cd "$(MAKEDIR)\tracelnk"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM" && "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
+!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM"
     cd "$(MAKEDIR)\tryman"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
 !ENDIF
     cd "$(MAKEDIR)\impmunge"
-    @$(MAKE) /NOLOGO /$(MAKEFLAGS)
-    cd "$(MAKEDIR)\dynamic_alloc"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS)
     cd "$(MAKEDIR)"
 
@@ -149,8 +143,6 @@ clean:
     cd "$(MAKEDIR)\tryman"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) clean
     cd "$(MAKEDIR)\impmunge"
-    @$(MAKE) /NOLOGO /$(MAKEFLAGS) clean
-    cd "$(MAKEDIR)\dynamic_alloc"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) clean
     cd "$(MAKEDIR)"
     -rmdir lib32 2>nul
@@ -216,8 +208,6 @@ realclean:
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) realclean
     cd "$(MAKEDIR)\impmunge"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) realclean
-    cd "$(MAKEDIR)\dynamic_alloc"
-    @$(MAKE) /NOLOGO /$(MAKEFLAGS) realclean
     cd "$(MAKEDIR)"
     -rmdir lib32 2>nul
     -rmdir lib64 2>nul
@@ -228,42 +218,34 @@ test:
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)\simple"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
     cd "$(MAKEDIR)\slept"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)\setdll"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)\withdll"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!ENDIF
 !IF "$(DETOURS_TARGET_PROCESSOR)" == "X86"
     cd "$(MAKEDIR)\cping"
 #   @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
 !ENDIF
     cd "$(MAKEDIR)\disas"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
     cd "$(MAKEDIR)\dtest"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!ENDIF
     cd "$(MAKEDIR)\dumpe"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)\dumpi"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)\echo"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
     cd "$(MAKEDIR)\einst"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!ENDIF
 !IF "$(DETOURS_TARGET_PROCESSOR)" == "X86"
     cd "$(MAKEDIR)\excep"
 #   @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
 !ENDIF
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
     cd "$(MAKEDIR)\comeasy"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-
     cd "$(MAKEDIR)\commem"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)\findfunc"
@@ -272,12 +254,10 @@ test:
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)\region"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!ENDIF
 !IF "$(DETOURS_TARGET_PROCESSOR)" == "X64" || "$(DETOURS_TARGET_PROCESSOR)" == "IA64"
     cd "$(MAKEDIR)\talloc"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
 !ENDIF
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
     cd "$(MAKEDIR)\traceapi"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)\tracebld"
@@ -288,18 +268,13 @@ test:
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)\traceser"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!ENDIF
 #    cd "$(MAKEDIR)\tracessl"
 #    @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
 #    cd "$(MAKEDIR)\tracetcp"
 #    @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!IF "$(DETOURS_TARGET_PROCESSOR)" != "ARM64"
     cd "$(MAKEDIR)\tracelnk"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-!ENDIF
     cd "$(MAKEDIR)\impmunge"
-    @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
-    cd "$(MAKEDIR)\dynamic_alloc"
     @$(MAKE) /NOLOGO /$(MAKEFLAGS) test
     cd "$(MAKEDIR)"
 

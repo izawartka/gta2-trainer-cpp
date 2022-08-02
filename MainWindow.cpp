@@ -1,4 +1,4 @@
-// MainWindow.cpp : implementation file
+﻿// MainWindow.cpp : implementation file
 //
 
 #include "pch.h"
@@ -24,83 +24,6 @@ BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
 
 MainWindow* mainWnd = nullptr;
 
-/*
-void DrawText3(LPDIRECTDRAWSURFACE7 surf, int X, int Y, WCHAR* txt, COLORREF color) {
-	HDC dc;
-	HRESULT hr = surf->GetDC(&dc);
-	if (hr != DD_OK) {
-		return;
-	}
-	SetTextColor(dc, color);
-	::TextOut(dc, X, Y, txt, wcslen(txt));
-	surf->ReleaseDC(dc);
-}
-
-void DrawRect(LPDIRECTDRAWSURFACE7 surf, int X, int Y, int L, int H, D3DCOLOR color)
-{
-	RECT rect = { X, Y, X + L, Y + H };
-	HDC dc;
-	HRESULT hr = surf->GetDC(&dc);
-	if (hr != DD_OK) {
-		return;
-	}
-	::FillRect(dc, &rect, (HBRUSH)::GetStockObject(GRAY_BRUSH));
-	surf->ReleaseDC(dc);
-}
-
-void myVid_FlipBuffers(D3DContext* context) {
-	OutputDebugStringA("myVid_FlipBuffers\n");
-
-	int width = *(int*)0x00673578;
-	int height = *(int*)0x006732e8;
-	int screenCenterX = width >> 1;
-	int screenCenterY = height >> 1;
-
-	//DrawRect((LPDIRECTDRAWSURFACE7)context->surface2, 100, 200, 100, 100, D3DCOLOR_ARGB(255, 255, 0, 0));
-	HDC dc;
-	LPDIRECTDRAWSURFACE7 surf = (LPDIRECTDRAWSURFACE7)context->surface2;
-	HRESULT hr = surf->GetDC(&dc);
-	Game* pGame = (Game*)*(DWORD*)ptrToGame;
-	if (hr == DD_OK && pGame && pGame->gameStatus) {
-		RECT rect = { screenCenterX - 150, screenCenterY, screenCenterX + 300, screenCenterY + 300 };
-		SetBkMode(dc, TRANSPARENT);
-		SetTextColor(dc, RGB(50, 100, 250));
-		HFONT hFont = CreateFont(30, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 2, 0, L"SYSTEM_FIXED_FONT");
-		HFONT hTmp = (HFONT)SelectObject(dc, hFont);
-		DrawText(
-			dc,
-			L"Ped",
-			3,
-			&rect,
-			DT_CENTER | DT_VCENTER
-		);
-		DeleteObject(SelectObject(dc, hTmp));
-
-		SetPixel(dc, width / 2, height / 2, RGB(255, 50, 50));
-
-		surf->ReleaseDC(dc);
-	}
-	mainWnd->OnGTADraw();
-	fnVid_FlipBuffers(context);
-}
-
-void __fastcall myStartMapPlaySound(void* _this, DWORD edx) {
-	HMODULE dmaLib = LoadLibrary(L"dmavideo.dll");
-	fnVid_FlipBuffers = (Vid_FlipBuffers*)GetProcAddress(dmaLib, "Vid_FlipBuffers");
-	DetourRestoreAfterWith();
-
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
-
-	DetourAttach(&(PVOID&)fnPlayVocal, myPlayVocal);
-	DetourAttach(&(PVOID&)fnVid_FlipBuffers, myVid_FlipBuffers);
-
-	DetourTransactionCommit();
-
-	fnStartMapPlaySound(_this, edx);
-}
-*/
-
 BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
 	DWORD OldProtection = { 0 };
 	BOOL success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)hookFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
@@ -122,12 +45,17 @@ BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
 		return 0;
 	}
 
-	*(BYTE*)((LPBYTE)originalFn) = 0xE9; //JMP FAR
-	DWORD offset = (((DWORD)hookFn) - ((DWORD)originalFn + 5)); //Offset math.
-	*(DWORD*)((LPBYTE)originalFn + 1) = offset;
+	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 
-	for (i = 5; i < copyBytes; i++) {
-		*(BYTE*)((LPBYTE)originalFn + i) = 0x90; //JMP FAR
+	//if (pGame && pGame->gameStatus)
+	{
+		*(BYTE*)((LPBYTE)originalFn) = 0xE9; //JMP FAR
+		DWORD offset = (((DWORD)hookFn) - ((DWORD)originalFn + 5)); //Offset math.
+		*(DWORD*)((LPBYTE)originalFn + 1) = offset;
+
+		for (i = 5; i < copyBytes; i++) {
+			*(BYTE*)((LPBYTE)originalFn + i) = 0x90; //JMP FAR
+		}
 	}
 
 	return 1;
@@ -157,34 +85,6 @@ static __declspec(naked) void gameTick(void) {
 
 }
 
-static __declspec(naked) void draw(void) {
-	// this will be replaced by original bytes 6 bytes
-	__asm {
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-	}
-
-	__asm pushad
-
-	OutputDebugStringA("draw\n");
-	mainWnd->OnGTADraw();
-
-	__asm popad
-
-	__asm {
-		mov eax, pDraw
-		add eax, 5
-		jmp eax
-	}
-
-}
-
 IMPLEMENT_DYNAMIC(MainWindow, CDialogEx)
 
 MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
@@ -192,14 +92,11 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 {
 	//MessageBoxW(0, L"aaa");
 	mainWnd = this;
+
+	Game* pGame = (Game*)*(DWORD*)ptrToGame;
+
 	DetourFunc(pGameTick, (DWORD)gameTick);
-	DetourFunc(pDraw, (DWORD)draw, 6);
-
-	DetourRestoreAfterWith();
-
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
-	DetourTransactionCommit();
+//	DetourFunc(pDraw, (DWORD)draw, 6);
 }
 
 MainWindow::~MainWindow()
@@ -246,13 +143,14 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_TIMER()
 	ON_COMMAND(ID_COMMANDS_HELLO, &MainWindow::OnCommandsHello)
+	ON_COMMAND(ID_COMMANDS_HIJACKATRAIN, &MainWindow::HijackTrain)
 	ON_COMMAND(IDC_MOUSECTRL, &MainWindow::MouseControl)
 	ON_COMMAND(ID_SPAWNCAR_TANK, &MainWindow::OnSpawncarTank)
 	ON_WM_HOTKEY()
-	ON_COMMAND(ID_SPAWNCAR_GT, &MainWindow::OnSpawncarGt)
-	ON_COMMAND_RANGE(35000, 35000 + 83, &OnSpawnCarClick)
+	ON_COMMAND_RANGE(35000, 35000 + 86, &OnSpawnCarClick)
 	ON_COMMAND_RANGE(45000, 45000 + 15, &OnGetWeaponClick)
 	ON_COMMAND_RANGE(55000, 55000 + 62, &OnPlayVocalClick)
+	ON_COMMAND_RANGE(65000, 65000 + 1000, &OnNativeCheatClick)
 	ON_COMMAND(ID_SPAWNCAR_GUNJEEP, &MainWindow::OnSpawncarGunjeep)
 	ON_BN_CLICKED(IDC_CARENGINEOFF, &MainWindow::CarEngineOff)
 	ON_BN_CLICKED(IDC_UNLMAMMO, &MainWindow::GiveUnlimitedAmmo)
@@ -271,18 +169,17 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_LOCKCARDAMAGE, &MainWindow::LockCarDamage)
 	ON_BN_CLICKED(IDC_PEDS0TIME, &MainWindow::NoReloads)
 	ON_BN_CLICKED(IDC_CARLASTTP, &MainWindow::TpToLastCar)
+	ON_BN_CLICKED(IDC_CARPINFO, &MainWindow::PrintCarInfo)
 	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
 	ON_BN_CLICKED(ID_TPALLPEDS, &MainWindow::TeleportAllPeds)
 	ON_COMMAND_RANGE(3040, 3048, &GangRespect)
-	ON_BN_CLICKED(IDC_SHOWPEDIDS, &MainWindow::ShowIDs)
 	ON_BN_CLICKED(IDC_FREESHOP, &MainWindow::FreeShopping)
-	ON_BN_CLICKED(IDC_SHOWCOUNTERS, &MainWindow::ShowCounters)
-	ON_BN_CLICKED(IDC_KEEPWEAPONS, &MainWindow::KeepWeapons)
 	ON_BN_CLICKED(IDC_BEAHUMAN, &MainWindow::BeAHuman)
 	ON_BN_CLICKED(IDC_TPPLAYER, &MainWindow::TeleportPlayer)
 	ON_BN_CLICKED(IDC_CARCOLP, &MainWindow::CarColorPlus)
 	ON_BN_CLICKED(IDC_CARCOLM, &MainWindow::CarColorMinus)
 	ON_BN_CLICKED(IDC_CARCOLR, &MainWindow::CarColorReset)
+	ON_BN_CLICKED(IDC_CARTRCOLR, &MainWindow::SyncTrailerColor)
 	ON_BN_CLICKED(IDC_GOSLOW, &MainWindow::GoSlow)
 	ON_BN_CLICKED(IDC_PEDHAMSET, &MainWindow::SetHealthArmorMoney)
 	ON_BN_CLICKED(IDC_PEDCLOTHP, &MainWindow::PedClothesPlus)
@@ -349,13 +246,18 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		GetSafeHwnd(),
 		1,
 		MOD_ALT | MOD_NOREPEAT,
-		0x44); //ALT+N
+		0x44); //ALT+D
 
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
 		MOD_ALT | MOD_NOREPEAT,
 		0x4e); //ALT+N
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_ALT | MOD_NOREPEAT,
+		0x48); //ALT+H
 
 	//AppendMenu();
 	CMenu *menu = GetMenu();
@@ -383,7 +285,6 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cars.insert(std::pair<std::wstring, DWORD>(L"COPCAR", 12));
 	cars.insert(std::pair<std::wstring, DWORD>(L"DART", 13));
 	cars.insert(std::pair<std::wstring, DWORD>(L"EDSEL", 14));
-	cars.insert(std::pair<std::wstring, DWORD>(L"EDSELFBI", 84));
 	cars.insert(std::pair<std::wstring, DWORD>(L"FIAT", 16));
 	cars.insert(std::pair<std::wstring, DWORD>(L"FIRETRUK", 17));
 	cars.insert(std::pair<std::wstring, DWORD>(L"GRAHAM", 18));
@@ -394,13 +295,11 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D1", 24));
 	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D2", 25));
 	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D3", 26));
-	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D4", 85));
 	cars.insert(std::pair<std::wstring, DWORD>(L"ICECREAM", 27));
 	cars.insert(std::pair<std::wstring, DWORD>(L"ISETLIMO", 28));
 	cars.insert(std::pair<std::wstring, DWORD>(L"ISETTA", 29));
 	cars.insert(std::pair<std::wstring, DWORD>(L"JEEP", 30));
 	cars.insert(std::pair<std::wstring, DWORD>(L"JEFFREY", 31));
-	cars.insert(std::pair<std::wstring, DWORD>(L"KRSNABUS", 86));
 	cars.insert(std::pair<std::wstring, DWORD>(L"LIMO", 32));
 	cars.insert(std::pair<std::wstring, DWORD>(L"LIMO2", 33));
 	cars.insert(std::pair<std::wstring, DWORD>(L"MEDICAR", 34));
@@ -452,6 +351,9 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK9", 81));
 	cars.insert(std::pair<std::wstring, DWORD>(L"XK120", 82));
 	cars.insert(std::pair<std::wstring, DWORD>(L"ZCX5", 83));
+	cars.insert(std::pair<std::wstring, DWORD>(L"EDSELFBI", 84));
+	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D4", 85));
+	cars.insert(std::pair<std::wstring, DWORD>(L"KRSNABUS", 86));
 
 	std::map<std::wstring, DWORD>::iterator itr;
 	for (itr = cars.begin(); itr != cars.end(); ++itr) {
@@ -560,7 +462,55 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		vMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 55000), itr->first.c_str());
 	}
 
-	menu->AppendMenuW(MF_POPUP, (UINT_PTR)vMenu->m_hMenu, L"Play Vocal");
+	menu->AppendMenuW(MF_POPUP, (UINT_PTR)vMenu->m_hMenu, L"Play vocal");
+
+	CMenu* ncMenu = new CMenu();
+	ncMenu->CreatePopupMenu();
+
+	std::map<std::wstring, DWORD> native;
+
+	native.insert(std::pair<std::wstring, DWORD>(L"Do blood", 0x51));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show objects IDs", 0x52));
+	native.insert(std::pair<std::wstring, DWORD>(L"Skip traffic lights", 0x53));
+	native.insert(std::pair<std::wstring, DWORD>(L"Skip buses", 0x54));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show counters", 0x55));
+	native.insert(std::pair<std::wstring, DWORD>(L"Skip particles", 0x56));
+	//native.insert(std::pair<std::wstring, DWORD>(L"Skip trains", 0x57)); crashes the game;v
+	native.insert(std::pair<std::wstring, DWORD>(L"Show input", 0x58));
+	native.insert(std::pair<std::wstring, DWORD>(L"Skip right textures", 0x59));
+	native.insert(std::pair<std::wstring, DWORD>(L"No traffic", 0x5B));
+	native.insert(std::pair<std::wstring, DWORD>(L"No police", 0x5E));
+	native.insert(std::pair<std::wstring, DWORD>(L"Skip bottom textures", 0x5F));
+	native.insert(std::pair<std::wstring, DWORD>(L"Infinite lives", 0x61));
+	native.insert(std::pair<std::wstring, DWORD>(L"No HUD", 0x64));
+	native.insert(std::pair<std::wstring, DWORD>(L"Skip left textures", 0x67));
+	native.insert(std::pair<std::wstring, DWORD>(L"No peds spawn", 0x69));
+	native.insert(std::pair<std::wstring, DWORD>(L"Mini cars", 0x6D));
+	native.insert(std::pair<std::wstring, DWORD>(L"No audio", 0x72));
+	native.insert(std::pair<std::wstring, DWORD>(L"No slopes textures", 0x78));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show FPS", 0x79));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show car horn", 0x7F));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show drawing info", 0x81));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show camera info", 0x82));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show vehicle info", 0x85));
+	native.insert(std::pair<std::wstring, DWORD>(L"Debug keys", 0x87));
+	native.insert(std::pair<std::wstring, DWORD>(L"Insane speed", 0x88));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show junctions IDs", 0x89));
+	native.insert(std::pair<std::wstring, DWORD>(L"No top textures", 0x8C));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show ped info", 0x8D));
+	native.insert(std::pair<std::wstring, DWORD>(L"Skip textures", 0x90));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show traffic info", 0x95));
+	native.insert(std::pair<std::wstring, DWORD>(L"Keep weapons after death", 0x9E));
+	native.insert(std::pair<std::wstring, DWORD>(L"Nekkid peds", 0xA0));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show peds IDs", 0xA1));
+	native.insert(std::pair<std::wstring, DWORD>(L"Show all arrows", 0xB2));
+
+	for (itr = native.begin(); itr != native.end(); ++itr) {
+		ncMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 65000), itr->first.c_str());
+	}
+
+	ncHMenu = ncMenu->m_hMenu;
+	menu->AppendMenuW(MF_POPUP, (UINT_PTR)ncHMenu, L"Native Cheats");
 
 	return 0;
 }
@@ -684,8 +634,8 @@ void MainWindow::CaptureMouse()
 		//log(L"cursor at %dx%d angle is %f", relX, relY, angle);
 	}
 
-	if (playerPed->pedSprite) {
-		playerPed->pedSprite->spriteRotation = gtaAngle;
+	if (playerPed->gameObject) {
+		playerPed->gameObject->spriteRotation = gtaAngle;
 	}
 
 	BYTE keyboard[256];
@@ -745,11 +695,11 @@ void MainWindow::CopLockETC()
 		{
 			//Ped* lastped = fnGetPedByID((int)*nextpedid - 1);
 
-			if (selectedPed && selectedPed->pedSprite)
+			if (selectedPed && selectedPed->gameObject)
 			{
-				playerPed->pedSprite->actualPosition->x = selectedPed->pedSprite->actualPosition->x;
-				playerPed->pedSprite->actualPosition->y = selectedPed->pedSprite->actualPosition->y;
-				playerPed->pedSprite->actualPosition->z = selectedPed->pedSprite->actualPosition->z;
+				playerPed->gameObject->sprite->x = selectedPed->gameObject->sprite->x;
+				playerPed->gameObject->sprite->y = selectedPed->gameObject->sprite->y;
+				playerPed->gameObject->sprite->z = selectedPed->gameObject->sprite->z;
 			}
 			else
 			{
@@ -905,7 +855,7 @@ UINT SpawnCarThread(LPVOID data)
 
 
 
-		if (!playerPed || !playerPed->pedSprite || !playerPed->pedSprite->actualPosition) {
+		if (!playerPed || !playerPed->gameObject || !playerPed->gameObject->sprite) {
 			//info->win->log(L"Cannot find ped location");
 			return 0;
 		}
@@ -914,12 +864,12 @@ UINT SpawnCarThread(LPVOID data)
 
 
 		//info->win->log(L"Spawn %d", info->model);
-		double nAngle = playerPed->pedSprite->actualPosition->rotation / 4.0 + 270.0;
+		double nAngle = playerPed->gameObject->sprite->rotation / 4.0 + 270.0;
 		const double distance = 1;
 		Car* car = fnSpawnCar(
-			playerPed->pedSprite->actualPosition->x + (int)(cos(nAngle * (M_PI / 180.0)) * distance * 16384.0),
-			playerPed->pedSprite->actualPosition->y - (int)(sin(nAngle * (M_PI / 180.0)) * distance * 16384.0),
-			playerPed->pedSprite->actualPosition->z,
+			playerPed->gameObject->sprite->x + (int)(cos(nAngle * (M_PI / 180.0)) * distance * 16384.0),
+			playerPed->gameObject->sprite->y - (int)(sin(nAngle * (M_PI / 180.0)) * distance * 16384.0),
+			playerPed->gameObject->sprite->z,
 			180 * 4,
 			info->model
 		);
@@ -939,10 +889,7 @@ UINT SpawnCarThread(LPVOID data)
 
 void MainWindow::OnSpawncarTank()
 {
-	SPAWNCAR* info = new SPAWNCAR;
-	info->win = this;
-	info->model = TANK;
-	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
+	wtSpawnCar = TANK;
 }
 
 
@@ -953,9 +900,6 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 	{
 	case 0x54:
 		OnSpawncarTank();
-		break;
-	case 0x47:
-		OnSpawncarGt();
 		break;
 	case 0x4a:
 		OnSpawncarGunjeep();
@@ -969,6 +913,9 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 	case 0x4e:
 		NextHuman();
 		break;
+	case 0x48:
+		HijackTrain();
+		break;
 	default:
 		break;
 	}
@@ -977,22 +924,8 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 }
 
 
-void MainWindow::OnSpawncarGt()
-{
-	SPAWNCAR* info = new SPAWNCAR;
-	info->win = this;
-	info->model = GT24640;
-	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
-}
-
-
 void MainWindow::OnSpawnCarClick(UINT nID) {
-	log(L"Car 3%d spawned", nID);
-
-	SPAWNCAR* info = new SPAWNCAR;
-	info->win = this;
-	info->model = (CAR_MODEL)(nID - 35000);
-	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
+	wtSpawnCar = (nID - 35000);
 }
 
 void MainWindow::OnGetWeaponClick(UINT nID) {
@@ -1017,12 +950,17 @@ void MainWindow::OnPlayVocalClick(UINT nID) {
 	fnPlayVocal((DWORD*)0x005d85a0, 0, (VOCAL)(nID - 55000));
 }
 
+void MainWindow::OnNativeCheatClick(UINT nID) {
+	DWORD address = 0x5EAD00 + nID - 65000;
+	bool* cheat = (bool*)(address);
+	*cheat = !*cheat;
+	log(L"%s cheat at 0x%X", *cheat ? L"Enabled" : L"Disabled", address);
+	CheckMenuItem(ncHMenu, nID, *cheat ? MF_CHECKED : MF_UNCHECKED);
+}
+
 void MainWindow::OnSpawncarGunjeep()
 {
-	SPAWNCAR* info = new SPAWNCAR;
-	info->win = this;
-	info->model = GUNJEEP;
-	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
+	wtSpawnCar = GUNJEEP;
 }
 
 void MainWindow::CarEngineOff()
@@ -1120,13 +1058,51 @@ void MainWindow::TpToLastCar()
 {
 	Ped* playerPed = fnGetPedByID(1);
 
-	if (currLastCar && playerPed && playerPed->pedSprite)
+	if (currLastCar && playerPed && playerPed->gameObject)
 	{
-		playerPed->pedSprite->actualPosition->x = currLastCar->position->x;
-		playerPed->pedSprite->actualPosition->y = currLastCar->position->y;
-		playerPed->pedSprite->actualPosition->z = currLastCar->position->z + 10;
+		playerPed->gameObject->sprite->x = currLastCar->sprite->x;
+		playerPed->gameObject->sprite->y = currLastCar->sprite->y;
+		playerPed->gameObject->sprite->z = currLastCar->sprite->z + 10;
 
 		log(L"Teleported the player to the car");
+	}
+}
+
+void MainWindow::PrintCarInfo()
+{
+
+	if (currLastCar)
+	{
+		log(L"--- Car #%d info ---", currLastCar->id);
+		log(L"Address: 0x%X", currLastCar);
+		log(L"model: %d", currLastCar->carModel);
+		if (currLastCar->roof)
+			log(L"Turret: 0x%X rot: %d x:%d y:%d", currLastCar->roof, currLastCar->roof->rotation, currLastCar->roof->xOffset, currLastCar->roof->yOffset);
+		else
+			log(L"No turret");
+		if (currLastCar->physics)
+			log(L"Physics: 0x%X", currLastCar->physics);
+		else
+			log(L"No physics");
+		if (currLastCar->sprite)
+		{
+			log(L"Sprite: 0x%X", currLastCar->sprite);
+			log(L"x: %d y: %d z: %d r: %d", currLastCar->sprite->x, currLastCar->sprite->y, currLastCar->sprite->z, currLastCar->sprite->rotation);
+		}
+		else
+			log(L"No sprite");
+		if (currLastCar->driver)
+			log(L"Driver: 0x%X occ: %d", currLastCar->driver, currLastCar->driver->occupation);
+		else
+			log(L"No driver");
+		log(L"damage: %d visdmg: %d", currLastCar->carDamage, currLastCar->carLights);
+		if (currLastCar->trailerController)
+			log(L"Trailer: 0x%X model: %d", currLastCar->trailerController->trailer, currLastCar->trailerController->trailer->carModel);
+		else
+			log(L"No trailer");
+
+		log(L"Prev: -1:0x%X, -2:0x%X, -3:0x%X", fnGetCarByID(currLastCar->id - 1), fnGetCarByID(currLastCar->id - 2), fnGetCarByID(currLastCar->id - 3));
+		log(L"Next: +1:0x%X, +2:0x%X, +3:0x%X", fnGetCarByID(currLastCar->id + 1), fnGetCarByID(currLastCar->id + 2), fnGetCarByID(currLastCar->id + 3));
 	}
 }
 
@@ -1267,25 +1243,25 @@ void MainWindow::PedInfo()
 
 		m_pedCopLevel.SetWindowTextW(buf);
 
-		if (currLastCar && !currLastCar->position) currLastCar = 0; //without this the game crashes after some missions and after WCB
+		if (currLastCar && !currLastCar->sprite) currLastCar = 0; //without this the game crashes after some missions and after WCB
 
 		if (currLastCar)
 		{
 			swprintf(buf, 256, L"%d", currLastCar->carDamage);
 			m_carDamage.SetWindowTextW(buf);
 
-			swprintf(buf, 256, L"%d", currLastCar->id);
+			swprintf(buf, 256, L"%d", currLastCar->id, currLastCar);
 			m_carID.SetWindowTextW(buf);
 
-			currLastCarXYShift = (int)sqrt(pow(currLastCar->position->x - currLastCarXOld, 2) + pow(currLastCar->position->y - currLastCarYOld, 2));
-			currLastCarXOld = currLastCar->position->x;
-			currLastCarYOld = currLastCar->position->y;
+			currLastCarXYShift = (int)sqrt(pow(currLastCar->sprite->x - currLastCarXOld, 2) + pow(currLastCar->sprite->y - currLastCarYOld, 2));
+			currLastCarXOld = currLastCar->sprite->x;
+			currLastCarYOld = currLastCar->sprite->y;
 			swprintf(buf, 256, L"%d", currLastCarXYShift);
 			m_carVelocity.SetWindowTextW(buf);
 
-			if (currLastCar->position)
+			if (currLastCar->sprite)
 			{
-				swprintf(buf, 256, L"%d", currLastCar->position->carColor);
+				swprintf(buf, 256, L"%d", currLastCar->sprite->carColor);
 				m_carColor.SetWindowTextW(buf);
 			}
 			
@@ -1308,44 +1284,44 @@ void MainWindow::PedInfo()
 		{
 			m_pedZ.SetReadOnly(true);
 	
-			if (playerPed->currentCar->position->x != pedXOld)
+			if (playerPed->currentCar->sprite->x != pedXOld)
 			{
-				swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->x / 16384.0);
+				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->x / 16384.0);
 				m_pedX.SetWindowTextW(buf);
 			}
 
-			if (playerPed->currentCar->position->y != pedYOld)
+			if (playerPed->currentCar->sprite->y != pedYOld)
 			{
-				swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->y / 16384.0);
+				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->y / 16384.0);
 				m_pedY.SetWindowTextW(buf);
 			}
 
-			if (playerPed->currentCar->position->z != pedZOld)
+			if (playerPed->currentCar->sprite->z != pedZOld)
 			{
-				swprintf(buf, 256, L"%.2f", playerPed->currentCar->position->z / 16384.0);
+				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->z / 16384.0);
 				m_pedZ.SetWindowTextW(buf);
 			}
 
-			if (playerPed->currentCar->position->rotation != pedRotOld)
+			if (playerPed->currentCar->sprite->rotation != pedRotOld)
 			{
-				swprintf(buf, 256, L"%d", playerPed->currentCar->position->rotation);
+				swprintf(buf, 256, L"%d", playerPed->currentCar->sprite->rotation);
 				m_pedRot.SetWindowTextW(buf);
 			}
 
 			swprintf(buf, 256, L"%X", playerPed->currentCar->carLights);
 			m_carVisualData.SetWindowTextW(buf);
 			
-			pedXOld = playerPed->currentCar->position->x;
-			pedYOld = playerPed->currentCar->position->y;
-			pedZOld = playerPed->currentCar->position->z;
-			pedRotOld = playerPed->currentCar->position->rotation;
+			pedXOld = playerPed->currentCar->sprite->x;
+			pedYOld = playerPed->currentCar->sprite->y;
+			pedZOld = playerPed->currentCar->sprite->z;
+			pedRotOld = playerPed->currentCar->sprite->rotation;
 
 		}
 		else
 		{
 			m_pedZ.SetReadOnly(false);
 
-			if (!playerPed->pedSprite || !playerPed->pedSprite->actualPosition) {
+			if (!playerPed->gameObject || !playerPed->gameObject->sprite) {
 
 				m_pedX.SetWindowTextW(L"");
 				m_pedY.SetWindowTextW(L"");
@@ -1356,41 +1332,41 @@ void MainWindow::PedInfo()
 			}
 			else
 			{
-				if (playerPed->pedSprite->cigaretteIdleTimer == 1)
+				if (playerPed->gameObject->cigaretteIdleTimer == 1)
 					log(L"Smokin' time ;3");
 
-				if (playerPed->pedSprite->actualPosition->x != pedXOld)
+				if (playerPed->gameObject->sprite->x != pedXOld)
 				{
-					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->x / 16384.0);
+					swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->x / 16384.0);
 					m_pedX.SetWindowTextW(buf);
 					
 				}
 				
-				if (playerPed->pedSprite->actualPosition->y != pedYOld)
+				if (playerPed->gameObject->sprite->y != pedYOld)
 				{
-					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->y / 16384.0);
+					swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->y / 16384.0);
 					m_pedY.SetWindowTextW(buf);
 					
 				}
 
-				if (playerPed->pedSprite->actualPosition->z != pedZOld)
+				if (playerPed->gameObject->sprite->z != pedZOld)
 				{
-					swprintf(buf, 256, L"%.2f", playerPed->pedSprite->actualPosition->z / 16384.0);
+					swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->z / 16384.0);
 					m_pedZ.SetWindowTextW(buf);
 					
 				}
 
-				if (playerPed->pedSprite->actualPosition->rotation != pedRotOld)
+				if (playerPed->gameObject->sprite->rotation != pedRotOld)
 				{
-					swprintf(buf, 256, L"%d", playerPed->pedSprite->actualPosition->rotation);
+					swprintf(buf, 256, L"%d", playerPed->gameObject->sprite->rotation);
 					m_pedRot.SetWindowTextW(buf);
 
 				}
 
-				pedXOld = playerPed->pedSprite->actualPosition->x;
-				pedYOld = playerPed->pedSprite->actualPosition->y;
-				pedZOld = playerPed->pedSprite->actualPosition->z;
-				pedRotOld = playerPed->pedSprite->actualPosition->rotation;
+				pedXOld = playerPed->gameObject->sprite->x;
+				pedYOld = playerPed->gameObject->sprite->y;
+				pedZOld = playerPed->gameObject->sprite->z;
+				pedRotOld = playerPed->gameObject->sprite->rotation;
 			}
 		}
 
@@ -1428,17 +1404,17 @@ void MainWindow::TeleportAllPeds()
 	int* nextpedid = (int*)0x591e84;
 	Ped* currentPed;
 	Ped* playerPed = fnGetPedByID(1);
-	if (playerPed && playerPed->pedSprite)
+	if (playerPed && playerPed->gameObject)
 	{
 		for (int i = 1; i < *nextpedid; i++)
 		{
 			currentPed = fnGetPedByID(i);
 
-			if (currentPed && currentPed->pedSprite)
+			if (currentPed && currentPed->gameObject)
 			{
-				currentPed->pedSprite->actualPosition->x = playerPed->pedSprite->actualPosition->x;
-				currentPed->pedSprite->actualPosition->y = playerPed->pedSprite->actualPosition->y;
-				currentPed->pedSprite->actualPosition->z = playerPed->pedSprite->actualPosition->z;
+				currentPed->gameObject->sprite->x = playerPed->gameObject->sprite->x;
+				currentPed->gameObject->sprite->y = playerPed->gameObject->sprite->y;
+				currentPed->gameObject->sprite->z = playerPed->gameObject->sprite->z;
 			}
 		}
 		log(L"Teleported");
@@ -1453,23 +1429,23 @@ void MainWindow::BeAHuman()
 	if (beAHuman)
 	{
 		beAHuman = false;
-		log(L"You are no longer a human");
+		log(L"You are no longer watching peds");
 
-		playerPed->pedSprite->actualPosition->x = pedXPreHuman;
-		playerPed->pedSprite->actualPosition->y = pedYPreHuman;
-		playerPed->pedSprite->actualPosition->z = pedZPreHuman;
+		playerPed->gameObject->sprite->x = pedXPreHuman;
+		playerPed->gameObject->sprite->y = pedYPreHuman;
+		playerPed->gameObject->sprite->z = pedZPreHuman;
 
 
 	}
-	else if (playerPed && playerPed->pedSprite)
+	else if (playerPed && playerPed->gameObject)
 	{
 		beAHuman = true;
-		log(L"Congratulations! You are a human now");
-		log(L"You can change your identity by pressing ALT + N");
+		log(L"You are now watching peds");
+		log(L"You can change selected ped by pressing ALT + N");
 
-		pedXPreHuman = playerPed->pedSprite->actualPosition->x;
-		pedYPreHuman = playerPed->pedSprite->actualPosition->y;
-		pedZPreHuman = playerPed->pedSprite->actualPosition->z;
+		pedXPreHuman = playerPed->gameObject->sprite->x;
+		pedYPreHuman = playerPed->gameObject->sprite->y;
+		pedZPreHuman = playerPed->gameObject->sprite->z;
 
 		NextHuman();
 	}
@@ -1501,7 +1477,7 @@ void MainWindow::NextHuman()
 		{
 			currentPed = fnGetPedByID(i);
 
-			if (currentPed && currentPed->pedSprite)
+			if (currentPed && currentPed->gameObject)
 			{
 				newSelectedPed = currentPed;
 				break;
@@ -1516,7 +1492,7 @@ void MainWindow::NextHuman()
 			{
 				currentPed = fnGetPedByID(i);
 
-				if (currentPed && currentPed->pedSprite)
+				if (currentPed && currentPed->gameObject)
 				{
 					newSelectedPed = currentPed;
 					break;
@@ -1554,14 +1530,31 @@ void MainWindow::GangRespect(UINT nID)
 	log(L"Changed the respect to %d", *gangresp);
 }
 
+void MainWindow::SyncTrailerColor()
+{
+	if 
+	(
+		currLastCar &&
+		currLastCar->sprite &&
+		currLastCar->trailerController && 
+		currLastCar->trailerController->trailer &&
+		currLastCar->trailerController->trailer->sprite
+	)
+	{
+		currLastCar->trailerController->trailer->sprite->lockPalleteMaybe = currLastCar->sprite->lockPalleteMaybe;
+		currLastCar->trailerController->trailer->sprite->carColor = currLastCar->sprite->carColor;
+		log(L"Trailer color changed");
+	}
+}
+
 void MainWindow::CarColorPlus()
 {
-	if (currLastCar && currLastCar->position)
+	if (currLastCar && currLastCar->sprite)
 	{
-		currLastCar->position->lockPalleteMaybe = 3;
+		currLastCar->sprite->lockPalleteMaybe = 3;
 
-		currLastCar->position->carColor++;
-		if (currLastCar->position->carColor >35) currLastCar->position->carColor = 0;
+		currLastCar->sprite->carColor++;
+		if (currLastCar->sprite->carColor >35) currLastCar->sprite->carColor = 0;
 
 		log(L"Car color changed");
 	}
@@ -1569,12 +1562,12 @@ void MainWindow::CarColorPlus()
 
 void MainWindow::CarColorMinus()
 {
-	if (currLastCar && currLastCar->position)
+	if (currLastCar && currLastCar->sprite)
 	{
-		currLastCar->position->lockPalleteMaybe = 3;
+		currLastCar->sprite->lockPalleteMaybe = 3;
 
-		currLastCar->position->carColor--;
-		if (currLastCar->position->carColor <0) currLastCar->position->carColor = 35;
+		currLastCar->sprite->carColor--;
+		if (currLastCar->sprite->carColor <0) currLastCar->sprite->carColor = 35;
 
 		log(L"Car color changed");
 	}
@@ -1582,10 +1575,10 @@ void MainWindow::CarColorMinus()
 
 void MainWindow::CarColorReset()
 {
-	if (currLastCar && currLastCar->position)
+	if (currLastCar && currLastCar->sprite)
 	{
-		currLastCar->position->lockPalleteMaybe = 2;
-		currLastCar->position->carColor = 0;
+		currLastCar->sprite->lockPalleteMaybe = 2;
+		currLastCar->sprite->carColor = 0;
 
 		log(L"Car color changed");
 	}
@@ -1624,7 +1617,7 @@ void MainWindow::PedShapeMinus()
 	if (playerPed)
 	{
 		playerPed->remap2 = (PED_REMAP2)((BYTE)playerPed->remap2 - 1);
-		if (playerPed->remap2 == 255) playerPed->remap2 = (PED_REMAP2)2;
+		if (playerPed->remap2 == -1) playerPed->remap2 = (PED_REMAP2)2;
 
 		log(L"Player appearance changed");
 	}
@@ -1664,28 +1657,45 @@ void MainWindow::ShowBigText()
 	log(L"Text shown!");
 }
 
-void MainWindow::ShowIDs()
+void MainWindow::HijackTrain()
 {
-	*(bool*)0x5EADA1 = !*(bool*)0x5EADA1;
+	Ped* playerPed = fnGetPedByID(1);
+	S10* s10 = (S10*)*(DWORD*)0x00672f40;
+	if (playerPed)
+	{
+		if (playerPed->currentCar && playerPed->currentCar->carModel == 59)
+		{
+			Car* loco = nullptr;
+			for (int i = 1; i < 10; i++)
+			{
+				Car* thisCar = fnGetCarByID(playerPed->currentCar->id + i);
+				if (thisCar && thisCar->carModel == 60)
+				{
+					loco = thisCar;
+					break;
+				}
+			}
+			if (loco == nullptr)
+			{
+				log(L"Couldn't find the loco :(");
+				return;
+			}
 
-	if (*(bool*)0x5EADA1) log(L"IDs shown!");
-	else log(L"IDs hidden!");
-}
-
-void MainWindow::ShowCounters()
-{
-	*(bool*)0x5EAD95 = !*(bool*)0x5EAD95;
-
-	if (*(bool*)0x5EAD95) log(L"Counters shown!");
-	else log(L"Counters hidden!");
-}
-
-void MainWindow::KeepWeapons()
-{
-	*(bool*)0x5EAD9E = !*(bool*)0x5EAD9E;
-
-	if (*(bool*)0x5EAD9E) log(L"Weapons will be kept!");
-	else log(L"Weapons won't be kept!");
+			loco->driver = playerPed;
+			playerPed->currentCar = loco;
+			*(bool*)(*(DWORD*)&playerPed + 0x248) = 0;
+			fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)L"The train is yours!", 10);
+		}
+		else if (playerPed->currentCar && playerPed->currentCar->carModel == 60)
+		{
+			playerPed->currentCar->carModel = CAR_MODEL4_STYPE;
+			fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)L"WHAT.", 10);
+		}
+		else
+		{
+			log(L"Player is not in the train");
+		}
+	}
 }
 
 void MainWindow::SetGlobalPedSpeeds()
@@ -1743,31 +1753,31 @@ void MainWindow::TeleportPlayer()
 	Ped* playerPed = fnGetPedByID(1);
 	CString buffer;
 
-	if (playerPed && playerPed->pedSprite && playerPed->pedSprite->actualPosition)
+	if (playerPed && playerPed->gameObject && playerPed->gameObject->sprite)
 	{
 		m_pedX.GetWindowTextW(buffer);
 		fesetround(FE_TONEAREST);
-		playerPed->pedSprite->actualPosition->x = (int)(_wtof(buffer) * 16384.0);
+		playerPed->gameObject->sprite->x = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedY.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->y = (int)(_wtof(buffer) * 16384.0);
+		playerPed->gameObject->sprite->y = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedZ.GetWindowTextW(buffer);
-		playerPed->pedSprite->actualPosition->z = (int)(_wtof(buffer) * 16384.0) + 10;
+		playerPed->gameObject->sprite->z = (int)(_wtof(buffer) * 16384.0) + 10;
 
-		log(L"Player teleported to %f, %f, %f!", ((float)playerPed->pedSprite->actualPosition->x)/16384.0f, ((float)playerPed->pedSprite->actualPosition->y) / 16384.0f, ((float)playerPed->pedSprite->actualPosition->z) / 16384.0f);
+		log(L"Player teleported to %f, %f, %f!", ((float)playerPed->gameObject->sprite->x)/16384.0f, ((float)playerPed->gameObject->sprite->y) / 16384.0f, ((float)playerPed->gameObject->sprite->z) / 16384.0f);
 
 	}
 	else if (playerPed && playerPed->currentCar)
 	{
 		m_pedX.GetWindowTextW(buffer);
 		fesetround(FE_TONEAREST);
-		playerPed->currentCar->maybeEngine->x = (int)(_wtof(buffer) * 16384.0);
+		playerPed->currentCar->physics->X_CM = (int)(_wtof(buffer) * 16384.0);
 
 		m_pedY.GetWindowTextW(buffer);
-		playerPed->currentCar->maybeEngine->y = (int)(_wtof(buffer) * 16384.0);
+		playerPed->currentCar->physics->Y_CM = (int)(_wtof(buffer) * 16384.0);
 
-		log(L"Player car teleported to %f, %f!", ((float)playerPed->currentCar->maybeEngine->x) / 16384.0f, ((float)playerPed->currentCar->maybeEngine->y) / 16384.0f);
+		log(L"Player car teleported to %f, %f!", ((float)playerPed->currentCar->physics->X_CM) / 16384.0f, ((float)playerPed->currentCar->physics->Y_CM) / 16384.0f);
 
 	}
 	else
@@ -1791,11 +1801,8 @@ void MainWindow::FixCheckboxes()
 		((CButton*)GetDlgItem(IDC_FREESHOP))->SetCheck(trafficManager->do_free_shoping);
 	}
 
-	((CButton*)GetDlgItem(IDC_SHOWPEDIDS))->SetCheck(*(bool*)0x5EADA1);
 	((CButton*)GetDlgItem(IDC_BEAHUMAN))->SetCheck(beAHuman);
 	//slow walking isn't beeing fixed
-	((CButton*)GetDlgItem(IDC_KEEPWEAPONS))->SetCheck(*(bool*)0x5EAD9E);
-	((CButton*)GetDlgItem(IDC_SHOWCOUNTERS))->SetCheck(*(bool*)0x5EAD95);
 	((CButton*)GetDlgItem(IDC_MOUSECTRL))->SetCheck(captureMouse);
 
 }
@@ -1803,27 +1810,33 @@ void MainWindow::FixCheckboxes()
 void Strafe(bool right, bool movingBackward) {
 	Ped* ped = fnGetPedByID(1);
 
-	ped->state = PED_STATE_WALK;
+	ped->state = PED_STATE_0_WALK;
 	ped->state2 = (PED_STATE2)0;
 	bool* IsPlayerPedMoving = (bool*)0x0066a3c7;
 	*IsPlayerPedMoving = true;
-	ped->pedSprite->speed = 1024;
+	ped->gameObject->speed = 1024;
 
 	DWORD* pedDefaultSpeedForStaying = (DWORD*)0x0066a634;
 	*pedDefaultSpeedForStaying = 1024;
-	auto original = ped->pedSprite->spriteRotation;
+	auto original = ped->gameObject->spriteRotation;
 	if (right)
-		ped->pedSprite->spriteRotation -= 360;
+		ped->gameObject->spriteRotation -= 360;
 	else
-		ped->pedSprite->spriteRotation += 360;
+		ped->gameObject->spriteRotation += 360;
 	fnPedTickRaw(ped, 0);
 	*pedDefaultSpeedForStaying = 0;
-	ped->pedSprite->spriteRotation = original;
+	ped->gameObject->spriteRotation = original;
 }
 
-void MainWindow::OnGTADraw()
+void MainWindow::WantToSpawnCar()
 {
+	SPAWNCAR* info = new SPAWNCAR;
+	info->win = this;
+	info->model = (CAR_MODEL)(wtSpawnCar);
+	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
+	log(L"Car %d spawned", (wtSpawnCar));
 
+	wtSpawnCar = -1;
 }
 
 void MainWindow::OnGTAGameTick(Game* game)
@@ -1833,9 +1846,11 @@ void MainWindow::OnGTAGameTick(Game* game)
 	PedInfo();
 	if (captureMouse) CaptureMouse();
 	FixCheckboxes();
+	if(wtSpawnCar+1) WantToSpawnCar();
 }
 
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
+	log(L"Nearest ped: %d Nearest car: %d", FindTheNearestPed(fnGetPedByID(1))->id, FindTheNearestCar(fnGetPedByID(1))->id);
 }

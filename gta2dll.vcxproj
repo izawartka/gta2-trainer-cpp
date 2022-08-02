@@ -23,7 +23,7 @@
     <ProjectGuid>{66D62660-92F5-439C-AA73-1E1478DA31F5}</ProjectGuid>
     <Keyword>MFCDLLProj</Keyword>
     <RootNamespace>gta2dll</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,19 +76,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>C:\Users\izawartka\Desktop\Programowanie\GTA2 Trainer\GTA2 Mouse</OutDir>
+    <OutDir>$(OutDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>C:\Users\izawartka\Desktop\Programowanie\GTA2 Trainer\GTA2 Mouse</OutDir>
+    <OutDir>$(OutDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>C:\Users\izawartka\Desktop\Programowanie\GTA2 Trainer\GTA2 Mouse</OutDir>
+    <OutDir>..\..\GTA2</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>C:\Users\izawartka\Desktop\Programowanie\GTA2 Trainer\GTA2 Mouse</OutDir>
+    <OutDir>$(OutDir)</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -199,6 +199,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gta2-helper.cpp" />
     <ClCompile Include="gta2dll.cpp" />
     <ClCompile Include="Hooking.Patterns.cpp" />
     <ClCompile Include="MainWindow.cpp" />
@@ -211,7 +212,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="gta2dll.def" />
-    <None Include="res\gta2dll.rc2" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gta2-helper.h" />

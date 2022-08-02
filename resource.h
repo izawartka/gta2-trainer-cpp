@@ -2,6 +2,7 @@
 // Plik do³¹czany wygenerowany przez œrodowisko Microsoft Visual C++.
 // U¿ywany przez: gta2dll.rc
 //
+#define IDCANCEL                        2
 #define IDD_DIALOG1                     3000
 #define IDC_EDIT1                       3000
 #define IDC_PEDX                        3001
@@ -10,6 +11,7 @@
 #define IDC_PEDZ                        3004
 #define IDC_PEDARMOR                    3005
 #define IDC_PEDROT                      3006
+#define IDD_DIALOG2                     3006
 #define IDC_PEDSAMMO                    3007
 #define IDC_PEDSTYPE                    3008
 #define IDC_PEDSTIME                    3009
@@ -54,8 +56,7 @@
 #define IDC_GANG3Z                      3047
 #define IDC_GANG3P                      3048
 #define IDC_CARVISBRK                   3049
-#define IDC_KEEPWEAPONS                 3050
-#define IDC_SHOWCOUNTERS                3051
+#define IDC_CARPINFO                    3051
 #define IDC_CARCOLM                     3052
 #define IDC_CARCOLP                     3053
 #define IDC_CARCOLV                     3054
@@ -69,7 +70,7 @@
 #define IDC_PEDCLOTHV                   3062
 #define IDC_BIGTEXTTEXT                 3063
 #define IDC_BIGTEXTSHOW                 3064
-#define IDC_CARCOLR2                    3065
+#define IDC_CARTRCOLR                   3065
 #define IDC_PEDSHAPECLOTHR              3066
 #define IDC_SPRUN                       3067
 #define IDC_SPWLK                       3068
@@ -77,6 +78,8 @@
 #define IDC_SPSET                       3070
 #define IDC_MOUSECTRL                   3071
 #define IDC_PEDSHAPCLOTHR               3072
+#define IDC_PEDSINFO                    3073
+#define IDC_CARSINFO                    3074
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774
@@ -88,15 +91,15 @@
 #define ID_COMMANDS_TPALLPEDS           32782
 #define ID_TPALLPEDS                    32783
 #define ID_COMMANDS_SHOW                32784
-#define IDC_SHOWPEDIDS                  32785
 #define ID_COMMANDS_FNSETPEDSTATE       32786
+#define ID_COMMANDS_HIJACKATRAIN        32787
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3006
-#define _APS_NEXT_COMMAND_VALUE         32787
+#define _APS_NEXT_RESOURCE_VALUE        3008
+#define _APS_NEXT_COMMAND_VALUE         32788
 #define _APS_NEXT_CONTROL_VALUE         3073
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
