@@ -4,11 +4,11 @@
 Player ped controlling, Cars spawning n' fixing, Weapons giving, Vocals playing, Important info showing, Non-stop crashing ultimate GTA2 trainer with so many features, I can't list them all!!! (or i'm just too lazy nevermind) 
 
 ## Fast install
-If you just want to play it, download and copy contents of the "build" directory to your game root folder.
-THen just run (in window mode) gta-trainer.exe instead of gta.exe and you should see the trainer window under the GTA2 window.
+Download latest release (gta2-trainer-X.XX.zip) from the panel at your right and copy its contents to your game root folder.
+Then just run (in window mode) gta-trainer.exe instead of gta.exe and you should see the trainer window under the GTA2 window.
 
 ## Playing with the code
-If you want to build it on your own, there is a VS solution inside so it shouldn't be a problem to compile it.
+If you want to build it on your own, there is a VS solution prepared for you so it shouldn't be a problem to compile it.
 
 Before you'll try to compile it for the first time, you have to change some settings though
 1. Change the configuration to Release x86
