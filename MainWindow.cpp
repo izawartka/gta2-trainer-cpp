@@ -854,7 +854,7 @@ void MainWindow::KeepLockedValues()
 			for (int i = 0; i < sizeof(emblemValues)/sizeof(emblemValues[0]); i++)
 			{
 				currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, emblemValues[i]);
-				if (currLastCarEmblem)
+				if (currLastCarEmblem && currLastCarEmblem->sprite->spriteType == 4)
 				{
 					currLastCarEmblemID = i;
 					m_carEmblemPos.SetPos(currLastCarEmblem->yOffset);
@@ -1675,14 +1675,20 @@ void MainWindow::SyncTrailerColor()
 
 void MainWindow::CarEmblemMinus()
 {
+	if (!currLastCar || !currLastCar->sprite)
+		return;
+
 	if (currLastCarEmblemID == 1)
 	{
+		// "Remove" emblem //
 		currLastCarEmblemID = 0;
 		currLastCarEmblem->sprite->spriteType = SPRITE_TYPE_INVISIBLE;
+		currLastCarEmblem->sprite->layer--;
 		currLastCarEmblem = 0;
 	}
 	if (currLastCarEmblemID > 1)
 	{
+		// Prev emblem //
 		currLastCarEmblemID--;
 		currLastCarEmblem->sprite->sprite = emblemValues[currLastCarEmblemID];
 		log(L"Car emblem changed");
@@ -1692,6 +1698,9 @@ void MainWindow::CarEmblemMinus()
 
 void MainWindow::CarEmblemPlus()
 {
+	if (!currLastCar || !currLastCar->sprite)
+		return;
+
 	if (currLastCarEmblemID == 0)
 	{
 		if (currLastCar->carModel == CAR_MODEL4_TVVAN)
@@ -1700,6 +1709,7 @@ void MainWindow::CarEmblemPlus()
 			return;
 		}
 
+		// Create emblem //
 		fnCarAddRoofAntenna(currLastCar);
 		currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, 0);
 		if (currLastCarEmblem)
@@ -1707,12 +1717,14 @@ void MainWindow::CarEmblemPlus()
 			currLastCarEmblemID = 1;
 			currLastCarEmblem->sprite->sprite = emblemValues[1];
 			currLastCarEmblem->rotation = 0;
+			currLastCarEmblem->sprite->layer++;
 			m_carEmblemPos.SetPos(currLastCarEmblem->yOffset);
 			log(L"Car emblem created");
 		}
 	}
 	else if (currLastCarEmblemID < sizeof(emblemValues)/sizeof(emblemValues[0]) - 1)
 	{
+		// Next emblem //
 		currLastCarEmblemID++;
 		currLastCarEmblem->sprite->sprite = emblemValues[currLastCarEmblemID];
 		log(L"Car emblem changed");

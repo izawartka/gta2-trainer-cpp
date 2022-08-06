@@ -108,8 +108,8 @@ public:
 	Roof* currLastCarEmblem = 0;
 	short currLastCarEmblemID = 0;
 	short currLastCarEmblemLPos = 0;
-	const int emblemValues[8] = { 0, 294, 295, 296, 297, 298, 299, 300 };
-	const wchar_t* emblemNames[8] = { L"None", L"Loonies", L"Yakuza", L"Zaibatsu", L"Rednecks", L"Scientists", L"Krishna", L"Russians"};
+	const int emblemValues[9] = { 0, 294, 295, 296, 297, 298, 299, 300, 8};
+	const wchar_t* emblemNames[9] = { L"None", L"Loonies", L"Yakuza", L"Zaibatsu", L"Rednecks", L"Scientists", L"Krishna", L"Russians", L"Bomb"};
 	Ped* selectedPed = 0;
 	bool beAHuman = false;
 	void BeAHuman();
