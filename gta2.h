@@ -64,7 +64,7 @@ typedef enum CAR_LIGHTS_AND_DOORS_BITSTATE {
     UNK_80000=524288
 } CAR_LIGHTS_AND_DOORS_BITSTATE;
 
-typedef struct SomeStructInsideACar SomeStructInsideACar, *PSomeStructInsideACar;
+typedef struct CarEntering CarEntering, *PCarEntering;
 
 typedef struct Sprite Sprite, *PSprite;
 
@@ -200,14 +200,6 @@ typedef enum HORN : unsigned char {
 } HORN;
 
 typedef struct GameObject GameObject, *PGameObject;
-
-typedef enum CAR_REL_TO_COLOR_ENUM {
-    CAR_REL_TO_COLOR_ENUM_1=1,
-    CAR_REL_TO_COLOR_ENUM_2=2,
-    CAR_REL_TO_COLOR_ENUM_3=3,
-    CAR_REL_TO_COLOR_ENUM_4=4,
-    CAR_REL_TO_COLOR_ENUM_5=5
-} CAR_REL_TO_COLOR_ENUM;
 
 typedef struct WEAPON_PLAYER_LIST WEAPON_PLAYER_LIST, *PWEAPON_PLAYER_LIST;
 
@@ -551,9 +543,63 @@ struct WEAPON_PLAYER_LIST {
     short count; /* Created by retype action */
 };
 
+// ADDED IN FILE //
+
+typedef enum SPRITE_TYPE {
+    SPRITE_TYPE_INVISIBLE = 1,
+    SPRITE_TYPE_CAR = 2,
+    SPRITE_TYPE_3 = 3,
+    SPRITE_TYPE_TURRET = 4,
+    SPRITE_TYPE_5 = 5
+} SPRITE_TYPE;
+
+typedef enum CAR_WEAPON {
+    CAR_WEAP_BOMB = 15,
+    CAR_WEAP_OIL = 16,
+    CAR_WEAP_MINE = 17,
+    CAR_WEAP_GUN = 18,
+    CAR_WEAP_TANKTURRET = 19,
+    CAR_WEAP_WATERGUN = 20,
+    CAR_WEAP_FLAMETHROWER = 21,
+    CAR_WEAP_JEEPGUN = 22,
+    CAR_WEAP_INSTANTBOMB = 23,
+    CAR_WEAP_LETTER_J = 24,
+    CAR_WEAP_LETTER_K = 25,
+    CAR_WEAP_LETTER_L = 26,
+    CAR_WEAP_LETTER_M = 27,
+    CAR_WEAP_0 = 0
+} CAR_WEAPON;
+
+struct CarDoor {
+    byte animationFrame;
+    byte field_0x1; /* equal to 3 on start */
+    byte deltaID;
+    undefined field_0x3;
+    uint doorState; // 0 - no door // 2 - opened // 6 - default 
+    struct Ped* pedInDoor;
+    byte field_0xc;
+    undefined field_0xd;
+    undefined field_0xe;
+    undefined field_0xf;
+};
+
+struct TrailerController {
+    undefined4 field_0x0;
+    undefined4 field_0x4;
+    undefined4 field_0x8;
+    Car* trailer;
+};
+
+typedef enum SPRITE_INVISIBILITY : byte {
+    VISIBLE = 0,
+    INVISIBLE = 1,
+    GHOST = 2,
+    NO_TRANSPARENCY = 3
+} SPRITE_INVISIBILITY;
+
 struct Roof {
-    void * maybePrev;
-    struct Roof * next; /* Created by retype action */
+    struct Sprite* sprite;
+    struct Roof* next; /* Created by retype action */
     int xOffset;
     int yOffset;
     short rotation;
@@ -565,46 +611,54 @@ struct Roof {
     undefined field_0x17;
 };
 
-struct SomeStructInsideACar {
-    byte field_0x0;
-    byte field_0x1; /* equal to 3 on start */
-    byte field_0x2;
-    undefined field_0x3;
-    undefined4 field_0x4;
-    undefined4 field_0x8;
-    byte field_0xc;
-    undefined field_0xd;
-    undefined field_0xe;
-    undefined field_0xf;
+struct CollisionBox {
+    uint xsize; //0x0
+    uint ysize; //0x4
+    uint zsize_maybe; //0x8
+    uint br_corner_x; //0xc
+    uint br_corner_y; //0x10
+    uint bl_corner_x; //0x14
+    uint bl_corner_y; //0x18
+    uint fl_corner_x; //0x1c
+    uint fl_corner_y; //0x20
+    uint fr_corner_x; //0x24
+    uint fr_corner_y; //0x28
+    // there is more
 };
+
+struct Passenger {
+    struct Ped* ped;
+    struct Passenger* prev;
+};
+// END OF ADDED IN FILE //
 
 struct Sprite {
     ushort rotation;
-    undefined field_0x2;
-    undefined field_0x3;
+    undefined field_0x2; // does nothing
+    undefined field_0x3; // does nothing
     struct Sprite * prev;
     struct GameObject * gameObject;
     struct Sprite * next;
-    int field_0x10;
+    struct CollisionBox * collisionBox;
     int x; /* Created by retype action */
     int y; /* Created by retype action */
     int z; /* Created by retype action */
     short incFromS20;
-    short field_0x22;
-    short carColor;
-    undefined field_0x26;
-    undefined field_0x27;
-    int field_0x28;
-    byte field_0x2c;
+    short sprite; //0x22 // ADDED IN FILE //
+    short carColor; //0x24
+    undefined field_0x26; // does nothing
+    undefined field_0x27; // does nothing
+    int layer; //0x28 // ADDED IN FILE //
+    enum SPRITE_INVISIBILITY invisibility; // ADDED IN FILE //
     undefined field_0x2d;
     undefined field_0x2e;
     undefined field_0x2f;
-    enum CAR_REL_TO_COLOR_ENUM relToCarColor;
-    int lockPalleteMaybe; /* 2 - uses default pallete for this vehicle // 3 - uses paintjob pallete (carColor variable) */
-    byte field_0x38;
-    byte field_0x39;
+    enum SPRITE_TYPE spriteType; // ADDED IN FILE //
+    int lockPalleteMaybe; //0x34 /* 2 - uses default pallete for this vehicle // 3 - uses paintjob pallete (carColor variable) */
+    byte zoomInSprite; //0x38 // ADDED IN FILE //
+    byte ZOfTileOn; //0x39 // ADDED IN FILE //
     undefined field_0x3a;
-    undefined field_0x3b;
+    undefined field_0x3b; // end here?
     undefined field_0x3c;
     undefined field_0x3d;
     undefined field_0x3e;
@@ -619,31 +673,22 @@ struct Sprite {
     undefined field_0x47;
     bool field_0x48;
 };
- 
-// ADDED IN FILE //
-struct TrailerController {
-    undefined4 field_0x0;
-    undefined4 field_0x4;
-    undefined4 field_0x8;
-    Car* trailer;
-};
-// END OF ADDED IN FILE //
 
 struct Car {
-    struct Roof * roof; /* turret */
-    undefined4 field_0x4;
+    struct Roof* roof; /* turret */
+    struct Passenger* lastPassenger; // ADDED IN FILE //
     enum CAR_LIGHTS_AND_DOORS_BITSTATE carLights;
-    struct SomeStructInsideACar arr4[4];
+    struct CarDoor carDoor[4];
     struct Car * lastCar;
     struct Sprite * sprite;
     struct Ped * driver; /* Created by retype action */
     struct CarPhysics * physics;
     struct CarManager4_S1 * notEngineStruct;
     void * field_0x60;
-    TrailerController* trailerController; // ADDED IN FILE //
+    struct TrailerController* trailerController; // ADDED IN FILE //
     undefined4 field_0x68;
     uint id;
-    undefined field_0x70;
+    bool latelyShot;
     undefined field_0x71;
     undefined field_0x72;
     undefined field_0x73;
@@ -659,12 +704,12 @@ struct Car {
     undefined field_0x83;
     enum CAR_MODEL4 carModel;
     uint mask;
-    u1 field_0x8c;
+    byte fireRelated;
     byte field_0x8d;
     u1 field_0x8e;
     undefined field_0x8f;
-    undefined4 field_0x90;
-    u1 field_0x94;
+    byte latelyShotBulletType;
+    byte latelyShotTimer;
     u1 field_0x95; /* player id (ped 1 will be set here if player enter to car) */
     undefined field_0x96;
     undefined field_0x97;
@@ -684,8 +729,8 @@ struct Car {
     undefined field_0xae;
     undefined field_0xaf;
     undefined4 field_0xb0;
-    undefined4 field_0xb4;
-    u1 field_0xb8;
+    byte currentUpgradeSound; // ADDED IN FILE //
+    bool isTurretBeingRotated; // ADDED IN FILE //
     undefined field_0xb9;
     undefined field_0xba;
     undefined field_0xbb;
@@ -791,12 +836,12 @@ struct CarPhysics {
 };
 
 struct GameObject {
-    uint id;
+    undefined4 field_0x0;
     int field_0x4;
     enum PED_STATE state1;
     enum PED_STATE2 state2;
-    uint relToId;
-    int xxx;
+    uint relToId; //0x10
+    int id;
     uint someTypeEnum;
     struct PlayerPhysics * probablyPhysics;
     undefined field_0x20;
@@ -1576,14 +1621,6 @@ typedef enum CAR_UNK_TYPE {
     UNK_CARS_9=9,
     UNK_CARS_a=10
 } CAR_UNK_TYPE;
-
-typedef enum CAR_UPGRADE {
-    UPGRADE_10k_OIL=16,
-    UPGRADE_25k_GUN=18,
-    UPGRADE_50k=17,
-    UPGRADE_5k_PAINT_SUICIDE=15,
-    UPGRADE_FREE=0
-} CAR_UPGRADE;
 
 typedef struct CarEngineData CarEngineData, *PCarEngineData;
 
@@ -5348,58 +5385,6 @@ struct CollideTopLevel {
 };
 
 typedef struct CollisionBox CollisionBox, *PCollisionBox;
-
-struct CollisionBox {
-    undefined field_0x0;
-    undefined field_0x1;
-    undefined field_0x2;
-    undefined field_0x3;
-    undefined field_0x4;
-    undefined field_0x5;
-    undefined field_0x6;
-    undefined field_0x7;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-    undefined4 field_0xc;
-    undefined4 field_0x10;
-    undefined4 field_0x14;
-    undefined4 field_0x18;
-    undefined4 field_0x1c;
-    undefined4 field_0x20;
-    undefined4 field_0x24;
-    undefined4 field_0x28;
-    undefined field_0x2c;
-    undefined field_0x2d;
-    undefined field_0x2e;
-    undefined field_0x2f;
-    undefined field_0x30;
-    undefined field_0x31;
-    undefined field_0x32;
-    undefined field_0x33;
-    undefined field_0x34;
-    undefined field_0x35;
-    undefined field_0x36;
-    undefined field_0x37;
-    undefined field_0x38;
-    undefined field_0x39;
-    undefined field_0x3a;
-    undefined field_0x3b;
-    undefined field_0x3c;
-    undefined field_0x3d;
-    undefined field_0x3e;
-    undefined field_0x3f;
-    undefined field_0x40;
-    undefined field_0x41;
-    undefined field_0x42;
-    undefined field_0x43;
-    undefined field_0x44;
-    undefined field_0x45;
-    undefined field_0x46;
-    undefined field_0x47;
-    bool field_0x48;
-};
 
 typedef struct D3DContext_s1 D3DContext_s1, *PD3DContext_s1;
 

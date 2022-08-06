@@ -11,6 +11,26 @@ void fnShowCustomTextMessage(WCHAR* message) {
 	locale->text = original;
 }
 
+Roof* getCarRoofWithSpriteIfExists(Roof* startroof, short spritetype)
+{
+	if (!startroof)
+		return 0;
+	if (startroof->sprite->sprite == spritetype)
+		return startroof;
+	if (startroof->next)
+		return getCarRoofWithSpriteIfExists(startroof->next, spritetype);
+	return 0;
+}
+
+Roof* getCarLastRoof(Roof* startroof)
+{
+	if (!startroof)
+		return 0;
+	if (startroof->next)
+		return getCarLastRoof(startroof->next);
+	return startroof;
+}
+
 Car* fnGetCarByID(int id) {
 	auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
 	auto tcar = prefab->lastCar;

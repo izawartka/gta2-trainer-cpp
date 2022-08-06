@@ -4,14 +4,12 @@
 //
 #define IDCANCEL                        2
 #define IDD_DIALOG1                     3000
-#define IDC_EDIT1                       3000
 #define IDC_PEDX                        3001
 #define IDC_PEDHEALTH                   3002
 #define IDC_PEDY                        3003
 #define IDC_PEDZ                        3004
 #define IDC_PEDARMOR                    3005
 #define IDC_PEDROT                      3006
-#define IDD_DIALOG2                     3006
 #define IDC_PEDSAMMO                    3007
 #define IDC_PEDSTYPE                    3008
 #define IDC_PEDSTIME                    3009
@@ -80,6 +78,16 @@
 #define IDC_PEDSHAPCLOTHR               3072
 #define IDC_PEDSINFO                    3073
 #define IDC_CARSINFO                    3074
+#define IDC_DOOR1                       3075
+#define IDC_DOOR2                       3076
+#define IDC_DOOR3                       3077
+#define IDC_DOOR4                       3078
+#define IDC_EMBCUR                      3079
+#define IDC_EMBP                        3080
+#define IDC_EMBM                        3081
+#define IDC_EMBPOS                      3082
+#define IDC_EDIT1                       3083
+#define IDD_DIALOG2                     3084
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774
@@ -100,7 +108,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3008
 #define _APS_NEXT_COMMAND_VALUE         32788
-#define _APS_NEXT_CONTROL_VALUE         3073
+#define _APS_NEXT_CONTROL_VALUE         3074
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

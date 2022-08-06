@@ -122,6 +122,8 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_GANG2V, m_gangRespect[1]);
 	DDX_Control(pDX, IDC_GANG3V, m_gangRespect[2]);
 	DDX_Control(pDX, IDC_CARVEL, m_carVelocity);
+	DDX_Control(pDX, IDC_EMBCUR, m_carEmblem);
+	DDX_Control(pDX, IDC_EMBPOS, m_carEmblemPos);
 	DDX_Control(pDX, IDC_CARCOLV, m_carColor);
 	DDX_Control(pDX, IDC_CARVIS, m_carVisualData);
 	DDX_Control(pDX, IDC_PEDHEALTH, m_pedHealth);
@@ -149,8 +151,9 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_WM_HOTKEY()
 	ON_COMMAND_RANGE(35000, 35000 + 86, &OnSpawnCarClick)
 	ON_COMMAND_RANGE(45000, 45000 + 15, &OnGetWeaponClick)
+	ON_COMMAND_RANGE(75000, 75000 + 15, &OnGetCarWeaponClick)
 	ON_COMMAND_RANGE(55000, 55000 + 62, &OnPlayVocalClick)
-	ON_COMMAND_RANGE(65000, 65000 + 1000, &OnNativeCheatClick)
+	ON_COMMAND_RANGE(65000, 65000 + 256, &OnNativeCheatClick)
 	ON_COMMAND(ID_SPAWNCAR_GUNJEEP, &MainWindow::OnSpawncarGunjeep)
 	ON_BN_CLICKED(IDC_CARENGINEOFF, &MainWindow::CarEngineOff)
 	ON_BN_CLICKED(IDC_UNLMAMMO, &MainWindow::GiveUnlimitedAmmo)
@@ -173,9 +176,12 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
 	ON_BN_CLICKED(ID_TPALLPEDS, &MainWindow::TeleportAllPeds)
 	ON_COMMAND_RANGE(3040, 3048, &GangRespect)
+	ON_COMMAND_RANGE(3075, 3078, &ToggleDoor)
 	ON_BN_CLICKED(IDC_FREESHOP, &MainWindow::FreeShopping)
 	ON_BN_CLICKED(IDC_BEAHUMAN, &MainWindow::BeAHuman)
 	ON_BN_CLICKED(IDC_TPPLAYER, &MainWindow::TeleportPlayer)
+	ON_BN_CLICKED(IDC_EMBP, &MainWindow::CarEmblemPlus)
+	ON_BN_CLICKED(IDC_EMBM, &MainWindow::CarEmblemMinus)
 	ON_BN_CLICKED(IDC_CARCOLP, &MainWindow::CarColorPlus)
 	ON_BN_CLICKED(IDC_CARCOLM, &MainWindow::CarColorMinus)
 	ON_BN_CLICKED(IDC_CARCOLR, &MainWindow::CarColorReset)
@@ -367,32 +373,53 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	std::map<std::wstring, DWORD> weapons;
 
-	weapons.insert(std::pair<std::wstring, DWORD>(L"PISTOL", 0));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"UZI", 1));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"ROCKET LAUNCHER", 2));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"ELECTROSHOCKER", 3));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"MOLOTOV COCTAIL", 4));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"GRENADE", 5));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"SHOTGUN", 6));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"ELECTROBATON", 7));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"FLAMETHROWER", 8));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"SILENCED UZI", 9));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"DOUBLE PISTOL", 10));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"LETTER L", 11));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"LETTER M", 12));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"LETTER N", 13));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"LETTER O", 14));
-
-	//weapons.insert(std::pair<std::wstring, DWORD>(L"CAR UZI", 29));
-	//weapons.insert(std::pair<std::wstring, DWORD>(L"CAR MINES", 37));
-	//weapons.insert(std::pair<std::wstring, DWORD>(L"OIL", 38));
-	//weapons.insert(std::pair<std::wstring, DWORD>(L"CAR BOMB", 45));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Pistol", 0));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"S-Uzi", 1));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Rocket Launcher", 2));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"ElectroGun", 3));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Molotov Coctail", 4));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Grenade", 5));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Shotgun", 6));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"ElectroBaton", 7));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Flamethrower", 8));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Silenced S-Uzi", 9));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Dual Pistol", 10));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Letter L", 11));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Letter M", 12));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Letter N", 13));
+	weapons.insert(std::pair<std::wstring, DWORD>(L"Letter O", 14));
 
 	for (itr = weapons.begin(); itr != weapons.end(); ++itr) {
 		wMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 45000), itr->first.c_str());
 	}
 
 	menu->AppendMenuW(MF_POPUP, (UINT_PTR)wMenu->m_hMenu, L"Get weapon");
+
+
+	CMenu* cwMenu = new CMenu();
+	cwMenu->CreatePopupMenu();
+
+	std::map<std::wstring, DWORD> carweapons;
+
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Bomb", 0));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Oil Slick", 1));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Mine", 2));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Machine Gun", 3));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Tank Cannon", 4));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Water Cannon", 5));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Flamethrower", 6));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Jeep Turret", 7));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Instant Vehicle Bomb", 8));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Letter J", 9));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Letter K", 10));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Letter L", 11));
+	carweapons.insert(std::pair<std::wstring, DWORD>(L"Letter M", 12));
+
+	for (itr = carweapons.begin(); itr != carweapons.end(); ++itr) {
+		cwMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 75000), itr->first.c_str());
+	}
+
+	menu->AppendMenuW(MF_POPUP, (UINT_PTR)cwMenu->m_hMenu, L"Get car weapon");
 
 	CMenu* vMenu = new CMenu();
 	vMenu->CreatePopupMenu();
@@ -513,32 +540,6 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	menu->AppendMenuW(MF_POPUP, (UINT_PTR)ncHMenu, L"Native Cheats");
 
 	return 0;
-}
-
-
-void MainWindow::OnPaint()
-{
-	CPaintDC dc(this); // device context for painting
-					   // TODO: Add your message handler code here
-					   // Do not call CDialogEx::OnPaint() for painting messages
-	if (firstPaint && m_gtaWindow) {
-		firstPaint = false;
-		CRect rect, rect2;
-		
-		GetWindowRect(&rect);
-		::GetWindowRect(m_gtaWindow, &rect2);
-
-		int x = GetSystemMetrics(SM_CXSCREEN) - rect2.Width();
-		
-		::MoveWindow(m_gtaWindow, x, 0, rect2.Width(), rect2.Height(), true);
-		MoveWindow(0, 0, rect.Width(), rect.Height(), true);
-
-		m_log.ShowScrollBar(SB_VERT);
-		InvalidateRect(rect);
-	}
-	else if (!m_gtaWindow) {
-		m_gtaWindow = FindWindowA("WinMain", "GTA2");
-	}
 }
 
 void MainWindow::log(const WCHAR* fmt, ...)
@@ -670,7 +671,7 @@ void MainWindow::CaptureMouse()
 	}
 }
 
-void MainWindow::CopLockETC()
+void MainWindow::KeepLockedValues()
 {
 	///AFTERCAPTURE///
 	if (*(DWORD*)ptrToPedManager == 0) {
@@ -712,125 +713,156 @@ void MainWindow::CopLockETC()
 		
 	}
 
-		if (playerPed->currentCar)
-		{
-			currLastCar = playerPed->currentCar;
+	if (playerPed->currentCar)
+	{
+		currLastCar = playerPed->currentCar;
 
-			if (currLastCar != currLastCarOld)
+		if (currLastCar != currLastCarOld)
+		{
+			const WCHAR* carlist[87] = {
+				L"Player has entered ALFA #%i",
+				L"Player has entered ALLARD #%i",
+				L"Player has entered AMDB4 #%i",
+				L"Player has entered APC #%i",
+				L"Player has entered BANKVAN #%i",
+				L"Player has entered BMW #%i",
+				L"Player has entered BOXCAR #%i",
+				L"Player has entered BOXTRUCK #%i",
+				L"Player has entered BUG #%i",
+				L"Player has entered CAR9 #%i",
+				L"Player has entered BUICK #%i",
+				L"Player has entered BUS #%i",
+				L"Player has entered COPCAR #%i",
+				L"Player has entered DART #%i",
+				L"Player has entered EDSEL #%i",
+				L"Player has entered CAR15 #%i",
+				L"Player has entered FIAT #%i",
+				L"Player has entered FIRETRUK #%i",
+				L"Player has entered GRAHAM #%i",
+				L"Player has entered GT24640 #%i",
+				L"Player has entered CAR20 #%i",
+				L"Player has entered GTRUCK #%i",
+				L"Player has entered GUNJEEP #%i",
+				L"Player has entered HOTDOG #%i",
+				L"Player has entered HOTDOG_D1 #%i",
+				L"Player has entered HOTDOG_D2 #%i",
+				L"Player has entered HOTDOG_D3 #%i",
+				L"Player has entered ICECREAM #%i",
+				L"Player has entered ISETLIMO #%i",
+				L"Player has entered ISETTA #%i",
+				L"Player has entered JEEP #%i",
+				L"Player has entered JEFFREY #%i",
+				L"Player has entered LIMO #%i",
+				L"Player has entered LIMO2 #%i",
+				L"Player has entered MEDICAR #%i",
+				L"Player has entered MERC #%i",
+				L"Player has entered MESSER #%i",
+				L"Player has entered MIURA #%i",
+				L"Player has entered MONSTER #%i",
+				L"Player has entered MORGAN #%i",
+				L"Player has entered MORRIS #%i",
+				L"Player has entered PICKUP #%i",
+				L"Player has entered RTYPE #%i",
+				L"Player has entered CAR43 #%i",
+				L"Player has entered SPIDER #%i",
+				L"Player has entered SPRITE #%i",
+				L"Player has entered STINGRAY #%i",
+				L"Player has entered STRATOS #%i",
+				L"Player has entered STRATOSB #%i",
+				L"Player has entered STRIPETB #%i",
+				L"Player has entered STYPE #%i",
+				L"Player has entered STYPECAB #%i",
+				L"Player has entered SWATVAN #%i",
+				L"Player has entered T2000GT #%i",
+				L"Player has entered TANK #%i",
+				L"Player has entered TANKER #%i",
+				L"Player has entered TAXI #%i",
+				L"Player has entered TBIRD #%i",
+				L"Player has entered TOWTRUCK #%i",
+				L"Player has entered TRAIN #%i",
+				L"Player has entered TRAINCAB #%i",
+				L"Player has entered TRAINFB #%i",
+				L"Player has entered TRANCEAM #%i",
+				L"Player has entered TRUKCAB1 #%i",
+				L"Player has entered TRUKCAB2 #%i",
+				L"Player has entered TRUKCONT #%i",
+				L"Player has entered TRUKTRNS #%i",
+				L"Player has entered TVVAN #%i",
+				L"Player has entered VAN #%i",
+				L"Player has entered VESPA #%i",
+				L"Player has entered VTYPE #%i",
+				L"Player has entered WBTWIN #%i",
+				L"Player has entered WRECK0 #%i",
+				L"Player has entered WRECK1 #%i",
+				L"Player has entered WRECK2 #%i",
+				L"Player has entered WRECK3 #%i",
+				L"Player has entered WRECK4 #%i",
+				L"Player has entered WRECK5 #%i",
+				L"Player has entered WRECK6 #%i",
+				L"Player has entered WRECK7 #%i",
+				L"Player has entered WRECK8 #%i",
+				L"Player has entered WRECK9 #%i",
+				L"Player has entered XK120 #%i",
+				L"Player has entered ZCX5 #%i",
+				L"Player has entered EDSELFBI #%i",
+				L"Player has entered HOTDOG_D4 #%i",
+				L"Player has entered KRSNABUS #%i",
+			};
+
+			log(carlist[playerPed->currentCar->carModel], playerPed->currentCar->id);
+
+			if (carDamageLocked)
 			{
-				const WCHAR* carlist[87] = {
-					L"Player has entered ALFA #%i",
-					L"Player has entered ALLARD #%i",
-					L"Player has entered AMDB4 #%i",
-					L"Player has entered APC #%i",
-					L"Player has entered BANKVAN #%i",
-					L"Player has entered BMW #%i",
-					L"Player has entered BOXCAR #%i",
-					L"Player has entered BOXTRUCK #%i",
-					L"Player has entered BUG #%i",
-					L"Player has entered CAR9 #%i",
-					L"Player has entered BUICK #%i",
-					L"Player has entered BUS #%i",
-					L"Player has entered COPCAR #%i",
-					L"Player has entered DART #%i",
-					L"Player has entered EDSEL #%i",
-					L"Player has entered CAR15 #%i",
-					L"Player has entered FIAT #%i",
-					L"Player has entered FIRETRUK #%i",
-					L"Player has entered GRAHAM #%i",
-					L"Player has entered GT24640 #%i",
-					L"Player has entered CAR20 #%i",
-					L"Player has entered GTRUCK #%i",
-					L"Player has entered GUNJEEP #%i",
-					L"Player has entered HOTDOG #%i",
-					L"Player has entered HOTDOG_D1 #%i",
-					L"Player has entered HOTDOG_D2 #%i",
-					L"Player has entered HOTDOG_D3 #%i",
-					L"Player has entered ICECREAM #%i",
-					L"Player has entered ISETLIMO #%i",
-					L"Player has entered ISETTA #%i",
-					L"Player has entered JEEP #%i",
-					L"Player has entered JEFFREY #%i",
-					L"Player has entered LIMO #%i",
-					L"Player has entered LIMO2 #%i",
-					L"Player has entered MEDICAR #%i",
-					L"Player has entered MERC #%i",
-					L"Player has entered MESSER #%i",
-					L"Player has entered MIURA #%i",
-					L"Player has entered MONSTER #%i",
-					L"Player has entered MORGAN #%i",
-					L"Player has entered MORRIS #%i",
-					L"Player has entered PICKUP #%i",
-					L"Player has entered RTYPE #%i",
-					L"Player has entered CAR43 #%i",
-					L"Player has entered SPIDER #%i",
-					L"Player has entered SPRITE #%i",
-					L"Player has entered STINGRAY #%i",
-					L"Player has entered STRATOS #%i",
-					L"Player has entered STRATOSB #%i",
-					L"Player has entered STRIPETB #%i",
-					L"Player has entered STYPE #%i",
-					L"Player has entered STYPECAB #%i",
-					L"Player has entered SWATVAN #%i",
-					L"Player has entered T2000GT #%i",
-					L"Player has entered TANK #%i",
-					L"Player has entered TANKER #%i",
-					L"Player has entered TAXI #%i",
-					L"Player has entered TBIRD #%i",
-					L"Player has entered TOWTRUCK #%i",
-					L"Player has entered TRAIN #%i",
-					L"Player has entered TRAINCAB #%i",
-					L"Player has entered TRAINFB #%i",
-					L"Player has entered TRANCEAM #%i",
-					L"Player has entered TRUKCAB1 #%i",
-					L"Player has entered TRUKCAB2 #%i",
-					L"Player has entered TRUKCONT #%i",
-					L"Player has entered TRUKTRNS #%i",
-					L"Player has entered TVVAN #%i",
-					L"Player has entered VAN #%i",
-					L"Player has entered VESPA #%i",
-					L"Player has entered VTYPE #%i",
-					L"Player has entered WBTWIN #%i",
-					L"Player has entered WRECK0 #%i",
-					L"Player has entered WRECK1 #%i",
-					L"Player has entered WRECK2 #%i",
-					L"Player has entered WRECK3 #%i",
-					L"Player has entered WRECK4 #%i",
-					L"Player has entered WRECK5 #%i",
-					L"Player has entered WRECK6 #%i",
-					L"Player has entered WRECK7 #%i",
-					L"Player has entered WRECK8 #%i",
-					L"Player has entered WRECK9 #%i",
-					L"Player has entered XK120 #%i",
-					L"Player has entered ZCX5 #%i",
-					L"Player has entered EDSELFBI #%i",
-					L"Player has entered HOTDOG_D4 #%i",
-					L"Player has entered KRSNABUS #%i",
-				};
-				
-				log(carlist[playerPed->currentCar->carModel], playerPed->currentCar->id);
-				
+				((CButton*)GetDlgItem(IDC_LOCKCARDAMAGE))->SetCheck(false);
+				carDamageLocked = false;
+				startCarDamage = 0;
+				log(L"Player has changed the car; Engine damage unlocked");
+			}
+
+			for (int i = 0; i < 4; i++)
+			{
+				doorOpen[i] = false;
+			}
+
+			m_carEmblemPos.SetRange(-8192, 8192, TRUE);
+			currLastCarEmblemID = 0;
+			for (int i = 0; i < sizeof(emblemValues)/sizeof(emblemValues[0]); i++)
+			{
+				currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, emblemValues[i]);
+				if (currLastCarEmblem)
+				{
+					currLastCarEmblemID = i;
+					m_carEmblemPos.SetPos(currLastCarEmblem->yOffset);
+					break;
+				}
 			}
 		}
+	}
 
-
-	if (currLastCar && carDamageLocked)
+	if (currLastCar)
 	{
-		if (currLastCar == currLastCarOld)
+		int carEmblemPos = m_carEmblemPos.GetPos();
+		if (currLastCarEmblemID && carEmblemPos != currLastCarEmblemLPos)
+		{
+			currLastCarEmblem->yOffset = carEmblemPos;
+			currLastCarEmblemLPos = carEmblemPos;
+		}
+
+		if (carDamageLocked)
 		{
 			currLastCar->carDamage = startCarDamage;
 		}
-		else
+
+		for (int i = 0; i < 4; i++)
 		{
-			((CButton*)GetDlgItem(IDC_LOCKCARDAMAGE))->SetCheck(false);
-			carDamageLocked = false;
-			startCarDamage = 0;
-			log(L"Player has changed the car; Engine damage unlocked");
+			if (doorOpen[i])
+			{
+				currLastCar->carDoor[i].doorState = 2;
+			}
 		}
 	}
 
 	currLastCarOld = currLastCar;
-
 }
 
 struct SPAWNCAR {
@@ -942,6 +974,49 @@ void MainWindow::OnGetWeaponClick(UINT nID) {
 	else
 	{
 		log(L"Player ped not found :c");
+	}
+}
+
+void MainWindow::OnGetCarWeaponClick(UINT nID) {
+	
+	Ped* playerPed = fnGetPedByID(1);
+	if (playerPed && playerPed->currentCar && playerPed->currentCar->sprite)
+	{
+		byte ID = nID - 75000;
+		CAR_WEAPON weapon = (CAR_WEAPON)(15 + ID);
+
+		fnCarAddWeapon(weapon, 10, currLastCar);
+		log(L"Car weapon #%d got", ID);
+
+		switch (weapon)
+		{
+			case CAR_WEAP_TANKTURRET:
+				if (!getCarRoofWithSpriteIfExists(currLastCar->roof, 546))
+				{
+					fnCarAddRoofTankTurret(currLastCar);
+					log(L"Tank turret spawned", ID);
+				}
+				break;
+			case CAR_WEAP_WATERGUN:
+			case CAR_WEAP_FLAMETHROWER:
+				if (!getCarRoofWithSpriteIfExists(currLastCar->roof, 278))
+				{
+					fnCarAddRoofWaterGun(currLastCar);
+					log(L"Firetruck turret spawned", ID);
+				}
+				break;
+			case CAR_WEAP_JEEPGUN:
+				if (!getCarRoofWithSpriteIfExists(currLastCar->roof, 285))
+				{
+					fnCarAddRoofGun(currLastCar);
+					log(L"Jeep turret spawned", ID);
+				}
+				break;
+			default:
+				break;
+		}
+
+		//currLastCar->currentUpgradeSound = 6;
 	}
 }
 
@@ -1077,7 +1152,11 @@ void MainWindow::PrintCarInfo()
 		log(L"Address: 0x%X", currLastCar);
 		log(L"model: %d", currLastCar->carModel);
 		if (currLastCar->roof)
+		{
 			log(L"Turret: 0x%X rot: %d x:%d y:%d", currLastCar->roof, currLastCar->roof->rotation, currLastCar->roof->xOffset, currLastCar->roof->yOffset);
+			log(L"Turret Sprite: 0x%X spr: %d pal: %d lckpal: %d", currLastCar->roof->sprite, currLastCar->roof->sprite->sprite, currLastCar->roof->sprite->carColor, currLastCar->roof->sprite->lockPalleteMaybe);
+			log(L"Turret GmObj: 0x%X id: %d", currLastCar->roof->sprite->gameObject, currLastCar->roof->sprite->gameObject->id);
+		}
 		else
 			log(L"No turret");
 		if (currLastCar->physics)
@@ -1136,7 +1215,7 @@ void MainWindow::VisFixCar()
 {
 	if (currLastCar)
 	{
-		currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(0x800040);
+		currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE((currLastCar->carLights | 0x800040) & 0xFFFFFFE0); // turn on lights and filter out damage
 		log(L"Fixed the car visually");
 	}
 }
@@ -1145,7 +1224,7 @@ void MainWindow::VisBreakCar()
 {
 	if (currLastCar)
 	{
-		currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE(0xFFFFFFF);
+		currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE((currLastCar->carLights | 0x1F) & 0xFF387F9F); // make damage and filter out lights
 		log(L"Broke the car visually");
 	}
 }
@@ -1199,7 +1278,6 @@ void MainWindow::PedInfo()
 
 	if (playerPed)
 	{
-
 		swprintf(buf, 256, L"%d", playerPed->remap);
 		m_pedClothes.SetWindowTextW(buf);
 
@@ -1264,6 +1342,15 @@ void MainWindow::PedInfo()
 				swprintf(buf, 256, L"%d", currLastCar->sprite->carColor);
 				m_carColor.SetWindowTextW(buf);
 			}
+
+			for (int i = 0; i < 4; i++)
+			{
+				CButton* pButton = (CButton*)GetDlgItem(3075 + i);
+				pButton->EnableWindow(currLastCar->carDoor[i].doorState != 0);
+			}
+
+			swprintf(buf, 256, L"%s", emblemNames[currLastCarEmblemID]);
+			m_carEmblem.SetWindowTextW(buf);
 			
 		}
 
@@ -1315,7 +1402,6 @@ void MainWindow::PedInfo()
 			pedYOld = playerPed->currentCar->sprite->y;
 			pedZOld = playerPed->currentCar->sprite->z;
 			pedRotOld = playerPed->currentCar->sprite->rotation;
-
 		}
 		else
 		{
@@ -1513,21 +1599,34 @@ void MainWindow::NextHuman()
 void MainWindow::GangRespect(UINT nID)
 {
 	DWORD* gangsArr = (DWORD*)0x005eb898;
-	int gangNo;
+	int gangNo = 0;
 	int dataInt = (int)nID - 3040;
 
 	if (dataInt >= 0 && dataInt <= 2) gangNo = 0;
-	if (dataInt >= 3 && dataInt <= 5) gangNo = 1;
-	if (dataInt >= 6 && dataInt <= 8) gangNo = 2;
+	else if (dataInt >= 3 && dataInt <= 5) gangNo = 1;
+	else if (dataInt >= 6 && dataInt <= 8) gangNo = 2;
 
 	int* gangresp;
 	gangresp = (int*)*gangsArr + 0x47 + gangNo * 0x51;
 
 	if (dataInt == 0 || dataInt == 3 || dataInt == 6) *gangresp -= 20;
-	if (dataInt == 1 || dataInt == 4 || dataInt == 7) *gangresp = 0;
-	if (dataInt == 2 || dataInt == 5 || dataInt == 8) *gangresp += 20;
+	else if (dataInt == 1 || dataInt == 4 || dataInt == 7) *gangresp = 0;
+	else if (dataInt == 2 || dataInt == 5 || dataInt == 8) *gangresp += 20;
 	
 	log(L"Changed the respect to %d", *gangresp);
+}
+
+void MainWindow::ToggleDoor(UINT uID)
+{
+	if (currLastCar)
+	{
+		int doorID = uID - 3075;
+		if (currLastCar->carDoor[doorID].doorState == 6 || doorOpen[doorID] == true)
+		{
+			doorOpen[doorID] = !doorOpen[doorID];
+			log(L"Door %s", (doorOpen[doorID] ? L"Opened" : L"Closed"));
+		}
+	}
 }
 
 void MainWindow::SyncTrailerColor()
@@ -1544,6 +1643,54 @@ void MainWindow::SyncTrailerColor()
 		currLastCar->trailerController->trailer->sprite->lockPalleteMaybe = currLastCar->sprite->lockPalleteMaybe;
 		currLastCar->trailerController->trailer->sprite->carColor = currLastCar->sprite->carColor;
 		log(L"Trailer color changed");
+	}
+}
+
+
+
+void MainWindow::CarEmblemMinus()
+{
+	if (currLastCarEmblemID == 1)
+	{
+		currLastCarEmblemID = 0;
+		currLastCarEmblem->sprite->spriteType = SPRITE_TYPE_INVISIBLE;
+		currLastCarEmblem = 0;
+	}
+	if (currLastCarEmblemID > 1)
+	{
+		currLastCarEmblemID--;
+		currLastCarEmblem->sprite->sprite = emblemValues[currLastCarEmblemID];
+		log(L"Car emblem changed");
+	}
+}
+
+
+void MainWindow::CarEmblemPlus()
+{
+	if (currLastCarEmblemID == 0)
+	{
+		if (currLastCar->carModel == CAR_MODEL4_TVVAN)
+		{
+			log(L"TV Van is the only car you cannot put emblem on :(");
+			return;
+		}
+
+		fnCarAddRoofAntenna(currLastCar);
+		currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, 0);
+		if (currLastCarEmblem)
+		{
+			currLastCarEmblemID = 1;
+			currLastCarEmblem->sprite->sprite = emblemValues[1];
+			currLastCarEmblem->rotation = 0;
+			m_carEmblemPos.SetPos(currLastCarEmblem->yOffset);
+			log(L"Car emblem created");
+		}
+	}
+	else if (currLastCarEmblemID < sizeof(emblemValues)/sizeof(emblemValues[0]) - 1)
+	{
+		currLastCarEmblemID++;
+		currLastCarEmblem->sprite->sprite = emblemValues[currLastCarEmblemID];
+		log(L"Car emblem changed");
 	}
 }
 
@@ -1842,7 +1989,7 @@ void MainWindow::WantToSpawnCar()
 void MainWindow::OnGTAGameTick(Game* game)
 {
 	//OnTimer moved here, it's more stable now
-	CopLockETC();
+	KeepLockedValues();
 	PedInfo();
 	if (captureMouse) CaptureMouse();
 	FixCheckboxes();

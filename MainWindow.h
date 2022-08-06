@@ -31,7 +31,6 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnPaint();
 	bool firstPaint;
 	CEdit m_log;
 	HWND m_gtaWindow;
@@ -44,6 +43,7 @@ public:
 	afx_msg void OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2);
 	afx_msg void OnSpawnCarClick(UINT nID);
 	afx_msg void OnGetWeaponClick(UINT nID);
+	afx_msg void OnGetCarWeaponClick(UINT nID);
 	afx_msg void OnPlayVocalClick(UINT nID);
 	afx_msg void OnNativeCheatClick(UINT nID);
 	uint frames;
@@ -60,6 +60,8 @@ public:
 	CEdit m_carID;
 	CEdit m_carVelocity;
 	CEdit m_carVisualData;
+	CEdit m_carEmblem;
+	CSliderCtrl m_carEmblemPos;
 	CEdit m_carColor;
 	CEdit m_pedHealth;
 	CEdit m_pedArmor;
@@ -76,7 +78,7 @@ public:
 	void LockStars();
 	bool noReloads = 0;
 	void NoReloads();
-	void CopLockETC();
+	void KeepLockedValues();
 	void SetStars0();
 	void SetStars1();
 	void SetStars2();
@@ -102,16 +104,25 @@ public:
 	int globalPedSpeedsOld[3] = { 1,1,1 }; // same here
 	int wtSpawnCar = -1;
 	void TeleportAllPeds();
+	Roof* currLastCarEmblem = 0;
+	short currLastCarEmblemID = 0;
+	short currLastCarEmblemLPos = 0;
+	const int emblemValues[8] = { 0, 294, 295, 296, 297, 298, 299, 300 };
+	const wchar_t* emblemNames[8] = { L"None", L"Loonies", L"Yakuza", L"Zaibatsu", L"Rednecks", L"Scientists", L"Krishna", L"Russians"};
 	Ped* selectedPed = 0;
 	bool beAHuman = false;
 	void BeAHuman();
 	void NextHuman();
 	int pedXPreHuman = 0, pedYPreHuman = 0, pedZPreHuman = 0;
 	void GangRespect(UINT nID);
+	void ToggleDoor(UINT nID);
+	bool doorOpen[4] = { 0,0,0,0 }; // 1 - force open
 	int currLastCarXOld = 0, currLastCarYOld = 0, currLastCarXYShift;
 	void FreeShopping();
 	void PrintCarInfo();
 	void SyncTrailerColor();
+	void CarEmblemPlus();
+	void CarEmblemMinus();
 	void CarColorPlus();
 	void CarColorMinus();
 	void CarColorReset();
