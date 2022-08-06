@@ -34,6 +34,7 @@ public:
 	bool firstPaint;
 	CEdit m_log;
 	HWND m_gtaWindow;
+	void OnPaint();
 	void log(const WCHAR* fmt, ...);
 	afx_msg void OnCommandsHello();
 	afx_msg void MouseControl();

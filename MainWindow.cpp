@@ -542,6 +542,31 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
+void MainWindow::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: Add your message handler code here
+					   // Do not call CDialogEx::OnPaint() for painting messages
+	if (firstPaint && m_gtaWindow) {
+		firstPaint = false;
+		CRect rect, rect2;
+
+		GetWindowRect(&rect);
+		::GetWindowRect(m_gtaWindow, &rect2);
+
+		int x = GetSystemMetrics(SM_CXSCREEN) - rect2.Width();
+
+		::MoveWindow(m_gtaWindow, x, 0, rect2.Width(), rect2.Height(), true);
+		MoveWindow(0, 0, rect.Width(), rect.Height(), true);
+
+		m_log.ShowScrollBar(SB_VERT);
+		InvalidateRect(rect);
+	}
+	else if (!m_gtaWindow) {
+		m_gtaWindow = FindWindowA("WinMain", "GTA2");
+	}
+}
+
 void MainWindow::log(const WCHAR* fmt, ...)
 {
 	CString tmp;
@@ -604,7 +629,7 @@ void MainWindow::CaptureMouse()
 	::GetWindowRect(m_gtaWindow, &rect);
 	if (p.x < rect.left || p.x > rect.right || p.y < rect.top || p.y > rect.bottom) {
 		if (frames++ % 60 == 0) {
-			//log(L"Cursor is outside of the game window");
+			log(L"Cursor is outside of the game window");
 		}
 		return;
 	}
