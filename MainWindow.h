@@ -26,16 +26,15 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	//std::map<std::wstring, DWORD> cars;
-	HMENU ncHMenu;
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCancel();
+	afx_msg void OnBnClickedExit();
+
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	HMENU ncHMenu;
 	bool firstPaint;
-	CEdit m_log;
 	HWND m_gtaWindow;
 	void OnPaint();
 	void log(const WCHAR* fmt, ...);
+	CEdit m_log;
 	afx_msg void OnCommandsHello();
 	afx_msg void MouseControl();
 	bool captureMouse = 0;
@@ -47,8 +46,8 @@ public:
 	afx_msg void OnGetCarWeaponClick(UINT nID);
 	afx_msg void OnPlayVocalClick(UINT nID);
 	afx_msg void OnNativeCheatClick(UINT nID);
-	uint frames;
 	afx_msg void OnSpawncarGunjeep();
+	uint frames;
 	CEdit m_pedX;
 	CEdit m_pedY;
 	CEdit m_pedZ;
@@ -80,13 +79,7 @@ public:
 	bool noReloads = 0;
 	void NoReloads();
 	void KeepLockedValues();
-	void SetStars0();
-	void SetStars1();
-	void SetStars2();
-	void SetStars3();
-	void SetStars4();
-	void SetStars5();
-	void SetStars6();
+	void SetStars(UINT nID);
 	void TpToLastCar();
 	bool playerImmortal = 0;
 	void PlayerImmortal();
@@ -111,9 +104,9 @@ public:
 	const int emblemValues[9] = { 0, 294, 295, 296, 297, 298, 299, 300, 8};
 	const wchar_t* emblemNames[9] = { L"None", L"Loonies", L"Yakuza", L"Zaibatsu", L"Rednecks", L"Scientists", L"Krishna", L"Russians", L"Bomb"};
 	Ped* selectedPed = 0;
-	bool beAHuman = false;
-	void BeAHuman();
-	void NextHuman();
+	bool watchPeds = false;
+	void WatchPeds();
+	void WatchNextPed();
 	int pedXPreHuman = 0, pedYPreHuman = 0, pedZPreHuman = 0;
 	void GangRespect(UINT nID);
 	void ToggleDoor(UINT nID);
