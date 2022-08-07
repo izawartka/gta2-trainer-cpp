@@ -70,6 +70,21 @@ static SpawnPedAtPosition* fnSpawnPedAtPosition = (SpawnPedAtPosition*)0x0043db4
 typedef bool* (__fastcall SetPedPosition)(Ped* ped, DWORD edx, int x, int y, int z);
 static SetPedPosition* fnSetPedPosition = (SetPedPosition*)0x004360c0;
 
+typedef uint (CarAddWeapon)(CAR_WEAPON type, uint ammo, Car* car);
+static CarAddWeapon* fnCarAddWeapon = (CarAddWeapon*)0x004cd820;
+
+typedef void(__fastcall CarAddRoofGun)(Car* car);
+static CarAddRoofGun* fnCarAddRoofGun = (CarAddRoofGun*)0x0041fdf0;
+
+typedef void(__fastcall CarAddRoofTankTurret)(Car* car);
+static CarAddRoofTankTurret* fnCarAddRoofTankTurret = (CarAddRoofTankTurret*)0x0041fda0;
+
+typedef void(__fastcall CarAddRoofWaterGun)(Car* car);
+static CarAddRoofWaterGun* fnCarAddRoofWaterGun = (CarAddRoofWaterGun*)0x0041fd50;
+
+typedef void(__fastcall CarAddRoofAntenna)(Car* car);
+static CarAddRoofAntenna* fnCarAddRoofAntenna = (CarAddRoofAntenna*)0x00425fd0;
+
 // void __fastcall FindMaxZForLocation(void *param_1,undefined4 edx,int *outZ,SCR_f x,SCR_f y)
 typedef void (__fastcall FindMaxZForLocation)(void* ptrToMapRelatedStruct, DWORD edx, SCR_f* outZ, SCR_f x, SCR_f y);
 static FindMaxZForLocation* fnFindMaxZForLocationRaw = (FindMaxZForLocation*)0x0046a420;
@@ -114,6 +129,8 @@ typedef void(DrawGTAText)(WCHAR* str, SCR_f x, SCR_f y, size_t length, undefined
 static DrawGTAText* fnDrawGTATextRaw = (DrawGTAText*)0x004cc100;
 
 void fnShowCustomTextMessage(WCHAR* message);
+Roof* getCarRoofWithSpriteIfExists(Roof* startroof, short spritetype);
+Roof* getCarLastRoof(Roof* startroof);
 Car* fnGetCarByID(int id);
 Ped* FindTheNearestPed(Ped* basePed);
 Car* FindTheNearestCar(Ped* basePed);
