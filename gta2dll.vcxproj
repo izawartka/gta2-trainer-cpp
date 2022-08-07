@@ -227,6 +227,9 @@
   <ItemGroup>
     <ResourceCompile Include="gta2dll.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\banner.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

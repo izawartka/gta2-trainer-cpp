@@ -15,6 +15,8 @@
 #define IDC_PEDSTIME                    3009
 #define IDC_UNLMAMMO                    3010
 #define IDC_STAR0                       3011
+#define IDB_BITMAP1                     3011
+#define IDB_BANNER                      3011
 #define IDC_STAR1                       3012
 #define IDC_STAR2                       3013
 #define IDC_STAR3                       3014
@@ -78,6 +80,7 @@
 #define IDC_PEDSHAPCLOTHR               3072
 #define IDC_PEDSINFO                    3073
 #define IDC_CARSINFO                    3074
+#define IDC_CUSTOM1                     3074
 #define IDC_DOOR1                       3075
 #define IDC_DOOR2                       3076
 #define IDC_DOOR3                       3077
@@ -106,9 +109,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3008
+#define _APS_NEXT_RESOURCE_VALUE        3012
 #define _APS_NEXT_COMMAND_VALUE         32788
-#define _APS_NEXT_CONTROL_VALUE         3074
+#define _APS_NEXT_CONTROL_VALUE         3075
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
