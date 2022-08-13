@@ -597,6 +597,31 @@ typedef enum SPRITE_INVISIBILITY : byte {
     NO_TRANSPARENCY = 3
 } SPRITE_INVISIBILITY;
 
+typedef enum CAR_SURFACE : uint {
+    CAR_SURFACE_FLAT = 0,
+    CAR_SURFACE_SLOPE_UP = 1,
+    CAR_SURFACE_SLOPE_DOWN = 2,
+    CAR_SURFACE_SLOPE_LEFT = 3,
+    CAR_SURFACE_SLOPE_RIGHT = 4,
+    CAR_SURFACE_5 = 5,
+    CAR_SURFACE_IN_AIR = 6,
+    CAR_SURFACE_6 = 6,
+    CAR_SURFACE_IN_WATER = 8,
+    CAR_SURFACE_WET = 9
+} CAR_SURFACE;
+
+typedef enum CAR_SURFACE2 : uint {
+    CAR_SURFACE2_AIR_OR_SLOPE = 0,
+    CAR_SURFACE2_CONCRETE = 1,
+    CAR_SURFACE2_GRASS = 2,
+    CAR_SURFACE2_3 = 3,
+    CAR_SURFACE2_WET = 4,
+    CAR_SURFACE2_5 = 5,
+    CAR_SURFACE2_6 = 6,
+    CAR_SURFACE2_7 = 7,
+    CAR_SURFACE2_METAL = 8
+} CAR_SURFACE2;
+
 struct Roof {
     struct Sprite* sprite;
     struct Roof* next; /* Created by retype action */
@@ -704,7 +729,7 @@ struct Car {
     uint mask;
     byte fireRelated;
     byte field_0x8d;
-    u1 field_0x8e;
+    byte alarmTimer; /* 0x8e */
     undefined field_0x8f;
     byte latelyShotBulletType;
     byte latelyShotTimer;
@@ -734,8 +759,6 @@ struct Car {
     undefined field_0xbb;
 };
 
-// END OF ADDED IN FILE //
-
 struct CarPhysics {
     int xVelocityReadOnly; /* 0x00 */
     int yVelocityReadOnly;
@@ -749,10 +772,10 @@ struct CarPhysics {
     SCR_f FLskidY;
     SCR_f FRskidX;
     SCR_f FRskidY;
-    int xPos; /* 0x30 */
-    int yPos;
-    int xPosReadOnly;
-    int yPosReadOnly;
+    SCR_f xPos; /* 0x30 */
+    SCR_f yPos;
+    SCR_f xPosReadOnly;
+    SCR_f yPosReadOnly;
     int xVelocity; /* 0x40 */
     int yVelocity;
     int xJumpFromEdgeForce; /* when you place your car on edge it sometimes slides down very fast; this var is related to this behavior */
@@ -765,36 +788,30 @@ struct CarPhysics {
     int gasPedal; /* 0x60 acceleration pedal */ 
     struct CarPhysics * alsoRefToAnotherEngine; /* Created by retype action */
     int zVelocityRelated;
-    int zPos;
+    SCR_f zPos;
     int zVelocityReadOnly; /* 0x70 */
     int rotationForce;
     int pointingAngle;
-    undefined field_0x7c;
-    undefined field_0x7d;
-    undefined field_0x7e;
-    undefined field_0x7f;
-    undefined field_0x80;
-    undefined field_0x81;
-    undefined field_0x82;
-    undefined field_0x83;
-    undefined4 frontSkid;
-    undefined4 rearSkid;
+    undefined4 field_0x7c;
+    undefined4 field_0x80; /* 0x80 */
+    uint frontSkid;
+    uint rearSkid;
     undefined4 field_0x8c;
+    byte timerSinceLastMove; /* 0x90 */
     byte isBrakeOn;
     byte isHandbrakeOn;
     byte isForwardGasOn;
     byte isBackwardGasOn;
-    u1 field_0x94;
     u1 field_0x95;
     undefined field_0x96;
     undefined field_0x97;
-    undefined4 field_0x98;
-    undefined4 field_0x9c;
+    enum CAR_SURFACE surfaceType;
+    enum CAR_SURFACE2 surfaceType2;
     undefined4 field_0xa0;
     u1 field_0xa4;
-    u1 field_0xa5;
-    u1 field_0xa6;
-    undefined field_0xa7;
+    byte currentSlopeLength;
+    byte currentSlopeLeft;
+    byte currentTileZ; /* z/16384 */
     byte handbrakeForce;
     u1 field_0xa9;
     u1 field_0xaa;
