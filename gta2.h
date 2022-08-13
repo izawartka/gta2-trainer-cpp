@@ -330,9 +330,11 @@ typedef enum PED_STATE3 {
     PED_STATE3_32_WASTED=50,
     PED_STATE3_COP=54,
     PED_STATE3_DO_NOTHING=0,
+    PED_STATE3_RUN_AWAY_FROM_CAR = 34,
     PED_STATE3_ENTERING_TO_CAR=35,
     PED_STATE3_GANG_MEMBER=13,
     PED_STATE3_GETTING_OUT_FROM_CAR=36,
+    PED_STATE3_ENTERING_TO_TRAIN = 37,
     PED_STATE3_UNK1=1,
     PED_STATE3_UNK10=16,
     PED_STATE3_UNK13=19,
@@ -345,8 +347,6 @@ typedef enum PED_STATE3 {
     PED_STATE3_UNK1b=27,
     PED_STATE3_UNK20=32,
     PED_STATE3_UNK21=33,
-    PED_STATE3_UNK22=34,
-    PED_STATE3_UNK25=37,
     PED_STATE3_UNK26=38,
     PED_STATE3_UNK2a=42,
     PED_STATE3_UNK2b=43,
@@ -737,68 +737,38 @@ struct Car {
 // END OF ADDED IN FILE //
 
 struct CarPhysics {
-    int xVelocity;
-    int yVelocity;
-    undefined field_0x8;
-    undefined field_0x9;
-    undefined field_0xa;
-    undefined field_0xb;
-    struct CarPhysics * next;
-    undefined field_0x10;
-    undefined field_0x11;
-    undefined field_0x12;
-    undefined field_0x13;
-    undefined field_0x14;
-    undefined field_0x15;
-    undefined field_0x16;
-    undefined field_0x17;
-    undefined field_0x18;
-    undefined field_0x19;
-    undefined field_0x1a;
-    undefined field_0x1b;
-    undefined field_0x1c;
-    undefined field_0x1d;
-    undefined field_0x1e;
-    undefined field_0x1f;
-    SCR_f Xskid1;
-    SCR_f Yskid1;
-    SCR_f Xskid2;
-    SCR_f Yskid2;
-    int X_CM;
-    int Y_CM;
-    int X_CP;
-    int Y_CP;
-    int xVelocityReadOnly;
+    int xVelocityReadOnly; /* 0x00 */
     int yVelocityReadOnly;
-    undefined field_0x48;
-    undefined field_0x49;
-    undefined field_0x4a;
-    undefined field_0x4b;
-    undefined field_0x4c;
-    undefined field_0x4d;
-    undefined field_0x4e;
-    undefined field_0x4f;
-    undefined field_0x50;
-    undefined field_0x51;
-    undefined field_0x52;
-    undefined field_0x53;
-    undefined field_0x54;
-    undefined field_0x55;
-    undefined field_0x56;
-    undefined field_0x57;
-    undefined2 angle;
-    undefined field_0x5a;
-    undefined field_0x5b;
+    int totalDamageMaybe;
+    struct CarPhysics * next;
+    SCR_f RRskidX; /* 0x10 */
+    SCR_f RRskidY;
+    SCR_f RLskidX;
+    SCR_f RLskidY;
+    SCR_f FLskidX; /* 0x20 */
+    SCR_f FLskidY;
+    SCR_f FRskidX;
+    SCR_f FRskidY;
+    int xPos; /* 0x30 */
+    int yPos;
+    int xPosReadOnly;
+    int yPosReadOnly;
+    int xVelocity; /* 0x40 */
+    int yVelocity;
+    int xJumpFromEdgeForce; /* when you place your car on edge it sometimes slides down very fast; this var is related to this behavior */
+    int yJumpFromEdgeForce;
+    undefined4 field_0x50; /* 0x50 */
+    undefined4 field_0x54;
+    short angle;
+    undefined2 field_0x5a;
     struct CarPhysics * prev;
-    undefined field_0x60;
-    short gasLevel; /* acceleration pedal */
-    undefined field_0x63;
+    int gasPedal; /* 0x60 acceleration pedal */ 
     struct CarPhysics * alsoRefToAnotherEngine; /* Created by retype action */
-    undefined4 field_0x68;
-    undefined4 field_0x6c;
-    undefined4 field_0x70;
-    undefined4 pointingAngle;
-    undefined4 rotationForce;
+    int zVelocityRelated;
+    int zPos;
+    int zVelocityReadOnly; /* 0x70 */
+    int rotationForce;
+    int pointingAngle;
     undefined field_0x7c;
     undefined field_0x7d;
     undefined field_0x7e;
@@ -1480,7 +1450,7 @@ struct Ped {
     undefined field_0x246;
     undefined field_0x247;
     int field_0x248;
-    byte field_0x24c;
+    byte targetCarDoor;
     undefined field_0x24d;
     undefined field_0x24e;
     undefined field_0x24f;

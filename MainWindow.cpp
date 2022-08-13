@@ -501,6 +501,7 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	native.insert(std::pair<std::wstring, DWORD>(L"No peds spawn", 0x69));
 	native.insert(std::pair<std::wstring, DWORD>(L"Mini cars", 0x6D));
 	native.insert(std::pair<std::wstring, DWORD>(L"No audio", 0x72));
+	//native.insert(std::pair<std::wstring, DWORD>(L"Get all weapons (req. restart)", 0x74));
 	native.insert(std::pair<std::wstring, DWORD>(L"No slopes textures", 0x78));
 	native.insert(std::pair<std::wstring, DWORD>(L"Show FPS", 0x79));
 	native.insert(std::pair<std::wstring, DWORD>(L"Show car horn", 0x7F));
@@ -593,18 +594,15 @@ void MainWindow::MouseControl()
 
 void MainWindow::CaptureMouse()
 {
+	// Return if not in the game
 	if (*(DWORD*)ptrToPedManager == 0) {
-		if (frames++ % 60 == 0) {
-			//log(L"Not in a game");
-		}
 		return;
 	}
+
 	Ped* playerPed = fnGetPedByID(1);
 
-	if (!playerPed || playerPed->currentCar) {
-		if (frames++ % 60 == 0) {
-			//log(L"No player ped is found");
-		}
+	// Return if playerPed doesn't exist
+	if (!playerPed) {
 		return;
 	}
 
@@ -635,19 +633,10 @@ void MainWindow::CaptureMouse()
 		nAngle = angle + 90;
 	}
 	else {
-		//on top -180, 0 on bottom
 		gtaAngle = (short)((angle + 360) * 4.0);
 	}
 
 	nAngle = 270 + angle;
-
-	if (frames++ % 60 == 0) {
-		//log(L"cursor at %dx%d angle is %f", relX, relY, angle);
-	}
-
-	if (playerPed->gameObject) {
-		playerPed->gameObject->spriteRotation = gtaAngle;
-	}
 
 	BYTE keyboard[256];
 	GetKeyboardState(keyboard);
@@ -656,35 +645,45 @@ void MainWindow::CaptureMouse()
 
 	auto keyUp = player->keyUp;
 	auto keyDown = player->keyDown;
+	auto keyRight = player->keyRight;
+	auto keyLeft = player->keyLeft;
 	auto keyAttack = player->keyAttack;
 
+	if (playerPed->currentCar && playerPed->currentCar->physics)
+	{
+		// car steering
+		if ((relX * 4.0f) / centerX > 1)
+		{
+			keyRight = 1;
+			keyLeft = 0;
+		}
+		else if((relX * 4.0f) / centerX < -1)
+		{
+			keyRight = 0;
+			keyLeft = 1;
+		}
+	}
+	else if (playerPed->gameObject)
+	{
+		// ped steering
+		playerPed->gameObject->spriteRotation = gtaAngle;
+	}
 
-	if (keyboard['W'] & 0x80) {
-		player->keyUp = 1;
-	}
-	else {
-		player->keyUp = keyUp;
-	}
-
-	if (keyboard['S'] & 0x80) {
-		player->keyDown = 1;
-	}
-	else {
-		player->keyDown = keyDown;
-	}
-
-	if (keyboard[VK_LBUTTON] & 0x80) {
-		player->keyAttack = 1;
-	}
-	else {
-		player->keyAttack = keyAttack;
-	}
+	player->keyUp = (keyboard['W'] & 0x80) ? 1 : keyUp;
+	player->keyDown = (keyboard['S'] & 0x80) ? 1 : keyDown;
+	player->keyRight = (keyboard['D'] & 0x80) ? 1 : keyRight;
+	player->keyLeft = (keyboard['A'] & 0x80) ? 1 : keyLeft;
+	player->keyAttack = (keyboard[VK_LBUTTON] & 0x80) ? 1 : keyAttack;
 }
 
 void MainWindow::KeepLockedValues()
 {
 	// If not in game
 	if (*(DWORD*)ptrToPedManager == 0) {
+		currLastCar = 0;
+		currLastCarEmblem = 0;
+		currLastCarEmblemID = 0;
+		currLastCarEmblemLPos = 0;
 		return;
 	}
 
@@ -797,29 +796,22 @@ void MainWindow::KeepLockedValues()
 	currLastCarOld = currLastCar;
 }
 
-struct SPAWNCAR {
-	CAR_MODEL model;
-	MainWindow* win;
-};
-
-// Car spawning
-UINT SpawnCarThread(LPVOID data)
+void MainWindow::SpawnCar(CAR_MODEL model)
 {
 	S10* s10 = (S10*)*(DWORD*)0x00672f40;
-	SPAWNCAR* info = (SPAWNCAR*)data;
 	Ped* playerPed = fnGetPedByID(1);
 
 	// Return if not in the game
 	if (*(DWORD*)ptrToPedManager == 0)
-		return 0;
+		return;
 
 	// Return if player ped doesn't exist
 	if (!playerPed || !playerPed->gameObject || !playerPed->gameObject->sprite)
-		return 0;
+		return;
 
 	// Return if player is in the car
 	if (playerPed->currentCar)
-		return 0;
+		return;
 
 	// Spawn car
 	double nAngle = playerPed->gameObject->sprite->rotation / 4.0 + 270.0;
@@ -829,24 +821,12 @@ UINT SpawnCarThread(LPVOID data)
 		playerPed->gameObject->sprite->y - (int)(sin(nAngle * (M_PI / 180.0)) * distance * 16384.0),
 		playerPed->gameObject->sprite->z,
 		180 * 4,
-		info->model
+		model
 	);
 
 	// If everything successed, show label :D
 	if (car)
 		fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)L"Car is here!", 10);
-
-	delete info;
-	return 0;
-}
-
-// Create car spawn thread
-void MainWindow::WantToSpawnCar()
-{
-	SPAWNCAR* info = new SPAWNCAR;
-	info->win = this;
-	info->model = (CAR_MODEL)(wtSpawnCar);
-	::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SpawnCarThread, info, 0, 0);
 
 	wtSpawnCar = -1;
 }
@@ -1319,9 +1299,7 @@ void MainWindow::PedInfo()
 
 		// If player in the car, display it's coords
 		if (playerPed->currentCar)
-		{
-			m_pedZ.SetReadOnly(true);
-	
+		{	
 			if (playerPed->currentCar->sprite->x != pedXOld)
 			{
 				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->x / 16384.0);
@@ -1354,8 +1332,6 @@ void MainWindow::PedInfo()
 		// If player is not in the car, display ped's coords
 		else
 		{
-			m_pedZ.SetReadOnly(false);
-
 			// If player ped's sprite doesn't exist, clear textboxes
 			if (!playerPed->gameObject || !playerPed->gameObject->sprite) {
 
@@ -1857,17 +1833,21 @@ void MainWindow::TeleportPlayer()
 		log(L"Player teleported to %f, %f, %f!", newx, newy, newz);
 	}
 	// If player is in the car
-	else if (playerPed->currentCar)
+	else if (playerPed->currentCar && playerPed->currentCar->physics)
 	{
 		m_pedX.GetWindowTextW(buffer);
 		float newx = _wtof(buffer);
-		playerPed->currentCar->physics->X_CM = newx * 16384;
+		playerPed->currentCar->physics->xPos = newx * 16384;
 
 		m_pedY.GetWindowTextW(buffer);
 		float newy = _wtof(buffer);
-		playerPed->currentCar->physics->Y_CM = newy * 16384;
+		playerPed->currentCar->physics->yPos = newy * 16384;
 
-		log(L"Player's car teleported to %f, %f!", newx, newy);
+		m_pedZ.GetWindowTextW(buffer);
+		float newz = _wtof(buffer);
+		playerPed->currentCar->physics->zPos = (newz * 16384) + 10;
+
+		log(L"Player's car teleported to %f, %f, %f!", newx, newy, newz);
 	}
 }
 
@@ -1923,7 +1903,7 @@ void MainWindow::OnGTAGameTick(Game* game)
 	PedInfo();
 	if (captureMouse) CaptureMouse();
 	FixCheckboxes();
-	if(wtSpawnCar+1) WantToSpawnCar();
+	if(wtSpawnCar+1) SpawnCar((CAR_MODEL)wtSpawnCar);
 }
 
 void MainWindow::NewFunction()

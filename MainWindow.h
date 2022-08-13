@@ -133,7 +133,7 @@ public:
 	void TeleportPlayer();
 	void SetHealthArmorMoney();
 	void SetGlobalPedSpeeds();
-	void WantToSpawnCar();
+	void SpawnCar(CAR_MODEL model);
 
 	void OnGTAGameTick(Game* game);
 	void NewFunction();

@@ -91,6 +91,7 @@
 #define IDC_EMBPOS                      3082
 #define IDC_EDIT1                       3083
 #define IDD_DIALOG2                     3084
+#define IDC_EMBPOS2                     3085
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774
@@ -111,7 +112,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3012
 #define _APS_NEXT_COMMAND_VALUE         32788
-#define _APS_NEXT_CONTROL_VALUE         3075
+#define _APS_NEXT_CONTROL_VALUE         3085
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
