@@ -588,8 +588,7 @@ void MainWindow::OnCommandsHello()
 void MainWindow::MouseControl()
 {
 	captureMouse = !captureMouse;
-	if (captureMouse) log(L"Mouse control enabled!");
-	else log(L"Mouse control disabled!");
+	log(L"Mouse control %sabled!", captureMouse ? L"en" : L"dis");
 }
 
 void MainWindow::CaptureMouse()
@@ -616,6 +615,8 @@ void MainWindow::CaptureMouse()
 		}
 		return;
 	}
+
+	SetCursor(LoadCursor(0, IDC_CROSS));
 
 	int nCaptionHeight = ::GetSystemMetrics(SM_CYCAPTION);
 
