@@ -731,7 +731,7 @@ struct Car {
     byte field_0x8d;
     byte alarmTimer; /* 0x8e */
     undefined field_0x8f;
-    byte latelyShotBulletType;
+    int latelyShotBulletType;
     byte latelyShotTimer;
     u1 field_0x95; /* player id (ped 1 will be set here if player enter to car) */
     undefined field_0x96;
@@ -782,7 +782,7 @@ struct CarPhysics {
     int yJumpFromEdgeForce;
     undefined4 field_0x50; /* 0x50 */
     undefined4 field_0x54;
-    short angle;
+    short rotation;
     undefined2 field_0x5a;
     struct CarPhysics * prev;
     int gasPedal; /* 0x60 acceleration pedal */ 
@@ -810,16 +810,36 @@ struct CarPhysics {
     undefined4 field_0xa0;
     u1 field_0xa4;
     byte currentSlopeLength;
-    byte currentSlopeLeft;
+    byte currentSlopeLeftTiles;
     byte currentTileZ; /* z/16384 */
     byte handbrakeForce;
-    u1 field_0xa9;
+    enum CAR_MODEL carModel;
     u1 field_0xaa;
     u1 field_0xab;
     byte driveWheelsLockedProbably;
     char steering; /* 1 left and -1 right */
     undefined field_0xae;
     undefined field_0xaf;
+};
+
+typedef enum OBJECT_TYPE {
+    OBJECT_TYPE_CONE = 3
+} OBJECT_TYPE;
+
+typedef struct S33 S33, * PS33;
+
+struct S33 {
+    undefined4 field_0x00;
+    undefined4 field_0x04;
+    undefined4 field_0x08;
+    undefined4 field_0x0c;
+    undefined4 field_0x10;
+    undefined4 field_0x14;
+    undefined field_0x18;
+    undefined field_0x19;
+    undefined field_0x1a;
+    undefined field_0x1b;
+    Car car;
 };
 
 // END OF ADDED IN FILE //

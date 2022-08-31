@@ -113,6 +113,14 @@ Car* FindTheNearestCar(Ped* basePed)
 	return nearestCar;
 }
 
+SCR_f* GetPointInADistance(SCR_f baseX, SCR_f baseY, short angle, SCR_f distance) {
+	SCR_f targetXY[2];
+	double nAngle = angle / 4.0 + 270.0;
+	targetXY[0] = baseX + (cos(nAngle * 0.017453f) * distance);
+	targetXY[1] = baseY - (sin(nAngle * 0.017453f) * distance);
+	return targetXY;
+}
+
 POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY) {
 	POINT p;
 	int width = *(int*)0x00673578;

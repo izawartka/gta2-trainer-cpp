@@ -42,6 +42,7 @@ public:
 	afx_msg void OnSpawncarTank();
 	afx_msg void OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2);
 	afx_msg void OnSpawnCarClick(UINT nID);
+	afx_msg void OnSpawnObjectClick(UINT nID);
 	afx_msg void OnGetWeaponClick(UINT nID);
 	afx_msg void OnGetCarWeaponClick(UINT nID);
 	afx_msg void OnPlayVocalClick(UINT nID);
@@ -97,6 +98,7 @@ public:
 	int pedHOld = 1, pedAOld = 1, pedMOld = 1; // 1 not 0 because it has to be different than the actual value in the first tick
 	int globalPedSpeedsOld[3] = { 1,1,1 }; // same here
 	int wtSpawnCar = -1;
+	int wtSpawnObject = -1;
 	void TeleportAllPeds();
 	Roof* currLastCarEmblem = 0;
 	short currLastCarEmblemID = 0;
@@ -134,6 +136,7 @@ public:
 	void SetHealthArmorMoney();
 	void SetGlobalPedSpeeds();
 	void SpawnCar(CAR_MODEL model);
+	void SpawnObject(OBJECT_TYPE type);
 
 	void OnGTAGameTick(Game* game);
 	void NewFunction();
