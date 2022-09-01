@@ -716,7 +716,7 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	native.insert(std::pair<std::wstring, DWORD>(L"Show all arrows", 0xB2));
 
 	for (itr = native.begin(); itr != native.end(); ++itr) {
-		ncMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 000), itr->first.c_str());
+		ncMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 38000), itr->first.c_str());
 	}
 
 	ncHMenu = ncMenu->m_hMenu;
