@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GTA_H
 #define GTA_H
 

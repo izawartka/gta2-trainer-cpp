@@ -199,6 +199,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ACSWindow.cpp" />
     <ClCompile Include="gta2-helper.cpp" />
     <ClCompile Include="gta2dll.cpp" />
     <ClCompile Include="Hooking.Patterns.cpp" />
@@ -209,11 +210,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="WantToSpawn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="gta2dll.def" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ACSWindow.h" />
     <ClInclude Include="gta2-helper.h" />
     <ClInclude Include="gta2.h" />
     <ClInclude Include="framework.h" />
@@ -223,6 +226,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="WantToSpawn.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="gta2dll.rc" />

@@ -9,6 +9,7 @@
 
 #include "resource.h"		// main symbols
 #include "MainWindow.h"
+#include "ACSWindow.h"
 
 
 // Cgta2dllApp
