@@ -146,7 +146,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(IDC_MOUSECTRL, &MainWindow::MouseControl)
 	ON_COMMAND(ID_SPAWNCAR_TANK, &MainWindow::OnSpawncarTank)
 	ON_WM_HOTKEY()
-	ON_COMMAND_RANGE(35000, 35000 + 86, &OnSpawnCarClick)
+	ON_COMMAND_RANGE(35000, 35000 + 512, &OnSpawnCarClick)
 	ON_COMMAND_RANGE(36000, 36000 + 512, &OnSpawnObjectClick)
 	ON_COMMAND_RANGE(45000, 45000 + 15, &OnGetWeaponClick)
 	ON_COMMAND_RANGE(75000, 75000 + 15, &OnGetCarWeaponClick)
@@ -246,11 +246,24 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		1,
 		MOD_ALT | MOD_NOREPEAT,
 		0x4e); //ALT+N
+
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
 		MOD_ALT | MOD_NOREPEAT,
 		0x48); //ALT+H
+
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_ALT | MOD_NOREPEAT,
+		0x4F); //ALT+O
+
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_ALT | MOD_NOREPEAT,
+		0x43); //ALT+C
 
 	CMenu *menu = GetMenu();
 	
@@ -259,95 +272,124 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CMenu* nMenu = new CMenu();
 	nMenu->CreatePopupMenu();	
 
-	std::map<std::wstring, DWORD> cars;
+	CMenu* naMenu = new CMenu();
+	naMenu->CreatePopupMenu();
 
-	cars.insert(std::pair<std::wstring, DWORD>(L"ALFA", 0));
-	cars.insert(std::pair<std::wstring, DWORD>(L"ALLARD", 1));
-	cars.insert(std::pair<std::wstring, DWORD>(L"AMDB4", 2));
-	cars.insert(std::pair<std::wstring, DWORD>(L"APC", 3));
-	cars.insert(std::pair<std::wstring, DWORD>(L"BANKVAN", 4));
-	cars.insert(std::pair<std::wstring, DWORD>(L"BMW", 5));
-	cars.insert(std::pair<std::wstring, DWORD>(L"BOXCAR", 6));
-	cars.insert(std::pair<std::wstring, DWORD>(L"BOXTRUCK", 7));
-	cars.insert(std::pair<std::wstring, DWORD>(L"BUG", 8));
-	cars.insert(std::pair<std::wstring, DWORD>(L"BUICK", 10));
-	cars.insert(std::pair<std::wstring, DWORD>(L"BUS", 11));
-	cars.insert(std::pair<std::wstring, DWORD>(L"COPCAR", 12));
-	cars.insert(std::pair<std::wstring, DWORD>(L"DART", 13));
-	cars.insert(std::pair<std::wstring, DWORD>(L"EDSEL", 14));
-	cars.insert(std::pair<std::wstring, DWORD>(L"FIAT", 16));
-	cars.insert(std::pair<std::wstring, DWORD>(L"FIRETRUK", 17));
-	cars.insert(std::pair<std::wstring, DWORD>(L"GRAHAM", 18));
-	cars.insert(std::pair<std::wstring, DWORD>(L"GT24640", 19));
-	cars.insert(std::pair<std::wstring, DWORD>(L"GTRUCK", 21));
-	cars.insert(std::pair<std::wstring, DWORD>(L"GUNJEEP", 22));
-	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG", 23));
-	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D1", 24));
-	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D2", 25));
-	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D3", 26));
-	cars.insert(std::pair<std::wstring, DWORD>(L"ICECREAM", 27));
-	cars.insert(std::pair<std::wstring, DWORD>(L"ISETLIMO", 28));
-	cars.insert(std::pair<std::wstring, DWORD>(L"ISETTA", 29));
-	cars.insert(std::pair<std::wstring, DWORD>(L"JEEP", 30));
-	cars.insert(std::pair<std::wstring, DWORD>(L"JEFFREY", 31));
-	cars.insert(std::pair<std::wstring, DWORD>(L"LIMO", 32));
-	cars.insert(std::pair<std::wstring, DWORD>(L"LIMO2", 33));
-	cars.insert(std::pair<std::wstring, DWORD>(L"MEDICAR", 34));
-	cars.insert(std::pair<std::wstring, DWORD>(L"MERC", 35));
-	cars.insert(std::pair<std::wstring, DWORD>(L"MESSER", 36));
-	cars.insert(std::pair<std::wstring, DWORD>(L"MIURA", 37));
-	cars.insert(std::pair<std::wstring, DWORD>(L"MONSTER", 38));
-	cars.insert(std::pair<std::wstring, DWORD>(L"MORGAN", 39));
-	cars.insert(std::pair<std::wstring, DWORD>(L"MORRIS", 40));
-	cars.insert(std::pair<std::wstring, DWORD>(L"PICKUP", 41));
-	cars.insert(std::pair<std::wstring, DWORD>(L"RTYPE", 42));
-	cars.insert(std::pair<std::wstring, DWORD>(L"SPIDER", 44));
-	cars.insert(std::pair<std::wstring, DWORD>(L"SPRITE", 45));
-	cars.insert(std::pair<std::wstring, DWORD>(L"STINGRAY", 46));
-	cars.insert(std::pair<std::wstring, DWORD>(L"STRATOS", 47));
-	cars.insert(std::pair<std::wstring, DWORD>(L"STRATOSB", 48));
-	cars.insert(std::pair<std::wstring, DWORD>(L"STRIPETB", 49));
-	cars.insert(std::pair<std::wstring, DWORD>(L"STYPE", 50));
-	cars.insert(std::pair<std::wstring, DWORD>(L"STYPECAB", 51));
-	cars.insert(std::pair<std::wstring, DWORD>(L"SWATVAN", 52));
-	cars.insert(std::pair<std::wstring, DWORD>(L"T2000GT", 53));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TANK", 54));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TANKER", 55));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TAXI", 56));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TBIRD", 57));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TOWTRUCK", 58));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TRANCEAM", 62));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TRUKCAB1", 63));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TRUKCAB2", 64));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TRUKCONT", 65));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TRUKTRNS", 66));
-	cars.insert(std::pair<std::wstring, DWORD>(L"TVVAN", 67));
-	cars.insert(std::pair<std::wstring, DWORD>(L"VAN", 68));
-	cars.insert(std::pair<std::wstring, DWORD>(L"VESPA", 69));
-	cars.insert(std::pair<std::wstring, DWORD>(L"VTYPE", 70));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WBTWIN", 71));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK0", 72));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK1", 73));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK2", 74));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK3", 75));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK4", 76));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK5", 77));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK6", 78));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK7", 79));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK8", 80));
-	cars.insert(std::pair<std::wstring, DWORD>(L"WRECK9", 81));
-	cars.insert(std::pair<std::wstring, DWORD>(L"XK120", 82));
-	cars.insert(std::pair<std::wstring, DWORD>(L"ZCX5", 83));
-	cars.insert(std::pair<std::wstring, DWORD>(L"EDSELFBI", 84));
-	cars.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D4", 85));
-	cars.insert(std::pair<std::wstring, DWORD>(L"KRSNABUS", 86));
+	CMenu* njMenu = new CMenu();
+	njMenu->CreatePopupMenu();
+
+	CMenu* ntMenu = new CMenu();
+	ntMenu->CreatePopupMenu();
+
+	std::map<std::wstring, DWORD> cars;
+	std::map<std::wstring, DWORD> cars_a;
+	std::map<std::wstring, DWORD> cars_j;
+	std::map<std::wstring, DWORD> cars_t;
+
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"ALFA", 0));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"ALLARD", 1));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"AMDB4", 2));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"APC", 3));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"BANKVAN", 4));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"BMW", 5));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"BOXCAR", 6));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"BOXTRUCK", 7));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"BUG", 8));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"BUICK", 10));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"BUS", 11));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"COPCAR", 12));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"DART", 13));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"EDSEL", 14));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"FIAT", 16));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"FIRETRUK", 17));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"GRAHAM", 18));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"GT24640", 19));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"GTRUCK", 21));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"GUNJEEP", 22));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"HOTDOG", 23));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D1", 24));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D2", 25));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D3", 26));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"ICECREAM", 27));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"ISETLIMO", 28));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"ISETTA", 29));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"JEEP", 30));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"JEFFREY", 31));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"LIMO", 32));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"LIMO2", 33));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"MEDICAR", 34));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"MERC", 35));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"MESSER", 36));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"MIURA", 37));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"MONSTER", 38));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"MORGAN", 39));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"MORRIS", 40));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"PICKUP", 41));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"RTYPE", 42));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"SPIDER", 44));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"SPRITE", 45));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"STINGRAY", 46));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"STRATOS", 47));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"STRATOSB", 48));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"STRIPETB", 49));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"STYPE", 50));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"STYPECAB", 51));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"SWATVAN", 52));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"T2000GT", 53));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TANK", 54));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TANKER", 55));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TAXI", 56));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TBIRD", 57));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TOWTRUCK", 58));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TRANCEAM", 62));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TRUKCAB1", 63));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TRUKCAB2", 64));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TRUKCONT", 65));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TRUKTRNS", 66));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"TVVAN", 67));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"VAN", 68));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"VESPA", 69));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"VTYPE", 70));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WBTWIN", 71));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK0", 72));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK1", 73));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK2", 74));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK3", 75));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK4", 76));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK5", 77));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK6", 78));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK7", 79));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK8", 80));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"WRECK9", 81));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"XK120", 82));
+	cars_t.insert(std::pair<std::wstring, DWORD>(L"ZCX5", 83));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"EDSELFBI", 84));
+	cars_a.insert(std::pair<std::wstring, DWORD>(L"HOTDOG_D4", 85));
+	cars_j.insert(std::pair<std::wstring, DWORD>(L"KRSNABUS", 86));
+
+	cars.insert(std::pair<std::wstring, DWORD>(L"Last spawned car -> ALT+C", 200));
 
 	std::map<std::wstring, DWORD>::iterator itr;
 	for (itr = cars.begin(); itr != cars.end(); ++itr) {
 		nMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 35000), itr->first.c_str());
 	}
+	for (itr = cars_a.begin(); itr != cars_a.end(); ++itr) {
+		naMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 35000), itr->first.c_str());
+	}
+	for (itr = cars_j.begin(); itr != cars_j.end(); ++itr) {
+		njMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 35000), itr->first.c_str());
+	}
+	for (itr = cars_t.begin(); itr != cars_t.end(); ++itr) {
+		ntMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 35000), itr->first.c_str());
+	}
 
+	nMenu->AppendMenuW(MF_POPUP, (UINT_PTR)naMenu->m_hMenu, L"A-I");
+	nMenu->AppendMenuW(MF_POPUP, (UINT_PTR)njMenu->m_hMenu, L"J-S");
+	nMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ntMenu->m_hMenu, L"T-Z");
 	menu->AppendMenuW(MF_POPUP, (UINT_PTR)nMenu->m_hMenu, L"Spawn car");
+
+	nHMenu = nMenu->m_hMenu;
+	EnableMenuItem(nHMenu, 35200, MF_DISABLED);
 
 	// Prepare objects menu
 
@@ -527,6 +569,8 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	objects_oi.insert(std::pair<std::wstring, DWORD>(L"TUNNEL_BLOCKER", 294));
 	objects_p.insert(std::pair<std::wstring, DWORD>(L"REMOTE", 295));
 
+	objects.insert(std::pair<std::wstring, DWORD>(L"Last spawned object -> ALT+O", 400));
+
 	for (itr = objects_b.begin(); itr != objects_b.end(); ++itr) {
 		obMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
 	}
@@ -563,16 +607,23 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		ooiMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
 	}
 
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)obMenu->m_hMenu, L"Basic objects...");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)owMenu->m_hMenu, L"Weapon collectibles...");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ocMenu->m_hMenu, L"Car Weapon collectibles...");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)opMenu->m_hMenu, L"Pop-Ups...");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)osMenu->m_hMenu, L"Skids...");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)orMenu->m_hMenu, L"Projectiles...");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)otMenu->m_hMenu, L"Phones...");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ooMenu->m_hMenu, L"Others...");
-	ooMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ooiMenu->m_hMenu, L"Invisible...");
+	for (itr = objects.begin(); itr != objects.end(); ++itr) {
+		oMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
+	}
+
+	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)obMenu->m_hMenu, L"Basic objects");
+	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)owMenu->m_hMenu, L"Weapon collectibles");
+	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ocMenu->m_hMenu, L"Car Weapon collectibles");
+	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)opMenu->m_hMenu, L"Pop-Ups");
+	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)osMenu->m_hMenu, L"Skids");
+	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)orMenu->m_hMenu, L"Projectiles");
+	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)otMenu->m_hMenu, L"Phones");
+	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ooMenu->m_hMenu, L"Others");
+	ooMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ooiMenu->m_hMenu, L"Invisible");
 	menu->AppendMenuW(MF_POPUP, (UINT_PTR)oMenu->m_hMenu, L"Spawn object");
+
+	oHMenu = oMenu->m_hMenu;
+	EnableMenuItem(oHMenu, 36400, MF_DISABLED);
 
 	// Prepare weapons menu
 
@@ -719,6 +770,7 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	native.insert(std::pair<std::wstring, DWORD>(L"Show input", 0x58));
 	native.insert(std::pair<std::wstring, DWORD>(L"Skip right tiles", 0x59));
 	native.insert(std::pair<std::wstring, DWORD>(L"No traffic", 0x5B));
+	native.insert(std::pair<std::wstring, DWORD>(L"Unlock all levels", 0x5C));
 	native.insert(std::pair<std::wstring, DWORD>(L"No police", 0x5E));
 	native.insert(std::pair<std::wstring, DWORD>(L"Skip bottom tiles", 0x5F));
 	native.insert(std::pair<std::wstring, DWORD>(L"Infinite lives", 0x61));
@@ -1070,7 +1122,7 @@ void MainWindow::SpawnObject(OBJECT_TYPE type)
 	// If everything successed, show label :D
 	if (object)
 	{
-		log(L"Object type: %i spawned!", (int)type);
+		log(L"Object 0x%X spawned!", object);
 		fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)L"Object spawned!", 10);
 	}
 
@@ -1080,7 +1132,25 @@ void MainWindow::SpawnObject(OBJECT_TYPE type)
 
 // Object spawning menu
 void MainWindow::OnSpawnObjectClick(UINT nID) {
-	SpawnObject((OBJECT_TYPE)(nID - 36000));
+	switch (nID)
+	{
+	case 36400:
+		OnSpawnLastObjectClick();
+		break;
+	default:
+		wtSpawnObject = nID - 36000;
+		lastSpawnedObjectType = wtSpawnObject;
+		EnableMenuItem(oHMenu, 36400, MF_ENABLED);
+		break;
+	}
+}
+
+void MainWindow::OnSpawnLastObjectClick()
+{
+	if (lastSpawnedObjectType == -1)
+		return;
+
+	wtSpawnObject = lastSpawnedObjectType;
 }
 
 void MainWindow::SpawnCar(CAR_MODEL model)
@@ -1121,8 +1191,8 @@ void MainWindow::SpawnCar(CAR_MODEL model)
 	// If everything successed, show label :D
 	if (car)
 	{
-		log(L"Car model: %i spawned!", (int)model);
-		fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)L"Car is here!", 10);
+		log(L"Car 0x%X spawned!", car);
+		fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)L"Car spawned!", 10);
 	}
 
 	wtSpawnCar = -1;
@@ -1130,7 +1200,25 @@ void MainWindow::SpawnCar(CAR_MODEL model)
 
 // Custom car spawning
 void MainWindow::OnSpawnCarClick(UINT nID) {
-	wtSpawnCar = (nID - 35000);
+	switch (nID)
+	{
+	case 35200:
+		OnSpawnLastCarClick();
+		break;
+	default:
+		wtSpawnCar = nID - 35000;
+		lastSpawnedCarModel = wtSpawnCar;
+		EnableMenuItem(nHMenu, 35200, MF_ENABLED);
+		break;
+	}
+}
+
+void MainWindow::OnSpawnLastCarClick()
+{
+	if (lastSpawnedCarModel == -1)
+		return;
+
+	wtSpawnCar = lastSpawnedCarModel;
 }
 
 // Tank spawning
@@ -1167,6 +1255,12 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		break;
 	case 0x48:
 		HijackTrain();
+		break;
+	case 0x4f:
+		OnSpawnLastObjectClick();
+		break;
+	case 0x43:
+		OnSpawnLastCarClick();
 		break;
 	default:
 		break;
@@ -2200,8 +2294,8 @@ void MainWindow::OnGTAGameTick(Game* game)
 	PedInfo();
 	if (captureMouse) CaptureMouse();
 	FixCheckboxes();
-	if (wtSpawnCar + 1) SpawnCar((CAR_MODEL)wtSpawnCar);
-	if (wtSpawnObject + 1) SpawnObject((OBJECT_TYPE)wtSpawnObject);
+	if (wtSpawnCar != -1) SpawnCar((CAR_MODEL)wtSpawnCar);
+	if (wtSpawnObject != -1) SpawnObject((OBJECT_TYPE)wtSpawnObject);
 }
 
 void MainWindow::NewFunction()
