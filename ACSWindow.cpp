@@ -77,7 +77,7 @@ void ACSWindow::ExecuteACS()
 		}
 	}
 
-	::DestroyWindow(acsWnd->m_hWnd);
+	acsWnd->ShowWindow(HIDE_WINDOW);
 }
 
 void ACSWindow::ClearValues()
