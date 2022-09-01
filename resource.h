@@ -2,7 +2,6 @@
 // Plik do³¹czany wygenerowany przez œrodowisko Microsoft Visual C++.
 // U¿ywany przez: gta2dll.rc
 //
-#define IDCANCEL                        2
 #define IDD_DIALOG1                     3000
 #define IDC_PEDX                        3001
 #define IDC_PEDHEALTH                   3002
@@ -90,7 +89,20 @@
 #define IDC_EMBM                        3081
 #define IDC_EMBPOS                      3082
 #define IDC_EDIT1                       3083
-#define IDD_DIALOG2                     3084
+#define IDC_EMBPOS2                     3085
+#define IDD_DIALOG2                     4000
+#define IDC_ACS_SPAWN                   4001
+#define IDC_ACS_X                       4002
+#define IDC_ACS_Y                       4003
+#define IDC_ACS_Z                       4004
+#define IDC_ACS_ROT                     4005
+#define IDC_ACS_GETPPOS                 4006
+#define IDC_ACS_XSIZE                   4007
+#define IDC_ACS_YSIZE                   4008
+#define IDC_ACS_XOFF                    4009
+#define IDC_ACS_YOFF                    4010
+#define IDC_ACS_VCOLORS                 4011
+#define IDC_ACS_MODEL                   4012
 #define ID_COMMANDS_HELLO               32772
 #define ID_COMMANDS_CAPTUREMOUSE        32773
 #define ID_COMMANDS_SPAWNCAR            32774
@@ -111,7 +123,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3012
 #define _APS_NEXT_COMMAND_VALUE         32788
-#define _APS_NEXT_CONTROL_VALUE         3075
+#define _APS_NEXT_CONTROL_VALUE         3099
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
