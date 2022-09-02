@@ -1722,9 +1722,9 @@ void MainWindow::WatchPeds()
 		watchPeds = false;
 		log(L"You are no longer watching peds");
 
-		playerPed->gameObject->sprite->x = pedXPreHuman;
-		playerPed->gameObject->sprite->y = pedYPreHuman;
-		playerPed->gameObject->sprite->z = pedZPreHuman;
+		playerPed->gameObject->sprite->x = pedXPreWatch;
+		playerPed->gameObject->sprite->y = pedYPreWatch;
+		playerPed->gameObject->sprite->z = pedZPreWatch;
 
 
 	}
@@ -1734,9 +1734,9 @@ void MainWindow::WatchPeds()
 		log(L"You are now watching peds");
 		log(L"You can change selected ped by pressing ALT + N");
 
-		pedXPreHuman = playerPed->gameObject->sprite->x;
-		pedYPreHuman = playerPed->gameObject->sprite->y;
-		pedZPreHuman = playerPed->gameObject->sprite->z;
+		pedXPreWatch = playerPed->gameObject->sprite->x;
+		pedYPreWatch = playerPed->gameObject->sprite->y;
+		pedZPreWatch = playerPed->gameObject->sprite->z;
 
 		WatchNextPed();
 	}
@@ -2221,5 +2221,9 @@ void MainWindow::OnGTAGameTick(Game* game)
 void MainWindow::NewFunction()
 {
 	// You can add anything here to test it and then press ALT+D ingame to run the code :)
-	log(L"Nearest ped: %d Nearest car: %d", FindTheNearestPed(fnGetPedByID(1))->id, FindTheNearestCar(fnGetPedByID(1))->id);
+	Ped* playerPed = fnGetPedByID(1);
+	if (!playerPed) return;
+	Ped* nearestPed = FindTheNearestPed(playerPed);
+	Car* nearestCar = FindTheNearestCar(playerPed);
+	log(L"Nearest ped: %d (0x%X) Nearest car: %d (0x%X)", nearestPed->id, nearestPed, nearestCar->id, nearestCar);
 }
