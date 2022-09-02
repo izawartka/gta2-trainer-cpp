@@ -150,7 +150,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(IDC_MOUSECTRL, &MainWindow::MouseControl)
 	ON_COMMAND(ID_SPAWNCAR_TANK, &MainWindow::OnSpawncarTank)
 	ON_WM_HOTKEY()
-	ON_COMMAND_RANGE(35000, 35000 + 512, &OnSpawnCarClick)
+	ON_COMMAND_RANGE(35000, 35000 + 512, &SpawnCarHere)
 	ON_COMMAND_RANGE(36000, 36000 + 512, &OnSpawnObjectClick)
 	ON_COMMAND_RANGE(37000, 37000 + 15, &OnGetWeaponClick)
 	ON_COMMAND_RANGE(37100, 37100 + 15, &OnGetCarWeaponClick)
@@ -341,7 +341,7 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	std::map<std::wstring, DWORD> objects_b; //basic
 	std::map<std::wstring, DWORD> objects_w; //weapons
 	std::map<std::wstring, DWORD> objects_c; //car weapons
-	std::map<std::wstring, DWORD> objects_p; //pop-ups
+	std::map<std::wstring, DWORD> objects_p; //power-ups
 	std::map<std::wstring, DWORD> objects_s; //skids
 	std::map<std::wstring, DWORD> objects_r; //projectiles
 	std::map<std::wstring, DWORD> objects_t; //phones
@@ -528,7 +528,7 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)obMenu->m_hMenu, L"Basic objects");
 	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)owMenu->m_hMenu, L"Weapon collectibles");
 	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ocMenu->m_hMenu, L"Car Weapon collectibles");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)opMenu->m_hMenu, L"Pop-Ups");
+	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)opMenu->m_hMenu, L"Power-Ups");
 	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)osMenu->m_hMenu, L"Skids");
 	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)orMenu->m_hMenu, L"Projectiles");
 	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)otMenu->m_hMenu, L"Phones");
@@ -1067,30 +1067,31 @@ void MainWindow::OnSpawnLastObjectClick()
 	wtSpawnObject = lastSpawnedObjectType;
 }
 
-void MainWindow::SpawnCar(int x, int y, int z, int rot, CAR_MODEL model)
+// Caleed evey game tick and only then
+void MainWindow::SafeSpawnCars(WantToSpawn wtsList[128], int* wtsArraySize)
 {
-	// Return if not in the game
-	if (*(DWORD*)ptrToPedManager == 0)
-		return;
-
-	// Spawn a car
-	Car* car = fnSpawnCar(
-		x,
-		y,
-		z,
-		rot,
-		model
-	);
-
-	// If everything successed, change color if nessesary and show label :D
-	if (car)
+	while (*wtsArraySize > 0)
 	{
-		log(L"Car 0x%X spawned!", car);
+		(*wtsArraySize)--;
+		WantToSpawn currentWTS = wtsList[*wtsArraySize];
+		// Spawn a car
+		Car* car = fnSpawnCar(
+			currentWTS.x,
+			currentWTS.y,
+			currentWTS.z,
+			currentWTS.rot,
+			(CAR_MODEL)currentWTS.model
+		);
+
+		if (car)
+		{
+			log(L"Car 0x%X spawned!", car);
+		}
 	}
 }
 
 // Car spawning (in front of the player)
-void MainWindow::OnSpawnCarClick(UINT nID) {
+void MainWindow::SpawnCarHere(UINT nID) {
 
 	// Spawn last spawned car model
 	if (nID == 35200)
@@ -1143,13 +1144,13 @@ void MainWindow::OnSpawnCarClick(UINT nID) {
 // Tank spawning
 void MainWindow::OnSpawncarTank()
 {
-	OnSpawnCarClick(35000 + (int)TANK);
+	SpawnCarHere(35000 + (int)TANK);
 }
 
 // Gunjeep spawning
 void MainWindow::OnSpawncarGunjeep()
 {
-	OnSpawnCarClick(35000 + (int)GUNJEEP);
+	SpawnCarHere(35000 + (int)GUNJEEP);
 }
 
 void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
@@ -1179,7 +1180,7 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		OnSpawnLastObjectClick();
 		break;
 	case 0x43:
-		OnSpawnCarClick(35200);
+		SpawnCarHere(35200);
 		break;
 	default:
 		break;
@@ -2213,12 +2214,7 @@ void MainWindow::OnGTAGameTick(Game* game)
 	PedInfo();
 	if (captureMouse) CaptureMouse();
 	FixCheckboxes();
-	while (wtsCarSize > 0)
-	{
-		wtsCarSize--;
-		WantToSpawn currentWTS = wtsCar[wtsCarSize];
-		SpawnCar(currentWTS.x, currentWTS.y, currentWTS.z, currentWTS.rot, (CAR_MODEL)currentWTS.model);
-	}
+	SafeSpawnCars(wtsCar, &wtsCarSize);
 	if (wtSpawnObject != -1) SpawnObject((OBJECT_TYPE)wtSpawnObject);
 }
 
