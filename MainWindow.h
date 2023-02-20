@@ -26,7 +26,7 @@ protected:
 public:
 
 	// consts //
-	const LPCTSTR carnames[80] = { L"ALFA", L"ALLARD", L"AMDB4", L"APC", L"BANKVAN", L"BMW", L"BOXCAR", L"BOXTRUCK",
+	const LPCTSTR carnames[79] = { L"ALFA", L"ALLARD", L"AMDB4", L"APC", L"BANKVAN", L"BMW", /*L"BOXCAR",*/ L"BOXTRUCK",
 			L"BUG", L"BUICK", L"BUS", L"COPCAR", L"DART", L"EDSEL", L"EDSELFBI", L"FIAT", L"FIRETRUK",
 			L"GRAHAM", L"GT24640", L"GTRUCK", L"GUNJEEP", L"HOTDOG", L"HOTDOG_D1",
 			L"HOTDOG_D2", L"HOTDOG_D3", L"HOTDOG_D4", L"ICECREAM", L"ISETLIMO", L"ISETTA", L"JEEP", L"JEFFREY", L"KRSNABUS",
@@ -38,7 +38,7 @@ public:
 			L"WBTWIN", L"WRECK0", L"WRECK1", L"WRECK2", L"WRECK3", L"WRECK4", L"WRECK5",
 			L"WRECK6", L"WRECK7", L"WRECK8", L"WRECK9", L"XK120", L"ZCX5" };
 
-	const int carids[80] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 84, 16, 17, 18, 19, 21, 22, 23,
+	const int carids[79] = { 0, 1, 2, 3, 4, 5, /*6,*/ 7, 8, 10, 11, 12, 13, 14, 84, 16, 17, 18, 19, 21, 22, 23,
 		24, 25, 26, 85, 27, 28, 29, 30, 31, 86, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 44, 45, 46, 47, 48,
 		49, 50, 51, 52, 53, 54, 55, 56, 57, 58, /*59, 60, 61,*/ 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
 		74, 75, 76, 77, 78, 79, 80, 81, 82, 83 };

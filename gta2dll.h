@@ -10,7 +10,8 @@
 #include "resource.h"		// main symbols
 #include "MainWindow.h"
 #include "ACSWindow.h"
-
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 // Cgta2dllApp
 // See gta2dll.cpp for the implementation of this class

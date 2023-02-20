@@ -286,10 +286,10 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CMenu* ntMenu = new CMenu();
 	ntMenu->CreatePopupMenu();
 
-	for (int i = 0; i < 80; ++i) {
-		if(i < 29)
+	for (int i = 0; i < 79; ++i) {
+		if(i < 28)
 			naMenu->AppendMenuW(MF_STRING, (UINT_PTR)(carids[i] + 35000), carnames[i]);
-		else if(i < 52)
+		else if(i < 51)
 			njMenu->AppendMenuW(MF_STRING, (UINT_PTR)(carids[i] + 35000), carnames[i]);
 		else
 			ntMenu->AppendMenuW(MF_STRING, (UINT_PTR)(carids[i] + 35000), carnames[i]);
@@ -1074,6 +1074,18 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsList[128], int* wtsArraySize)
 	{
 		(*wtsArraySize)--;
 		WantToSpawn currentWTS = wtsList[*wtsArraySize];
+
+		// coordinates check
+		if (
+			currentWTS.x < 1 * 16384 ||
+			currentWTS.x > 254 * 16384 ||
+			currentWTS.y < 1 * 16384 ||
+			currentWTS.y > 254 * 16384
+			) {
+			log(L"Car wasn't spawned, target position outside the world!");
+			continue;
+		}
+
 		// Spawn a car
 		Car* car = fnSpawnCar(
 			currentWTS.x,
@@ -1086,6 +1098,12 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsList[128], int* wtsArraySize)
 		if (car)
 		{
 			log(L"Car 0x%X spawned!", car);
+
+			short color = currentWTS.GetColor();
+			if (color > -1) {
+				car->sprite->lockPalleteMaybe = 3;
+				car->sprite->carColor = color;
+			}
 		}
 	}
 }
@@ -1280,7 +1298,7 @@ void MainWindow::LockStars()
 void MainWindow::NoReloads()
 {
 	noReloads = !noReloads;
-	log(L"No reloads %sabled", noReloads ? "en" : "dis");
+	log(L"No reloads %sabled", noReloads ? L"en" : L"dis");
 
 }
 

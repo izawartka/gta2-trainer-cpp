@@ -53,6 +53,7 @@ float ACSWindow::GetFloatFromCEditVal(CEdit* element)
 
 void ACSWindow::ExecuteACS()
 {
+	if (m_model.GetCurSel() < 0) return;
 	int model = m_mainWindow->carids[m_model.GetCurSel()];
 	int xPos = GetFloatFromCEditVal(&m_xPos) * 16384.0f;
 	int yPos = GetFloatFromCEditVal(&m_yPos) * 16384.0f;
@@ -62,6 +63,8 @@ void ACSWindow::ExecuteACS()
 	int ySize = GetFloatFromCEditVal(&m_ySize);
 	int xOffset = GetFloatFromCEditVal(&m_xOffset) * 16384.0f;
 	int yOffset = GetFloatFromCEditVal(&m_yOffset) * 16384.0f;
+	int vColors = ((CButton*)GetDlgItem(IDC_ACS_VCOLORS))->GetCheck();
+	short color = vColors == true ? -2 : -1;
 
 	for (int x = 0; x < xSize; x++)
 	{
@@ -72,7 +75,7 @@ void ACSWindow::ExecuteACS()
 			int targetX = xPos + x * xOffset;
 			int targetY = yPos + y * yOffset;
 
-			m_mainWindow->wtsCar[m_mainWindow->wtsCarSize] = WantToSpawn(targetX, targetY, zPos, rot, model);
+			m_mainWindow->wtsCar[m_mainWindow->wtsCarSize] = WantToSpawn(targetX, targetY, zPos, rot, model, color);
 			m_mainWindow->wtsCarSize++;
 		}
 	}
@@ -91,8 +94,10 @@ void ACSWindow::ClearValues()
 	m_xOffset.SetWindowTextW(L"1");
 	m_yOffset.SetWindowTextW(L"1");
 	m_model.ResetContent();
-	for (int i = 0; i < 80; i++)
+	for (int i = 0; i < 79; i++)
 		m_model.AddString(m_mainWindow->carnames[i]);
+
+	GetPlayerPos();
 }
 
 void ACSWindow::GetPlayerPos()
@@ -117,7 +122,4 @@ void ACSWindow::GetPlayerPos()
 
 	swprintf(buf, 256, L"%f", playerPed->gameObject->sprite->z / 16384.0f);
 	m_zPos.SetWindowTextW(buf);
-
-	swprintf(buf, 256, L"%i", playerPed->gameObject->sprite->rotation/4);
-	m_rot.SetWindowTextW(buf);
 }
