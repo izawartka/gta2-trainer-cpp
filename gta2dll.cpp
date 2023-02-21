@@ -58,6 +58,7 @@ Cgta2dllApp theApp;
 
 BOOL Cgta2dllApp::InitInstance()
 {
+	srand(time(NULL));
 	CWinApp::InitInstance();
 
 	m_mainWindow = new MainWindow();
