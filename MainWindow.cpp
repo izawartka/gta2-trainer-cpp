@@ -272,272 +272,57 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CMenu *menu = GetMenu();
 	std::map<std::wstring, DWORD>::iterator itr;
 	
+	// this section still needs a solid refactor
 	// Prepare cars menu
 
 	CMenu* nMenu = new CMenu();
-	nMenu->CreatePopupMenu();	
+	nMenu->CreatePopupMenu();
 
-	CMenu* naMenu = new CMenu();
-	naMenu->CreatePopupMenu();
-
-	CMenu* njMenu = new CMenu();
-	njMenu->CreatePopupMenu();
-
-	CMenu* ntMenu = new CMenu();
-	ntMenu->CreatePopupMenu();
-
-	for (int i = 0; i < 79; ++i) {
-		if(i < 28)
-			naMenu->AppendMenuW(MF_STRING, (UINT_PTR)(carids[i] + 35000), carnames[i]);
-		else if(i < 51)
-			njMenu->AppendMenuW(MF_STRING, (UINT_PTR)(carids[i] + 35000), carnames[i]);
-		else
-			ntMenu->AppendMenuW(MF_STRING, (UINT_PTR)(carids[i] + 35000), carnames[i]);
-	}
-
-	nMenu->AppendMenuW(MF_STRING, (UINT_PTR)(35200), L"Last spawned car -> ALT+C");
-	nMenu->AppendMenuW(MF_STRING, (UINT_PTR)(35201), L"Array of cars...");
-	nMenu->AppendMenuW(MF_POPUP, (UINT_PTR)naMenu->m_hMenu, L"A-I");
-	nMenu->AppendMenuW(MF_POPUP, (UINT_PTR)njMenu->m_hMenu, L"J-S");
-	nMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ntMenu->m_hMenu, L"T-Z");
-	menu->AppendMenuW(MF_POPUP, (UINT_PTR)nMenu->m_hMenu, L"Spawn car");
-
+	nMenu->AppendMenuW(MF_STRING, 35200, L"Last spawned car -> ALT+C");
+	nMenu->AppendMenuW(MF_STRING, 35201, L"Array of cars...");
 	nHMenu = nMenu->m_hMenu;
 	EnableMenuItem(nHMenu, 35200, MF_DISABLED);
+
+	int carsCatsCount = sizeof(carsCategories) / sizeof(carsCategories[0]);
+	CMenu** nsMenus = new CMenu * [carsCatsCount];
+	for (int i = 0; i < carsCatsCount; i++) {
+		nsMenus[i] = new CMenu();
+		nsMenus[i]->CreatePopupMenu();
+		nMenu->AppendMenuW(MF_POPUP, (UINT_PTR)nsMenus[i]->m_hMenu, (LPCTSTR)carsCategories[i]);
+	}
+
+	int carsCount = sizeof(cars) / sizeof(cars[0]);
+	for (int i = 0; i < carsCount; i++) {
+		ObjectInfo info = cars[i];
+		nsMenus[info.category]->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + 35000), info.name);
+	}
+
+	menu->AppendMenuW(MF_POPUP, (UINT_PTR)nMenu->m_hMenu, L"Spawn car");
 
 	// Prepare objects menu
 
 	CMenu* oMenu = new CMenu();
 	oMenu->CreatePopupMenu();
 
-	CMenu* obMenu = new CMenu();
-	obMenu->CreatePopupMenu();
-
-	CMenu* owMenu = new CMenu();
-	owMenu->CreatePopupMenu();
-
-	CMenu* ocMenu = new CMenu();
-	ocMenu->CreatePopupMenu();
-
-	CMenu* opMenu = new CMenu();
-	opMenu->CreatePopupMenu();
-
-	CMenu* osMenu = new CMenu();
-	osMenu->CreatePopupMenu();
-
-	CMenu* orMenu = new CMenu();
-	orMenu->CreatePopupMenu();
-
-	CMenu* otMenu = new CMenu();
-	otMenu->CreatePopupMenu();
-
-	CMenu* ooMenu = new CMenu();
-	ooMenu->CreatePopupMenu();
-
-	CMenu* ooiMenu = new CMenu();
-	ooiMenu->CreatePopupMenu();
-
-	std::map<std::wstring, DWORD> objects;
-	std::map<std::wstring, DWORD> objects_b; //basic
-	std::map<std::wstring, DWORD> objects_w; //weapons
-	std::map<std::wstring, DWORD> objects_c; //car weapons
-	std::map<std::wstring, DWORD> objects_p; //power-ups
-	std::map<std::wstring, DWORD> objects_s; //skids
-	std::map<std::wstring, DWORD> objects_r; //projectiles
-	std::map<std::wstring, DWORD> objects_t; //phones
-	std::map<std::wstring, DWORD> objects_o; //others
-	std::map<std::wstring, DWORD> objects_oi; //others invisible
-
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"BIN_LID", 1));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"BOLLARD", 2));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"CONE", 3));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"BOXES", 4));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"BLASTER", 5));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"RUBBISH", 6));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"BIN", 7));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"ANIMATING_OIL", 8));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"OIL", 9));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"MINE", 10));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"BUSH", 11));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"CRATE", 12));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"FOOTY", 13));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"HARDBOX", 14));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"NEWSDIS", 15));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"OILDRUM", 16));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"TYRE", 17));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"HYDRANT_LID", 18));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"HYDRANT", 19));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"HYDRANT_UNLID", 20));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"ROADBLOCK", 21));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"BENCH", 22));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"PACKAGE", 23));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"TOWER", 25));
-	//objects_b.insert(std::pair<std::wstring, DWORD>(L"EXPLODE_MEDIUM", 42));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_00 (Pistol)", 64));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_01 (S-Uzi)", 65));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_02 (Rocket Launcher)", 66));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_03 (ElectroGun)", 67));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_04 (Molotov Coctail)", 68));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_05 (Grenade)", 69));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_06 (Shotgun)", 70));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_07 (ElectroBaton !)", 71));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_08 (Flamethrower)", 72));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_09 (Silenced S-Uzi)", 73));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_10 (Dual Pistol)", 74));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_11 (Letter L)", 75));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_12 (Letter M)", 76));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_13 (Letter N)", 77));
-	objects_w.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_14 (Letter O)", 78));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_15 (Vehicle bomb)", 79));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_16 (Vehicle Oil Slick)", 80));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_17 (Vehicle Mine)", 81));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_18 (Vehicle Machine Gun)", 82));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_19 (Tank Cannon)", 83));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_20 (Water Cannon)", 84));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_21 (Vehicle Flamethrower)", 85));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_22 (Jeep Turret)", 86));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_23 (Instant Vehicle Bomb)", 87));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_24 (Letter J)", 88));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_25 (Letter K)", 89));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_26 (Letter L)", 90));
-	objects_c.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_27 (Letter M)", 91));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_28 (Multiplier +1)", 92));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_29 (Life +1)", 93));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_30 (Health)", 94));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_31 (Armor)", 95));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_32 (Get Outta Jail Free Card)", 96));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_33 (Cop Bribe)", 97));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_34 (Invulnerability*)", 98));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_35 (Double Damage)", 99));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_36 (Fast Reload)", 100));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_37 (ElectroFingers)", 101));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_38 (Respect!)", 102));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_39 (Invisibility)", 103));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_40 (Instant Gang)", 104));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_41 (Letter N)", 105));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_42 (Letter O)", 106));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_43 (Letter P)", 107));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"MOVING_COLLECT_44 (Letter Q)", 108));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"SMALL_ARROW", 109));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"BLOOD_SPARK", 111));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"PARTICLE_SYSTEM", 113));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"FIREJET", 114));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"SMALL_BROWN_SKID", 116));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"SMALL_GREY_SKID", 117));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"SMALL_RED_SKID", 118));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"MEDIUM_BROWN_SKID", 119));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"MEDIUM_GREY_SKID", 120));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"MEDIUM_RED_SKID", 121));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"CAR_CROSSING", 122));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"BIG_WHITE_SKID", 124));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"MEDIUM_WHITE_SKID", 125));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"SMALL_WHITE_SKID", 126));
-	objects_r.insert(std::pair<std::wstring, DWORD>(L"ROCKET", 128));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"BUS_STOP_MARKER", 129));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"CAR_SHOP", 130));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"BUSY_CAR_SHOP", 131));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"CAR_BOMB", 132));
-	objects_r.insert(std::pair<std::wstring, DWORD>(L"MOLOTOV_MOVING", 138));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"HUGE_RED_SKID", 144));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"HUGE_WHITE_SKID", 145));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"HUGE_BROWN_SKID", 146));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"HUGE_GREY_SKID", 147));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"TANKTOP", 148));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"ANTENNA", 149));
-	objects_t.insert(std::pair<std::wstring, DWORD>(L"PHONE", 163));
-	objects_t.insert(std::pair<std::wstring, DWORD>(L"PHONE_RINGING", 164));
-	objects_t.insert(std::pair<std::wstring, DWORD>(L"PHONE_DEAD", 174));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"BRIEFCASE", 175));
-	objects_t.insert(std::pair<std::wstring, DWORD>(L"RED_PHONE", 176));
-	objects_t.insert(std::pair<std::wstring, DWORD>(L"RED_PHONE_RINGING", 177));
-	objects_t.insert(std::pair<std::wstring, DWORD>(L"YELLOW_PHONE", 178));
-	objects_t.insert(std::pair<std::wstring, DWORD>(L"YELLOW_PHONE_RINGING", 179));
-	objects_t.insert(std::pair<std::wstring, DWORD>(L"GREEN_PHONE", 180));
-	objects_t.insert(std::pair<std::wstring, DWORD>(L"GREEN_PHONE_RINGING", 181));
-	objects_r.insert(std::pair<std::wstring, DWORD>(L"GRENADE", 182));
-	objects_r.insert(std::pair<std::wstring, DWORD>(L"SHOT", 192));
-	objects_r.insert(std::pair<std::wstring, DWORD>(L"FLAMING_BULLET", 194));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"FIRE", 197));
-	objects_r.insert(std::pair<std::wstring, DWORD>(L"WATER_BULLET", 198));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"BOMB", 247));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"BIG_BROWN_SKID", 249));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"BIG_GREY_SKID", 250));
-	objects_s.insert(std::pair<std::wstring, DWORD>(L"BIG_RED_SKID", 253));
-	objects_r.insert(std::pair<std::wstring, DWORD>(L"BULLET", 254));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"TRAFFIC_LIGHT", 255));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"RED_FOOTPRINTS", 256));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"BLOOD", 257));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"CROSSING", 258));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"SPARK", 259));
-	objects_r.insert(std::pair<std::wstring, DWORD>(L"PISTOL_BULLET", 265));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"BONUS_TOKEN", 266));
-	objects_r.insert(std::pair<std::wstring, DWORD>(L"TASSER_BULLET", 277));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"SOUND_INSTANT", 279));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"INVISIBLE_TARGET", 280));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"POWERGEN", 281));
-	objects_b.insert(std::pair<std::wstring, DWORD>(L"POWERGEN_DEAD", 282));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"INVISIBLE_DESTRUCTIBLE", 283));
-	objects_o.insert(std::pair<std::wstring, DWORD>(L"GENLITE", 284));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"INVISIBLE_DEAD", 285));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"KILL_FRENZY", 286));
-	objects_oi.insert(std::pair<std::wstring, DWORD>(L"TUNNEL_BLOCKER", 294));
-	objects_p.insert(std::pair<std::wstring, DWORD>(L"REMOTE", 295));
-
-	objects.insert(std::pair<std::wstring, DWORD>(L"Last spawned object -> ALT+O", 400));
-
-	for (itr = objects_b.begin(); itr != objects_b.end(); ++itr) {
-		obMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	for (itr = objects_w.begin(); itr != objects_w.end(); ++itr) {
-		owMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	for (itr = objects_c.begin(); itr != objects_c.end(); ++itr) {
-		ocMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	for (itr = objects_p.begin(); itr != objects_p.end(); ++itr) {
-		opMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	for (itr = objects_s.begin(); itr != objects_s.end(); ++itr) {
-		osMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	for (itr = objects_r.begin(); itr != objects_r.end(); ++itr) {
-		orMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	for (itr = objects_t.begin(); itr != objects_t.end(); ++itr) {
-		otMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	for (itr = objects_o.begin(); itr != objects_o.end(); ++itr) {
-		ooMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	for (itr = objects_oi.begin(); itr != objects_oi.end(); ++itr) {
-		ooiMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	for (itr = objects.begin(); itr != objects.end(); ++itr) {
-		oMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 36000), itr->first.c_str());
-	}
-
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)obMenu->m_hMenu, L"Basic objects");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)owMenu->m_hMenu, L"Weapon collectibles");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ocMenu->m_hMenu, L"Car Weapon collectibles");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)opMenu->m_hMenu, L"Power-Ups");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)osMenu->m_hMenu, L"Skids");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)orMenu->m_hMenu, L"Projectiles");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)otMenu->m_hMenu, L"Phones");
-	oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ooMenu->m_hMenu, L"Others");
-	ooMenu->AppendMenuW(MF_POPUP, (UINT_PTR)ooiMenu->m_hMenu, L"Invisible");
-	menu->AppendMenuW(MF_POPUP, (UINT_PTR)oMenu->m_hMenu, L"Spawn object");
-
+	oMenu->AppendMenuW(MF_STRING, 36400, L"Last spawned object -> ALT+O");
 	oHMenu = oMenu->m_hMenu;
 	EnableMenuItem(oHMenu, 36400, MF_DISABLED);
+
+	int objectsCatsCount = sizeof(objectsCategories) / sizeof(objectsCategories[0]);
+	CMenu** osMenus = new CMenu * [objectsCatsCount];
+	for (int i = 0; i < objectsCatsCount; i++) {
+		osMenus[i] = new CMenu();
+		osMenus[i]->CreatePopupMenu();
+		oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)osMenus[i]->m_hMenu, (LPCTSTR)objectsCategories[i]);
+	}
+
+	int objectsCount = sizeof(objects) / sizeof(objects[0]);
+	for (int i = 0; i < objectsCount; i++) {
+		ObjectInfo info = objects[i];
+		osMenus[info.category]->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + 36000), info.name);
+	}
+
+	menu->AppendMenuW(MF_POPUP, (UINT_PTR)oMenu->m_hMenu, L"Spawn object");
 
 	// Prepare weapons menu
 
@@ -1098,11 +883,11 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsList[128], int* wtsArraySize)
 		if (car)
 		{
 			log(L"Car 0x%X spawned!", car);
-
-			short color = currentWTS.GetColor();
-			if (color > -1) {
+			
+			short color = currentWTS.color;
+			if (color != -1) {
 				car->sprite->lockPalleteMaybe = 3;
-				car->sprite->carColor = color;
+				car->sprite->carColor = (color == -2) ? rand() % 36 : color;
 			}
 		}
 	}
@@ -1153,7 +938,7 @@ void MainWindow::SpawnCarHere(UINT nID) {
 	);
 
 	// Set wtsCar
-	wtsCar[wtsCarSize] = WantToSpawn(targetXY[0], targetXY[1], playerPed->gameObject->sprite->z, 4 * 180, nID - 35000);
+	wtsCar[wtsCarSize] = WantToSpawn{ targetXY[0], targetXY[1], playerPed->gameObject->sprite->z, 4 * 180, nID - 35000, -1 };
 	wtsCarSize++;
 	lastSpawnedCarModel = nID - 35000;
 	EnableMenuItem(nHMenu, 35200, MF_ENABLED);

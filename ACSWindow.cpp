@@ -54,7 +54,7 @@ float ACSWindow::GetFloatFromCEditVal(CEdit* element)
 void ACSWindow::ExecuteACS()
 {
 	if (m_model.GetCurSel() < 0) return;
-	int model = m_mainWindow->carids[m_model.GetCurSel()];
+	unsigned int model = cars[m_model.GetCurSel()].id;
 	int xPos = GetFloatFromCEditVal(&m_xPos) * 16384.0f;
 	int yPos = GetFloatFromCEditVal(&m_yPos) * 16384.0f;
 	int zPos = GetFloatFromCEditVal(&m_zPos) * 16384.0f;
@@ -75,7 +75,7 @@ void ACSWindow::ExecuteACS()
 			int targetX = xPos + x * xOffset;
 			int targetY = yPos + y * yOffset;
 
-			m_mainWindow->wtsCar[m_mainWindow->wtsCarSize] = WantToSpawn(targetX, targetY, zPos, rot, model, color);
+			m_mainWindow->wtsCar[m_mainWindow->wtsCarSize] = WantToSpawn{ targetX, targetY, zPos, rot, model, color };
 			m_mainWindow->wtsCarSize++;
 		}
 	}
@@ -94,8 +94,9 @@ void ACSWindow::ClearValues()
 	m_xOffset.SetWindowTextW(L"1");
 	m_yOffset.SetWindowTextW(L"1");
 	m_model.ResetContent();
-	for (int i = 0; i < 79; i++)
-		m_model.AddString(m_mainWindow->carnames[i]);
+	int carsCount = sizeof(cars) / sizeof(cars[0]);
+	for (int i = 0; i < carsCount; i++)
+		m_model.AddString(cars[i].name);
 
 	GetPlayerPos();
 }

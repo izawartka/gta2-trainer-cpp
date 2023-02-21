@@ -3,6 +3,7 @@
 #define GTA_H
 
 #include "gta2.h"
+#include "SpawningData.h"
 
 static_assert(sizeof(u4) == 4, "Wrong size of u4 struct");
 static_assert(sizeof(u2) == 2, "Wrong size of u2 struct");
