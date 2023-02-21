@@ -17,7 +17,7 @@ If you just want to play it, go to the [Releases tab](https://github.com/izawart
 the latest gta2-trainer-x.xx.zip. Then copy its contents to your game root folder. Now you just need to run (in windowed mode)
 gta-trainer.exe file instead of gta.exe and you should see the trainer window under the GTA2 window.
 
-If you're having some problems with running the game make sure your system has [all needed VC++ Redistributables](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/) installed.
+If you're having problems with running the game make sure your system has [all needed VC++ Redistributables](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/) installed.
 
 ## Playing with the code
 If you want to build it on your own, there is a VS solution included in the repo.
