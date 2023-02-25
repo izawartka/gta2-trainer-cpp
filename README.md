@@ -1,14 +1,26 @@
 # gta2-trainer-cpp
 
-## Faeatures
-Player ped controlling, Cars spawning n' fixing, Weapons giving, Vocals playing, Important info showing, Non-stop crashing ultimate GTA2 trainer with so many features, I can't list them all!!! (or i'm just too lazy nevermind) 
+## About
+A tool for GTA2 allowing you to manipulate gameplay in real time (without exiting the game or loading saves). 
+Some of the main features are:
+- Controlling your character's stats e.g. health, ammo, appearance, walking speed, wanted level, respect
+- Teleporting
+- Spawning any cars
+- Spawning any objects (power-ups etc.)
+- Playing vocals
+- Giving yourself any weapons (including secret ones)
+- Giving yourself any car weapons
+- Using some of the built-in cheats without entering any cheat codes
 
 ## Fast install
-If you just want to play it, download and copy contents of the "build" directory to your game root folder.
-THen just run (in window mode) gta-trainer.exe instead of gta.exe and you should see the trainer window under the GTA2 window.
+If you just want to play it, go to the [Releases tab](https://github.com/izawartka/gta2-trainer-cpp/releases) and download
+the latest gta2-trainer-x.xx.zip. Then copy its contents to your game root folder. Now you just need to run (in windowed mode)
+gta-trainer.exe file instead of gta.exe and you should see the trainer window under the GTA2 window.
+
+If you're having problems with running the game make sure your system has [all needed VC++ Redistributables](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/) installed.
 
 ## Playing with the code
-If you want to build it on your own, there is a VS solution inside so it shouldn't be a problem to compile it.
+If you want to build it on your own, there is a VS solution included in the repo.
 
 Before you'll try to compile it for the first time, you have to change some settings though
 1. Change the configuration to Release x86
