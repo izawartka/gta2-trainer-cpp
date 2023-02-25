@@ -72,6 +72,10 @@ static SpawnPedAtPosition* fnSpawnPedAtPosition = (SpawnPedAtPosition*)0x0043db4
 typedef bool* (__fastcall SetPedPosition)(Ped* ped, DWORD edx, int x, int y, int z);
 static SetPedPosition* fnSetPedPosition = (SetPedPosition*)0x004360c0;
 
+// void __thiscall ExplodeCarMaybe(Car *this,uint param_1_00 = 0x13)
+typedef void(__fastcall ExplodeCar)(Car* car, DWORD edx, EXPLOSION_SIZE explosionSize);
+static ExplodeCar* fnExplodeCar = (ExplodeCar*)0x00426fa0;
+
 typedef uint (CarAddWeapon)(CAR_WEAPON type, uint ammo, Car* car);
 static CarAddWeapon* fnCarAddWeapon = (CarAddWeapon*)0x004cd820;
 

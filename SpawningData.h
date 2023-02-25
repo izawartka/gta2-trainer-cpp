@@ -23,13 +23,13 @@ const LPCTSTR objectsCategories[] = {
 		L"Invisible"				// 8
 };
 
-struct ObjectInfo {
+struct CatMenuItem {
 	char category;
 	wchar_t* name;
 	DWORD id;
 };
 
-const ObjectInfo objects[] = {
+const CatMenuItem objects[] = {
 	{0, L"BIN_LID", 1},
 	{0, L"BOLLARD", 2},
 	{0, L"CONE", 3},
@@ -172,7 +172,7 @@ const LPCTSTR carsCategories[] = {
 	L"T-Z", // 2
 };
 
-const ObjectInfo cars[] = {
+const CatMenuItem cars[] = {
 	{0, L"ALFA", 0},
 	{0, L"ALLARD", 1},
 	{0, L"AMDB4", 2},
@@ -256,6 +256,23 @@ const ObjectInfo cars[] = {
 	{2, L"WRECK9", 81},
 	{2, L"XK120", 82},
 	{2, L"ZCX5", 83}
+};
+
+struct Emblem {
+	wchar_t* name;
+	short id;
+};
+
+const Emblem emblems[] = {
+	{L"None", 0},
+	{L"Loonies", 294},
+	{L"Yakuza", 295},
+	{L"Zaibatsu", 296},
+	{L"Rednecks", 297},
+	{L"Scientists", 298},
+	{L"Krishna", 299},
+	{L"Russians", 300},
+	{L"Bomb", 8},
 };
 
 #endif

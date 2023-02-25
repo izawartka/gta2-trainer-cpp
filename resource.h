@@ -90,6 +90,7 @@
 #define IDC_EMBPOS                      3082
 #define IDC_EDIT1                       3083
 #define IDC_EMBPOS2                     3085
+#define IDC_CAREXPLODE                  3086
 #define IDD_DIALOG2                     4000
 #define IDC_ACS_SPAWN                   4001
 #define IDC_ACS_X                       4002
@@ -116,13 +117,14 @@
 #define ID_COMMANDS_SHOW                32784
 #define ID_COMMANDS_FNSETPEDSTATE       32786
 #define ID_COMMANDS_HIJACKATRAIN        32787
+#define ID_COMMANDS_EXPLODECARS         32788
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3012
-#define _APS_NEXT_COMMAND_VALUE         32788
+#define _APS_NEXT_COMMAND_VALUE         32790
 #define _APS_NEXT_CONTROL_VALUE         3099
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif

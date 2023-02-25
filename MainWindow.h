@@ -23,13 +23,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-
-	// consts //
-
-	const int emblemValues[9] = { 0, 294, 295, 296, 297, 298, 299, 300, 8 };
-
-	const wchar_t* emblemNames[9] = { L"None", L"Loonies", L"Yakuza", L"Zaibatsu", L"Rednecks", L"Scientists", L"Krishna", L"Russians", L"Bomb" };
-
 	// technical //
 	MainWindow(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~MainWindow();
@@ -75,6 +68,15 @@ public:
 	CEdit m_gangRespect[3];
 	CEdit m_globalPedSpeeds[3];
 
+	void MainWindow::AddCategorizedMenu(
+		CMenu* menu,
+		const LPCTSTR* categories,
+		uint categoriesCount,
+		const CatMenuItem* items,
+		uint itemsCount,
+		UINT_PTR baseID
+	);
+
 	// features //
 
 	// car spawning
@@ -115,6 +117,7 @@ public:
 
 	// currLastCar's damage
 	void FixCar();
+	void CarExplode();
 	void LockCarDamage();
 	short startCarDamage = 0;
 	bool carDamageLocked = 0;
@@ -181,6 +184,7 @@ public:
 	void GangRespect(UINT nID);
 	void FreeShopping();
 	void ShowBigText();
+	void ExplodeCars();
 
 	// big functions
 	void FixCheckboxes();

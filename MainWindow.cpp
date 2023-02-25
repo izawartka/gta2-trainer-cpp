@@ -178,6 +178,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_EMBP, &MainWindow::CarEmblemPlus)
 	ON_BN_CLICKED(IDC_EMBM, &MainWindow::CarEmblemMinus)
 	ON_BN_CLICKED(IDC_CARCOLP, &MainWindow::CarColorPlus)
+	ON_BN_CLICKED(IDC_CAREXPLODE, &MainWindow::CarExplode)
 	ON_BN_CLICKED(IDC_CARCOLM, &MainWindow::CarColorMinus)
 	ON_BN_CLICKED(IDC_CARCOLR, &MainWindow::CarColorReset)
 	ON_BN_CLICKED(IDC_CARTRCOLR, &MainWindow::SyncTrailerColor)
@@ -190,6 +191,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_PEDSHAPECLOTHR, &MainWindow::PedShapeClothesReset)
 	ON_BN_CLICKED(IDC_BIGTEXTSHOW, &MainWindow::ShowBigText)
 	ON_BN_CLICKED(IDC_SPSET, &MainWindow::SetGlobalPedSpeeds)
+	ON_BN_CLICKED(ID_COMMANDS_EXPLODECARS, &MainWindow::ExplodeCars)
 END_MESSAGE_MAP()
 
 // Close GTA2 on Trainer exit
@@ -198,6 +200,28 @@ void MainWindow::OnBnClickedExit()
 	if (m_gtaWindow) {
 		::DestroyWindow(m_gtaWindow);
 		::exit(0);
+	}
+}
+
+void MainWindow::AddCategorizedMenu(
+	CMenu* menu, 
+	const LPCTSTR* categories, 
+	uint categoriesCount, 
+	const CatMenuItem* items, 
+	uint itemsCount,
+	UINT_PTR baseID
+)
+{
+	CMenu** cMenus = new CMenu * [categoriesCount];
+	for (int i = 0; i < categoriesCount; i++) {
+		cMenus[i] = new CMenu();
+		cMenus[i]->CreatePopupMenu();
+		menu->AppendMenuW(MF_POPUP, (UINT_PTR)cMenus[i]->m_hMenu, (LPCTSTR)categories[i]);
+	}
+
+	for (int i = 0; i < itemsCount; i++) {
+		CatMenuItem info = items[i];
+		cMenus[info.category]->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + baseID), info.name);
 	}
 }
 
@@ -269,6 +293,18 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		MOD_ALT | MOD_NOREPEAT,
 		0x43); //ALT+C
 
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_ALT | MOD_NOREPEAT,
+		0x45); //ALT+E
+
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_ALT | MOD_NOREPEAT,
+		0x42); //ALT+B
+
 	CMenu *menu = GetMenu();
 	std::map<std::wstring, DWORD>::iterator itr;
 	
@@ -283,19 +319,7 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	nHMenu = nMenu->m_hMenu;
 	EnableMenuItem(nHMenu, 35200, MF_DISABLED);
 
-	int carsCatsCount = sizeof(carsCategories) / sizeof(carsCategories[0]);
-	CMenu** nsMenus = new CMenu * [carsCatsCount];
-	for (int i = 0; i < carsCatsCount; i++) {
-		nsMenus[i] = new CMenu();
-		nsMenus[i]->CreatePopupMenu();
-		nMenu->AppendMenuW(MF_POPUP, (UINT_PTR)nsMenus[i]->m_hMenu, (LPCTSTR)carsCategories[i]);
-	}
-
-	int carsCount = sizeof(cars) / sizeof(cars[0]);
-	for (int i = 0; i < carsCount; i++) {
-		ObjectInfo info = cars[i];
-		nsMenus[info.category]->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + 35000), info.name);
-	}
+	AddCategorizedMenu(nMenu, carsCategories, sizeof(carsCategories)/sizeof(carsCategories[0]), cars, sizeof(cars) / sizeof(cars[0]), 35000);
 
 	menu->AppendMenuW(MF_POPUP, (UINT_PTR)nMenu->m_hMenu, L"Spawn car");
 
@@ -308,19 +332,7 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	oHMenu = oMenu->m_hMenu;
 	EnableMenuItem(oHMenu, 36400, MF_DISABLED);
 
-	int objectsCatsCount = sizeof(objectsCategories) / sizeof(objectsCategories[0]);
-	CMenu** osMenus = new CMenu * [objectsCatsCount];
-	for (int i = 0; i < objectsCatsCount; i++) {
-		osMenus[i] = new CMenu();
-		osMenus[i]->CreatePopupMenu();
-		oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)osMenus[i]->m_hMenu, (LPCTSTR)objectsCategories[i]);
-	}
-
-	int objectsCount = sizeof(objects) / sizeof(objects[0]);
-	for (int i = 0; i < objectsCount; i++) {
-		ObjectInfo info = objects[i];
-		osMenus[info.category]->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + 36000), info.name);
-	}
+	AddCategorizedMenu(oMenu, objectsCategories, sizeof(objectsCategories) / sizeof(objectsCategories[0]), objects, sizeof(objects) / sizeof(objects[0]), 36000);
 
 	menu->AppendMenuW(MF_POPUP, (UINT_PTR)oMenu->m_hMenu, L"Spawn object");
 
@@ -498,6 +510,8 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	native.insert(std::pair<std::wstring, DWORD>(L"Show peds IDs", 0xA1));
 	native.insert(std::pair<std::wstring, DWORD>(L"Skip missions", 0xAE));
 	native.insert(std::pair<std::wstring, DWORD>(L"Skip skidmarks", 0xAF));
+	//native.insert(std::pair<std::wstring, DWORD>(L"Log collisions", 0xB0)); // doesnt seem to work
+	//native.insert(std::pair<std::wstring, DWORD>(L"Show collisions", 0xB1)); // same
 	native.insert(std::pair<std::wstring, DWORD>(L"Show all arrows", 0xB2));
 
 	for (itr = native.begin(); itr != native.end(); ++itr) {
@@ -764,9 +778,9 @@ void MainWindow::KeepLockedValues()
 		// Detect and prepare emblems if car changed
 		m_carEmblemPos.SetRange(-8192, 8192, TRUE);
 		currLastCarEmblemID = 0;
-		for (int i = 0; i < sizeof(emblemValues)/sizeof(emblemValues[0]); i++)
+		for (int i = 0; i < sizeof(emblems)/sizeof(emblems[0]); i++)
 		{
-			currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, emblemValues[i]);
+			currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, emblems[i].id);
 			if (currLastCarEmblem && currLastCarEmblem->sprite->spriteType == 4)
 			{
 				currLastCarEmblemID = i;
@@ -985,6 +999,12 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 	case 0x43:
 		SpawnCarHere(35200);
 		break;
+	case 0x45:
+		ExplodeCars();
+		break;
+	case 0x42:
+		ShowBigText();
+		break;
 	default:
 		break;
 	}
@@ -1085,6 +1105,12 @@ void MainWindow::NoReloads()
 	noReloads = !noReloads;
 	log(L"No reloads %sabled", noReloads ? L"en" : L"dis");
 
+}
+
+void MainWindow::CarExplode()
+{
+	if (!currLastCar) return;
+	fnExplodeCar(currLastCar, 0, EXPLOSION_SIZE_MEDIUM);
 }
 
 void MainWindow::LockCarDamage()
@@ -1307,7 +1333,7 @@ void MainWindow::PedInfo()
 		}
 
 		// Display emblem name 
-		swprintf(buf, 256, L"%s", emblemNames[currLastCarEmblemID]);
+		swprintf(buf, 256, L"%s", emblems[currLastCarEmblemID].name);
 		m_carEmblem.SetWindowTextW(buf);
 
 		// Display visual state
@@ -1675,7 +1701,7 @@ void MainWindow::CarEmblemMinus()
 	{
 		// Prev emblem //
 		currLastCarEmblemID--;
-		currLastCarEmblem->sprite->sprite = emblemValues[currLastCarEmblemID];
+		currLastCarEmblem->sprite->sprite = emblems[currLastCarEmblemID].id;
 		log(L"Car emblem changed");
 	}
 }
@@ -1701,18 +1727,18 @@ void MainWindow::CarEmblemPlus()
 		if (currLastCarEmblem)
 		{
 			currLastCarEmblemID = 1;
-			currLastCarEmblem->sprite->sprite = emblemValues[1];
+			currLastCarEmblem->sprite->sprite = emblems[1].id;
 			currLastCarEmblem->rotation = 0;
 			currLastCarEmblem->sprite->layer++;
 			m_carEmblemPos.SetPos(currLastCarEmblem->yOffset);
 			log(L"Car emblem created");
 		}
 	}
-	else if (currLastCarEmblemID < sizeof(emblemValues)/sizeof(emblemValues[0]) - 1)
+	else if (currLastCarEmblemID < sizeof(emblems)/sizeof(emblems[0]) - 1)
 	{
 		// Next emblem //
 		currLastCarEmblemID++;
-		currLastCarEmblem->sprite->sprite = emblemValues[currLastCarEmblemID];
+		currLastCarEmblem->sprite->sprite = emblems[currLastCarEmblemID].id;
 		log(L"Car emblem changed");
 	}
 }
@@ -1962,6 +1988,20 @@ void MainWindow::TeleportPlayer()
 		playerPed->currentCar->physics->zPos = (newz * 16384) + 10;
 
 		log(L"Player's car teleported to %f, %f, %f!", newx, newy, newz);
+	}
+}
+
+void MainWindow::ExplodeCars() {
+	log(L"Boom!");
+	Ped* playerPed = fnGetPedByID(1);
+	auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
+	Car* tcar = prefab->lastCar;\
+	while (tcar)
+	{
+		if ((!playerPed || tcar != playerPed->currentCar) && tcar->sprite) {
+			fnExplodeCar(tcar, 0, EXPLOSION_SIZE_MEDIUM);
+		}
+		tcar = tcar->lastCar;
 	}
 }
 

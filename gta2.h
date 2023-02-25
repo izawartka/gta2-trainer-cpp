@@ -545,6 +545,13 @@ struct WEAPON_PLAYER_LIST {
 
 // ADDED IN FILE //
 
+typedef enum EXPLOSION_SIZE {
+    EXPLOSION_SIZE_NONE = 0x11,
+    EXPLOSION_SIZE_SMALL = 0x12,
+    EXPLOSION_SIZE_MEDIUM = 0x13,
+    EXPLOSION_SIZE_LARGE = 0x14
+} EXPLOSION_SIZE;
+
 typedef enum SPRITE_TYPE {
     SPRITE_TYPE_INVISIBLE = 1,
     SPRITE_TYPE_CAR = 2,
@@ -8918,7 +8925,7 @@ struct Style_S3 {
     short maybeCountOfpalettes;
     short relToFontBase;
     short spriteIndexRel;
-    short relToMapObjectInfo;
+    short relToMapCatMenuItem;
     short size_physical_palette;
     undefined field_0xa;
     undefined field_0xb;
