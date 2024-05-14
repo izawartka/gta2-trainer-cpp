@@ -86,27 +86,33 @@ public:
 
 	// features //
 
-	// car spawning
+	// spawn car
 	void SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize);
 	WantToSpawn wtsCar[128];
 	int wtsCarSize = 0;
 	int lastSpawnedCarModel = -1;
-	afx_msg void OnSpawnCarClick(UINT nID);
+	afx_msg void OnSpawnCarMenuClick(UINT nID);
 	afx_msg void OnSpawnCarTank();
 	afx_msg void OnSpawnCarGunjeep();
 
-	// object spawning
+	// spawn object
 	void SpawnObject(OBJECT_TYPE type);
-	afx_msg void OnSpawnObjectClick(UINT nID);
+	afx_msg void OnSpawnObjectMenuClick(UINT nID);
 	int wtSpawnObject = -1;
 	int lastSpawnedObjectType = -1;
 
-	// other tabs
-	afx_msg void OnGetWeaponClick(UINT nID);
-	afx_msg void OnGetAllWeaponsClick();
-	afx_msg void OnGetCarWeaponClick(UINT nID);
-	afx_msg void OnPlayVocalClick(UINT nID);
-	afx_msg void OnNativeCheatClick(UINT nID);
+	// spawn ped
+	afx_msg void OnSpawnPedMenuClick(UINT nID);
+
+	// get weapon
+	afx_msg void OnGetWeaponMenuClick(UINT nID);
+	void GetWeapon(WEAPON_INDEX weapon, bool silent = false);
+	void GetAllWeapons();
+
+	// other menus
+	afx_msg void OnGetCarWeaponMenuClick(UINT nID);
+	afx_msg void OnPlayVocalMenuClick(UINT nID);
+	afx_msg void OnNativeCheatMenuClick(UINT nID);
 
 	// currLastCar related
 	Car* currLastCar = 0;

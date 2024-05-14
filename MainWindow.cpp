@@ -150,12 +150,13 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(IDC_MOUSECTRL, &MainWindow::MouseControl)
 	ON_COMMAND(ID_COMMANDS_TANK, &MainWindow::OnSpawnCarTank)
 	ON_WM_HOTKEY()
-	ON_COMMAND_RANGE(ID_SPAWNCAR, ID_SPAWNOBJ - 1, &OnSpawnCarClick)
-	ON_COMMAND_RANGE(ID_SPAWNOBJ, ID_GETWEAP - 1, &OnSpawnObjectClick)
-	ON_COMMAND_RANGE(ID_GETWEAP, ID_GETCARWEAP - 1, &OnGetWeaponClick)
-	ON_COMMAND_RANGE(ID_GETCARWEAP, ID_VOCALS - 1, &OnGetCarWeaponClick)
-	ON_COMMAND_RANGE(ID_VOCALS, ID_NATIVE - 1, &OnPlayVocalClick)
-	ON_COMMAND_RANGE(ID_NATIVE, ID_NATIVE + 256, &OnNativeCheatClick)
+	ON_COMMAND_RANGE(ID_SPAWNCAR, ID_SPAWNOBJ - 1, &OnSpawnCarMenuClick)
+	ON_COMMAND_RANGE(ID_SPAWNOBJ, ID_SPAWNPED - 1, &OnSpawnObjectMenuClick)
+	ON_COMMAND_RANGE(ID_SPAWNPED, ID_GETWEAP - 1, &OnSpawnPedMenuClick)
+	ON_COMMAND_RANGE(ID_GETWEAP, ID_GETCARWEAP - 1, &OnGetWeaponMenuClick)
+	ON_COMMAND_RANGE(ID_GETCARWEAP, ID_VOCALS - 1, &OnGetCarWeaponMenuClick)
+	ON_COMMAND_RANGE(ID_VOCALS, ID_NATIVE - 1, &OnPlayVocalMenuClick)
+	ON_COMMAND_RANGE(ID_NATIVE, ID_NATIVE + 256, &OnNativeCheatMenuClick)
 	ON_COMMAND(ID_COMMANDS_GUNJEEP, &MainWindow::OnSpawnCarGunjeep)
 	ON_BN_CLICKED(IDC_CARENGINEOFF, &MainWindow::CarEngineOff)
 	ON_BN_CLICKED(IDC_UNLMAMMO, &MainWindow::GiveUnlimitedAmmo)
@@ -700,7 +701,7 @@ void MainWindow::SpawnObject(OBJECT_TYPE type)
 }
 
 // Object spawning menu
-void MainWindow::OnSpawnObjectClick(UINT nID) {
+void MainWindow::OnSpawnObjectMenuClick(UINT nID) {
 
 	if(nID == ID_SPAWNOBJ_LAST)
 	{
@@ -758,7 +759,7 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize)
 }
 
 // Car spawning (in front of the player)
-void MainWindow::OnSpawnCarClick(UINT nID) {
+void MainWindow::OnSpawnCarMenuClick(UINT nID) {
 
 	// Spawn last spawned car model
 	if (nID == ID_SPAWNCAR_LAST)
@@ -819,12 +820,12 @@ void MainWindow::OnSpawnCarClick(UINT nID) {
 
 void MainWindow::OnSpawnCarTank()
 {
-	OnSpawnCarClick(ID_SPAWNCAR_START + (int)TANK);
+	OnSpawnCarMenuClick(ID_SPAWNCAR_START + (int)TANK);
 }
 
 void MainWindow::OnSpawnCarGunjeep()
 {
-	OnSpawnCarClick(ID_SPAWNCAR_START + (int)GUNJEEP);
+	OnSpawnCarMenuClick(ID_SPAWNCAR_START + (int)GUNJEEP);
 }
 
 void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
@@ -851,10 +852,10 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		HijackTrain();
 		break;
 	case 0x4f:
-		OnSpawnObjectClick(ID_SPAWNOBJ_LAST);
+		OnSpawnObjectMenuClick(ID_SPAWNOBJ_LAST);
 		break;
 	case 0x43:
-		OnSpawnCarClick(ID_SPAWNCAR_LAST);
+		OnSpawnCarMenuClick(ID_SPAWNCAR_LAST);
 		break;
 	case 0x45:
 		ExplodeCars();
@@ -863,7 +864,7 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		ShowBigText();
 		break;
 	case 0x57:
-		OnGetAllWeaponsClick();
+		OnGetWeaponMenuClick(ID_GETWEAP_ALL);
 		break;
 	default:
 		break;
@@ -872,43 +873,48 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 	CDialogEx::OnHotKey(nHotKeyId, nKey1, nKey2);
 }
 
-void MainWindow::OnGetWeaponClick(UINT nID) {
+void MainWindow::OnSpawnPedMenuClick(UINT nID) {
+
+}
+
+void MainWindow::OnGetWeaponMenuClick(UINT nID) {
 
 	if(nID == ID_GETWEAP_ALL)
 	{
-		OnGetAllWeaponsClick();
+		GetAllWeapons();
 		return;
 	}
 
-	Ped* playerPed = fnGetPedByID(1);
-
-	// Return if player ped doesn't exist
-	if (!playerPed)
-		return;
-
-	UINT ID = nID - ID_GETWEAP_START;
-	playerPed->playerWeapons->weapons[ID]->ammo = 990;
-	log(L"Weapon #%d got", ID);
+	WEAPON_INDEX weapon = (WEAPON_INDEX)(nID - ID_GETWEAP_START);
+	GetWeapon(weapon);
 }
 
-void MainWindow::OnGetAllWeaponsClick() {
+void MainWindow::GetWeapon(WEAPON_INDEX weapon, bool silent) {
 	Ped* playerPed = fnGetPedByID(1);
 
 	// Return if player ped doesn't exist
 	if (!playerPed)
 		return;
 
+	playerPed->playerWeapons->weapons[weapon]->ammo = 990;
+	
+	if (!silent)
+		log(L"Weapon #%d got", weapon);
+}
+
+void MainWindow::GetAllWeapons() {
 	size_t weaponsCount = sizeof(weapons) / sizeof(weapons[0]);
 
 	for (size_t i = 0; i < weaponsCount; i++)
 	{
-		playerPed->playerWeapons->weapons[i]->ammo = 990;
+		WEAPON_INDEX weapon = (WEAPON_INDEX)(i);
+		GetWeapon(weapon, true);
 	}
 
 	log(L"All weapons got");
 }
 
-void MainWindow::OnGetCarWeaponClick(UINT nID) {
+void MainWindow::OnGetCarWeaponMenuClick(UINT nID) {
 	
 	Ped* playerPed = fnGetPedByID(1);
 
@@ -951,13 +957,13 @@ void MainWindow::OnGetCarWeaponClick(UINT nID) {
 	}
 }
 
-void MainWindow::OnPlayVocalClick(UINT nID) {
+void MainWindow::OnPlayVocalMenuClick(UINT nID) {
 	UINT ID = nID - ID_VOCALS_START;
 	fnPlayVocal((DWORD*)0x005d85a0, 0, (VOCAL)(ID));
 	log(L"Vocal #%d played", ID);
 }
 
-void MainWindow::OnNativeCheatClick(UINT nID) {
+void MainWindow::OnNativeCheatMenuClick(UINT nID) {
 	UINT ID = nID - ID_NATIVE_START;
 	DWORD address = 0x5EAD00 + ID;
 	bool* cheat = (bool*)(address);

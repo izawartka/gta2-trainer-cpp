@@ -117,6 +117,8 @@
 #define ID_SPAWNOBJ                     36000
 #define ID_SPAWNOBJ_LAST                36001
 #define ID_SPAWNOBJ_START			    36002
+#define ID_SPAWNPED					    36500
+#define ID_SPAWNPED_TOOL			    36501
 #define ID_GETWEAP                      37000
 #define ID_GETWEAP_ALL                  37001
 #define ID_GETWEAP_START                37002
