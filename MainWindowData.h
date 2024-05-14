@@ -20,11 +20,17 @@ const LPCTSTR objectsCategories[] = {
 		L"Projectiles",				// 5
 		L"Phones",					// 6
 		L"Others",					// 7
-		L"Invisible"				// 8
+		L"Invisible",				// 8
+		L"Basic objects (other states)" // 9
 };
 
 struct CatMenuItem {
 	char category;
+	wchar_t* name;
+	DWORD id;
+};
+
+struct MenuItem {
 	wchar_t* name;
 	DWORD id;
 };
@@ -37,7 +43,7 @@ const CatMenuItem objects[] = {
 	{0, L"BLASTER", 5},
 	{0, L"RUBBISH", 6},
 	{0, L"BIN", 7},
-	{0, L"ANIMATING_OIL", 8},
+	{9, L"ANIMATING_OIL", 8},
 	{0, L"OIL", 9},
 	{0, L"MINE", 10},
 	{0, L"BUSH", 11},
@@ -53,8 +59,30 @@ const CatMenuItem objects[] = {
 	{0, L"ROADBLOCK", 21},
 	{0, L"BENCH", 22},
 	{0, L"PACKAGE", 23},
+	//{0, L"UNKNOWN_OBJ", 24},
 	{8, L"TOWER", 25},
 	//{0, L"EXPLODE_MEDIUM", 42},
+	{9, L"MOVING_PACKAGE", 43}, // unofficial name
+	{9, L"DEAD_PACKAGE", 44},  // unofficial name
+	{9, L"MOVING_BENCH", 45}, // unofficial name
+	{9, L"DEAD_BENCH", 46},  // unofficial name
+	{9, L"MOVING_ROADBLOCK", 47}, // unofficial name
+	{9, L"DEAD_ROADBLOCK", 48},  // unofficial name
+	{9, L"MOVING_HYDRANT_LID", 49}, // unofficial name
+	{9, L"ANIMATING_CRATE", 50}, // unofficial name
+	{9, L"DEAD_CRATE", 51}, // unofficial name
+	{9, L"DEAD_BOXES", 52}, // unofficial name
+	{9, L"DEAD_CONE", 53}, // unofficial name
+	{9, L"DEAD_BLASTER", 54}, // unofficial name
+	{9, L"DEAD_BUSH", 55}, // unofficial name
+	{9, L"MOVING_FOOTY", 56}, // unofficial name
+	{9, L"MOVING_HARDBOX", 57}, // unofficial name
+	{9, L"DEAD_HARDBOX", 58},  // unofficial name
+	{9, L"MOVING_NEWSDIS", 59}, // unofficial name
+	{9, L"DEAD_NEWSDIS", 60},  // unofficial name
+	{9, L"MOVING_OILDRUM", 61}, // unofficial name
+	{9, L"DEAD_OILDRUM", 62},  // unofficial name
+	{9, L"MOVING_TYRE", 63}, // unofficial name
 	{1, L"MOVING_COLLECT_00 (Pistol)", 64},
 	{1, L"MOVING_COLLECT_01 (S-Uzi)", 65},
 	{1, L"MOVING_COLLECT_02 (Rocket Launcher)", 66},
@@ -111,6 +139,7 @@ const CatMenuItem objects[] = {
 	{4, L"MEDIUM_GREY_SKID", 120},
 	{4, L"MEDIUM_RED_SKID", 121},
 	{8, L"CAR_CROSSING", 122},
+	{9, L"MOVING_BUSH", 123},
 	{4, L"BIG_WHITE_SKID", 124},
 	{4, L"MEDIUM_WHITE_SKID", 125},
 	{4, L"SMALL_WHITE_SKID", 126},
@@ -126,8 +155,16 @@ const CatMenuItem objects[] = {
 	{4, L"HUGE_GREY_SKID", 147},
 	{7, L"TANKTOP", 148},
 	{7, L"ANTENNA", 149},
+	{9, L"ANIMATING_RUBBISH", 151},
+	{9, L"DEAD_RUBBISH", 152},
+	{9, L"MOVING_CONE", 155},
+	{9, L"MOVING_BLASTER", 156}, // unofficial name
+	{9, L"MOVING_BIN", 157}, // unofficial name
+	{9, L"MOVING_BIN_LID", 158},
+	{8, L"SAVE_POINT", 161}, // unofficial name
 	{6, L"PHONE", 163},
 	{6, L"PHONE_RINGING", 164},
+	//{9, L"DEAD_MINE", 165}, // unofficial name // invisible and unsure
 	{6, L"PHONE_DEAD", 174},
 	{7, L"BRIEFCASE", 175},
 	{6, L"RED_PHONE", 176},
@@ -157,7 +194,7 @@ const CatMenuItem objects[] = {
 	{8, L"SOUND_INSTANT", 279},
 	{8, L"INVISIBLE_TARGET", 280},
 	{0, L"POWERGEN", 281},
-	{0, L"POWERGEN_DEAD", 282},
+	{9, L"POWERGEN_DEAD", 282},
 	{8, L"INVISIBLE_DESTRUCTIBLE", 283},
 	{7, L"GENLITE", 284},
 	{8, L"INVISIBLE_DEAD", 285},
@@ -273,6 +310,146 @@ const Emblem emblems[] = {
 	{L"Krishna", 299},
 	{L"Russians", 300},
 	{L"Bomb", 8},
+};
+
+const MenuItem weapons[] = {
+	{L"Pistol", 0},
+	{L"S-Uzi", 1},
+	{L"Rocket Launcher", 2},
+	{L"ElectroGun", 3},
+	{L"Molotov Coctail", 4},
+	{L"Grenade", 5},
+	{L"Shotgun", 6},
+	{L"ElectroBaton (!)", 7},
+	{L"Flamethrower", 8},
+	{L"Silenced S-Uzi", 9},
+	{L"Dual Pistol", 10},
+	{L"Letter L", 11},
+	{L"Letter M", 12},
+	{L"Letter N", 13},
+	{L"Letter O", 14}
+};
+
+const MenuItem carWeapons[] = {
+	{L"Vehicle bomb", 0},
+	{L"Vehicle Oil Slick", 1},
+	{L"Vehicle Mine", 2},
+	{L"Vehicle Machine Gun", 3},
+	{L"Tank Cannon", 4},
+	{L"Water Cannon", 5},
+	{L"Vehicle Flamethrower", 6},
+	{L"Jeep Turret", 7},
+	{L"Instant Vehicle Bomb", 8},
+	{L"Letter J", 9},
+	{L"Letter K", 10},
+	{L"Letter L", 11},
+	{L"Letter M", 12}
+};
+
+const MenuItem vocals[] = {
+	{L"INSANE STUNT BONUS", 1},
+	{L"GRAND THEFT AUTO", 2},
+	{L"WIPEOUT", 3},
+	{L"EXPEDITIOUS EXECUTION", 4},
+	{L"GENOCIDE", 5},
+	{L"COP KILLA", 6},
+	{L"CAR JACKA", 7},
+	{L"ELVIS HAS LEFT THE BUILDING", 8},
+	{L"ACCURACY BONUS", 9},
+	{L"BACK TO FRONT BONUS", 10},
+	{L"MEDICAL EMERGENCY", 11},
+	{L"KILL FRENZY", 12},
+	{L"BUSTED", 17},
+	{L"FRENZY FAILED", 18},
+	{L"FRENZY PASSED", 19},
+	{L"FRYING TONIGHT", 20},
+	{L"GAME OVER", 21},
+	{L"JOB COMPLETE", 22},
+	{L"JOB FAILED", 23},
+	{L"AND REMEMBER, RESPECT IS EVERYTHING", 24},
+	{L"SHOCKING", 25},
+	{L"MMM... SOMETHIN'S COOKIN", 26},
+	{L"TIME'S UP, PAL", 27},
+	{L"TOASTED", 28},
+	{L"WASTED", 29},
+	{L"BOMB ARMED", 30},
+	{L"LAUGH6", 31},
+	{L"LAUGH (random)", 32},
+	{L"RACE OVER", 33},
+	{L"SECOND LAP", 34},
+	{L"FINAL LAP", 35},
+	{L"RACE ON", 36},
+	{L"MULTIPLIER X2", 37},
+	{L"MULTIPLIER X3", 38},
+	{L"MULTIPLIER X4", 39},
+	{L"MULTIPLIER X5", 40},
+	{L"MULTIPLIER X6", 41},
+	{L"TIME OUT", 42},
+	{L"YOUR TIME IS EXTENDED", 43},
+	{L"TIME'S UP, PAL (duplicate)", 44},
+	{L"OH SORRY ABOUT THAT... DID THAT HURT?", 45},
+	{L"NICE WORK", 46},
+	{L"CHOCTASTIC", 47},
+	{L"RASPBERRY RIPPLE", 48},
+	{L"YOU SHOT YOUR LOAD", 49},
+	{L"OH... DID THAT HURT?", 50},
+	{L"DEATH TO ICE CREAM VANS", 51},
+	{L"CRISPY CRITTER", 52},
+	{L"YOU'RE TOAST, BUDDY", 53},
+	{L"EAT LEADEN DEATH, PUNK", 54},
+	{L"THAT'S GONNA HURT", 55},
+	{L"SORRY ABOUT THAT", 56},
+	{L"XIN LOI, MY MAN", 57},
+	{L"DAMN SUNDAY DRIVERS", 58},
+	{L"SUCK IT AND SEE", 59},
+	{L"TASTE MY WRATH, ICE-CREAM BOY", 60},
+	{L"HALLELUJAH! ANOTHER SOUL SAVED", 61},
+	{L"DAMNATION! NO DONATION, NO SALVATION", 62}
+};
+
+const MenuItem nativeCheats[] = {
+	{L"Do blood", 0x51},
+	{L"Show objects IDs", 0x52},
+	{L"Skip traffic lights", 0x53},
+	{L"Skip buses", 0x54},
+	{L"Show counters", 0x55},
+	{L"Skip particles", 0x56},
+	//{L"Skip trains", 0x57}, // crashes the game;v
+	{L"Show input", 0x58},
+	{L"Skip right tiles", 0x59},
+	{L"No traffic", 0x5B},
+	{L"Unlock all levels", 0x5C},
+	{L"No police", 0x5E},
+	{L"Skip bottom tiles", 0x5F},
+	{L"Infinite lives", 0x61},
+	{L"No HUD", 0x64},
+	{L"Skip left tiles", 0x67},
+	{L"Show Imaginary Things", 0x6F},
+	{L"No peds spawn", 0x69},
+	{L"Mini cars", 0x6D},
+	{L"No audio", 0x72},
+	//{L"Get all weapons", 0x74}, // requires restart
+	{L"No slopes tiles", 0x78},
+	{L"Show FPS", 0x79},
+	{L"Show car horn", 0x7F},
+	{L"Show drawing info", 0x81},
+	{L"Show camera info", 0x82},
+	{L"Show vehicle info", 0x85},
+	{L"Debug keys", 0x87},
+	{L"Insane speed", 0x88},
+	{L"Show junctions IDs", 0x89},
+	{L"No top tiles", 0x8C},
+	{L"Show ped info", 0x8D},
+	{L"Skip tiles", 0x90},
+	{L"Show traffic info", 0x95},
+	{L"Keep weapons after death", 0x9E},
+	{L"Nekkid peds", 0xA0},
+	{L"Show peds IDs", 0xA1},
+	{L"Skip missions", 0xAE},
+	{L"Skip skidmarks", 0xAF},
+	//{L"Log collisions", 0xB0}, // doesnt seem to work
+	//{L"Show collisions", 0xB1}, // same
+	{L"Show all arrows", 0xB2}
 };
 
 #endif

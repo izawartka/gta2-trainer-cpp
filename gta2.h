@@ -858,7 +858,7 @@ struct GameObject {
     enum PED_STATE2 state2;
     uint relToId; //0x10
     int id;
-    uint someTypeEnum;
+    OBJECT_TYPE type;
     struct PlayerPhysics * probablyPhysics;
     undefined field_0x20;
     undefined field_0x21;

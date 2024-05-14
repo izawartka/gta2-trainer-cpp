@@ -225,7 +225,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="SpawningData.h" />
+    <ClInclude Include="MainWindowData.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="gta2dll.rc" />

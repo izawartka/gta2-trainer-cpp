@@ -3,7 +3,7 @@
 #define GTA_H
 
 #include "gta2.h"
-#include "SpawningData.h"
+#include "MainWindowData.h"
 
 static_assert(sizeof(u4) == 4, "Wrong size of u4 struct");
 static_assert(sizeof(u2) == 2, "Wrong size of u2 struct");
@@ -35,6 +35,7 @@ static DWORD ptrToS2LocalesSettings = 0x00671550;
 static DWORD ptrToCarsPrefabs = 0x005e4ca0;
 static DWORD ptrToPlayerPhysics = 0x005e3cc4;
 static DWORD ptrToFrontEnd = 0x005eb160;
+static DWORD ptrToS6 = 0x005dcbc8;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
 // Usage: auto game = fnGetGame();
@@ -107,6 +108,10 @@ static FindMaxZForTile* fnFindMaxZForTileRaw = (FindMaxZForTile*)0x00466990;
 // SCR_f * __fastcall WorldCoordinateToScreenCoord(SCR_f* axisValue, undefined edx, SCR_f* outVal, int eq_0x6666)
 typedef void(__fastcall WorldCoordinateToScreenCoord)(SCR_f* axisValue, undefined edx, SCR_f* outVal, int *eq_0x6666);
 static WorldCoordinateToScreenCoord* fnWorldCoordinateToScreenCoordRaw = (WorldCoordinateToScreenCoord*)0x00401b60;
+
+// void __fastcall SetPedTeleportTarget(Ped *this,SCR_f x,SCR_f y)
+typedef void(__fastcall SetPedTeleportTarget)(Ped* ped, DWORD edx, SCR_f x, SCR_f y);
+static SetPedTeleportTarget* fnSetPedTeleportTarget = (SetPedTeleportTarget*)0x00435c80;
 
 // void __fastcall DoTeleport(Player *param_1)
 typedef void (__fastcall DoTeleport)(Player*, DWORD edx);

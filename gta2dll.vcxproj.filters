@@ -70,7 +70,7 @@
     <ClInclude Include="ACSWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SpawningData.h">
+    <ClInclude Include="MainWindowData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

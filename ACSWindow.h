@@ -43,5 +43,5 @@ public:
 	CEdit m_yOffset;
 	CComboBox m_model;
 	CButton m_variateColors;
-	bool variateColors;
+	bool variateColors = false;
 };

@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Plik do³¹czany wygenerowany przez œrodowisko Microsoft Visual C++.
-// U¿ywany przez: gta2dll.rc
+// Microsoft Visual C++ generated include file.
+// Used by gta2dll.rc
 //
 #define IDD_DIALOG1                     3000
 #define IDC_PEDX                        3001
@@ -104,27 +104,35 @@
 #define IDC_ACS_YOFF                    4010
 #define IDC_ACS_VCOLORS                 4011
 #define IDC_ACS_MODEL                   4012
-#define ID_COMMANDS_HELLO               32772
-#define ID_COMMANDS_CAPTUREMOUSE        32773
-#define ID_COMMANDS_SPAWNCAR            32774
-#define ID_SPAWNCAR_TANK                32775
-#define ID_SPAWNCAR_GT                  32778
-#define ID_SPAWNCAR_GUNJEPP             32779
-#define ID_SPAWNCAR_GUNJEEP             32780
-#define ID_COMMANDS_TELEPORTALLPEDS     32781
-#define ID_COMMANDS_TPALLPEDS           32782
-#define ID_TPALLPEDS                    32783
-#define ID_COMMANDS_SHOW                32784
-#define ID_COMMANDS_FNSETPEDSTATE       32786
-#define ID_COMMANDS_HIJACKATRAIN        32787
-#define ID_COMMANDS_EXPLODECARS         32788
+#define ID_COMMANDS_HELLO               32000
+#define ID_COMMANDS_TANK                32001
+#define ID_COMMANDS_GUNJEEP             32002
+#define ID_COMMANDS_HIJACKATRAIN        32003
+#define ID_COMMANDS_EXPLODECARS         32004
+#define ID_COMMANDS_TPALLPEDS           32005
+#define ID_SPAWNCAR                     35000
+#define ID_SPAWNCAR_LAST                35001
+#define ID_SPAWNCAR_ARRAY               35002
+#define ID_SPAWNCAR_START			    35003
+#define ID_SPAWNOBJ                     36000
+#define ID_SPAWNOBJ_LAST                36001
+#define ID_SPAWNOBJ_START			    36002
+#define ID_GETWEAP                      37000
+#define ID_GETWEAP_ALL                  37001
+#define ID_GETWEAP_START                37002
+#define ID_GETCARWEAP                   37100
+#define ID_GETCARWEAP_START             37101
+#define ID_VOCALS                       37200
+#define ID_VOCALS_START                 37201
+#define ID_NATIVE                       38000
+#define ID_NATIVE_START                 38001
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3012
-#define _APS_NEXT_COMMAND_VALUE         32790
+#define _APS_NEXT_COMMAND_VALUE         32808
 #define _APS_NEXT_CONTROL_VALUE         3099
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
