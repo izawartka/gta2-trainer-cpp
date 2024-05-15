@@ -3,6 +3,7 @@
 // MainWindow dialog
 #include "gta2-helper.h"
 #include "ACSWindow.h"
+#include "PedSpawnerWindow.h"
 
 enum TIMER {
 	TIMER_CAPTURE_MOUSE,
@@ -30,6 +31,7 @@ public:
 	uint frames;
 	HWND m_gtaWindow;
 	ACSWindow* m_acsWindow;
+	PedSpawnerWindow* m_pedSpawnerWindow;
 
 	void OnPaint();
 	afx_msg void OnBnClickedExit();

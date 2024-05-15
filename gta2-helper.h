@@ -95,6 +95,9 @@ static CarAddRoofAntenna* fnCarAddRoofAntenna = (CarAddRoofAntenna*)0x00425fd0;
 typedef GameObject* (__fastcall SpawnObject)(S33* s33, undefined edx, OBJECT_TYPE type, int x, int y, int z, short rot);
 static SpawnObject* fnSpawnObject = (SpawnObject*)0x004852e0;
 
+typedef void(__fastcall SetNPCWeapon)(Ped* ped, DWORD unk, WEAPON_INDEX weapon);
+static SetNPCWeapon* fnSetNPCWeapon = (SetNPCWeapon*)0x0043d830;
+
 // void __fastcall FindMaxZForLocation(void *param_1,undefined4 edx,int *outZ,SCR_f x,SCR_f y)
 typedef void (__fastcall FindMaxZForLocation)(void* ptrToMapRelatedStruct, DWORD edx, SCR_f* outZ, SCR_f x, SCR_f y);
 static FindMaxZForLocation* fnFindMaxZForLocationRaw = (FindMaxZForLocation*)0x0046a420;
@@ -152,5 +155,6 @@ SCR_f FloatEncode(double x);
 double FloatDecode(SCR_f x);
 SCR_f* GetPointInADistance(SCR_f baseX, SCR_f baseY, short rotation, SCR_f distance);
 POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
+bool IsPointSafe(SCR_f x, SCR_f y, SCR_f z);
 
 #endif // !GTA_H

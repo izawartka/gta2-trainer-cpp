@@ -10,6 +10,7 @@
 #include "resource.h"		// main symbols
 #include "MainWindow.h"
 #include "ACSWindow.h"
+#include "PedSpawnerWindow.h"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 

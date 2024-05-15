@@ -545,6 +545,13 @@ struct WEAPON_PLAYER_LIST {
 
 // ADDED IN FILE //
 
+typedef enum PED_GUARD_MODE {
+    PED_GUARD_MODE_NONE = 0x0,
+    PED_GUARD_MODE_IF_ATTACKED = 0x1,
+    PED_GUARD_MODE_IF_SEES_VIOLENCE = 0x2,
+    PED_GUARD_MODE_FLEE_AWAY = 0x3
+} PED_GUARD_MODE;
+
 typedef enum EXPLOSION_SIZE {
     EXPLOSION_SIZE_NONE = 0x11,
     EXPLOSION_SIZE_SMALL = 0x12,
@@ -1524,8 +1531,8 @@ struct Ped {
     enum PED_STATE2 state2;
     enum PED_STATE state1_2; /* 0 on start, 3 when getting to a car */
     enum PED_STATE2 state2_2;
-    int field_0x288;
-    int field_0x28c;
+    int shootingSkillMaybe;
+    PED_GUARD_MODE guardMode;
     int relToMultiplayer;
 };
 
@@ -7367,7 +7374,7 @@ struct S7 {
     undefined field_0x289;
     undefined field_0x28a;
     undefined field_0x28b;
-    undefined field_0x28c;
+    undefined guardMode;
     undefined field_0x28d;
     undefined field_0x28e;
     undefined field_0x28f;

@@ -452,4 +452,204 @@ const MenuItem nativeCheats[] = {
 	{L"Show all arrows", 0xB2}
 };
 
+struct Occupation {
+	wchar_t* name;
+	UINT id;
+};
+
+const Occupation occupations[] = {
+	{L"0 - Player", 0},
+	{L"1", 1},
+	{L"2", 2},
+	{L"3 - Dummy", 3},
+	{L"4", 4},
+	{L"5 - Driver ?", 5},
+	{L"7", 7},
+	{L"8", 8},
+	{L"9 - Waiting for the train", 9},
+	{L"10", 10}, // crashes the game
+	{L"11", 11},
+	{L"12", 12},
+	{L"13 - Angry driver ?", 13},
+	{L"14 - Psycho ?", 14},
+	{L"15 - Mugger", 15},
+	{L"16 - Car thief", 16},
+	{L"17", 17},
+	{L"18 - Criminal ?", 18},
+	{L"19 - Gang member", 19},
+	{L"20", 20},
+	{L"21", 21},
+	{L"22 - Elvis", 22},
+	{L"23 - Medic", 23},
+	{L"24 - Cop in car", 24},
+	{L"25 - SWAT in car", 25},
+	{L"26 - FBI in car", 26},
+	{L"27 - Army in Jeep", 27},
+	{L"28 - Guard", 28},
+	{L"29 - Cop on foot", 29},
+	{L"30", 30},
+	{L"31 - Army on foot", 31},
+	{L"32 - Guard against player ?", 32},
+	{L"33 - Criminal type 1 ?", 33},
+	{L"34 - Criminal type 2 ?", 34},
+	{L"35 - Special group member ?", 35},
+	{L"36 - Tank driver ?", 36},
+	{L"37 - FBI in a roadblock", 37},
+	{L"38 - Fireman ?", 38},
+	{L"39 - Army in a roadblock", 39},
+	{L"40", 40},
+	{L"41 - Drone ?", 41},
+	{L"42 - Driver (get outta my car!)", 42},
+	{L"43 - Stand still bloke ?", 43},
+	{L"44 - Elvis leader ?", 44},
+	{L"45 - Refugees ?", 45},
+	{L"46 - Any law enforcement ?", 46},
+	{L"47 - Any emergency service ?", 47},
+	{L"48 - Any gang member ?", 48},
+	{L"49 - Any Elvis ?", 49},
+	{L"50", 50},
+	{L"51", 51}
+};
+
+struct BodyShape {
+	wchar_t* name;
+	UINT id;
+};
+
+const BodyShape bodyShapes[] = {
+	{L"Ped", 0},
+	{L"Armored", 1},
+	{L"Heavily armored", 2}
+};
+
+struct PedRemap {
+	wchar_t* name;
+	UINT id;
+};
+
+const PedRemap pedRemaps[] = {
+	{L"Blue police", 0},
+	{L"Green police", 1},
+	{L"Red police", 2},
+	{L"Yellow police", 3},
+	{L"Khaki police", 4},
+	{L"Red head Redneck", 5},
+	{L"Blond head Redneck", 6},
+	{L"Yellow Scientist", 7},
+	{L"Zaibatsu", 8},
+	{L"Kristna", 9},
+	{L"Russian", 10},
+	{L"Loony", 11},
+	{L"Elvis", 12},
+	{L"Yakuza", 13},
+	{L"Fireman", 14},
+	{L"Car thief", 15},
+	{L"Medic", 16},
+	{L"Mugger", 17},
+	{L"Dummy 2", 18},
+	{L"Dummy 3", 19},
+	{L"Dummy 4", 20},
+	{L"Dummy 5", 21},
+	{L"Prison uniform", 22},
+	{L"Hulk 1", 23},
+	{L"Hulk 2", 24},
+	{L"Player", 25},
+	{L"Naked dummy", 26},
+	{L"Dummy 6", 27},
+	{L"Dummy 7", 28},
+	{L"Dummy 8", 29},
+	{L"Dummy 9", 30},
+	{L"Dummy 10", 31},
+	{L"Dummy 11", 32},
+	{L"Dummy 12", 33},
+	{L"Dummy 13", 34},
+	{L"Dummy 14", 35},
+	{L"Dummy 15", 36},
+	{L"Dummy 16", 37},
+	{L"Dummy 17", 38},
+	{L"Dummy 18", 39},
+	{L"Dummy 19", 40},
+	{L"Dummy 20", 41},
+	{L"Dummy 21", 42},
+	{L"Dummy 22", 43},
+	{L"Dummy 23", 44},
+	{L"Dummy 24", 45},
+	{L"Dummy 25", 46},
+	{L"Dummy 26", 47},
+	{L"Dummy 27", 48},
+	{L"Dummy 28", 49},
+	{L"Dummy 29", 50},
+	{L"Dummy 30", 51},
+	{L"Dummy 31", 52}
+};
+
+struct PedPreset {
+	wchar_t* name;
+	PED_REMAP2 shape;
+	PED_REMAP remap;
+	WEAPON_INDEX weapon;
+	short health;
+	OCUPATION occupation;
+	int aiValues[10];
+	// 0 - state (0x278)
+	// 1 - state2 (0x27c)
+	// 2 - state3 (0x258)
+	// 3 - shooting skill maybe (0x288)
+	// 4 - guard mode (0x28c)
+	// 5 - bitstate (0x21c)
+	// 6 - bitstate2 (0x238)
+	// 7 - timer to action (0x218)
+	// 8 - reserverd
+	// 9 - reserverd
+};
+const int aiValuesCount = sizeof(PedPreset::aiValues) / sizeof(PedPreset::aiValues[0]);
+
+const PedPreset pedPresets[] = {
+	{
+		L"Dummy",
+		(PED_REMAP2)0,
+		(PED_REMAP)27,
+		(WEAPON_INDEX)-1,
+		50,
+		(OCUPATION)3,
+		{0, 0, 0, 2, 3, 1, 3, 0x270F, -1, -1}
+	},
+	{
+		L"Cop", // on foot variant ofc
+		(PED_REMAP2)2,
+		(PED_REMAP)0,
+		(WEAPON_INDEX)-1,
+		50,
+		(OCUPATION)29,
+		{0, 0, 0, 1, 1, 1, 3, 0x270F, -1, -1}
+	},
+	/*{
+		L"Scientist (gang)", // on foot variant ofc
+		(PED_REMAP2)1,
+		(PED_REMAP)7,
+		(WEAPON_INDEX)1,
+		50,
+		(OCUPATION)19,
+		{0, 0, 0, 1, 2, 1, 4, 0x270F, -1, -1}
+	},*/
+	{
+		L"Mugger",
+		(PED_REMAP2)0,
+		(PED_REMAP)17,
+		(WEAPON_INDEX)-1,
+		50,
+		(OCUPATION)15,
+		{0, 0, 0, 2, 3, 1, 3, 0, -1, -1}
+	},
+	{
+		L"Car thief",
+		(PED_REMAP2)0,
+		(PED_REMAP)15,
+		(WEAPON_INDEX)-1,
+		50,
+		(OCUPATION)16,
+		{0, 0, 0, 2, 3, 1, 3, 0, -1, -1}
+	},
+};
+
 #endif

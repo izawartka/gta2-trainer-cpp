@@ -26,10 +26,10 @@ protected:
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 
-	void ExecuteACS();
+	float GetDoubleFromCEditVal(CEdit* element);
+	void OnSpawnClick();
 	void ClearValues();
 	void GetPlayerPos();
-	float GetFloatFromCEditVal(CEdit* element);
 
 	MainWindow* m_mainWindow = nullptr;
 

@@ -7,7 +7,7 @@ ACSWindow* acsWnd = nullptr;
 IMPLEMENT_DYNAMIC(ACSWindow, CDialogEx)
 
 ACSWindow::ACSWindow(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_DIALOG2, pParent)
+	: CDialogEx(IDD_ACS, pParent)
 {
 	acsWnd = this;
 }
@@ -18,7 +18,7 @@ ACSWindow::~ACSWindow()
 }
 
 BEGIN_MESSAGE_MAP(ACSWindow, CDialogEx)
-	ON_BN_CLICKED(IDC_ACS_SPAWN, &ACSWindow::ExecuteACS)
+	ON_BN_CLICKED(IDC_ACS_SPAWN, &ACSWindow::OnSpawnClick)
 	ON_BN_CLICKED(IDC_ACS_GETPPOS, &ACSWindow::GetPlayerPos)
 END_MESSAGE_MAP()
 
@@ -29,7 +29,6 @@ void ACSWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ACS_X, m_xPos);
 	DDX_Control(pDX, IDC_ACS_Y, m_yPos);
 	DDX_Control(pDX, IDC_ACS_Z, m_zPos);
-	DDX_Control(pDX, IDC_ACS_ROT, m_rot);
 	DDX_Control(pDX, IDC_ACS_ROT, m_rot);
 	DDX_Control(pDX, IDC_ACS_XSIZE, m_xSize);
 	DDX_Control(pDX, IDC_ACS_YSIZE, m_ySize);
@@ -44,25 +43,25 @@ int ACSWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 }
 
-float ACSWindow::GetFloatFromCEditVal(CEdit* element)
+float ACSWindow::GetDoubleFromCEditVal(CEdit* element)
 {
 	CString buffer;
 	element->GetWindowTextW(buffer);
 	return _wtof(buffer);
 }
 
-void ACSWindow::ExecuteACS()
+void ACSWindow::OnSpawnClick()
 {
 	if (m_model.GetCurSel() < 0) return;
 	unsigned int model = cars[m_model.GetCurSel()].id;
-	int xPos = GetFloatFromCEditVal(&m_xPos) * 16384.0f;
-	int yPos = GetFloatFromCEditVal(&m_yPos) * 16384.0f;
-	int zPos = GetFloatFromCEditVal(&m_zPos) * 16384.0f;
-	int rot = GetFloatFromCEditVal(&m_rot) * 4;
-	int xSize = GetFloatFromCEditVal(&m_xSize);
-	int ySize = GetFloatFromCEditVal(&m_ySize);
-	int xOffset = GetFloatFromCEditVal(&m_xOffset) * 16384.0f;
-	int yOffset = GetFloatFromCEditVal(&m_yOffset) * 16384.0f;
+	int xPos = GetDoubleFromCEditVal(&m_xPos) * 16384.0f;
+	int yPos = GetDoubleFromCEditVal(&m_yPos) * 16384.0f;
+	int zPos = GetDoubleFromCEditVal(&m_zPos) * 16384.0f;
+	int rot = GetDoubleFromCEditVal(&m_rot) * 4;
+	int xSize = GetDoubleFromCEditVal(&m_xSize);
+	int ySize = GetDoubleFromCEditVal(&m_ySize);
+	int xOffset = GetDoubleFromCEditVal(&m_xOffset) * 16384.0f;
+	int yOffset = GetDoubleFromCEditVal(&m_yOffset) * 16384.0f;
 	int vColors = ((CButton*)GetDlgItem(IDC_ACS_VCOLORS))->GetCheck();
 	short color = vColors == true ? -2 : -1;
 
@@ -93,6 +92,7 @@ void ACSWindow::ClearValues()
 	m_ySize.SetWindowTextW(L"1");
 	m_xOffset.SetWindowTextW(L"1");
 	m_yOffset.SetWindowTextW(L"1");
+
 	m_model.ResetContent();
 	int carsCount = sizeof(cars) / sizeof(cars[0]);
 	for (int i = 0; i < carsCount; i++)

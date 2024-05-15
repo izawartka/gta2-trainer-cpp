@@ -33,6 +33,9 @@
     <ClCompile Include="ACSWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PedSpawnerWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="gta2dll.def">
@@ -71,6 +74,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainWindowData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PedSpawnerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
