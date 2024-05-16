@@ -3,6 +3,7 @@
 // MainWindow dialog
 #include "gta2-helper.h"
 #include "ACSWindow.h"
+#include "PedSpawnerWindow.h"
 
 enum TIMER {
 	TIMER_CAPTURE_MOUSE,
@@ -23,13 +24,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-
-	// consts //
-
-	const int emblemValues[9] = { 0, 294, 295, 296, 297, 298, 299, 300, 8 };
-
-	const wchar_t* emblemNames[9] = { L"None", L"Loonies", L"Yakuza", L"Zaibatsu", L"Rednecks", L"Scientists", L"Krishna", L"Russians", L"Bomb" };
-
 	// technical //
 	MainWindow(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~MainWindow();
@@ -37,6 +31,7 @@ public:
 	uint frames;
 	HWND m_gtaWindow;
 	ACSWindow* m_acsWindow;
+	PedSpawnerWindow* m_pedSpawnerWindow;
 
 	void OnPaint();
 	afx_msg void OnBnClickedExit();
@@ -47,8 +42,8 @@ public:
 
 	// UI //
 	HMENU ncHMenu;
-	HMENU oHMenu;
-	HMENU nHMenu;
+	HMENU objHMenu;
+	HMENU carHMenu;
 	CEdit m_log;
 	CEdit m_pedX;
 	CEdit m_pedY;
@@ -75,29 +70,51 @@ public:
 	CEdit m_gangRespect[3];
 	CEdit m_globalPedSpeeds[3];
 
+	void AddCategorizedMenuItems(
+		CMenu* menu,
+		const LPCTSTR* categories,
+		uint categoriesCount,
+		const CatMenuItem* items,
+		uint itemsCount,
+		UINT_PTR baseID
+	);
+
+	void AddMenuItems(
+		CMenu* menu,
+		const MenuItem* items,
+		uint itemsCount,
+		UINT_PTR baseID
+	);
+
 	// features //
 
-	// car spawning
+	// spawn car
 	void SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize);
 	WantToSpawn wtsCar[128];
 	int wtsCarSize = 0;
 	int lastSpawnedCarModel = -1;
-	afx_msg void SpawnCarHere(UINT nID);
-	afx_msg void OnSpawncarTank();
-	afx_msg void OnSpawncarGunjeep();
+	afx_msg void OnSpawnCarMenuClick(UINT nID);
+	afx_msg void OnSpawnCarTank();
+	afx_msg void OnSpawnCarGunjeep();
 
-	// object spawning
+	// spawn object
 	void SpawnObject(OBJECT_TYPE type);
-	afx_msg void OnSpawnObjectClick(UINT nID);
+	afx_msg void OnSpawnObjectMenuClick(UINT nID);
 	int wtSpawnObject = -1;
-	afx_msg void OnSpawnLastObjectClick();
 	int lastSpawnedObjectType = -1;
 
-	// other tabs
-	afx_msg void OnGetWeaponClick(UINT nID);
-	afx_msg void OnGetCarWeaponClick(UINT nID);
-	afx_msg void OnPlayVocalClick(UINT nID);
-	afx_msg void OnNativeCheatClick(UINT nID);
+	// spawn ped
+	afx_msg void OnSpawnPedMenuClick(UINT nID);
+
+	// get weapon
+	afx_msg void OnGetWeaponMenuClick(UINT nID);
+	void GetWeapon(WEAPON_INDEX weapon, bool silent = false);
+	void GetAllWeapons();
+
+	// other menus
+	afx_msg void OnGetCarWeaponMenuClick(UINT nID);
+	afx_msg void OnPlayVocalMenuClick(UINT nID);
+	afx_msg void OnNativeCheatMenuClick(UINT nID);
 
 	// currLastCar related
 	Car* currLastCar = 0;
@@ -115,6 +132,7 @@ public:
 
 	// currLastCar's damage
 	void FixCar();
+	void CarExplode();
 	void LockCarDamage();
 	short startCarDamage = 0;
 	bool carDamageLocked = 0;
@@ -181,6 +199,8 @@ public:
 	void GangRespect(UINT nID);
 	void FreeShopping();
 	void ShowBigText();
+	void ExplodeCars();
+	void PreventFPSComprensation(Game* game);
 
 	// big functions
 	void FixCheckboxes();

@@ -362,3 +362,4 @@ FodyWeavers.xsd
 *.exp
 \[GTA2 ROOT PATH\]/
 desktop.ini
+/enc_temp_folder

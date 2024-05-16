@@ -1,15 +1,19 @@
 # gta2-trainer-cpp
 
+[Video showcase](https://www.youtube.com/watch?v=uAMWq2xMrv0)
+
 ## About
 A tool for GTA2 allowing you to manipulate gameplay in real time (without exiting the game or loading saves). 
 Some of the main features are:
 - Controlling your character's stats e.g. health, ammo, appearance, walking speed, wanted level, respect
-- Teleporting
-- Spawning any cars
-- Spawning any objects (power-ups etc.)
+- Teleporting peds and cars
+- Spawning vehicles
+- Spawning objects (power-ups etc.)
+- Spawning peds (characters)
 - Playing vocals
-- Giving yourself any weapons (including secret ones)
-- Giving yourself any car weapons
+- Getting weapons (including secret ones)
+- Getting unlimited ammo, no reload delays
+- Getting car weapons
 - Using some of the built-in cheats without entering any cheat codes
 
 ## Fast install
@@ -43,5 +47,5 @@ And if you want to add something more to it, you're free to do it but it would b
 Some of my GTA2 videos on YT:
 https://www.youtube.com/playlist?list=PLKAXxj2_FYzeFLyv6GPP8g58Z9kq6_rQU
 
-h0x91b's Discord channel:
+h0x91b's Discord server:
 https://discord.gg/H7tBftD

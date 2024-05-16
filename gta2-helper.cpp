@@ -57,7 +57,6 @@ double FloatDecode(SCR_f x) {
 
 Ped* FindTheNearestPed(Ped* basePed)
 {
-	Ped* tempped = 0;
 	int distancefromPed = 0;
 	int nearestPedDistance = 16384000;
 	Ped* nearestPed = 0;
@@ -66,19 +65,35 @@ Ped* FindTheNearestPed(Ped* basePed)
 
 	for (int i = 0; i <= lastPed->id; i++)
 	{
-		tempped = fnGetPedByID(i);
-		if (tempped && tempped->x && tempped != basePed)
+		Ped* foundPed = fnGetPedByID(i);
+
+		if(!foundPed) continue;
+		if(foundPed == basePed) continue;
+
+		SCR_f x;
+		SCR_f y;
+
+		if (foundPed->currentCar) {
+			if(!foundPed->currentCar->sprite) continue;
+
+			x = foundPed->currentCar->sprite->x;
+			y = foundPed->currentCar->sprite->y;
+		}
+		else {
+			x = foundPed->x;
+			y = foundPed->y;
+		}
+
+		distancefromPed =
+			sqrt(
+				pow(x - basePed->x, 2) +
+				pow(y - basePed->y, 2)
+			);
+
+		if (distancefromPed <= nearestPedDistance)
 		{
-			distancefromPed =
-				sqrt(
-					pow(tempped->x - basePed->x, 2) +
-					pow(tempped->y - basePed->y, 2)
-				);
-			if (distancefromPed <= nearestPedDistance)
-			{
-				nearestPedDistance = distancefromPed;
-				nearestPed = tempped;
-			}
+			nearestPedDistance = distancefromPed;
+			nearestPed = foundPed;
 		}
 	}
 	return nearestPed;
@@ -151,4 +166,16 @@ POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY) {
 	p.x = (long)(targetX * gameUnitsToScreenProportionX + cameraCorrectionX * magic2 / zoom);
 	p.y = (long)(targetY * gameUnitsToScreenProportionY + cameraCorrectionY * magic2 / zoom);
 	return p;
+}
+
+bool IsPointSafe(SCR_f x, SCR_f y, SCR_f z)
+{
+	if(x < 1 * 16384) return false;
+	if(x > 254 * 16384) return false;
+	if(y < 1 * 16384) return false;
+	if(y > 254 * 16384) return false;
+	if(z < 0 * 16384) return false;
+	if(z > 7 * 16384) return false;
+
+	return true;
 }

@@ -95,8 +95,12 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 
 	m_acsWindow = new ACSWindow();
-	m_acsWindow->Create(IDD_DIALOG2, CWnd::GetDesktopWindow());
+	m_acsWindow->Create(IDD_ACS, CWnd::GetDesktopWindow());
 	m_acsWindow->m_mainWindow = this;
+
+	m_pedSpawnerWindow = new PedSpawnerWindow();
+	m_pedSpawnerWindow->Create(IDD_PS, CWnd::GetDesktopWindow());
+	m_pedSpawnerWindow->m_mainWindow = this;
 
 	DetourFunc(pGameTick, (DWORD)gameTick);
 }
@@ -148,15 +152,16 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(ID_COMMANDS_HELLO, &MainWindow::OnCommandsHello)
 	ON_COMMAND(ID_COMMANDS_HIJACKATRAIN, &MainWindow::HijackTrain)
 	ON_COMMAND(IDC_MOUSECTRL, &MainWindow::MouseControl)
-	ON_COMMAND(ID_SPAWNCAR_TANK, &MainWindow::OnSpawncarTank)
+	ON_COMMAND(ID_COMMANDS_TANK, &MainWindow::OnSpawnCarTank)
 	ON_WM_HOTKEY()
-	ON_COMMAND_RANGE(35000, 35000 + 512, &SpawnCarHere)
-	ON_COMMAND_RANGE(36000, 36000 + 512, &OnSpawnObjectClick)
-	ON_COMMAND_RANGE(37000, 37000 + 15, &OnGetWeaponClick)
-	ON_COMMAND_RANGE(37100, 37100 + 15, &OnGetCarWeaponClick)
-	ON_COMMAND_RANGE(37200, 37200 + 62, &OnPlayVocalClick)
-	ON_COMMAND_RANGE(38000, 38000 + 256, &OnNativeCheatClick)
-	ON_COMMAND(ID_SPAWNCAR_GUNJEEP, &MainWindow::OnSpawncarGunjeep)
+	ON_COMMAND_RANGE(ID_SPAWNCAR, ID_SPAWNOBJ - 1, &OnSpawnCarMenuClick)
+	ON_COMMAND_RANGE(ID_SPAWNOBJ, ID_SPAWNPED - 1, &OnSpawnObjectMenuClick)
+	ON_COMMAND_RANGE(ID_SPAWNPED, ID_GETWEAP - 1, &OnSpawnPedMenuClick)
+	ON_COMMAND_RANGE(ID_GETWEAP, ID_GETCARWEAP - 1, &OnGetWeaponMenuClick)
+	ON_COMMAND_RANGE(ID_GETCARWEAP, ID_VOCALS - 1, &OnGetCarWeaponMenuClick)
+	ON_COMMAND_RANGE(ID_VOCALS, ID_NATIVE - 1, &OnPlayVocalMenuClick)
+	ON_COMMAND_RANGE(ID_NATIVE, ID_NATIVE + 256, &OnNativeCheatMenuClick)
+	ON_COMMAND(ID_COMMANDS_GUNJEEP, &MainWindow::OnSpawnCarGunjeep)
 	ON_BN_CLICKED(IDC_CARENGINEOFF, &MainWindow::CarEngineOff)
 	ON_BN_CLICKED(IDC_UNLMAMMO, &MainWindow::GiveUnlimitedAmmo)
 	ON_COMMAND_RANGE(3011, 3017, &SetStars)
@@ -169,7 +174,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CARLASTTP, &MainWindow::TpToLastCar)
 	ON_BN_CLICKED(IDC_CARPINFO, &MainWindow::PrintCarInfo)
 	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
-	ON_BN_CLICKED(ID_TPALLPEDS, &MainWindow::TeleportAllPeds)
+	ON_BN_CLICKED(ID_COMMANDS_TPALLPEDS, &MainWindow::TeleportAllPeds)
 	ON_COMMAND_RANGE(3040, 3048, &GangRespect)
 	ON_COMMAND_RANGE(3075, 3078, &ToggleDoor)
 	ON_BN_CLICKED(IDC_FREESHOP, &MainWindow::FreeShopping)
@@ -178,6 +183,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_EMBP, &MainWindow::CarEmblemPlus)
 	ON_BN_CLICKED(IDC_EMBM, &MainWindow::CarEmblemMinus)
 	ON_BN_CLICKED(IDC_CARCOLP, &MainWindow::CarColorPlus)
+	ON_BN_CLICKED(IDC_CAREXPLODE, &MainWindow::CarExplode)
 	ON_BN_CLICKED(IDC_CARCOLM, &MainWindow::CarColorMinus)
 	ON_BN_CLICKED(IDC_CARCOLR, &MainWindow::CarColorReset)
 	ON_BN_CLICKED(IDC_CARTRCOLR, &MainWindow::SyncTrailerColor)
@@ -190,6 +196,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_PEDSHAPECLOTHR, &MainWindow::PedShapeClothesReset)
 	ON_BN_CLICKED(IDC_BIGTEXTSHOW, &MainWindow::ShowBigText)
 	ON_BN_CLICKED(IDC_SPSET, &MainWindow::SetGlobalPedSpeeds)
+	ON_BN_CLICKED(ID_COMMANDS_EXPLODECARS, &MainWindow::ExplodeCars)
 END_MESSAGE_MAP()
 
 // Close GTA2 on Trainer exit
@@ -198,6 +205,41 @@ void MainWindow::OnBnClickedExit()
 	if (m_gtaWindow) {
 		::DestroyWindow(m_gtaWindow);
 		::exit(0);
+	}
+}
+
+void MainWindow::AddCategorizedMenuItems(
+	CMenu* menu, 
+	const LPCTSTR* categories, 
+	uint categoriesCount, 
+	const CatMenuItem* items, 
+	uint itemsCount,
+	UINT_PTR baseID
+)
+{
+	CMenu** cMenus = new CMenu * [categoriesCount];
+	for (int i = 0; i < categoriesCount; i++) {
+		cMenus[i] = new CMenu();
+		cMenus[i]->CreatePopupMenu();
+		menu->AppendMenuW(MF_POPUP, (UINT_PTR)cMenus[i]->m_hMenu, (LPCTSTR)categories[i]);
+	}
+
+	for (int i = 0; i < itemsCount; i++) {
+		CatMenuItem info = items[i];
+		cMenus[info.category]->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + baseID), info.name);
+	}
+}
+
+void MainWindow::AddMenuItems(
+	CMenu* menu,
+	const MenuItem* items,
+	uint itemsCount,
+	UINT_PTR baseID
+)
+{
+	for (int i = 0; i < itemsCount; i++) {
+		MenuItem info = items[i];
+		menu->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + baseID), info.name);
 	}
 }
 
@@ -269,243 +311,79 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		MOD_ALT | MOD_NOREPEAT,
 		0x43); //ALT+C
 
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_ALT | MOD_NOREPEAT,
+		0x45); //ALT+E
+
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_ALT | MOD_NOREPEAT,
+		0x42); //ALT+B
+
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_ALT | MOD_NOREPEAT,
+		0x57); //ALT+W
+
 	CMenu *menu = GetMenu();
 	std::map<std::wstring, DWORD>::iterator itr;
+
+	// Create the "Spawn car" menu
+
+	CMenu* carMenu = menu->GetSubMenu(1)->GetSubMenu(0);
+	AddCategorizedMenuItems(
+		carMenu, 
+		carsCategories, 
+		sizeof(carsCategories)/sizeof(carsCategories[0]), 
+		cars, 
+		sizeof(cars) / sizeof(cars[0]), 
+		ID_SPAWNCAR_START
+	);
+	this->carHMenu = carMenu->m_hMenu;
+
+	// Create the "Spawn object" menu
+
+	CMenu* objMenu = menu->GetSubMenu(1)->GetSubMenu(1);
+	AddCategorizedMenuItems(
+		objMenu, 
+		objectsCategories, 
+		sizeof(objectsCategories) / sizeof(objectsCategories[0]), 
+		objects, 
+		sizeof(objects) / sizeof(objects[0]), 
+		ID_SPAWNOBJ_START
+	);
+	this->objHMenu = objMenu->m_hMenu;
+
+	// Create the "Get weapon" menu
+
+	CMenu* weapMenu = menu->GetSubMenu(2);
+	AddMenuItems(weapMenu, weapons, sizeof(weapons) / sizeof(weapons[0]), ID_GETWEAP_START);
+
+	// Create the "Get car weapon" menu
+
+	CMenu* carWeapMenu = new CMenu();
+	carWeapMenu->CreatePopupMenu();
+	AddMenuItems(carWeapMenu, carWeapons, sizeof(carWeapons) / sizeof(carWeapons[0]), ID_GETCARWEAP_START);
+	AppendMenu(menu->m_hMenu, MF_POPUP, (UINT_PTR)carWeapMenu->m_hMenu, L"Get car weapon");
+
+	// Create the "Play vocal" menu
 	
-	// this section still needs a solid refactor
-	// Prepare cars menu
-
-	CMenu* nMenu = new CMenu();
-	nMenu->CreatePopupMenu();
-
-	nMenu->AppendMenuW(MF_STRING, 35200, L"Last spawned car -> ALT+C");
-	nMenu->AppendMenuW(MF_STRING, 35201, L"Array of cars...");
-	nHMenu = nMenu->m_hMenu;
-	EnableMenuItem(nHMenu, 35200, MF_DISABLED);
-
-	int carsCatsCount = sizeof(carsCategories) / sizeof(carsCategories[0]);
-	CMenu** nsMenus = new CMenu * [carsCatsCount];
-	for (int i = 0; i < carsCatsCount; i++) {
-		nsMenus[i] = new CMenu();
-		nsMenus[i]->CreatePopupMenu();
-		nMenu->AppendMenuW(MF_POPUP, (UINT_PTR)nsMenus[i]->m_hMenu, (LPCTSTR)carsCategories[i]);
-	}
-
-	int carsCount = sizeof(cars) / sizeof(cars[0]);
-	for (int i = 0; i < carsCount; i++) {
-		ObjectInfo info = cars[i];
-		nsMenus[info.category]->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + 35000), info.name);
-	}
-
-	menu->AppendMenuW(MF_POPUP, (UINT_PTR)nMenu->m_hMenu, L"Spawn car");
-
-	// Prepare objects menu
-
-	CMenu* oMenu = new CMenu();
-	oMenu->CreatePopupMenu();
-
-	oMenu->AppendMenuW(MF_STRING, 36400, L"Last spawned object -> ALT+O");
-	oHMenu = oMenu->m_hMenu;
-	EnableMenuItem(oHMenu, 36400, MF_DISABLED);
-
-	int objectsCatsCount = sizeof(objectsCategories) / sizeof(objectsCategories[0]);
-	CMenu** osMenus = new CMenu * [objectsCatsCount];
-	for (int i = 0; i < objectsCatsCount; i++) {
-		osMenus[i] = new CMenu();
-		osMenus[i]->CreatePopupMenu();
-		oMenu->AppendMenuW(MF_POPUP, (UINT_PTR)osMenus[i]->m_hMenu, (LPCTSTR)objectsCategories[i]);
-	}
-
-	int objectsCount = sizeof(objects) / sizeof(objects[0]);
-	for (int i = 0; i < objectsCount; i++) {
-		ObjectInfo info = objects[i];
-		osMenus[info.category]->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + 36000), info.name);
-	}
-
-	menu->AppendMenuW(MF_POPUP, (UINT_PTR)oMenu->m_hMenu, L"Spawn object");
-
-	// Prepare weapons menu
-
-	CMenu* wMenu = new CMenu();
-	wMenu->CreatePopupMenu();
-
-	std::map<std::wstring, DWORD> weapons;
-
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Pistol", 0));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"S-Uzi", 1));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Rocket Launcher", 2));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"ElectroGun", 3));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Molotov Coctail", 4));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Grenade", 5));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Shotgun", 6));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"ElectroBaton (!)", 7));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Flamethrower", 8));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Silenced S-Uzi", 9));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Dual Pistol", 10));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Letter L", 11));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Letter M", 12));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Letter N", 13));
-	weapons.insert(std::pair<std::wstring, DWORD>(L"Letter O", 14));
-
-	for (itr = weapons.begin(); itr != weapons.end(); ++itr) {
-		wMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 37000), itr->first.c_str());
-	}
-
-	menu->AppendMenuW(MF_POPUP, (UINT_PTR)wMenu->m_hMenu, L"Get weapon");
-
-	// Prepare car weapons menu
-
-	CMenu* cwMenu = new CMenu();
-	cwMenu->CreatePopupMenu();
-
-	std::map<std::wstring, DWORD> carweapons;
-
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Bomb", 0));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Oil Slick", 1));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Mine", 2));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Machine Gun", 3));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Tank Cannon", 4));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Water Cannon", 5));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Vehicle Flamethrower", 6));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Jeep Turret", 7));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Instant Vehicle Bomb", 8));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Letter J", 9));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Letter K", 10));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Letter L", 11));
-	carweapons.insert(std::pair<std::wstring, DWORD>(L"Letter M", 12));
-
-	for (itr = carweapons.begin(); itr != carweapons.end(); ++itr) {
-		cwMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 37100), itr->first.c_str());
-	}
-
-	menu->AppendMenuW(MF_POPUP, (UINT_PTR)cwMenu->m_hMenu, L"Get car weapon");
-
-	// Prepare vocals menu
-
-	CMenu* vMenu = new CMenu();
-	vMenu->CreatePopupMenu();
-
-	std::map<std::wstring, DWORD> vocals;
-
-	vocals.insert(std::pair<std::wstring, DWORD>(L"INSANE STUNT BONUS", 1));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"GRAND THEFT AUTO", 2));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"WIPEOUT", 3));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"EXPEDITIOUS EXECUTION", 4));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"GENOCIDE", 5));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"COP KILLA", 6));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"CAR JACKA", 7));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"ELVIS HAS LEFT THE BUILDING", 8));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"ACCURACY BONUS", 9));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"BACK TO FRONT BONUS", 10));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"MEDICAL EMERGENCY", 11));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"KILL FRENZY", 12));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"BUSTED", 17));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"FRENZY FAILED", 18));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"FRENZY PASSED", 19));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"FRYING TONIGHT", 20));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"GAME OVER", 21));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"JOB COMPLETE", 22));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"JOB FAILED", 23));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"AND REMEMBER, RESPECT IS EVERYTHING", 24));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"SHOCKING", 25));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"MMM... SOMETHIN'S COOKIN", 26));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"TIME'S UP, PAL", 27));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"TOASTED", 28));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"WASTED", 29));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"BOMB ARMED", 30));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"LAUGH6", 31));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"LAUGH (random)", 32));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"RACE OVER", 33));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"SECOND LAP", 34));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"FINAL LAP", 35));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"RACE ON", 36));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X2", 37));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X3", 38));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X4", 39));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X5", 40));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"MULTIPLIER X6", 41));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"TIME OUT", 42));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"YOUR TIME IS EXTENDED", 43));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"TIME'S UP, PAL (duplicate)", 44));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"OH SORRY ABOUT THAT... DID THAT HURT?", 45));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"NICE WORK", 46));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"CHOCTASTIC", 47));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"RASPBERRY RIPPLE", 48));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"YOU SHOT YOUR LOAD", 49));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"OH... DID THAT HURT?", 50));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"DEATH TO ICE CREAM VANS", 51));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"CRISPY CRITTER", 52));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"YOU'RE TOAST, BUDDY", 53));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"EAT LEADEN DEATH, PUNK", 54));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"THAT'S GONNA HURT", 55));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"SORRY ABOUT THAT", 56));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"XIN LOI, MY MAN", 57));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"DAMN SUNDAY DRIVERS", 58));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"SUCK IT AND SEE", 59));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"TASTE MY WRATH, ICE-CREAM BOY", 60));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"HALLELUJAH! ANOTHER SOUL SAVED", 61));
-	vocals.insert(std::pair<std::wstring, DWORD>(L"DAMNATION! NO DONATION, NO SALVATION", 62));
+	CMenu* vocalsMenu = new CMenu();
+	vocalsMenu->CreatePopupMenu();
+	AddMenuItems(vocalsMenu, vocals, sizeof(vocals) / sizeof(vocals[0]), ID_VOCALS_START);
+	AppendMenu(menu->m_hMenu, MF_POPUP, (UINT_PTR)vocalsMenu->m_hMenu, L"Play vocal");
 	
-	for (itr = vocals.begin(); itr != vocals.end(); ++itr) {
-		vMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 37200), itr->first.c_str());
-	}
+	// Create the "Native cheats" menu
 
-	menu->AppendMenuW(MF_POPUP, (UINT_PTR)vMenu->m_hMenu, L"Play vocal");
-	
-	// Prepare native cheats menu
-
-	CMenu* ncMenu = new CMenu();
-	ncMenu->CreatePopupMenu();
-
-	std::map<std::wstring, DWORD> native;
-
-	native.insert(std::pair<std::wstring, DWORD>(L"Do blood", 0x51));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show objects IDs", 0x52));
-	native.insert(std::pair<std::wstring, DWORD>(L"Skip traffic lights", 0x53));
-	native.insert(std::pair<std::wstring, DWORD>(L"Skip buses", 0x54));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show counters", 0x55));
-	native.insert(std::pair<std::wstring, DWORD>(L"Skip particles", 0x56));
-	//native.insert(std::pair<std::wstring, DWORD>(L"Skip trains", 0x57)); crashes the game;v
-	native.insert(std::pair<std::wstring, DWORD>(L"Show input", 0x58));
-	native.insert(std::pair<std::wstring, DWORD>(L"Skip right tiles", 0x59));
-	native.insert(std::pair<std::wstring, DWORD>(L"No traffic", 0x5B));
-	native.insert(std::pair<std::wstring, DWORD>(L"Unlock all levels", 0x5C));
-	native.insert(std::pair<std::wstring, DWORD>(L"No police", 0x5E));
-	native.insert(std::pair<std::wstring, DWORD>(L"Skip bottom tiles", 0x5F));
-	native.insert(std::pair<std::wstring, DWORD>(L"Infinite lives", 0x61));
-	native.insert(std::pair<std::wstring, DWORD>(L"No HUD", 0x64));
-	native.insert(std::pair<std::wstring, DWORD>(L"Skip left tiles", 0x67));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show Imaginary Things", 0x6F));
-	native.insert(std::pair<std::wstring, DWORD>(L"No peds spawn", 0x69));
-	native.insert(std::pair<std::wstring, DWORD>(L"Mini cars", 0x6D));
-	native.insert(std::pair<std::wstring, DWORD>(L"No audio", 0x72));
-	//native.insert(std::pair<std::wstring, DWORD>(L"Get all weapons (req. restart)", 0x74));
-	native.insert(std::pair<std::wstring, DWORD>(L"No slopes tiles", 0x78));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show FPS", 0x79));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show car horn", 0x7F));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show drawing info", 0x81));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show camera info", 0x82));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show vehicle info", 0x85));
-	native.insert(std::pair<std::wstring, DWORD>(L"Debug keys", 0x87));
-	native.insert(std::pair<std::wstring, DWORD>(L"Insane speed", 0x88));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show junctions IDs", 0x89));
-	native.insert(std::pair<std::wstring, DWORD>(L"No top tiles", 0x8C));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show ped info", 0x8D));
-	native.insert(std::pair<std::wstring, DWORD>(L"Skip tiles", 0x90));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show traffic info", 0x95));
-	native.insert(std::pair<std::wstring, DWORD>(L"Keep weapons after death", 0x9E));
-	native.insert(std::pair<std::wstring, DWORD>(L"Nekkid peds", 0xA0));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show peds IDs", 0xA1));
-	native.insert(std::pair<std::wstring, DWORD>(L"Skip missions", 0xAE));
-	native.insert(std::pair<std::wstring, DWORD>(L"Skip skidmarks", 0xAF));
-	native.insert(std::pair<std::wstring, DWORD>(L"Show all arrows", 0xB2));
-
-	for (itr = native.begin(); itr != native.end(); ++itr) {
-		ncMenu->AppendMenuW(MF_STRING, (UINT_PTR)(itr->second + 38000), itr->first.c_str());
-	}
-
-	ncHMenu = ncMenu->m_hMenu;
-	menu->AppendMenuW(MF_POPUP, (UINT_PTR)ncHMenu, L"Native Cheats");
+	CMenu* nativeCheatsMenu = new CMenu();
+	nativeCheatsMenu->CreatePopupMenu();
+	AddMenuItems(nativeCheatsMenu, nativeCheats, sizeof(nativeCheats) / sizeof(nativeCheats[0]), ID_NATIVE_START);
+	AppendMenu(menu->m_hMenu, MF_POPUP, (UINT_PTR)nativeCheatsMenu->m_hMenu, L"Native cheats");
+	this->ncHMenu = nativeCheatsMenu->m_hMenu;
 
 	return 0;
 }
@@ -764,9 +642,9 @@ void MainWindow::KeepLockedValues()
 		// Detect and prepare emblems if car changed
 		m_carEmblemPos.SetRange(-8192, 8192, TRUE);
 		currLastCarEmblemID = 0;
-		for (int i = 0; i < sizeof(emblemValues)/sizeof(emblemValues[0]); i++)
+		for (int i = 0; i < sizeof(emblems)/sizeof(emblems[0]); i++)
 		{
-			currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, emblemValues[i]);
+			currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, emblems[i].id);
 			if (currLastCarEmblem && currLastCarEmblem->sprite->spriteType == 4)
 			{
 				currLastCarEmblemID = i;
@@ -818,11 +696,9 @@ void MainWindow::SpawnObject(OBJECT_TYPE type)
 		0
 	);
 
-	// If everything successed, show label :D
 	if (object)
 	{
 		log(L"Object 0x%X spawned!", object);
-		fnShowBigOnScreenLabel(&s10->ptrToSomeStructRelToBIG_LABEL, 0, (WCHAR*)L"Object spawned!", 10);
 	}
 
 	wtSpawnObject = -1;
@@ -830,44 +706,33 @@ void MainWindow::SpawnObject(OBJECT_TYPE type)
 }
 
 // Object spawning menu
-void MainWindow::OnSpawnObjectClick(UINT nID) {
-	switch (nID)
+void MainWindow::OnSpawnObjectMenuClick(UINT nID) {
+
+	if(nID == ID_SPAWNOBJ_LAST)
 	{
-	case 36400:
-		OnSpawnLastObjectClick();
-		break;
-	default:
-		wtSpawnObject = nID - 36000;
-		lastSpawnedObjectType = wtSpawnObject;
-		EnableMenuItem(oHMenu, 36400, MF_ENABLED);
-		break;
-	}
-}
+		if (lastSpawnedObjectType == -1)
+			return;
 
-void MainWindow::OnSpawnLastObjectClick()
-{
-	if (lastSpawnedObjectType == -1)
+		wtSpawnObject = lastSpawnedObjectType;
 		return;
-
-	wtSpawnObject = lastSpawnedObjectType;
+	}
+	
+	wtSpawnObject = nID - ID_SPAWNOBJ_START;
+	lastSpawnedObjectType = wtSpawnObject;
+	EnableMenuItem(objHMenu, ID_SPAWNOBJ_LAST, MF_ENABLED);
 }
 
-// Caleed evey game tick and only then
-void MainWindow::SafeSpawnCars(WantToSpawn wtsList[128], int* wtsArraySize)
+// Called evey game tick and only then
+void MainWindow::SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize)
 {
 	while (*wtsArraySize > 0)
 	{
 		(*wtsArraySize)--;
-		WantToSpawn currentWTS = wtsList[*wtsArraySize];
+		WantToSpawn currentWTS = wtsArray[*wtsArraySize];
 
 		// coordinates check
-		if (
-			currentWTS.x < 1 * 16384 ||
-			currentWTS.x > 254 * 16384 ||
-			currentWTS.y < 1 * 16384 ||
-			currentWTS.y > 254 * 16384
-			) {
-			log(L"Car wasn't spawned, target position outside the world!");
+		if (!IsPointSafe(currentWTS.x, currentWTS.y, currentWTS.z)) {
+			log(L"Target position is out of the map");
 			continue;
 		}
 
@@ -894,19 +759,19 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsList[128], int* wtsArraySize)
 }
 
 // Car spawning (in front of the player)
-void MainWindow::SpawnCarHere(UINT nID) {
+void MainWindow::OnSpawnCarMenuClick(UINT nID) {
 
 	// Spawn last spawned car model
-	if (nID == 35200)
+	if (nID == ID_SPAWNCAR_LAST)
 	{
 		if (lastSpawnedCarModel == -1)
 			return;
 
-		nID = lastSpawnedCarModel + 35000;
+		nID = lastSpawnedCarModel + ID_SPAWNCAR_START;
 	}
 
 	// Open advanced car spawner
-	if (nID == 35201)
+	if (nID == ID_SPAWNCAR_ARRAY)
 	{
 		m_acsWindow->ShowWindow(SW_SHOW);
 		m_acsWindow->SetFocus();
@@ -938,22 +803,29 @@ void MainWindow::SpawnCarHere(UINT nID) {
 	);
 
 	// Set wtsCar
-	wtsCar[wtsCarSize] = WantToSpawn{ targetXY[0], targetXY[1], playerPed->gameObject->sprite->z, 4 * 180, nID - 35000, -1 };
+	WantToSpawn wts = { 
+		targetXY[0], 
+		targetXY[1], 
+		playerPed->gameObject->sprite->z, 
+		4 * 180, 
+		nID - ID_SPAWNCAR_START, 
+		-1 
+	};
+
+	wtsCar[wtsCarSize] = wts;
 	wtsCarSize++;
-	lastSpawnedCarModel = nID - 35000;
-	EnableMenuItem(nHMenu, 35200, MF_ENABLED);
+	lastSpawnedCarModel = nID - ID_SPAWNCAR_START;
+	EnableMenuItem(carHMenu, ID_SPAWNCAR_LAST, MF_ENABLED);
 }
 
-// Tank spawning
-void MainWindow::OnSpawncarTank()
+void MainWindow::OnSpawnCarTank()
 {
-	SpawnCarHere(35000 + (int)TANK);
+	OnSpawnCarMenuClick(ID_SPAWNCAR_START + (int)TANK);
 }
 
-// Gunjeep spawning
-void MainWindow::OnSpawncarGunjeep()
+void MainWindow::OnSpawnCarGunjeep()
 {
-	SpawnCarHere(35000 + (int)GUNJEEP);
+	OnSpawnCarMenuClick(ID_SPAWNCAR_START + (int)GUNJEEP);
 }
 
 void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
@@ -962,10 +834,10 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 	switch (nKey2)
 	{
 	case 0x54:
-		OnSpawncarTank();
+		OnSpawnCarTank();
 		break;
 	case 0x4a:
-		OnSpawncarGunjeep();
+		OnSpawnCarGunjeep();
 		break;
 	case 0x50:
 		TeleportAllPeds();
@@ -980,10 +852,19 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		HijackTrain();
 		break;
 	case 0x4f:
-		OnSpawnLastObjectClick();
+		OnSpawnObjectMenuClick(ID_SPAWNOBJ_LAST);
 		break;
 	case 0x43:
-		SpawnCarHere(35200);
+		OnSpawnCarMenuClick(ID_SPAWNCAR_LAST);
+		break;
+	case 0x45:
+		ExplodeCars();
+		break;
+	case 0x42:
+		ShowBigText();
+		break;
+	case 0x57:
+		OnGetWeaponMenuClick(ID_GETWEAP_ALL);
 		break;
 	default:
 		break;
@@ -992,20 +873,53 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 	CDialogEx::OnHotKey(nHotKeyId, nKey1, nKey2);
 }
 
-void MainWindow::OnGetWeaponClick(UINT nID) {
+void MainWindow::OnSpawnPedMenuClick(UINT nID) {
+	if (nID == ID_SPAWNPED_TOOL) {
+		m_pedSpawnerWindow->ShowWindow(SW_SHOW);
+		m_pedSpawnerWindow->SetFocus();
+		m_pedSpawnerWindow->ClearValues();
+		return;
+	}
+}
 
+void MainWindow::OnGetWeaponMenuClick(UINT nID) {
+
+	if(nID == ID_GETWEAP_ALL)
+	{
+		GetAllWeapons();
+		return;
+	}
+
+	WEAPON_INDEX weapon = (WEAPON_INDEX)(nID - ID_GETWEAP_START);
+	GetWeapon(weapon);
+}
+
+void MainWindow::GetWeapon(WEAPON_INDEX weapon, bool silent) {
 	Ped* playerPed = fnGetPedByID(1);
 
 	// Return if player ped doesn't exist
 	if (!playerPed)
 		return;
 
-	UINT ID = nID - 37000;
-	playerPed->playerWeapons->weapons[ID]->ammo += 100;
-	log(L"Weapon #%d got", nID - 37000);
+	playerPed->playerWeapons->weapons[weapon]->ammo = 990;
+	
+	if (!silent)
+		log(L"Weapon #%d got", weapon);
 }
 
-void MainWindow::OnGetCarWeaponClick(UINT nID) {
+void MainWindow::GetAllWeapons() {
+	size_t weaponsCount = sizeof(weapons) / sizeof(weapons[0]);
+
+	for (size_t i = 0; i < weaponsCount; i++)
+	{
+		WEAPON_INDEX weapon = (WEAPON_INDEX)(i);
+		GetWeapon(weapon, true);
+	}
+
+	log(L"All weapons got");
+}
+
+void MainWindow::OnGetCarWeaponMenuClick(UINT nID) {
 	
 	Ped* playerPed = fnGetPedByID(1);
 
@@ -1013,10 +927,10 @@ void MainWindow::OnGetCarWeaponClick(UINT nID) {
 	if (!playerPed || !playerPed->currentCar || !playerPed->currentCar->sprite)
 		return;
 
-	byte ID = nID - 37100;
+	byte ID = nID - ID_GETCARWEAP_START;
 	CAR_WEAPON weapon = (CAR_WEAPON)(15 + ID);
 
-	fnCarAddWeapon(weapon, 10, currLastCar);
+	fnCarAddWeapon(weapon, 99, currLastCar);
 	log(L"Car weapon #%d got", ID);
 
 	switch (weapon)
@@ -1048,13 +962,15 @@ void MainWindow::OnGetCarWeaponClick(UINT nID) {
 	}
 }
 
-void MainWindow::OnPlayVocalClick(UINT nID) {
-	fnPlayVocal((DWORD*)0x005d85a0, 0, (VOCAL)(nID - 37200));
-	log(L"Vocal #%d played", nID - 37200);
+void MainWindow::OnPlayVocalMenuClick(UINT nID) {
+	UINT ID = nID - ID_VOCALS_START;
+	fnPlayVocal((DWORD*)0x005d85a0, 0, (VOCAL)(ID));
+	log(L"Vocal #%d played", ID);
 }
 
-void MainWindow::OnNativeCheatClick(UINT nID) {
-	DWORD address = 0x5EAD00 + nID - 38000;
+void MainWindow::OnNativeCheatMenuClick(UINT nID) {
+	UINT ID = nID - ID_NATIVE_START;
+	DWORD address = 0x5EAD00 + ID;
 	bool* cheat = (bool*)(address);
 	*cheat = !*cheat;
 	log(L"%s cheat at 0x%X", *cheat ? L"Enabled" : L"Disabled", address);
@@ -1085,6 +1001,12 @@ void MainWindow::NoReloads()
 	noReloads = !noReloads;
 	log(L"No reloads %sabled", noReloads ? L"en" : L"dis");
 
+}
+
+void MainWindow::CarExplode()
+{
+	if (!currLastCar) return;
+	fnExplodeCar(currLastCar, 0, EXPLOSION_SIZE_MEDIUM);
 }
 
 void MainWindow::LockCarDamage()
@@ -1307,7 +1229,7 @@ void MainWindow::PedInfo()
 		}
 
 		// Display emblem name 
-		swprintf(buf, 256, L"%s", emblemNames[currLastCarEmblemID]);
+		swprintf(buf, 256, L"%s", emblems[currLastCarEmblemID].name);
 		m_carEmblem.SetWindowTextW(buf);
 
 		// Display visual state
@@ -1607,19 +1529,16 @@ void MainWindow::WatchNextPed()
 void MainWindow::GangRespect(UINT nID)
 {
 	DWORD* gangsArr = (DWORD*)0x005eb898;
-	int gangNo = 0;
 	int dataInt = (int)nID - 3040;
-
-	if (dataInt >= 0 && dataInt <= 2) gangNo = 0;
-	else if (dataInt >= 3 && dataInt <= 5) gangNo = 1;
-	else if (dataInt >= 6 && dataInt <= 8) gangNo = 2;
+	int gangNo = dataInt / 3;
+	int action = (dataInt % 3) - 1;
 
 	int* gangresp;
 	gangresp = (int*)*gangsArr + 0x47 + gangNo * 0x51;
+	*gangresp += action * 20;
 
-	if (dataInt == 0 || dataInt == 3 || dataInt == 6) *gangresp -= 20;
-	else if (dataInt == 1 || dataInt == 4 || dataInt == 7) *gangresp = 0;
-	else if (dataInt == 2 || dataInt == 5 || dataInt == 8) *gangresp += 20;
+	if (*gangresp < -100) *gangresp = -100;
+	if (*gangresp > 100) *gangresp = 100;
 	
 	log(L"Changed the respect to %i", (char)*gangresp);
 }
@@ -1640,22 +1559,16 @@ void MainWindow::ToggleDoor(UINT uID)
 
 void MainWindow::SyncTrailerColor()
 {
-	if 
-	(
-		currLastCar &&
-		currLastCar->sprite &&
-		currLastCar->trailerController && 
-		currLastCar->trailerController->trailer &&
-		currLastCar->trailerController->trailer->sprite
-	)
-	{
-		currLastCar->trailerController->trailer->sprite->lockPalleteMaybe = currLastCar->sprite->lockPalleteMaybe;
-		currLastCar->trailerController->trailer->sprite->carColor = currLastCar->sprite->carColor;
-		log(L"Trailer color changed");
-	}
+	if(!currLastCar) return;
+	if(!currLastCar->sprite) return;
+	if(!currLastCar->trailerController) return;
+	if(!currLastCar->trailerController->trailer) return;
+	if(!currLastCar->trailerController->trailer->sprite) return;
+
+	currLastCar->trailerController->trailer->sprite->lockPalleteMaybe = currLastCar->sprite->lockPalleteMaybe;
+	currLastCar->trailerController->trailer->sprite->carColor = currLastCar->sprite->carColor;
+	log(L"Trailer color changed");
 }
-
-
 
 void MainWindow::CarEmblemMinus()
 {
@@ -1675,7 +1588,7 @@ void MainWindow::CarEmblemMinus()
 	{
 		// Prev emblem //
 		currLastCarEmblemID--;
-		currLastCarEmblem->sprite->sprite = emblemValues[currLastCarEmblemID];
+		currLastCarEmblem->sprite->sprite = emblems[currLastCarEmblemID].id;
 		log(L"Car emblem changed");
 	}
 }
@@ -1701,18 +1614,18 @@ void MainWindow::CarEmblemPlus()
 		if (currLastCarEmblem)
 		{
 			currLastCarEmblemID = 1;
-			currLastCarEmblem->sprite->sprite = emblemValues[1];
+			currLastCarEmblem->sprite->sprite = emblems[1].id;
 			currLastCarEmblem->rotation = 0;
 			currLastCarEmblem->sprite->layer++;
 			m_carEmblemPos.SetPos(currLastCarEmblem->yOffset);
 			log(L"Car emblem created");
 		}
 	}
-	else if (currLastCarEmblemID < sizeof(emblemValues)/sizeof(emblemValues[0]) - 1)
+	else if (currLastCarEmblemID < sizeof(emblems)/sizeof(emblems[0]) - 1)
 	{
 		// Next emblem //
 		currLastCarEmblemID++;
-		currLastCarEmblem->sprite->sprite = emblemValues[currLastCarEmblemID];
+		currLastCarEmblem->sprite->sprite = emblems[currLastCarEmblemID].id;
 		log(L"Car emblem changed");
 	}
 }
@@ -1920,49 +1833,46 @@ void MainWindow::SetHealthArmorMoney()
 
 void MainWindow::TeleportPlayer()
 {
-	Ped* playerPed = fnGetPedByID(1);
-
-	// Return if player ped doesn't exist
-	if (!playerPed)
-		return;
+	Game* pGame = (Game*)*(DWORD*)ptrToGame;
+	if (!pGame) return;
+	Player* player = pGame->CurrentPlayer;
+	if (!player) return;
 
 	fesetround(FE_TONEAREST);
 	CString buffer;
 
-	// If player is not in the car
-	if (playerPed->gameObject && playerPed->gameObject->sprite)
+	m_pedX.GetWindowTextW(buffer);
+	float newx = _wtof(buffer);
+	m_pedY.GetWindowTextW(buffer);
+	float newy = _wtof(buffer);
+
+	fnDoTeleport(player, newx, newy);
+
+	log(L"Player teleported to %f, %f", newx, newy);
+}
+
+void MainWindow::ExplodeCars() {
+	log(L"Boom!");
+	Ped* playerPed = fnGetPedByID(1);
+	auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
+	Car* tcar = prefab->lastCar;\
+	while (tcar)
 	{
-		m_pedX.GetWindowTextW(buffer);
-		float newx = _wtof(buffer);
-		playerPed->gameObject->sprite->x = newx * 16384;
-
-		m_pedY.GetWindowTextW(buffer);
-		float newy = _wtof(buffer);
-		playerPed->gameObject->sprite->y = newy * 16384;
-
-		m_pedZ.GetWindowTextW(buffer);
-		float newz = _wtof(buffer);
-		playerPed->gameObject->sprite->z = (newz * 16384.0) + 10;
-
-		log(L"Player teleported to %f, %f, %f!", newx, newy, newz);
+		if ((!playerPed || tcar != playerPed->currentCar) && tcar->sprite) {
+			fnExplodeCar(tcar, 0, EXPLOSION_SIZE_MEDIUM);
+		}
+		tcar = tcar->lastCar;
 	}
-	// If player is in the car
-	else if (playerPed->currentCar && playerPed->currentCar->physics)
-	{
-		m_pedX.GetWindowTextW(buffer);
-		float newx = _wtof(buffer);
-		playerPed->currentCar->physics->xPos = newx * 16384;
+}
 
-		m_pedY.GetWindowTextW(buffer);
-		float newy = _wtof(buffer);
-		playerPed->currentCar->physics->yPos = newy * 16384;
+void MainWindow::PreventFPSComprensation(Game* game) {
+	HWND foregroundWindow = ::GetForegroundWindow();
+	bool isFocused = this->GetSafeHwnd() == foregroundWindow;
 
-		m_pedZ.GetWindowTextW(buffer);
-		float newz = _wtof(buffer);
-		playerPed->currentCar->physics->zPos = (newz * 16384) + 10;
+	//log(isFocused ? L"focused" : L"unfocused");
+	//log(L"time: %d", game->compensationFPSTime);
 
-		log(L"Player's car teleported to %f, %f, %f!", newx, newy, newz);
-	}
+	/// TODO
 }
 
 void MainWindow::FixCheckboxes()
@@ -2018,6 +1928,7 @@ void MainWindow::OnGTAGameTick(Game* game)
 	if (captureMouse) CaptureMouse();
 	FixCheckboxes();
 	SafeSpawnCars(wtsCar, &wtsCarSize);
+	PreventFPSComprensation(game);
 	if (wtSpawnObject != -1) SpawnObject((OBJECT_TYPE)wtSpawnObject);
 }
 

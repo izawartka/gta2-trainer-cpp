@@ -4382,19 +4382,19 @@ LCID (__stdcall * Real_GetUserDefaultLCID)(void)
 LANGID (__stdcall * Real_GetUserDefaultLangID)(void)
     = GetUserDefaultLangID;
 
-BOOL (__stdcall * Real_GetUserObjectInformationA)(HANDLE a0,
+BOOL (__stdcall * Real_GetUserCatMenuItemrmationA)(HANDLE a0,
                                                   int a1,
                                                   PVOID a2,
                                                   DWORD a3,
                                                   LPDWORD a4)
-    = GetUserObjectInformationA;
+    = GetUserCatMenuItemrmationA;
 
-BOOL (__stdcall * Real_GetUserObjectInformationW)(HANDLE a0,
+BOOL (__stdcall * Real_GetUserCatMenuItemrmationW)(HANDLE a0,
                                                   int a1,
                                                   PVOID a2,
                                                   DWORD a3,
                                                   LPDWORD a4)
-    = GetUserObjectInformationW;
+    = GetUserCatMenuItemrmationW;
 
 BOOL (__stdcall * Real_GetUserObjectSecurity)(HANDLE a0,
                                               PSECURITY_INFORMATION a1,
@@ -7069,17 +7069,17 @@ UINT_PTR (__stdcall * Real_SetTimer)(HWND a0,
 LPTOP_LEVEL_EXCEPTION_FILTER (__stdcall * Real_SetUnhandledExceptionFilter)(LPTOP_LEVEL_EXCEPTION_FILTER a0)
     = SetUnhandledExceptionFilter;
 
-BOOL (__stdcall * Real_SetUserObjectInformationA)(HANDLE a0,
+BOOL (__stdcall * Real_SetUserCatMenuItemrmationA)(HANDLE a0,
                                                   int a1,
                                                   PVOID a2,
                                                   DWORD a3)
-    = SetUserObjectInformationA;
+    = SetUserCatMenuItemrmationA;
 
-BOOL (__stdcall * Real_SetUserObjectInformationW)(HANDLE a0,
+BOOL (__stdcall * Real_SetUserCatMenuItemrmationW)(HANDLE a0,
                                                   int a1,
                                                   PVOID a2,
                                                   DWORD a3)
-    = SetUserObjectInformationW;
+    = SetUserCatMenuItemrmationW;
 
 BOOL (__stdcall * Real_SetUserObjectSecurity)(HANDLE a0,
                                               PSECURITY_INFORMATION a1,
@@ -21541,36 +21541,36 @@ LANGID __stdcall Mine_GetUserDefaultLangID(void)
     return rv;
 }
 
-BOOL __stdcall Mine_GetUserObjectInformationA(HANDLE a0,
+BOOL __stdcall Mine_GetUserCatMenuItemrmationA(HANDLE a0,
                                               int a1,
                                               PVOID a2,
                                               DWORD a3,
                                               LPDWORD a4)
 {
-    _PrintEnter("GetUserObjectInformationA(%p,%p,%p,%p,%p)\n", a0, a1, a2, a3, a4);
+    _PrintEnter("GetUserCatMenuItemrmationA(%p,%p,%p,%p,%p)\n", a0, a1, a2, a3, a4);
 
     BOOL rv = 0;
     __try {
-        rv = Real_GetUserObjectInformationA(a0, a1, a2, a3, a4);
+        rv = Real_GetUserCatMenuItemrmationA(a0, a1, a2, a3, a4);
     } __finally {
-        _PrintExit("GetUserObjectInformationA(,,,,) -> %p\n", rv);
+        _PrintExit("GetUserCatMenuItemrmationA(,,,,) -> %p\n", rv);
     };
     return rv;
 }
 
-BOOL __stdcall Mine_GetUserObjectInformationW(HANDLE a0,
+BOOL __stdcall Mine_GetUserCatMenuItemrmationW(HANDLE a0,
                                               int a1,
                                               PVOID a2,
                                               DWORD a3,
                                               LPDWORD a4)
 {
-    _PrintEnter("GetUserObjectInformationW(%p,%p,%p,%p,%p)\n", a0, a1, a2, a3, a4);
+    _PrintEnter("GetUserCatMenuItemrmationW(%p,%p,%p,%p,%p)\n", a0, a1, a2, a3, a4);
 
     BOOL rv = 0;
     __try {
-        rv = Real_GetUserObjectInformationW(a0, a1, a2, a3, a4);
+        rv = Real_GetUserCatMenuItemrmationW(a0, a1, a2, a3, a4);
     } __finally {
-        _PrintExit("GetUserObjectInformationW(,,,,) -> %p\n", rv);
+        _PrintExit("GetUserCatMenuItemrmationW(,,,,) -> %p\n", rv);
     };
     return rv;
 }
@@ -29465,34 +29465,34 @@ LPTOP_LEVEL_EXCEPTION_FILTER __stdcall Mine_SetUnhandledExceptionFilter(LPTOP_LE
     return rv;
 }
 
-BOOL __stdcall Mine_SetUserObjectInformationA(HANDLE a0,
+BOOL __stdcall Mine_SetUserCatMenuItemrmationA(HANDLE a0,
                                               int a1,
                                               PVOID a2,
                                               DWORD a3)
 {
-    _PrintEnter("SetUserObjectInformationA(%p,%p,%p,%p)\n", a0, a1, a2, a3);
+    _PrintEnter("SetUserCatMenuItemrmationA(%p,%p,%p,%p)\n", a0, a1, a2, a3);
 
     BOOL rv = 0;
     __try {
-        rv = Real_SetUserObjectInformationA(a0, a1, a2, a3);
+        rv = Real_SetUserCatMenuItemrmationA(a0, a1, a2, a3);
     } __finally {
-        _PrintExit("SetUserObjectInformationA(,,,) -> %p\n", rv);
+        _PrintExit("SetUserCatMenuItemrmationA(,,,) -> %p\n", rv);
     };
     return rv;
 }
 
-BOOL __stdcall Mine_SetUserObjectInformationW(HANDLE a0,
+BOOL __stdcall Mine_SetUserCatMenuItemrmationW(HANDLE a0,
                                               int a1,
                                               PVOID a2,
                                               DWORD a3)
 {
-    _PrintEnter("SetUserObjectInformationW(%p,%p,%p,%p)\n", a0, a1, a2, a3);
+    _PrintEnter("SetUserCatMenuItemrmationW(%p,%p,%p,%p)\n", a0, a1, a2, a3);
 
     BOOL rv = 0;
     __try {
-        rv = Real_SetUserObjectInformationW(a0, a1, a2, a3);
+        rv = Real_SetUserCatMenuItemrmationW(a0, a1, a2, a3);
     } __finally {
-        _PrintExit("SetUserObjectInformationW(,,,) -> %p\n", rv);
+        _PrintExit("SetUserCatMenuItemrmationW(,,,) -> %p\n", rv);
     };
     return rv;
 }
@@ -34555,8 +34555,8 @@ LONG AttachDetours(VOID)
     ATTACH(GetUpdateRgn);
     ATTACH(GetUserDefaultLCID);
     ATTACH(GetUserDefaultLangID);
-    ATTACH(GetUserObjectInformationA);
-    ATTACH(GetUserObjectInformationW);
+    ATTACH(GetUserCatMenuItemrmationA);
+    ATTACH(GetUserCatMenuItemrmationW);
     ATTACH(GetUserObjectSecurity);
     ATTACH(GetVersion);
     ATTACH(GetVersionExA);
@@ -35089,8 +35089,8 @@ LONG AttachDetours(VOID)
     ATTACH(SetTimeZoneInformation);
     ATTACH(SetTimer);
     ATTACH(SetUnhandledExceptionFilter);
-    ATTACH(SetUserObjectInformationA);
-    ATTACH(SetUserObjectInformationW);
+    ATTACH(SetUserCatMenuItemrmationA);
+    ATTACH(SetUserCatMenuItemrmationW);
     ATTACH(SetUserObjectSecurity);
     ATTACH(SetViewportExtEx);
     ATTACH(SetViewportOrgEx);
@@ -36232,8 +36232,8 @@ LONG DetachDetours(VOID)
     DETACH(GetUpdateRgn);
     DETACH(GetUserDefaultLCID);
     DETACH(GetUserDefaultLangID);
-    DETACH(GetUserObjectInformationA);
-    DETACH(GetUserObjectInformationW);
+    DETACH(GetUserCatMenuItemrmationA);
+    DETACH(GetUserCatMenuItemrmationW);
     DETACH(GetUserObjectSecurity);
     DETACH(GetVersion);
     DETACH(GetVersionExA);
@@ -36766,8 +36766,8 @@ LONG DetachDetours(VOID)
     DETACH(SetTimeZoneInformation);
     DETACH(SetTimer);
     DETACH(SetUnhandledExceptionFilter);
-    DETACH(SetUserObjectInformationA);
-    DETACH(SetUserObjectInformationW);
+    DETACH(SetUserCatMenuItemrmationA);
+    DETACH(SetUserCatMenuItemrmationW);
     DETACH(SetUserObjectSecurity);
     DETACH(SetViewportExtEx);
     DETACH(SetViewportOrgEx);

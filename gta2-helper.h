@@ -3,7 +3,7 @@
 #define GTA_H
 
 #include "gta2.h"
-#include "SpawningData.h"
+#include "MainWindowData.h"
 
 static_assert(sizeof(u4) == 4, "Wrong size of u4 struct");
 static_assert(sizeof(u2) == 2, "Wrong size of u2 struct");
@@ -35,6 +35,7 @@ static DWORD ptrToS2LocalesSettings = 0x00671550;
 static DWORD ptrToCarsPrefabs = 0x005e4ca0;
 static DWORD ptrToPlayerPhysics = 0x005e3cc4;
 static DWORD ptrToFrontEnd = 0x005eb160;
+static DWORD ptrToS6 = 0x005dcbc8;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
 // Usage: auto game = fnGetGame();
@@ -72,6 +73,10 @@ static SpawnPedAtPosition* fnSpawnPedAtPosition = (SpawnPedAtPosition*)0x0043db4
 typedef bool* (__fastcall SetPedPosition)(Ped* ped, DWORD edx, int x, int y, int z);
 static SetPedPosition* fnSetPedPosition = (SetPedPosition*)0x004360c0;
 
+// void __thiscall ExplodeCarMaybe(Car *this,uint param_1_00 = 0x13)
+typedef void(__fastcall ExplodeCar)(Car* car, DWORD edx, EXPLOSION_SIZE explosionSize);
+static ExplodeCar* fnExplodeCar = (ExplodeCar*)0x00426fa0;
+
 typedef uint (CarAddWeapon)(CAR_WEAPON type, uint ammo, Car* car);
 static CarAddWeapon* fnCarAddWeapon = (CarAddWeapon*)0x004cd820;
 
@@ -90,6 +95,9 @@ static CarAddRoofAntenna* fnCarAddRoofAntenna = (CarAddRoofAntenna*)0x00425fd0;
 typedef GameObject* (__fastcall SpawnObject)(S33* s33, undefined edx, OBJECT_TYPE type, int x, int y, int z, short rot);
 static SpawnObject* fnSpawnObject = (SpawnObject*)0x004852e0;
 
+typedef void(__fastcall SetNPCWeapon)(Ped* ped, DWORD unk, WEAPON_INDEX weapon);
+static SetNPCWeapon* fnSetNPCWeapon = (SetNPCWeapon*)0x0043d830;
+
 // void __fastcall FindMaxZForLocation(void *param_1,undefined4 edx,int *outZ,SCR_f x,SCR_f y)
 typedef void (__fastcall FindMaxZForLocation)(void* ptrToMapRelatedStruct, DWORD edx, SCR_f* outZ, SCR_f x, SCR_f y);
 static FindMaxZForLocation* fnFindMaxZForLocationRaw = (FindMaxZForLocation*)0x0046a420;
@@ -103,6 +111,10 @@ static FindMaxZForTile* fnFindMaxZForTileRaw = (FindMaxZForTile*)0x00466990;
 // SCR_f * __fastcall WorldCoordinateToScreenCoord(SCR_f* axisValue, undefined edx, SCR_f* outVal, int eq_0x6666)
 typedef void(__fastcall WorldCoordinateToScreenCoord)(SCR_f* axisValue, undefined edx, SCR_f* outVal, int *eq_0x6666);
 static WorldCoordinateToScreenCoord* fnWorldCoordinateToScreenCoordRaw = (WorldCoordinateToScreenCoord*)0x00401b60;
+
+// void __fastcall SetPedTeleportTarget(Ped *this,SCR_f x,SCR_f y)
+typedef void(__fastcall SetPedTeleportTarget)(Ped* ped, DWORD edx, SCR_f x, SCR_f y);
+static SetPedTeleportTarget* fnSetPedTeleportTarget = (SetPedTeleportTarget*)0x00435c80;
 
 // void __fastcall DoTeleport(Player *param_1)
 typedef void (__fastcall DoTeleport)(Player*, DWORD edx);
@@ -143,5 +155,6 @@ SCR_f FloatEncode(double x);
 double FloatDecode(SCR_f x);
 SCR_f* GetPointInADistance(SCR_f baseX, SCR_f baseY, short rotation, SCR_f distance);
 POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
+bool IsPointSafe(SCR_f x, SCR_f y, SCR_f z);
 
 #endif // !GTA_H

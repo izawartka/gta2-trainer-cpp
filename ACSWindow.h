@@ -26,22 +26,21 @@ protected:
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 
-	void ExecuteACS();
+	float GetDoubleFromCEditVal(CEdit* element);
+	void OnSpawnClick();
 	void ClearValues();
 	void GetPlayerPos();
-	float GetFloatFromCEditVal(CEdit* element);
 
 	MainWindow* m_mainWindow = nullptr;
 
-	CEdit m_xPos;
-	CEdit m_yPos;
-	CEdit m_zPos;
-	CEdit m_rot;
-	CEdit m_xSize;
-	CEdit m_ySize;
-	CEdit m_xOffset;
-	CEdit m_yOffset;
+	double m_xPos;
+	double m_yPos;
+	double m_zPos;
+	double m_rot;
+	unsigned int m_xSize;
+	unsigned int m_ySize;
+	double m_xOffset;
+	double m_yOffset;
 	CComboBox m_model;
-	CButton m_variateColors;
-	bool variateColors;
+	int m_variateColors;
 };

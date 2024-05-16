@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Plik do³¹czany wygenerowany przez œrodowisko Microsoft Visual C++.
-// U¿ywany przez: gta2dll.rc
+// Microsoft Visual C++ generated include file.
+// Used by gta2dll.rc
 //
 #define IDD_DIALOG1                     3000
 #define IDC_PEDX                        3001
@@ -79,7 +79,6 @@
 #define IDC_PEDSHAPCLOTHR               3072
 #define IDC_PEDSINFO                    3073
 #define IDC_CARSINFO                    3074
-#define IDC_CUSTOM1                     3074
 #define IDC_DOOR1                       3075
 #define IDC_DOOR2                       3076
 #define IDC_DOOR3                       3077
@@ -90,7 +89,8 @@
 #define IDC_EMBPOS                      3082
 #define IDC_EDIT1                       3083
 #define IDC_EMBPOS2                     3085
-#define IDD_DIALOG2                     4000
+#define IDC_CAREXPLODE                  3086
+#define IDD_ACS                         4000
 #define IDC_ACS_SPAWN                   4001
 #define IDC_ACS_X                       4002
 #define IDC_ACS_Y                       4003
@@ -103,27 +103,66 @@
 #define IDC_ACS_YOFF                    4010
 #define IDC_ACS_VCOLORS                 4011
 #define IDC_ACS_MODEL                   4012
-#define ID_COMMANDS_HELLO               32772
-#define ID_COMMANDS_CAPTUREMOUSE        32773
-#define ID_COMMANDS_SPAWNCAR            32774
-#define ID_SPAWNCAR_TANK                32775
-#define ID_SPAWNCAR_GT                  32778
-#define ID_SPAWNCAR_GUNJEPP             32779
-#define ID_SPAWNCAR_GUNJEEP             32780
-#define ID_COMMANDS_TELEPORTALLPEDS     32781
-#define ID_COMMANDS_TPALLPEDS           32782
-#define ID_TPALLPEDS                    32783
-#define ID_COMMANDS_SHOW                32784
-#define ID_COMMANDS_FNSETPEDSTATE       32786
-#define ID_COMMANDS_HIJACKATRAIN        32787
+#define IDD_PS                          5000
+#define IDC_PS_SPAWN                    5001
+#define IDC_PS_X                        5002
+#define IDC_PS_Y                        5003
+#define IDC_PS_Z                        5004
+#define IDC_PS_ROT                      5005
+#define IDC_PS_GETPPOS                  5006
+#define IDC_PS_PRESET                   5007
+#define IDC_PS_SHAPE                    5008
+#define IDC_PS_REMAP                    5009
+#define IDC_PS_WEAP                     5010
+#define IDC_PS_HEALTH                   5011
+#define IDC_PS_OCCUP    			    5012
+#define IDC_PS_AI0						5013
+#define IDC_PS_AI1						5014
+#define IDC_PS_AI2						5015
+#define IDC_PS_AI3						5016
+#define IDC_PS_AI4						5017
+#define IDC_PS_AI5						5018
+#define IDC_PS_AI6						5019
+#define IDC_PS_AI7						5020
+#define IDC_PS_AI8						5021
+#define IDC_PS_AI9						5022
+#define IDC_PS_AI10						5023
+#define IDC_PS_AI11						5024
+#define IDC_PS_AI12						5025
+#define IDC_PS_AI13						5026
+#define IDC_PS_AI14						5027
+#define ID_COMMANDS_HELLO               32000
+#define ID_COMMANDS_TANK                32001
+#define ID_COMMANDS_GUNJEEP             32002
+#define ID_COMMANDS_HIJACKATRAIN        32003
+#define ID_COMMANDS_EXPLODECARS         32004
+#define ID_COMMANDS_TPALLPEDS           32005
+#define ID_SPAWNCAR                     35000
+#define ID_SPAWNCAR_LAST                35001
+#define ID_SPAWNCAR_ARRAY               35002
+#define ID_SPAWNCAR_START               35003
+#define ID_SPAWNOBJ                     36000
+#define ID_SPAWNOBJ_LAST                36001
+#define ID_SPAWNOBJ_START               36002
+#define ID_SPAWNPED                     36500
+#define ID_SPAWNPED_TOOL                36501
+#define ID_GETWEAP                      37000
+#define ID_GETWEAP_ALL                  37001
+#define ID_GETWEAP_START                37002
+#define ID_GETCARWEAP                   37100
+#define ID_GETCARWEAP_START             37101
+#define ID_VOCALS                       37200
+#define ID_VOCALS_START                 37201
+#define ID_NATIVE                       38000
+#define ID_NATIVE_START                 38001
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3012
-#define _APS_NEXT_COMMAND_VALUE         32788
-#define _APS_NEXT_CONTROL_VALUE         3099
+#define _APS_NEXT_RESOURCE_VALUE        3014
+#define _APS_NEXT_COMMAND_VALUE         32808
+#define _APS_NEXT_CONTROL_VALUE         3112
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
