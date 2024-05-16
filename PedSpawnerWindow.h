@@ -1,6 +1,6 @@
 #pragma once
 
-// Advanced car spawner dialog
+// Ped spawner dialog
 #include "gta2-helper.h"
 #include <vector>
 
@@ -27,7 +27,6 @@ protected:
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 
-	double GetDoubleFromCEditVal(CEdit* element);
 	void ClearValues();
 	void LoadPreset(int index);
 	afx_msg void OnPresetSelChange();

@@ -4,6 +4,7 @@
 #include "gta2-helper.h"
 #include "ACSWindow.h"
 #include "PedSpawnerWindow.h"
+#include "LiveTableWindow.h"
 
 enum TIMER {
 	TIMER_CAPTURE_MOUSE,
@@ -32,6 +33,7 @@ public:
 	HWND m_gtaWindow;
 	ACSWindow* m_acsWindow;
 	PedSpawnerWindow* m_pedSpawnerWindow;
+	LiveTableWindow* m_liveTableWindow;
 
 	void OnPaint();
 	afx_msg void OnBnClickedExit();
@@ -115,6 +117,7 @@ public:
 	afx_msg void OnGetCarWeaponMenuClick(UINT nID);
 	afx_msg void OnPlayVocalMenuClick(UINT nID);
 	afx_msg void OnNativeCheatMenuClick(UINT nID);
+	afx_msg void OnShowLiveTable();
 
 	// currLastCar related
 	Car* currLastCar = 0;

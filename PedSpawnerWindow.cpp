@@ -69,13 +69,6 @@ int PedSpawnerWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 }
 
-double PedSpawnerWindow::GetDoubleFromCEditVal(CEdit* element)
-{
-	CString buffer;
-	element->GetWindowTextW(buffer);
-	return _wtof(buffer);
-}
-
 void PedSpawnerWindow::ClearValues()
 {
 	m_xPos = 0;

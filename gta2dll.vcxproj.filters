@@ -36,6 +36,9 @@
     <ClCompile Include="PedSpawnerWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LiveTableWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="gta2dll.def">
@@ -77,6 +80,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PedSpawnerWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LiveTableWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
