@@ -465,8 +465,8 @@ const Occupation occupations[] = {
 	{L"4", 4},
 	{L"5 - Driver ?", 5},
 	{L"7", 7},
-	{L"8", 8},
-	{L"9 - Waiting for the train", 9},
+	{L"8 - Bus passenger", 8},
+	{L"9 - Train passenger", 9},
 	{L"10", 10}, // crashes the game
 	{L"11", 11},
 	{L"12", 12},
@@ -649,6 +649,15 @@ const PedPreset pedPresets[] = {
 		50,
 		(OCUPATION)16,
 		{0, 0, 0, 2, 3, 1, 3, 0, -1, -1}
+	},
+	{
+		L"FBI",
+		(PED_REMAP2)1,
+		(PED_REMAP)8,
+		(WEAPON_INDEX)9,
+		250,
+		(OCUPATION)26,
+		{0, 0, 0, 1, 1, 1, 4, 0x270F, -1, -1}
 	},
 };
 

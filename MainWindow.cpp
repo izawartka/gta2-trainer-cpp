@@ -1529,19 +1529,16 @@ void MainWindow::WatchNextPed()
 void MainWindow::GangRespect(UINT nID)
 {
 	DWORD* gangsArr = (DWORD*)0x005eb898;
-	int gangNo = 0;
 	int dataInt = (int)nID - 3040;
-
-	if (dataInt >= 0 && dataInt <= 2) gangNo = 0;
-	else if (dataInt >= 3 && dataInt <= 5) gangNo = 1;
-	else if (dataInt >= 6 && dataInt <= 8) gangNo = 2;
+	int gangNo = dataInt / 3;
+	int action = (dataInt % 3) - 1;
 
 	int* gangresp;
 	gangresp = (int*)*gangsArr + 0x47 + gangNo * 0x51;
+	*gangresp += action * 20;
 
-	if (dataInt == 0 || dataInt == 3 || dataInt == 6) *gangresp -= 20;
-	else if (dataInt == 1 || dataInt == 4 || dataInt == 7) *gangresp = 0;
-	else if (dataInt == 2 || dataInt == 5 || dataInt == 8) *gangresp += 20;
+	if (*gangresp < -100) *gangresp = -100;
+	if (*gangresp > 100) *gangresp = 100;
 	
 	log(L"Changed the respect to %i", (char)*gangresp);
 }
@@ -1562,22 +1559,16 @@ void MainWindow::ToggleDoor(UINT uID)
 
 void MainWindow::SyncTrailerColor()
 {
-	if 
-	(
-		currLastCar &&
-		currLastCar->sprite &&
-		currLastCar->trailerController && 
-		currLastCar->trailerController->trailer &&
-		currLastCar->trailerController->trailer->sprite
-	)
-	{
-		currLastCar->trailerController->trailer->sprite->lockPalleteMaybe = currLastCar->sprite->lockPalleteMaybe;
-		currLastCar->trailerController->trailer->sprite->carColor = currLastCar->sprite->carColor;
-		log(L"Trailer color changed");
-	}
+	if(!currLastCar) return;
+	if(!currLastCar->sprite) return;
+	if(!currLastCar->trailerController) return;
+	if(!currLastCar->trailerController->trailer) return;
+	if(!currLastCar->trailerController->trailer->sprite) return;
+
+	currLastCar->trailerController->trailer->sprite->lockPalleteMaybe = currLastCar->sprite->lockPalleteMaybe;
+	currLastCar->trailerController->trailer->sprite->carColor = currLastCar->sprite->carColor;
+	log(L"Trailer color changed");
 }
-
-
 
 void MainWindow::CarEmblemMinus()
 {

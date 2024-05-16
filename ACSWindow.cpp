@@ -26,14 +26,15 @@ END_MESSAGE_MAP()
 void ACSWindow::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_ACS_X, m_xPos);
-	DDX_Control(pDX, IDC_ACS_Y, m_yPos);
-	DDX_Control(pDX, IDC_ACS_Z, m_zPos);
-	DDX_Control(pDX, IDC_ACS_ROT, m_rot);
-	DDX_Control(pDX, IDC_ACS_XSIZE, m_xSize);
-	DDX_Control(pDX, IDC_ACS_YSIZE, m_ySize);
-	DDX_Control(pDX, IDC_ACS_XOFF, m_xOffset);
-	DDX_Control(pDX, IDC_ACS_YOFF, m_yOffset);
+	DDX_Text(pDX, IDC_ACS_X, m_xPos);
+	DDX_Text(pDX, IDC_ACS_Y, m_yPos);
+	DDX_Text(pDX, IDC_ACS_Z, m_zPos);
+	DDX_Text(pDX, IDC_ACS_ROT, m_rot);
+	DDX_Text(pDX, IDC_ACS_XSIZE, m_xSize);
+	DDX_Text(pDX, IDC_ACS_YSIZE, m_ySize);
+	DDX_Text(pDX, IDC_ACS_XOFF, m_xOffset);
+	DDX_Text(pDX, IDC_ACS_YOFF, m_yOffset);
+	DDX_Check(pDX, IDC_ACS_VCOLORS, m_variateColors);
 	DDX_Control(pDX, IDC_ACS_MODEL, m_model);
 }
 
@@ -43,31 +44,31 @@ int ACSWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 }
 
-float ACSWindow::GetDoubleFromCEditVal(CEdit* element)
-{
-	CString buffer;
-	element->GetWindowTextW(buffer);
-	return _wtof(buffer);
-}
-
 void ACSWindow::OnSpawnClick()
 {
 	if (m_model.GetCurSel() < 0) return;
 	unsigned int model = cars[m_model.GetCurSel()].id;
-	int xPos = GetDoubleFromCEditVal(&m_xPos) * 16384.0f;
-	int yPos = GetDoubleFromCEditVal(&m_yPos) * 16384.0f;
-	int zPos = GetDoubleFromCEditVal(&m_zPos) * 16384.0f;
-	int rot = GetDoubleFromCEditVal(&m_rot) * 4;
-	int xSize = GetDoubleFromCEditVal(&m_xSize);
-	int ySize = GetDoubleFromCEditVal(&m_ySize);
-	int xOffset = GetDoubleFromCEditVal(&m_xOffset) * 16384.0f;
-	int yOffset = GetDoubleFromCEditVal(&m_yOffset) * 16384.0f;
-	int vColors = ((CButton*)GetDlgItem(IDC_ACS_VCOLORS))->GetCheck();
-	short color = vColors == true ? -2 : -1;
 
-	for (int x = 0; x < xSize; x++)
+	UpdateData(TRUE);
+
+	short color = m_variateColors == true ? -2 : -1;
+
+	SCR_f xPos = m_xPos * 16384.0;
+	SCR_f yPos = m_yPos * 16384.0;
+	SCR_f zPos = m_zPos * 16384.0;
+	short rot = m_rot * 4;
+	SCR_f xOffset = m_xOffset * 16384.0;
+	SCR_f yOffset = m_yOffset * 16384.0;
+
+	// coordinates check
+	if (!IsPointSafe(xPos, yPos, zPos)) {
+		MessageBox(L"Target position is out of the map");
+		return;
+	}
+
+	for (int x = 0; x < m_xSize; x++)
 	{
-		for (int y = 0; y < ySize; y++)
+		for (int y = 0; y < m_ySize; y++)
 		{
 			if (m_mainWindow->wtsCarSize > 126) return;
 
@@ -78,25 +79,27 @@ void ACSWindow::OnSpawnClick()
 			m_mainWindow->wtsCarSize++;
 		}
 	}
-
-	acsWnd->ShowWindow(HIDE_WINDOW);
 }
 
 void ACSWindow::ClearValues()
 {
-	m_xPos.SetWindowTextW(L"0");
-	m_yPos.SetWindowTextW(L"0");
-	m_zPos.SetWindowTextW(L"2");
-	m_rot.SetWindowTextW(L"0");
-	m_xSize.SetWindowTextW(L"1");
-	m_ySize.SetWindowTextW(L"1");
-	m_xOffset.SetWindowTextW(L"1");
-	m_yOffset.SetWindowTextW(L"1");
+	m_xPos = 0.0;
+	m_yPos = 0.0;
+	m_zPos = 0.0;
+	m_rot = 0;
+	m_xSize = 1;
+	m_ySize = 1;
+	m_xOffset = 1.0;
+	m_yOffset = 1.0;
+	m_variateColors = false;
+
+	UpdateData(FALSE);
 
 	m_model.ResetContent();
 	int carsCount = sizeof(cars) / sizeof(cars[0]);
 	for (int i = 0; i < carsCount; i++)
 		m_model.AddString(cars[i].name);
+	m_model.SetCurSel(0);
 
 	GetPlayerPos();
 }
@@ -108,19 +111,16 @@ void ACSWindow::GetPlayerPos()
 		return;
 
 	Ped* playerPed = fnGetPedByID(1);
-	
+
 	// Return if player ped not found
 	if (!playerPed || !playerPed->gameObject || !playerPed->gameObject->sprite)
 		return;
 
-	WCHAR buf[256];
+	UpdateData(TRUE);
 
-	swprintf(buf, 256, L"%f", playerPed->gameObject->sprite->x / 16384.0f);
-	m_xPos.SetWindowTextW(buf);
+	m_xPos = playerPed->gameObject->sprite->x / 16384.;
+	m_yPos = playerPed->gameObject->sprite->y / 16384.;
+	m_zPos = playerPed->gameObject->sprite->z / 16384.;
 
-	swprintf(buf, 256, L"%f", playerPed->gameObject->sprite->y / 16384.0f);
-	m_yPos.SetWindowTextW(buf);
-
-	swprintf(buf, 256, L"%f", playerPed->gameObject->sprite->z / 16384.0f);
-	m_zPos.SetWindowTextW(buf);
+	UpdateData(FALSE);
 }
