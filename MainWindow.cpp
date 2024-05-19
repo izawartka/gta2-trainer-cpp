@@ -74,7 +74,7 @@ static __declspec(naked) void gameTick(void) {
 		NOP
 	}
 
-	OutputDebugStringA("gameTick\n");
+	//OutputDebugStringA("gameTick\n");
 	mainWnd->OnGTAGameTick((Game*)*(DWORD*)ptrToGame);
 
 	__asm {
@@ -95,15 +95,15 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 
 	m_acsWindow = new ACSWindow();
-	m_acsWindow->Create(IDD_ACS, CWnd::GetDesktopWindow());
+	m_acsWindow->Create(IDD_ACS, this);
 	m_acsWindow->m_mainWindow = this;
 
 	m_pedSpawnerWindow = new PedSpawnerWindow();
-	m_pedSpawnerWindow->Create(IDD_PS, CWnd::GetDesktopWindow());
+	m_pedSpawnerWindow->Create(IDD_PS, this);
 	m_pedSpawnerWindow->m_mainWindow = this;
 
 	m_liveTableWindow = new LiveTableWindow();
-	m_liveTableWindow->Create(IDD_LT, CWnd::GetDesktopWindow());
+	m_liveTableWindow->Create(IDD_LT, this);
 	m_liveTableWindow->m_mainWindow = this;
 
 	DetourFunc(pGameTick, (DWORD)gameTick);
@@ -1433,19 +1433,21 @@ void MainWindow::TeleportAllPeds()
 	if (!playerPed || !playerPed->gameObject)
 		return;
 
-	int* nextpedid = (int*)0x591e84;
-	Ped* currentPed;
-	for (int i = 1; i < *nextpedid; i++)
-	{
-		currentPed = fnGetPedByID(i);
+	PedManager_S25* manager = ByPtr(PedManager_S25, ptrToPedManager);
+	Ped* lastPed = manager->lastPedInArray;
 
-		if (currentPed && currentPed->gameObject)
-		{
-			currentPed->gameObject->sprite->x = playerPed->gameObject->sprite->x;
-			currentPed->gameObject->sprite->y = playerPed->gameObject->sprite->y;
-			currentPed->gameObject->sprite->z = playerPed->gameObject->sprite->z;
-		}
+	for (int i = 1; i <= lastPed->id; i++)
+	{
+		Ped* currentPed = fnGetPedByID(i);
+
+		if(!currentPed) continue;
+		if(!currentPed->gameObject) continue;
+
+		currentPed->gameObject->sprite->x = playerPed->gameObject->sprite->x;
+		currentPed->gameObject->sprite->y = playerPed->gameObject->sprite->y;
+		currentPed->gameObject->sprite->z = playerPed->gameObject->sprite->z;
 	}
+
 	log(L"Teleported");
 }
 
@@ -1872,17 +1874,20 @@ void MainWindow::TeleportPlayer()
 }
 
 void MainWindow::ExplodeCars() {
-	log(L"Boom!");
 	Ped* playerPed = fnGetPedByID(1);
-	auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
-	Car* tcar = prefab->lastCar;\
-	while (tcar)
-	{
-		if ((!playerPed || tcar != playerPed->currentCar) && tcar->sprite) {
-			fnExplodeCar(tcar, 0, EXPLOSION_SIZE_MEDIUM);
-		}
-		tcar = tcar->lastCar;
+	CarsPrefab* carsManager = ByPtr(CarsPrefab, ptrToCarsPrefabs);
+	if (!carsManager) return;
+
+	for (int i = 0; i < 306; i++) {
+		Car* car = &carsManager->arr306Cars[i];
+
+		if(playerPed && playerPed->currentCar == car) continue;
+		if(!car->sprite) continue;
+
+		fnExplodeCar(car, 0, EXPLOSION_SIZE_MEDIUM);
 	}
+
+	log(L"Boom!");
 }
 
 void MainWindow::PreventFPSComprensation(Game* game) {

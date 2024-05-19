@@ -99,7 +99,18 @@
 #define IDC_ACS_MODEL                   4012
 #define IDD_LT                          4500
 #define IDC_LT_LIST                     4501
-#define IDC_LT_TYPE                     4502
+#define IDC_LT_MODE                     4502
+#define IDC_LT_UPDATE                   4503
+#define IDC_LT_EDIT                     4504
+#define IDC_LT_SORT                     4505
+#define IDD_LTE                         4600
+#define IDC_LTE_LIST_SEL                4601
+#define IDC_LTE_LIST_AVA                4602
+#define IDC_LTE_DEFAULTS                4603
+#define IDC_LTE_UP                      4604
+#define IDC_LTE_ADD                     4605
+#define IDC_LTE_DOWN                    4606
+#define IDC_LTE_REMOVE                  4607
 #define IDD_PS                          5000
 #define IDC_PS_SPAWN                    5001
 #define IDC_PS_X                        5002
@@ -158,9 +169,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3016
+#define _APS_NEXT_RESOURCE_VALUE        3018
 #define _APS_NEXT_COMMAND_VALUE         32808
-#define _APS_NEXT_CONTROL_VALUE         3113
+#define _APS_NEXT_CONTROL_VALUE         3120
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

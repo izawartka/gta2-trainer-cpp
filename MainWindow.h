@@ -4,7 +4,7 @@
 #include "gta2-helper.h"
 #include "ACSWindow.h"
 #include "PedSpawnerWindow.h"
-#include "LiveTableWindow.h"
+#include "LiveTable/LiveTableWindow.h"
 
 enum TIMER {
 	TIMER_CAPTURE_MOUSE,

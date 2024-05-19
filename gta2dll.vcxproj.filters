@@ -36,7 +36,16 @@
     <ClCompile Include="PedSpawnerWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LiveTableWindow.cpp">
+    <ClCompile Include="LiveTable\LiveTableWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LiveTable\LiveTableEditWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LiveTable\LiveTableHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LiveTable\LiveTableData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -82,7 +91,16 @@
     <ClInclude Include="PedSpawnerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LiveTableWindow.h">
+    <ClInclude Include="LiveTable\LiveTableWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LiveTable\LiveTableData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LiveTable\LiveTableEditWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LiveTable\LiveTableHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
