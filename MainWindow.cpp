@@ -145,6 +145,7 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SPRUN, m_globalPedSpeeds[0]);
 	DDX_Control(pDX, IDC_SPWLK, m_globalPedSpeeds[1]);
 	DDX_Control(pDX, IDC_SPSTD, m_globalPedSpeeds[2]);
+	DDX_Check(pDX, IDC_PASSENGER, m_enterAsPassenger);
 }
 
 
@@ -202,6 +203,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_BIGTEXTSHOW, &MainWindow::ShowBigText)
 	ON_BN_CLICKED(IDC_SPSET, &MainWindow::SetGlobalPedSpeeds)
 	ON_BN_CLICKED(ID_COMMANDS_EXPLODECARS, &MainWindow::ExplodeCars)
+	ON_BN_CLICKED(IDC_PASSENGER, &MainWindow::OnEnterAsPassengerToggle)
 END_MESSAGE_MAP()
 
 // Close GTA2 on Trainer exit
@@ -583,12 +585,18 @@ void MainWindow::KeepLockedValues()
 		}
 	}
 
-
 	Ped* playerPed = fnGetPedByID(1);
 
 	// Return if no player ped found
 	if (!playerPed)
 		return;
+
+	// we want to set target door only once per entering
+	// so if they're blocked, ped will choose another one
+	if (m_enterAsPassenger && playerPed->enterCarAsPassenger == 0) {
+		playerPed->enterCarAsPassenger = 1;
+		playerPed->targetCarDoor = 1;
+	}
 
 	// Lock police if enabled
 	if (starsLocked)
@@ -1898,6 +1906,11 @@ void MainWindow::PreventFPSComprensation(Game* game) {
 	//log(L"time: %d", game->compensationFPSTime);
 
 	/// TODO
+}
+
+void MainWindow::OnEnterAsPassengerToggle()
+{
+	UpdateData(TRUE);
 }
 
 void MainWindow::FixCheckboxes()

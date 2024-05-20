@@ -139,11 +139,9 @@ static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x0
 // example: fnShowMessageToPlayer(3, "nespray");
 #define fnShowMessageToPlayer(seconds, messageCode) fnShowMessageToPlayerRaw(&(ByPtr(S10, ptrToS10))->txtMessage, 0, seconds, messageCode)
 
-
-// void __fastcall drawText(FrontEnd* _this, undefined edx, WCHAR* param_3, undefined4 x, SCR_f y, undefined4 length, undefined4 param_7)
-typedef void(DrawGTAText)(WCHAR* str, SCR_f x, SCR_f y, size_t length, undefined4 param_5, S4_ENUM1* param_6,
-	undefined4 param_7, undefined4 param_8, undefined4 param_9);
-static DrawGTAText* fnDrawGTATextRaw = (DrawGTAText*)0x004cc100;
+// void __fastcall drawText(FrontEnd* _this, int edx, WCHAR* txt, SCR_f x, SCR_f y, size_t length, undefined4 param_7)
+typedef void(DrawGTAText)(FrontEnd* frontEndPtr, int edx, WCHAR* txt, SCR_f x, SCR_f y, size_t length, undefined4 param_7);
+static DrawGTAText* fnDrawGTAText = (DrawGTAText*)0x004539f0;
 
 void fnShowCustomTextMessage(WCHAR* message);
 Roof* getCarRoofWithSpriteIfExists(Roof* startroof, short spritetype);

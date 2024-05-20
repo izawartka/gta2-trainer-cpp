@@ -70,6 +70,7 @@
 #define IDC_SPSTD                       3069
 #define IDC_SPSET                       3070
 #define IDC_MOUSECTRL                   3071
+#define IDC_PASSENGER                   3072
 #define IDC_CARINFO                     3074
 #define IDC_DOOR1                       3075
 #define IDC_DOOR2                       3076

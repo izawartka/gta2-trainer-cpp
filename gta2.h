@@ -1500,7 +1500,7 @@ struct Ped {
     undefined field_0x245;
     undefined field_0x246;
     undefined field_0x247;
-    int field_0x248;
+    int enterCarAsPassenger;
     byte targetCarDoor;
     undefined field_0x24d;
     undefined field_0x24e;

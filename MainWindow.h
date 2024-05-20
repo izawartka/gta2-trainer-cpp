@@ -204,6 +204,8 @@ public:
 	void ShowBigText();
 	void ExplodeCars();
 	void PreventFPSComprensation(Game* game);
+	afx_msg void OnEnterAsPassengerToggle();
+	int m_enterAsPassenger = 0;
 
 	// big functions
 	void FixCheckboxes();
