@@ -15,6 +15,7 @@ Some of the main features are:
 - Getting unlimited ammo, no reload delays
 - Getting car weapons
 - Using some of the built-in cheats without entering any cheat codes
+- A customizable table showing info about all peds and vehicles in real time
 
 ## Fast install
 If you just want to play it, go to the [Releases tab](https://github.com/izawartka/gta2-trainer-cpp/releases) and download
