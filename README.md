@@ -15,6 +15,7 @@ Some of the main features are:
 - Getting unlimited ammo, no reload delays
 - Getting car weapons
 - Using some of the built-in cheats without entering any cheat codes
+- A customizable table showing info about all peds and vehicles in real time
 
 ## Fast install
 If you just want to play it, go to the [Releases tab](https://github.com/izawartka/gta2-trainer-cpp/releases) and download
@@ -31,11 +32,7 @@ Before you'll try to compile it for the first time, you have to change some sett
 2. Configuration Settings > General > Output directory <-- change it to the GTA2 root folder path
 3. Configuration Settings > Debugging > Program <-- change it to the GTA2-trainer.exe path
 4. Configuration Settings > Debugging > Working directory <-- change it to the GTA2 root folder path
-5. Go to the Visual Studio Command Line
-6. Type cd Detours
-7. Type nmake
-8. Wait ...
-9. Done!
+5. Compile!
 
 ## Authors
 h0x91b,

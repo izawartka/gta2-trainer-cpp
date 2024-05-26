@@ -15,16 +15,12 @@
 #include <ddraw.h>
 #include <d3d9.h>
 
-#include <detours.h>
-#pragma comment(lib, "detours.lib")
-
-
 // MainWindow dialog
-BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
+BOOL HookFunction(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
 
 MainWindow* mainWnd = nullptr;
 
-BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
+BOOL HookFunction(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
 	DWORD OldProtection = { 0 };
 	BOOL success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)hookFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
 	if (!success) {
@@ -74,13 +70,37 @@ static __declspec(naked) void gameTick(void) {
 		NOP
 	}
 
-	OutputDebugStringA("gameTick\n");
+	// OutputDebugStringA("gameTick\n");
 	mainWnd->OnGTAGameTick((Game*)*(DWORD*)ptrToGame);
 
 	__asm {
 		MOV EAX, pGameTick
 		add eax, 5
 		JMP EAX
+	}
+
+}
+
+static __declspec(naked) void drawChat(void) {
+	// this will be replaced by original 5 bytes
+	__asm {
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+	}
+
+	// OutputDebugStringA("draw\n");
+	mainWnd->OnGTADraw();
+
+	__asm {
+		mov eax, pDrawChat
+		add eax, 5
+		jmp eax
 	}
 
 }
@@ -95,14 +115,19 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 
 	m_acsWindow = new ACSWindow();
-	m_acsWindow->Create(IDD_ACS, CWnd::GetDesktopWindow());
+	m_acsWindow->Create(IDD_ACS, this);
 	m_acsWindow->m_mainWindow = this;
 
 	m_pedSpawnerWindow = new PedSpawnerWindow();
-	m_pedSpawnerWindow->Create(IDD_PS, CWnd::GetDesktopWindow());
+	m_pedSpawnerWindow->Create(IDD_PS, this);
 	m_pedSpawnerWindow->m_mainWindow = this;
 
-	DetourFunc(pGameTick, (DWORD)gameTick);
+	m_liveTableWindow = new LiveTableWindow();
+	m_liveTableWindow->Create(IDD_LT, this);
+	m_liveTableWindow->m_mainWindow = this;
+
+	HookFunction(pGameTick, (DWORD)gameTick);
+	HookFunction(pDrawChat, (DWORD)drawChat, 7);
 }
 
 MainWindow::~MainWindow()
@@ -141,6 +166,7 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SPRUN, m_globalPedSpeeds[0]);
 	DDX_Control(pDX, IDC_SPWLK, m_globalPedSpeeds[1]);
 	DDX_Control(pDX, IDC_SPSTD, m_globalPedSpeeds[2]);
+	DDX_Check(pDX, IDC_PASSENGER, m_enterAsPassenger);
 }
 
 
@@ -153,6 +179,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(ID_COMMANDS_HIJACKATRAIN, &MainWindow::HijackTrain)
 	ON_COMMAND(IDC_MOUSECTRL, &MainWindow::MouseControl)
 	ON_COMMAND(ID_COMMANDS_TANK, &MainWindow::OnSpawnCarTank)
+	ON_COMMAND(ID_COMMANDS_LIVETABLE, &MainWindow::OnShowLiveTable)
 	ON_WM_HOTKEY()
 	ON_COMMAND_RANGE(ID_SPAWNCAR, ID_SPAWNOBJ - 1, &OnSpawnCarMenuClick)
 	ON_COMMAND_RANGE(ID_SPAWNOBJ, ID_SPAWNPED - 1, &OnSpawnObjectMenuClick)
@@ -164,7 +191,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(ID_COMMANDS_GUNJEEP, &MainWindow::OnSpawnCarGunjeep)
 	ON_BN_CLICKED(IDC_CARENGINEOFF, &MainWindow::CarEngineOff)
 	ON_BN_CLICKED(IDC_UNLMAMMO, &MainWindow::GiveUnlimitedAmmo)
-	ON_COMMAND_RANGE(3011, 3017, &SetStars)
+	ON_COMMAND_RANGE(IDC_STAR0, IDC_STAR6, &SetStars)
 	ON_BN_CLICKED(IDC_CARFIX, &MainWindow::FixCar)
 	ON_BN_CLICKED(IDC_CARVISFIX, &MainWindow::VisFixCar)
 	ON_BN_CLICKED(IDC_CARVISBRK, &MainWindow::VisBreakCar)
@@ -172,7 +199,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_LOCKCARDAMAGE, &MainWindow::LockCarDamage)
 	ON_BN_CLICKED(IDC_PEDS0TIME, &MainWindow::NoReloads)
 	ON_BN_CLICKED(IDC_CARLASTTP, &MainWindow::TpToLastCar)
-	ON_BN_CLICKED(IDC_CARPINFO, &MainWindow::PrintCarInfo)
+	ON_BN_CLICKED(IDC_CARINFO, &MainWindow::PrintCarInfo)
 	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
 	ON_BN_CLICKED(ID_COMMANDS_TPALLPEDS, &MainWindow::TeleportAllPeds)
 	ON_COMMAND_RANGE(3040, 3048, &GangRespect)
@@ -197,6 +224,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_BIGTEXTSHOW, &MainWindow::ShowBigText)
 	ON_BN_CLICKED(IDC_SPSET, &MainWindow::SetGlobalPedSpeeds)
 	ON_BN_CLICKED(ID_COMMANDS_EXPLODECARS, &MainWindow::ExplodeCars)
+	ON_BN_CLICKED(IDC_PASSENGER, &MainWindow::OnEnterAsPassengerToggle)
 END_MESSAGE_MAP()
 
 // Close GTA2 on Trainer exit
@@ -578,12 +606,18 @@ void MainWindow::KeepLockedValues()
 		}
 	}
 
-
 	Ped* playerPed = fnGetPedByID(1);
 
 	// Return if no player ped found
 	if (!playerPed)
 		return;
+
+	// we want to set target door only once per entering
+	// so if they're blocked, ped will choose another one
+	if (m_enterAsPassenger && playerPed->enterCarAsPassenger == 0) {
+		playerPed->enterCarAsPassenger = 1;
+		playerPed->targetCarDoor = 1;
+	}
 
 	// Lock police if enabled
 	if (starsLocked)
@@ -977,6 +1011,12 @@ void MainWindow::OnNativeCheatMenuClick(UINT nID) {
 	CheckMenuItem(ncHMenu, nID, *cheat ? MF_CHECKED : MF_UNCHECKED);
 }
 
+void MainWindow::OnShowLiveTable()
+{
+	m_liveTableWindow->ShowWindow(SW_SHOW);
+	m_liveTableWindow->SetFocus();
+}
+
 void MainWindow::CarEngineOff()
 {
 	// Return if currLastCar doesn't exist
@@ -1034,7 +1074,7 @@ void MainWindow::SetStars(UINT nID)
 	if (!playerPed)
 		return;
 
-	UINT stars = nID - 3011;
+	UINT stars = nID - IDC_STAR0;
 	short copValues[] = { 0,600,1600,3000,5000,8000,12000 };
 	startCopValue = copValues[stars];
 	playerPed->copValue = copValues[stars];
@@ -1422,19 +1462,21 @@ void MainWindow::TeleportAllPeds()
 	if (!playerPed || !playerPed->gameObject)
 		return;
 
-	int* nextpedid = (int*)0x591e84;
-	Ped* currentPed;
-	for (int i = 1; i < *nextpedid; i++)
-	{
-		currentPed = fnGetPedByID(i);
+	PedManager_S25* manager = ByPtr(PedManager_S25, ptrToPedManager);
+	Ped* lastPed = manager->lastPedInArray;
 
-		if (currentPed && currentPed->gameObject)
-		{
-			currentPed->gameObject->sprite->x = playerPed->gameObject->sprite->x;
-			currentPed->gameObject->sprite->y = playerPed->gameObject->sprite->y;
-			currentPed->gameObject->sprite->z = playerPed->gameObject->sprite->z;
-		}
+	for (int i = 1; i <= lastPed->id; i++)
+	{
+		Ped* currentPed = fnGetPedByID(i);
+
+		if(!currentPed) continue;
+		if(!currentPed->gameObject) continue;
+
+		currentPed->gameObject->sprite->x = playerPed->gameObject->sprite->x;
+		currentPed->gameObject->sprite->y = playerPed->gameObject->sprite->y;
+		currentPed->gameObject->sprite->z = playerPed->gameObject->sprite->z;
 	}
+
 	log(L"Teleported");
 }
 
@@ -1531,14 +1573,23 @@ void MainWindow::GangRespect(UINT nID)
 	DWORD* gangsArr = (DWORD*)0x005eb898;
 	int dataInt = (int)nID - 3040;
 	int gangNo = dataInt / 3;
-	int action = (dataInt % 3) - 1;
 
 	int* gangresp;
 	gangresp = (int*)*gangsArr + 0x47 + gangNo * 0x51;
-	*gangresp += action * 20;
 
-	if (*gangresp < -100) *gangresp = -100;
-	if (*gangresp > 100) *gangresp = 100;
+	switch(dataInt % 3) {
+	case 0:
+		*gangresp -= 20;
+		if (*gangresp < -100) *gangresp = -100;
+		break;
+	case 1:
+		*gangresp = 0;
+		break;
+	case 2:
+		*gangresp += 20;
+		if (*gangresp > 100) *gangresp = 100;
+		break;
+	}
 	
 	log(L"Changed the respect to %i", (char)*gangresp);
 }
@@ -1852,17 +1903,20 @@ void MainWindow::TeleportPlayer()
 }
 
 void MainWindow::ExplodeCars() {
-	log(L"Boom!");
 	Ped* playerPed = fnGetPedByID(1);
-	auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
-	Car* tcar = prefab->lastCar;\
-	while (tcar)
-	{
-		if ((!playerPed || tcar != playerPed->currentCar) && tcar->sprite) {
-			fnExplodeCar(tcar, 0, EXPLOSION_SIZE_MEDIUM);
-		}
-		tcar = tcar->lastCar;
+	CarsPrefab* carsManager = ByPtr(CarsPrefab, ptrToCarsPrefabs);
+	if (!carsManager) return;
+
+	for (int i = 0; i < 306; i++) {
+		Car* car = &carsManager->arr306Cars[i];
+
+		if(playerPed && playerPed->currentCar == car) continue;
+		if(!car->sprite) continue;
+
+		fnExplodeCar(car, 0, EXPLOSION_SIZE_MEDIUM);
 	}
+
+	log(L"Boom!");
 }
 
 void MainWindow::PreventFPSComprensation(Game* game) {
@@ -1873,6 +1927,11 @@ void MainWindow::PreventFPSComprensation(Game* game) {
 	//log(L"time: %d", game->compensationFPSTime);
 
 	/// TODO
+}
+
+void MainWindow::OnEnterAsPassengerToggle()
+{
+	UpdateData(TRUE);
 }
 
 void MainWindow::FixCheckboxes()
@@ -1930,6 +1989,25 @@ void MainWindow::OnGTAGameTick(Game* game)
 	SafeSpawnCars(wtsCar, &wtsCarSize);
 	PreventFPSComprensation(game);
 	if (wtSpawnObject != -1) SpawnObject((OBJECT_TYPE)wtSpawnObject);
+}
+
+void MainWindow::OnGTADraw()
+{
+	/*
+	CString string = L"hello world";
+	S4_ENUM1 s4enum1 = S4_ENUM1_2;
+	fnDrawGTATextRaw(
+		string.GetBuffer(),
+		0x400000,
+		0x400000,
+		1,
+		0x8000,
+		&s4enum1,
+		0, // 0 or 6
+		SPRITE_INVISIBILITY_VISIBLE,
+		0
+	);
+	*/
 }
 
 void MainWindow::NewFunction()

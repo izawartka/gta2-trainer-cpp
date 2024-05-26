@@ -14,8 +14,6 @@
 #define IDC_PEDSTIME                    3009
 #define IDC_UNLMAMMO                    3010
 #define IDC_STAR0                       3011
-#define IDB_BITMAP1                     3011
-#define IDB_BANNER                      3011
 #define IDC_STAR1                       3012
 #define IDC_STAR2                       3013
 #define IDC_STAR3                       3014
@@ -30,12 +28,9 @@
 #define IDC_CARDAMAGE                   3023
 #define IDC_LOCKCARDAMAGE               3024
 #define IDC_CARID                       3025
-#define IDC_TPPOPEN                     3026
-#define IDC_TPPLAYER                    3026
 #define IDC_CARLASTTP                   3027
 #define IDC_CARVIS                      3028
 #define IDC_PEDMONEY                    3029
-#define IDC_PEDIDS                      3030
 #define IDC_PEDS0TIME                   3031
 #define IDC_PEDIMMORT                   3032
 #define IDC_PEDHAMSET                   3033
@@ -55,7 +50,6 @@
 #define IDC_GANG3Z                      3047
 #define IDC_GANG3P                      3048
 #define IDC_CARVISBRK                   3049
-#define IDC_CARPINFO                    3051
 #define IDC_CARCOLM                     3052
 #define IDC_CARCOLP                     3053
 #define IDC_CARCOLV                     3054
@@ -76,9 +70,8 @@
 #define IDC_SPSTD                       3069
 #define IDC_SPSET                       3070
 #define IDC_MOUSECTRL                   3071
-#define IDC_PEDSHAPCLOTHR               3072
-#define IDC_PEDSINFO                    3073
-#define IDC_CARSINFO                    3074
+#define IDC_PASSENGER                   3072
+#define IDC_CARINFO                     3074
 #define IDC_DOOR1                       3075
 #define IDC_DOOR2                       3076
 #define IDC_DOOR3                       3077
@@ -88,8 +81,10 @@
 #define IDC_EMBM                        3081
 #define IDC_EMBPOS                      3082
 #define IDC_EDIT1                       3083
-#define IDC_EMBPOS2                     3085
 #define IDC_CAREXPLODE                  3086
+#define IDC_BANNER                      3087
+#define IDB_BANNER                      3088
+#define IDC_TPPLAYER                    3089
 #define IDD_ACS                         4000
 #define IDC_ACS_SPAWN                   4001
 #define IDC_ACS_X                       4002
@@ -103,6 +98,20 @@
 #define IDC_ACS_YOFF                    4010
 #define IDC_ACS_VCOLORS                 4011
 #define IDC_ACS_MODEL                   4012
+#define IDD_LT                          4500
+#define IDC_LT_LIST                     4501
+#define IDC_LT_MODE                     4502
+#define IDC_LT_UPDATE                   4503
+#define IDC_LT_EDIT                     4504
+#define IDC_LT_SORT                     4505
+#define IDD_LTE                         4600
+#define IDC_LTE_LIST_SEL                4601
+#define IDC_LTE_LIST_AVA                4602
+#define IDC_LTE_DEFAULTS                4603
+#define IDC_LTE_UP                      4604
+#define IDC_LTE_ADD                     4605
+#define IDC_LTE_DOWN                    4606
+#define IDC_LTE_REMOVE                  4607
 #define IDD_PS                          5000
 #define IDC_PS_SPAWN                    5001
 #define IDC_PS_X                        5002
@@ -115,28 +124,29 @@
 #define IDC_PS_REMAP                    5009
 #define IDC_PS_WEAP                     5010
 #define IDC_PS_HEALTH                   5011
-#define IDC_PS_OCCUP    			    5012
-#define IDC_PS_AI0						5013
-#define IDC_PS_AI1						5014
-#define IDC_PS_AI2						5015
-#define IDC_PS_AI3						5016
-#define IDC_PS_AI4						5017
-#define IDC_PS_AI5						5018
-#define IDC_PS_AI6						5019
-#define IDC_PS_AI7						5020
-#define IDC_PS_AI8						5021
-#define IDC_PS_AI9						5022
-#define IDC_PS_AI10						5023
-#define IDC_PS_AI11						5024
-#define IDC_PS_AI12						5025
-#define IDC_PS_AI13						5026
-#define IDC_PS_AI14						5027
+#define IDC_PS_OCCUP                    5012
+#define IDC_PS_AI0                      5013
+#define IDC_PS_AI1                      5014
+#define IDC_PS_AI2                      5015
+#define IDC_PS_AI3                      5016
+#define IDC_PS_AI4                      5017
+#define IDC_PS_AI5                      5018
+#define IDC_PS_AI6                      5019
+#define IDC_PS_AI7                      5020
+#define IDC_PS_AI8                      5021
+#define IDC_PS_AI9                      5022
+#define IDC_PS_AI10                     5023
+#define IDC_PS_AI11                     5024
+#define IDC_PS_AI12                     5025
+#define IDC_PS_AI13                     5026
+#define IDC_PS_AI14                     5027
 #define ID_COMMANDS_HELLO               32000
 #define ID_COMMANDS_TANK                32001
 #define ID_COMMANDS_GUNJEEP             32002
 #define ID_COMMANDS_HIJACKATRAIN        32003
 #define ID_COMMANDS_EXPLODECARS         32004
 #define ID_COMMANDS_TPALLPEDS           32005
+#define ID_COMMANDS_LIVETABLE           32006
 #define ID_SPAWNCAR                     35000
 #define ID_SPAWNCAR_LAST                35001
 #define ID_SPAWNCAR_ARRAY               35002
@@ -160,9 +170,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3014
+#define _APS_NEXT_RESOURCE_VALUE        3018
 #define _APS_NEXT_COMMAND_VALUE         32808
-#define _APS_NEXT_CONTROL_VALUE         3112
+#define _APS_NEXT_CONTROL_VALUE         3120
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

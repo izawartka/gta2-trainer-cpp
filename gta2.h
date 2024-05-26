@@ -605,10 +605,10 @@ struct TrailerController {
 };
 
 typedef enum SPRITE_INVISIBILITY : byte {
-    VISIBLE = 0,
-    INVISIBLE = 1,
-    GHOST = 2,
-    NO_TRANSPARENCY = 3
+    SPRITE_INVISIBILITY_VISIBLE = 0,
+    SPRITE_INVISIBILITY_INVISIBLE = 1,
+    SPRITE_INVISIBILITY_GHOST = 2,
+    SPRITE_INVISIBILITY_NO_TRANSPARENCY = 3
 } SPRITE_INVISIBILITY;
 
 typedef enum CAR_SURFACE : uint {
@@ -1500,7 +1500,7 @@ struct Ped {
     undefined field_0x245;
     undefined field_0x246;
     undefined field_0x247;
-    int field_0x248;
+    int enterCarAsPassenger;
     byte targetCarDoor;
     undefined field_0x24d;
     undefined field_0x24e;
@@ -3433,7 +3433,7 @@ struct Player { /* Player actually */
     short field_0x790;
     undefined field_0x792;
     undefined field_0x793;
-    undefined field_0x794;
+    bool isChatOpen;
     undefined field_0x795;
     undefined field_0x796;
     undefined field_0x797;
