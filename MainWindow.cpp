@@ -15,16 +15,12 @@
 #include <ddraw.h>
 #include <d3d9.h>
 
-#include <detours.h>
-#pragma comment(lib, "detours.lib")
-
-
 // MainWindow dialog
-BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
+BOOL HookFunction(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
 
 MainWindow* mainWnd = nullptr;
 
-BOOL DetourFunc(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
+BOOL HookFunction(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
 	DWORD OldProtection = { 0 };
 	BOOL success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)hookFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
 	if (!success) {
@@ -74,13 +70,37 @@ static __declspec(naked) void gameTick(void) {
 		NOP
 	}
 
-	//OutputDebugStringA("gameTick\n");
+	// OutputDebugStringA("gameTick\n");
 	mainWnd->OnGTAGameTick((Game*)*(DWORD*)ptrToGame);
 
 	__asm {
 		MOV EAX, pGameTick
 		add eax, 5
 		JMP EAX
+	}
+
+}
+
+static __declspec(naked) void drawChat(void) {
+	// this will be replaced by original 5 bytes
+	__asm {
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+	}
+
+	// OutputDebugStringA("draw\n");
+	mainWnd->OnGTADraw();
+
+	__asm {
+		mov eax, pDrawChat
+		add eax, 5
+		jmp eax
 	}
 
 }
@@ -106,7 +126,8 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	m_liveTableWindow->Create(IDD_LT, this);
 	m_liveTableWindow->m_mainWindow = this;
 
-	DetourFunc(pGameTick, (DWORD)gameTick);
+	HookFunction(pGameTick, (DWORD)gameTick);
+	HookFunction(pDrawChat, (DWORD)drawChat, 7);
 }
 
 MainWindow::~MainWindow()
@@ -1968,6 +1989,25 @@ void MainWindow::OnGTAGameTick(Game* game)
 	SafeSpawnCars(wtsCar, &wtsCarSize);
 	PreventFPSComprensation(game);
 	if (wtSpawnObject != -1) SpawnObject((OBJECT_TYPE)wtSpawnObject);
+}
+
+void MainWindow::OnGTADraw()
+{
+	/*
+	CString string = L"hello world";
+	S4_ENUM1 s4enum1 = S4_ENUM1_2;
+	fnDrawGTATextRaw(
+		string.GetBuffer(),
+		0x400000,
+		0x400000,
+		1,
+		0x8000,
+		&s4enum1,
+		0, // 0 or 6
+		SPRITE_INVISIBILITY_VISIBLE,
+		0
+	);
+	*/
 }
 
 void MainWindow::NewFunction()

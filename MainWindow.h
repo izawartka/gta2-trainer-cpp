@@ -217,5 +217,6 @@ public:
 
 	// important
 	void OnGTAGameTick(Game* game);
+	void OnGTADraw();
 	void NewFunction();
 };

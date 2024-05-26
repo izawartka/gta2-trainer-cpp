@@ -23,6 +23,10 @@ static_assert(sizeof(TRAFFIC_PHASE) == 0x1, "Wrong size of TRAFFIC_PHASE enum");
 
 const DWORD pGameTick = (DWORD)0x0045c1f0;
 const DWORD pDraw = (DWORD)0x00461960;
+const DWORD pFreeSurface = (DWORD)0x004caf50;
+const DWORD pDrawUI = (DWORD)0x004ca440;
+const DWORD pDrawChat = (DWORD)0x004c8910;
+const DWORD pOpenChat = (DWORD)0x004a721b;
 static const TrafficLigthStruct* ptrToTrafficLights = (TrafficLigthStruct*)0x006721cc;
 
 static DWORD ptrToPedManager = 0x005e5bbc;
@@ -139,9 +143,15 @@ static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x0
 // example: fnShowMessageToPlayer(3, "nespray");
 #define fnShowMessageToPlayer(seconds, messageCode) fnShowMessageToPlayerRaw(&(ByPtr(S10, ptrToS10))->txtMessage, 0, seconds, messageCode)
 
-// void __fastcall drawText(FrontEnd* _this, int edx, WCHAR* txt, SCR_f x, SCR_f y, size_t length, undefined4 param_7)
-typedef void(DrawGTAText)(FrontEnd* frontEndPtr, int edx, WCHAR* txt, SCR_f x, SCR_f y, size_t length, undefined4 param_7);
-static DrawGTAText* fnDrawGTAText = (DrawGTAText*)0x004539f0;
+// 004cc100
+// void DrawGTAText(WCHAR *str,SCR_f x,SCR_f y,int param_4,SCR_f scale,S4_ENUM1 *param_6,int param_7, SPRITE_INVISIBILITY spriteInvisibility, SCR_f param_9)
+typedef void(DrawGTATextRaw)(WCHAR* str, SCR_f x, SCR_f y, int param_4, SCR_f scale, S4_ENUM1* param_6, int param_7, SPRITE_INVISIBILITY spriteInvisibility, SCR_f param_9);
+static DrawGTATextRaw* fnDrawGTATextRaw = (DrawGTATextRaw*)0x004cc100;
+
+// doesnt seem to make any effect
+// int SetGamma(int param_1)
+typedef int(SetGamma)(int param_1);
+static SetGamma* fnSetGamma = (SetGamma*)0x004cb930;
 
 void fnShowCustomTextMessage(WCHAR* message);
 Roof* getCarRoofWithSpriteIfExists(Roof* startroof, short spritetype);
