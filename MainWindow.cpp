@@ -127,7 +127,7 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	m_liveTableWindow->m_mainWindow = this;
 
 	HookFunction(pGameTick, (DWORD)gameTick);
-	HookFunction(pDrawChat, (DWORD)drawChat, 7);
+	//HookFunction(pDrawChat, (DWORD)drawChat, 7);
 }
 
 MainWindow::~MainWindow()
