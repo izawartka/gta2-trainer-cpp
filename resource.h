@@ -147,6 +147,7 @@
 #define ID_COMMANDS_EXPLODECARS         32004
 #define ID_COMMANDS_TPALLPEDS           32005
 #define ID_COMMANDS_LIVETABLE           32006
+#define ID_COMMANDS_GT24640             32007
 #define ID_SPAWNCAR                     35000
 #define ID_SPAWNCAR_LAST                35001
 #define ID_SPAWNCAR_ARRAY               35002

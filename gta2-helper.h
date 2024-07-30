@@ -37,6 +37,7 @@ static DWORD ptrToMapRelatedStruct = 0x00662c08;
 static DWORD ptrToS10 = 0x00672f40;
 static DWORD ptrToS2LocalesSettings = 0x00671550;
 static DWORD ptrToCarsPrefabs = 0x005e4ca0;
+static DWORD ptrToTrafficManager = 0x005e4ca4;
 static DWORD ptrToPlayerPhysics = 0x005e3cc4;
 static DWORD ptrToFrontEnd = 0x005eb160;
 static DWORD ptrToS6 = 0x005dcbc8;
@@ -60,6 +61,10 @@ static ShowBigOnScreenLabel* fnShowBigOnScreenLabel = (ShowBigOnScreenLabel*)0x0
 //void SpawnCar(int x, int y, int z, short rot, CAR_MODEL model)
 typedef Car* (SpawnCar)(int x, int y, int z, short rot, CAR_MODEL model);
 static SpawnCar* fnSpawnCar = (SpawnCar*)0x00426e10;
+
+//Car* __fastcall SpawnCarAdvanced(TrafficManager* trafficMngr, int edx, int x, int y, int z, int rot, CAR_MODEL4 model, int param_8)
+typedef Car* (__fastcall SpawnCarAdvanced)(TrafficManager* trafficMngr, DWORD edx, int x, int y, int z, int rot, CAR_MODEL4 model, int param_8);
+static SpawnCarAdvanced* fnSpawnCarAdvanced = (SpawnCarAdvanced*)0x00426ac0;
 
 // void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
 typedef void* (__fastcall PlayVocal)(void*, DWORD edx, VOCAL vocal);
