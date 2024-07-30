@@ -189,6 +189,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND_RANGE(ID_VOCALS, ID_NATIVE - 1, &OnPlayVocalMenuClick)
 	ON_COMMAND_RANGE(ID_NATIVE, ID_NATIVE + 256, &OnNativeCheatMenuClick)
 	ON_COMMAND(ID_COMMANDS_GUNJEEP, &MainWindow::OnSpawnCarGunjeep)
+	ON_COMMAND(ID_COMMANDS_GT24640, &MainWindow::OnSpawnCarGT24640)
 	ON_BN_CLICKED(IDC_CARENGINEOFF, &MainWindow::CarEngineOff)
 	ON_BN_CLICKED(IDC_UNLMAMMO, &MainWindow::GiveUnlimitedAmmo)
 	ON_COMMAND_RANGE(IDC_STAR0, IDC_STAR6, &SetStars)
@@ -295,13 +296,13 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		GetSafeHwnd(),
 		1,
 		MOD_ALT | MOD_NOREPEAT,
-		0x47); //ALT+G
+		0x4a); //ALT+J
 
 	RegisterHotKey(
 		GetSafeHwnd(),
 		1,
 		MOD_ALT | MOD_NOREPEAT,
-		0x4a); //ALT+J
+		0x47); //ALT+G
 
 	RegisterHotKey(
 		GetSafeHwnd(),
@@ -771,12 +772,15 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize)
 		}
 
 		// Spawn a car
-		Car* car = fnSpawnCar(
+		Car* car = fnSpawnCarAdvanced(
+			(TrafficManager*)(*(TrafficManager**)ptrToTrafficManager),
+			0,
 			currentWTS.x,
 			currentWTS.y,
 			currentWTS.z,
 			currentWTS.rot,
-			(CAR_MODEL)currentWTS.model
+			(CAR_MODEL4)currentWTS.model,
+			(uint)(*(uint*)0x005e4d4c)
 		);
 
 		if (car)
@@ -862,6 +866,11 @@ void MainWindow::OnSpawnCarGunjeep()
 	OnSpawnCarMenuClick(ID_SPAWNCAR_START + (int)GUNJEEP);
 }
 
+void MainWindow::OnSpawnCarGT24640()
+{
+	OnSpawnCarMenuClick(ID_SPAWNCAR_START + (int)GT24640);
+}
+
 void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 {
 	//log(L"OnHotKey(%X, %X, %X)", nHotKeyId, nKey1, nKey2);
@@ -872,6 +881,9 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		break;
 	case 0x4a:
 		OnSpawnCarGunjeep();
+		break;
+	case 0x47:
+		OnSpawnCarGT24640();
 		break;
 	case 0x50:
 		TeleportAllPeds();

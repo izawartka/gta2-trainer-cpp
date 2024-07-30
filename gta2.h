@@ -723,7 +723,7 @@ struct Car {
     struct CarManager4_S1 * notEngineStruct;
     void * field_0x60;
     struct TrailerController* trailerController;
-    undefined4 field_0x68;
+    uint scale;
     uint id;
     bool latelyShot;
     undefined field_0x71;

@@ -98,6 +98,7 @@ public:
 	afx_msg void OnSpawnCarMenuClick(UINT nID);
 	afx_msg void OnSpawnCarTank();
 	afx_msg void OnSpawnCarGunjeep();
+	afx_msg void OnSpawnCarGT24640();
 
 	// spawn object
 	void SpawnObject(OBJECT_TYPE type);
