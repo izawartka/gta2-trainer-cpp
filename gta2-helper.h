@@ -100,6 +100,14 @@ static ExtinguishCar* fnExtinguishCar = (ExtinguishCar*)0x004bf070;
 typedef void(__fastcall FixCarBrokenEngine)(Car* car, DWORD edx);
 static FixCarBrokenEngine* fnFixCarBrokenEngine = (FixCarBrokenEngine*)0x00421570;
 
+// void __fastcall CarPutDummyDriverIn(Car *car)
+typedef void(__fastcall CarPutDummyDriverIn)(Car* car, DWORD edx);
+static CarPutDummyDriverIn* fnCarPutDummyDriverIn = (CarPutDummyDriverIn*)0x00423510;
+
+// void __fastcall CarMakeDummy(Car *car)
+typedef void(__fastcall CarMakeDummy)(Car* car, DWORD edx);
+static CarMakeDummy* fnCarMakeDummy = (CarMakeDummy*)0x004279e0;
+
 typedef uint (CarAddWeapon)(CAR_WEAPON type, uint ammo, Car* car);
 static CarAddWeapon* fnCarAddWeapon = (CarAddWeapon*)0x004cd820;
 

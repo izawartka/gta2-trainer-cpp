@@ -128,11 +128,13 @@ public:
 	void TpToLastCar();
 	void PrintCarInfo();
 	void HijackTrain();
+	void CarMakeDummy();
 
 	// currLastCar's color
 	afx_msg void CarColorReset();
 	afx_msg void CarColorPlus();
 	afx_msg void CarColorMinus();
+	void CarColorSet(short index);
 	void SyncTrailerColor();
 
 	// currLastCar's damage

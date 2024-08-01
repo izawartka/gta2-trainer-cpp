@@ -226,6 +226,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_PREMAP_R, &MainWindow::PedRemapShapeSet)
 	ON_CBN_SELCHANGE(IDC_PREMAP_S, &MainWindow::PedRemapShapeSet)
 	ON_BN_CLICKED(IDC_PREMAP_DEF, &MainWindow::PedRemapShapeDefault)
+	ON_BN_CLICKED(IDC_CARDUMMY, &MainWindow::CarMakeDummy)
 END_MESSAGE_MAP()
 
 // Close GTA2 on Trainer exit
@@ -785,7 +786,7 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize)
 			
 			short color = currentWTS.color;
 			if (color != -1) {
-				car->sprite->lockPalleteMaybe = 3;
+				car->sprite->lockPalleteMaybe |= 1;
 				car->sprite->carColor = (color == -2) ? rand() % 36 : color;
 			}
 		}
@@ -1299,7 +1300,9 @@ void MainWindow::PedInfo()
 			m_carVelocity.SetWindowTextW(buf);
 
 			// Display currLastCar's color
-			swprintf(buf, 256, L"%d", currLastCar->sprite->carColor);
+			short color = currLastCar->sprite->carColor;
+			if (~currLastCar->sprite->lockPalleteMaybe & 1) color = -1;
+			swprintf(buf, 256, L"%d", color);
 			m_carColor.SetWindowTextW(buf);
 		}
 
@@ -1713,12 +1716,11 @@ void MainWindow::CarColorPlus()
 	if (!currLastCar || !currLastCar->sprite)
 		return;
 
-	currLastCar->sprite->lockPalleteMaybe = 3;
-	currLastCar->sprite->carColor++;
-	if (currLastCar->sprite->carColor >35) 
-		currLastCar->sprite->carColor = 0;
+	short color = currLastCar->sprite->carColor;
+	if (~currLastCar->sprite->lockPalleteMaybe & 1) color = -1;
+	color++;
 
-	log(L"Car color changed");
+	CarColorSet(color);
 }
 
 void MainWindow::CarColorMinus()
@@ -1727,10 +1729,11 @@ void MainWindow::CarColorMinus()
 	if (!currLastCar || !currLastCar->sprite)
 		return;
 
-	currLastCar->sprite->lockPalleteMaybe = 3;
-	currLastCar->sprite->carColor--;
-	if (currLastCar->sprite->carColor <0) currLastCar->sprite->carColor = 35;
-	log(L"Car color changed");
+	short color = currLastCar->sprite->carColor;
+	if (~currLastCar->sprite->lockPalleteMaybe & 1) color = -1;
+	color--;
+
+	CarColorSet(color);
 }
 
 void MainWindow::CarColorReset()
@@ -1739,8 +1742,25 @@ void MainWindow::CarColorReset()
 	if (!currLastCar || !currLastCar->sprite)
 		return;
 
-	currLastCar->sprite->lockPalleteMaybe = 2;
-	currLastCar->sprite->carColor = 0;
+	CarColorSet(-1);
+}
+
+void MainWindow::CarColorSet(short color)
+{
+	if (color < -1) color = 35;
+	if (color > 35) color = -1;
+
+	if (color == -1)
+	{
+		currLastCar->sprite->lockPalleteMaybe &= ~1;
+		currLastCar->sprite->carColor = 0;
+	}
+	else
+	{
+		currLastCar->sprite->lockPalleteMaybe |= 1;
+		currLastCar->sprite->carColor = color;
+	}
+
 	log(L"Car color changed");
 }
 
@@ -1843,6 +1863,23 @@ void MainWindow::HijackTrain()
 	{
 		log(L"Player is not in the train");
 	}
+}
+
+void MainWindow::CarMakeDummy()
+{
+	if(!currLastCar) return;
+
+	if (currLastCar->driver) {
+		log(L"Car already has a driver");
+		return;
+	}
+
+	fnCarPutDummyDriverIn(currLastCar, 0);
+	fnCarMakeDummy(currLastCar, 0);
+	currLastCar->field_0x76 = 0;
+	currLastCar->field_0x7c = 5;
+
+	log(L"Dummy driver created");
 }
 
 void MainWindow::FreeShopping()

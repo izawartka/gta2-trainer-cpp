@@ -58,6 +58,7 @@
 #define IDC_CARCOLR                     3055
 #define IDC_GOSLOW                      3056
 #define IDC_PREMAP_R                    3057
+#define IDC_CARDUMMY                    3058
 ///
 #define IDC_BIGTEXTTEXT                 3063
 #define IDC_BIGTEXTSHOW                 3064
