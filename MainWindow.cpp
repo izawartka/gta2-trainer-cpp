@@ -163,10 +163,13 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PEDCLOTHV, m_pedClothes);
 	DDX_Control(pDX, IDC_PEDSHAPEV, m_pedShape);
 	DDX_Control(pDX, IDC_BIGTEXTTEXT, m_BigText);
-	DDX_Control(pDX, IDC_SPRUN, m_globalPedSpeeds[0]);
-	DDX_Control(pDX, IDC_SPWLK, m_globalPedSpeeds[1]);
-	DDX_Control(pDX, IDC_SPSTD, m_globalPedSpeeds[2]);
 	DDX_Check(pDX, IDC_PASSENGER, m_enterAsPassenger);
+	DDX_Check(pDX, IDC_CARINVALL, m_carInvAll);
+	DDX_Check(pDX, IDC_CARINVBUL, m_carInvBullets);
+	DDX_Check(pDX, IDC_CARINVFLM, m_carInvFlames);
+	DDX_Check(pDX, IDC_CARINVRKT, m_carInvRockets);
+	DDX_Check(pDX, IDC_CARINVCOL, m_carInvCollisions);
+	DDX_Check(pDX, IDC_CARNOCOL, m_carNoCollisions);
 }
 
 
@@ -197,14 +200,14 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CARVISFIX, &MainWindow::VisFixCar)
 	ON_BN_CLICKED(IDC_CARVISBRK, &MainWindow::VisBreakCar)
 	ON_BN_CLICKED(IDC_LOCKCOPLEVEL, &MainWindow::LockStars)
-	ON_BN_CLICKED(IDC_LOCKCARDAMAGE, &MainWindow::LockCarDamage)
 	ON_BN_CLICKED(IDC_PEDS0TIME, &MainWindow::NoReloads)
 	ON_BN_CLICKED(IDC_CARLASTTP, &MainWindow::TpToLastCar)
 	ON_BN_CLICKED(IDC_CARINFO, &MainWindow::PrintCarInfo)
 	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
 	ON_BN_CLICKED(ID_COMMANDS_TPALLPEDS, &MainWindow::TeleportAllPeds)
-	ON_COMMAND_RANGE(3040, 3048, &GangRespect)
-	ON_COMMAND_RANGE(3075, 3078, &ToggleDoor)
+	ON_COMMAND_RANGE(IDC_GANG1M, IDC_GANG3P, &GangRespect)
+	ON_COMMAND_RANGE(IDC_DOOR1, IDC_DOOR4, &ToggleDoor)
+	ON_COMMAND_RANGE(IDC_CARINVALL, IDC_CARNOCOL, &UpdateCarPhysBitmask)
 	ON_BN_CLICKED(IDC_FREESHOP, &MainWindow::FreeShopping)
 	ON_BN_CLICKED(IDC_BEAHUMAN, &MainWindow::WatchPeds)
 	ON_BN_CLICKED(IDC_TPPLAYER, &MainWindow::TeleportPlayer)
@@ -223,7 +226,6 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_PEDSHAPEM, &MainWindow::PedShapeMinus)
 	ON_BN_CLICKED(IDC_PEDSHAPECLOTHR, &MainWindow::PedShapeClothesReset)
 	ON_BN_CLICKED(IDC_BIGTEXTSHOW, &MainWindow::ShowBigText)
-	ON_BN_CLICKED(IDC_SPSET, &MainWindow::SetGlobalPedSpeeds)
 	ON_BN_CLICKED(ID_COMMANDS_EXPLODECARS, &MainWindow::ExplodeCars)
 	ON_BN_CLICKED(IDC_PASSENGER, &MainWindow::OnEnterAsPassengerToggle)
 END_MESSAGE_MAP()
@@ -591,12 +593,6 @@ void MainWindow::KeepLockedValues()
 			currLastCarEmblemLPos = carEmblemPos;
 		}
 
-		// Lock engine damage
-		if (carDamageLocked)
-		{
-			currLastCar->carDamage = startCarDamage;
-		}
-
 		// Lock doors
 		for (int i = 0; i < 4; i++)
 		{
@@ -658,15 +654,6 @@ void MainWindow::KeepLockedValues()
 	if (currLastCar != currLastCarOld)
 	{
 		log(L"\"Current / Last car\" changed");
-
-		// Unlock engine damage lock if car changed
-		if (carDamageLocked)
-		{
-			((CButton*)GetDlgItem(IDC_LOCKCARDAMAGE))->SetCheck(false);
-			carDamageLocked = false;
-			startCarDamage = 0;
-			log(L"Player has changed the car; Engine damage unlocked");
-		}
 
 		// Reset door open locks if car changed
 		for (int i = 0; i < 4; i++)
@@ -1061,21 +1048,68 @@ void MainWindow::CarExplode()
 	fnExplodeCar(currLastCar, 0, EXPLOSION_SIZE_MEDIUM);
 }
 
-void MainWindow::LockCarDamage()
+void MainWindow::UpdateCarPhysBitmask(UINT nID)
 {
+	UpdateData(true);
 
-	if (carDamageLocked)
-	{
-		log(L"Engine damage unlocked");
-	}
-	else if (currLastCar)
-	{
-		startCarDamage = currLastCar->carDamage;
-		log(L"Engine damage locked at %d", startCarDamage);
+	if (nID == IDC_CARINVALL) {
+		m_carInvCollisions = m_carInvAll;
+		m_carInvBullets = m_carInvAll;
+		m_carInvRockets = m_carInvAll;
+		m_carInvFlames = m_carInvAll;
 	}
 
-	carDamageLocked = !carDamageLocked;
+	SetCarPhysBitmask(0x8, m_carInvCollisions);
+	SetCarPhysBitmask(0x10, m_carNoCollisions);
+	SetCarPhysBitmask(0x100, m_carInvBullets);
+	SetCarPhysBitmask(0x200, m_carInvRockets);
+	SetCarPhysBitmask(0x400, m_carInvFlames);
 
+	UpdateData(false);
+
+	log(L"Car physics updated");
+}
+
+void MainWindow::SetCarPhysBitmask(uint bit, bool value)
+{
+	if (!currLastCar) return;
+
+	if (value) 
+	{
+		currLastCar->physicsBitmask |= bit;
+	}
+	else 
+	{
+		currLastCar->physicsBitmask &= ~bit;
+	}
+}
+
+void MainWindow::UpdateCarPhysBitmaskCheckboxes()
+{
+	if (!currLastCar) {
+		m_carInvCollisions = 0;
+		m_carNoCollisions = 0;
+		m_carInvBullets = 0;
+		m_carInvRockets = 0;
+		m_carInvFlames = 0;
+		m_carInvAll = 0;
+		UpdateData(false);
+		return;
+	}
+
+	m_carInvCollisions = currLastCar->physicsBitmask & 0x8 ? 1 : 0;
+	m_carNoCollisions = currLastCar->physicsBitmask & 0x10 ? 1 : 0;
+	m_carInvBullets = currLastCar->physicsBitmask & 0x100 ? 1 : 0;
+	m_carInvRockets = currLastCar->physicsBitmask & 0x200 ? 1 : 0;
+	m_carInvFlames = currLastCar->physicsBitmask & 0x400 ? 1 : 0;
+
+	m_carInvAll = 
+		m_carInvCollisions == 1 && 
+		m_carInvBullets == 1 && 
+		m_carInvRockets == 1 && 
+		m_carInvFlames == 1 ? 1 : 0;
+
+	UpdateData(false);
 }
 
 void MainWindow::SetStars(UINT nID)
@@ -1095,16 +1129,19 @@ void MainWindow::SetStars(UINT nID)
 
 void MainWindow::TpToLastCar()
 {
-	Ped* playerPed = fnGetPedByID(1);
+	Game* pGame = (Game*)*(DWORD*)ptrToGame;
+	if (!pGame) return;
 
-	if (currLastCar && playerPed && playerPed->gameObject)
-	{
-		playerPed->gameObject->sprite->x = currLastCar->sprite->x + 10;
-		playerPed->gameObject->sprite->y = currLastCar->sprite->y + 10;
-		playerPed->gameObject->sprite->z = currLastCar->sprite->z + 10;
+	Player* player = pGame->CurrentPlayer;
+	if (!player) return;
 
-		log(L"Teleported to the car!");
-	}
+	if (!currLastCar || !currLastCar->sprite) return;
+
+	player->ph2.encodedCameraOrTeleportX = currLastCar->sprite->x;
+	player->ph2.encodedCameraOrTeleportY = currLastCar->sprite->y;
+	fnDoTeleportRaw(player, 0);
+
+	log(L"Teleported to the car!");
 }
 
 void MainWindow::PrintCarInfo()
@@ -1176,7 +1213,6 @@ void MainWindow::FixCar()
 		return;
 
 	currLastCar->carDamage = 0;
-	startCarDamage = 0;
 	log(L"Fixed the engine");
 }
 
@@ -1221,34 +1257,6 @@ void MainWindow::PedInfo()
 	WCHAR buf[256];
 	Ped* playerPed = fnGetPedByID(1);
 
-	// Global running speed
-	if ((int)*(DWORD*)0x66a504 != globalPedSpeedsOld[0])
-	{
-		m_globalPedSpeeds[0].SetWindowTextW(L"0");
-		swprintf(buf, 256, L"%d", (int)*(DWORD*)0x66a504);
-		m_globalPedSpeeds[0].SetWindowTextW(buf);
-	}
-
-	// Global walking speed
-	if ((int)*(DWORD*)0x66a574 != globalPedSpeedsOld[1])
-	{
-		m_globalPedSpeeds[1].SetWindowTextW(L"0");
-		swprintf(buf, 256, L"%d", (int)*(DWORD*)0x66a574);
-		m_globalPedSpeeds[1].SetWindowTextW(buf);
-	}
-
-	// Global standing speed (XD)
-	if ((int)*(DWORD*)0x66a634 != globalPedSpeedsOld[2])
-	{
-		m_globalPedSpeeds[2].SetWindowTextW(L"0");
-		swprintf(buf, 256, L"%d", (int)*(DWORD*)0x66a634);
-		m_globalPedSpeeds[2].SetWindowTextW(buf);
-	}
-
-	globalPedSpeedsOld[0] = (int)*(DWORD*)0x66a504;
-	globalPedSpeedsOld[1] = (int)*(DWORD*)0x66a574;
-	globalPedSpeedsOld[2] = (int)*(DWORD*)0x66a634;
-
 	if (currLastCar)
 	{
 		// Display currLastCar's id
@@ -1287,6 +1295,9 @@ void MainWindow::PedInfo()
 		// Display visual state
 		swprintf(buf, 256, L"%X", currLastCar->carLights);
 		m_carVisualData.SetWindowTextW(buf);
+
+		// Update car's physics bitmask checkboxes
+		UpdateCarPhysBitmaskCheckboxes();
 
 	}
 	else
@@ -1358,20 +1369,12 @@ void MainWindow::PedInfo()
 			m_gangRespect[i].SetWindowTextW(buf);
 		}	
 
-		// Calculate and display selected weapon ID
-		short* weapSTART = (short*)(&playerPed->playerWeapons->weapons[0]->ammo);
-		short* weapCURR = (short*)(&playerPed->selectedWeapon->ammo);
-		int weapID = (weapCURR - weapSTART) / 48;
-		if (weapID >= 0)
-		{
-			swprintf(buf, 256, L"%d", weapID);
-			m_pedSType.SetWindowTextW(buf);
-		}
-		else m_pedSType.SetWindowTextW(L"");
-
 		// Display current weapon's ammo and reload time
 		if (playerPed->selectedWeapon)
 		{
+			swprintf(buf, 256, L"%d", playerPed->selectedWeapon->id);
+			m_pedSType.SetWindowTextW(buf);
+
 			float ammowithcomma = playerPed->selectedWeapon->ammo / 10.0f;
 			swprintf(buf, 256, L"%f", ammowithcomma);
 			m_pedSAmmo.SetWindowTextW(buf);
@@ -1383,6 +1386,7 @@ void MainWindow::PedInfo()
 		{
 			m_pedSAmmo.SetWindowTextW(L"");
 			m_pedSTime.SetWindowTextW(L"");
+			m_pedSType.SetWindowTextW(L"");
 		}
 
 		// If player in the car, display it's coords
@@ -1612,7 +1616,7 @@ void MainWindow::ToggleDoor(UINT uID)
 	if (!currLastCar)
 		return;
 
-	int doorID = uID - 3075;
+	int doorID = uID - IDC_DOOR1;
 	if (currLastCar->carDoor[doorID].doorState == 6 || doorOpen[doorID] == true)
 	{
 		doorOpen[doorID] = !doorOpen[doorID];
@@ -1848,20 +1852,6 @@ void MainWindow::HijackTrain()
 	}
 }
 
-void MainWindow::SetGlobalPedSpeeds()
-{
-	CString buffer;
-
-	m_globalPedSpeeds[0].GetWindowTextW(buffer);
-	*(int*)(DWORD*)0x66a504 = (int)_ttof(buffer);
-	m_globalPedSpeeds[1].GetWindowTextW(buffer);
-	*(int*)(DWORD*)0x66a574 = (int)_ttof(buffer);
-	m_globalPedSpeeds[2].GetWindowTextW(buffer);
-	*(int*)(DWORD*)0x66a634 = (int)_ttof(buffer);
-
-	log(L"Peds speeds changed *experimental feature*");
-}
-
 void MainWindow::FreeShopping()
 {
 	TrafficManager* trafficManager = (TrafficManager*)*(DWORD*)0x005e4ca4;
@@ -1879,19 +1869,23 @@ void MainWindow::GoSlow()
 
 void MainWindow::SetHealthArmorMoney()
 {
+	Game* pGame = (Game*)*(DWORD*)ptrToGame;
+	if (!pGame) return;
+	Player* player = pGame->CurrentPlayer;
+	if (!player) return;
+
 	CString buffer;
 
 	m_pedHealth.GetWindowTextW(buffer);
 	fnGetPedByID(1)->health = (int)_ttof(buffer);
 
 	m_pedArmor.GetWindowTextW(buffer);
-	*(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa) = (int)_ttof(buffer); //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
+	player->armor = (int)_ttof(buffer);
 
 	m_pedMoney.GetWindowTextW(buffer);
-	*(int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4) = (int)_ttof(buffer); //TEMPONARY; when i learn how to use Ghirda, i'll fix that xD
+	player->animatedMoney.value = (int)_ttof(buffer);
 
-	log(L"Player stats changed!");
-
+	log(L"Player's stats changed!");
 }
 
 void MainWindow::TeleportPlayer()

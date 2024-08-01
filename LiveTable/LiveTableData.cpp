@@ -65,7 +65,7 @@ const LiveTableData ltCarData[] = {
     { L"Engine state", 40, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x9C}, true },
     { L"Car physics", 80, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x58} },
     { L"Sprite", 80, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x50} },
-    { L"Bitmask", 40, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x78} },
+    { L"Physics bitmask", 40, 4, LT_DATA_TYPE_HEX, 1, new int[1] {0x78} },
     { L"Mask", 40, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x88} },
     { L"Brake", 20, 1, LT_DATA_TYPE_BOOLEAN, 2, new int[2] {0x58, 0x91} },
     { L"Handbrake", 20, 1, LT_DATA_TYPE_BOOLEAN, 2, new int[2] {0x58, 0x92} },

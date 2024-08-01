@@ -26,7 +26,7 @@
 #define IDC_CARFIX                      3021
 #define IDC_CARVISFIX                   3022
 #define IDC_CARDAMAGE                   3023
-#define IDC_LOCKCARDAMAGE               3024
+///
 #define IDC_CARID                       3025
 #define IDC_CARLASTTP                   3027
 #define IDC_CARVIS                      3028
@@ -50,6 +50,8 @@
 #define IDC_GANG3Z                      3047
 #define IDC_GANG3P                      3048
 #define IDC_CARVISBRK                   3049
+#define IDC_MOUSECTRL                   3050
+#define IDC_PASSENGER                   3051
 #define IDC_CARCOLM                     3052
 #define IDC_CARCOLP                     3053
 #define IDC_CARCOLV                     3054
@@ -65,12 +67,13 @@
 #define IDC_BIGTEXTSHOW                 3064
 #define IDC_CARTRCOLR                   3065
 #define IDC_PEDSHAPECLOTHR              3066
-#define IDC_SPRUN                       3067
-#define IDC_SPWLK                       3068
-#define IDC_SPSTD                       3069
-#define IDC_SPSET                       3070
-#define IDC_MOUSECTRL                   3071
-#define IDC_PASSENGER                   3072
+#define IDC_CARINVALL                   3067
+#define IDC_CARINVBUL                   3068
+#define IDC_CARINVFLM                   3069
+#define IDC_CARINVRKT                   3070
+#define IDC_CARINVCOL                   3071
+#define IDC_CARNOCOL                    3072
+///
 #define IDC_CARINFO                     3074
 #define IDC_DOOR1                       3075
 #define IDC_DOOR2                       3076

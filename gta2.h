@@ -584,6 +584,23 @@ typedef enum CAR_WEAPON {
     CAR_WEAP_0 = 0
 } CAR_WEAPON;
 
+typedef enum CAR_PHYSICS_BITMASK : ushort {
+    CAR_PHYSICS_BITMASK_0x1 = 0x1,
+    CAR_PHYSICS_BITMASK_DONT_SLOW_ON_COLLISION = 0x2,
+    CAR_PHYSICS_BITMASK_0x4 = 0x4,
+    CAR_PHYSICS_BITMASK_NO_COLLISION_DAMAGE = 0x8,
+    CAR_PHYSICS_BITMASK_NO_COLLISION = 0x10,
+    CAR_PHYSICS_BITMASK_0x20 = 0x20,
+    CAR_PHYSICS_BITMASK_TRAIN_RELATED = 0x40,
+    CAR_PHYSICS_BITMASK_HAS_ALARM = 0x80,
+    CAR_PHYSICS_BITMASK_BULLETPROOF = 0x100,
+    CAR_PHYSICS_BITMASK_ROCKETPROOF = 0x200,
+    CAR_PHYSICS_BITMASK_FLAMEPROOF = 0x400,
+    CAR_PHYSICS_BITMASK_TANK_RELATED = 0x800,
+    CAR_PHYSICS_BITMASK_JAMMED = 0x1000,
+    CAR_PHYSICS_BITMASK_0x2000 = 0x2000
+} CAR_PHYSICS_BITMASK;
+
 struct CarDoor {
     byte animationFrame;
     byte field_0x1; /* equal to 3 on start */
@@ -731,7 +748,7 @@ struct Car {
     undefined field_0x73;
     short carDamage;
     short field_0x76;
-    ushort bitMask;
+    short physicsBitmask;
     undefined field_0x7a;
     undefined field_0x7b;
     uint field_0x7c;
@@ -3401,8 +3418,7 @@ struct Player { /* Player actually */
     undefined field_0x6f7;
     undefined field_0x6f8;
     undefined field_0x6f9;
-    undefined field_0x6fa;
-    undefined field_0x6fb;
+    short armor;
     short field_0x6fc;
     undefined field_0x6fe;
     undefined field_0x6ff;

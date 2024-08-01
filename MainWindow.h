@@ -137,9 +137,17 @@ public:
 	// currLastCar's damage
 	void FixCar();
 	void CarExplode();
-	void LockCarDamage();
-	short startCarDamage = 0;
-	bool carDamageLocked = 0;
+
+	// currLastCar's physics bitmap
+	void UpdateCarPhysBitmask(UINT nID);
+	void SetCarPhysBitmask(uint pos, bool value);
+	void UpdateCarPhysBitmaskCheckboxes();
+	int m_carInvAll = 0;
+	int m_carInvBullets = 0;
+	int m_carInvCollisions = 0;
+	int m_carInvRockets = 0;
+	int m_carInvFlames = 0;
+	int m_carNoCollisions = 0;
 
 	// currLastCar's visual damage
 	void VisFixCar();
@@ -170,8 +178,6 @@ public:
 	// walking speed
 	void GoSlow();
 	int* walkingSpeed = nullptr;
-	void SetGlobalPedSpeeds();
-	int globalPedSpeedsOld[3] = { 1,1,1 }; // same here
 
 	// watch peds
 	void WatchPeds();
