@@ -86,6 +86,20 @@ static SetPedPosition* fnSetPedPosition = (SetPedPosition*)0x004360c0;
 typedef void(__fastcall ExplodeCar)(Car* car, DWORD edx, EXPLOSION_SIZE explosionSize);
 static ExplodeCar* fnExplodeCar = (ExplodeCar*)0x00426fa0;
 
+// void __fastcall FixCarDamage(Car *car)
+typedef void(__fastcall FixCarDamage)(Car* car, DWORD edx);
+static FixCarDamage* fnFixCarDamage = (FixCarDamage*)0x00425f20;
+
+// void __fastcall ExtinguishCar(Car *car)
+// also set car->fireState to 0 for full extinguish
+typedef void(__fastcall ExtinguishCar)(Car* car, DWORD edx);
+static ExtinguishCar* fnExtinguishCar = (ExtinguishCar*)0x004bf070;
+
+// void __fastcall FixCarBrokenEngine(Car *car)
+// allows to run the engine even after the car exploded
+typedef void(__fastcall FixCarBrokenEngine)(Car* car, DWORD edx);
+static FixCarBrokenEngine* fnFixCarBrokenEngine = (FixCarBrokenEngine*)0x00421570;
+
 typedef uint (CarAddWeapon)(CAR_WEAPON type, uint ammo, Car* car);
 static CarAddWeapon* fnCarAddWeapon = (CarAddWeapon*)0x004cd820;
 

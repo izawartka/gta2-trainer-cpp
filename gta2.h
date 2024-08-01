@@ -758,7 +758,7 @@ struct Car {
     undefined field_0x83;
     enum CAR_MODEL4 carModel;
     uint mask;
-    byte fireRelated;
+    byte fireState;
     byte field_0x8d;
     byte alarmTimer; /* 0x8e */
     undefined field_0x8f;

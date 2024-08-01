@@ -22,6 +22,7 @@ class MainWindow : public CDialogEx
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL OnInitDialog();
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -65,8 +66,8 @@ public:
 	CEdit m_pedHealth;
 	CEdit m_pedArmor;
 	CEdit m_pedMoney;
-	CEdit m_pedClothes;
-	CEdit m_pedShape;
+	CComboBox m_pedRemap;
+	CComboBox m_pedShape;
 	CEdit m_BigText;
 	CEdit m_pedals[3];
 	CEdit m_gangRespect[3];
@@ -139,9 +140,9 @@ public:
 	void CarExplode();
 
 	// currLastCar's physics bitmap
-	void UpdateCarPhysBitmask(UINT nID);
+	void CarPhysBitmaskSet(UINT nID);
 	void SetCarPhysBitmask(uint pos, bool value);
-	void UpdateCarPhysBitmaskCheckboxes();
+	void CarPhysBitmaskUpdate();
 	int m_carInvAll = 0;
 	int m_carInvBullets = 0;
 	int m_carInvCollisions = 0;
@@ -191,12 +192,10 @@ public:
 	bool captureMouse = 0;
 	void CaptureMouse();
 
-	// ped clothes
-	void PedClothesPlus();
-	void PedClothesMinus();
-	void PedShapePlus();
-	void PedShapeMinus();
-	void PedShapeClothesReset();
+	// player ped remap and shape
+	void PedRemapShapeSet();
+	void PedRemapShapeDefault();
+	void PedRemapShapeUpdate();
 
 	// player immortal
 	void PlayerImmortal();

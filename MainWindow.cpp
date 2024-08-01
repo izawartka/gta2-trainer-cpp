@@ -160,8 +160,8 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PEDHEALTH, m_pedHealth);
 	DDX_Control(pDX, IDC_PEDARMOR, m_pedArmor);
 	DDX_Control(pDX, IDC_PEDMONEY, m_pedMoney);
-	DDX_Control(pDX, IDC_PEDCLOTHV, m_pedClothes);
-	DDX_Control(pDX, IDC_PEDSHAPEV, m_pedShape);
+	DDX_Control(pDX, IDC_PREMAP_R, m_pedRemap);
+	DDX_Control(pDX, IDC_PREMAP_S, m_pedShape);
 	DDX_Control(pDX, IDC_BIGTEXTTEXT, m_BigText);
 	DDX_Check(pDX, IDC_PASSENGER, m_enterAsPassenger);
 	DDX_Check(pDX, IDC_CARINVALL, m_carInvAll);
@@ -207,7 +207,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(ID_COMMANDS_TPALLPEDS, &MainWindow::TeleportAllPeds)
 	ON_COMMAND_RANGE(IDC_GANG1M, IDC_GANG3P, &GangRespect)
 	ON_COMMAND_RANGE(IDC_DOOR1, IDC_DOOR4, &ToggleDoor)
-	ON_COMMAND_RANGE(IDC_CARINVALL, IDC_CARNOCOL, &UpdateCarPhysBitmask)
+	ON_COMMAND_RANGE(IDC_CARINVALL, IDC_CARNOCOL, &CarPhysBitmaskSet)
 	ON_BN_CLICKED(IDC_FREESHOP, &MainWindow::FreeShopping)
 	ON_BN_CLICKED(IDC_BEAHUMAN, &MainWindow::WatchPeds)
 	ON_BN_CLICKED(IDC_TPPLAYER, &MainWindow::TeleportPlayer)
@@ -220,14 +220,12 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CARTRCOLR, &MainWindow::SyncTrailerColor)
 	ON_BN_CLICKED(IDC_GOSLOW, &MainWindow::GoSlow)
 	ON_BN_CLICKED(IDC_PEDHAMSET, &MainWindow::SetHealthArmorMoney)
-	ON_BN_CLICKED(IDC_PEDCLOTHP, &MainWindow::PedClothesPlus)
-	ON_BN_CLICKED(IDC_PEDCLOTHM, &MainWindow::PedClothesMinus)
-	ON_BN_CLICKED(IDC_PEDSHAPEP, &MainWindow::PedShapePlus)
-	ON_BN_CLICKED(IDC_PEDSHAPEM, &MainWindow::PedShapeMinus)
-	ON_BN_CLICKED(IDC_PEDSHAPECLOTHR, &MainWindow::PedShapeClothesReset)
 	ON_BN_CLICKED(IDC_BIGTEXTSHOW, &MainWindow::ShowBigText)
 	ON_BN_CLICKED(ID_COMMANDS_EXPLODECARS, &MainWindow::ExplodeCars)
 	ON_BN_CLICKED(IDC_PASSENGER, &MainWindow::OnEnterAsPassengerToggle)
+	ON_CBN_SELCHANGE(IDC_PREMAP_R, &MainWindow::PedRemapShapeSet)
+	ON_CBN_SELCHANGE(IDC_PREMAP_S, &MainWindow::PedRemapShapeSet)
+	ON_BN_CLICKED(IDC_PREMAP_DEF, &MainWindow::PedRemapShapeDefault)
 END_MESSAGE_MAP()
 
 // Close GTA2 on Trainer exit
@@ -274,7 +272,6 @@ void MainWindow::AddMenuItems(
 	}
 }
 
-// Prepare things
 int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDialogEx::OnCreate(lpCreateStruct) == -1)
@@ -364,7 +361,6 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	std::map<std::wstring, DWORD>::iterator itr;
 
 	// Create the "Spawn car" menu
-
 	CMenu* carMenu = menu->GetSubMenu(1)->GetSubMenu(0);
 	AddCategorizedMenuItems(
 		carMenu, 
@@ -377,7 +373,6 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	this->carHMenu = carMenu->m_hMenu;
 
 	// Create the "Spawn object" menu
-
 	CMenu* objMenu = menu->GetSubMenu(1)->GetSubMenu(1);
 	AddCategorizedMenuItems(
 		objMenu, 
@@ -390,26 +385,22 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	this->objHMenu = objMenu->m_hMenu;
 
 	// Create the "Get weapon" menu
-
 	CMenu* weapMenu = menu->GetSubMenu(2);
 	AddMenuItems(weapMenu, weapons, sizeof(weapons) / sizeof(weapons[0]), ID_GETWEAP_START);
 
 	// Create the "Get car weapon" menu
-
 	CMenu* carWeapMenu = new CMenu();
 	carWeapMenu->CreatePopupMenu();
 	AddMenuItems(carWeapMenu, carWeapons, sizeof(carWeapons) / sizeof(carWeapons[0]), ID_GETCARWEAP_START);
 	AppendMenu(menu->m_hMenu, MF_POPUP, (UINT_PTR)carWeapMenu->m_hMenu, L"Get car weapon");
 
 	// Create the "Play vocal" menu
-	
 	CMenu* vocalsMenu = new CMenu();
 	vocalsMenu->CreatePopupMenu();
 	AddMenuItems(vocalsMenu, vocals, sizeof(vocals) / sizeof(vocals[0]), ID_VOCALS_START);
 	AppendMenu(menu->m_hMenu, MF_POPUP, (UINT_PTR)vocalsMenu->m_hMenu, L"Play vocal");
 	
 	// Create the "Native cheats" menu
-
 	CMenu* nativeCheatsMenu = new CMenu();
 	nativeCheatsMenu->CreatePopupMenu();
 	AddMenuItems(nativeCheatsMenu, nativeCheats, sizeof(nativeCheats) / sizeof(nativeCheats[0]), ID_NATIVE_START);
@@ -417,6 +408,24 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	this->ncHMenu = nativeCheatsMenu->m_hMenu;
 
 	return 0;
+}
+
+BOOL MainWindow::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// Create "Player body shape / remap" comboboxes
+	m_pedShape.ResetContent();
+	int shapesCount = sizeof(bodyShapes) / sizeof(bodyShapes[0]);
+	for (int i = 0; i < shapesCount; i++)
+		m_pedShape.AddString(bodyShapes[i].name);
+
+	m_pedRemap.ResetContent();
+	int remapsCount = sizeof(pedRemaps) / sizeof(pedRemaps[0]);
+	for (int i = 0; i < remapsCount; i++)
+		m_pedRemap.AddString(pedRemaps[i].name);
+
+	return TRUE;
 }
 
 void MainWindow::OnPaint()
@@ -1022,6 +1031,12 @@ void MainWindow::CarEngineOff()
 	if (!currLastCar)
 		return;
 
+	if (currLastCar->engineState != CAR_ENGINE_STATE(ENGINE_ON))
+	{
+		log(L"Engine is already off or broken");
+		return;
+	}
+
 	currLastCar->engineState = CAR_ENGINE_STATE(TURNING_OFF);
 	log(L"Engine turned off");
 }
@@ -1048,8 +1063,10 @@ void MainWindow::CarExplode()
 	fnExplodeCar(currLastCar, 0, EXPLOSION_SIZE_MEDIUM);
 }
 
-void MainWindow::UpdateCarPhysBitmask(UINT nID)
+void MainWindow::CarPhysBitmaskSet(UINT nID)
 {
+	if(currLastCar == nullptr) return;
+
 	UpdateData(true);
 
 	if (nID == IDC_CARINVALL) {
@@ -1084,9 +1101,9 @@ void MainWindow::SetCarPhysBitmask(uint bit, bool value)
 	}
 }
 
-void MainWindow::UpdateCarPhysBitmaskCheckboxes()
+void MainWindow::CarPhysBitmaskUpdate()
 {
-	if (!currLastCar) {
+	if (currLastCar == nullptr) {
 		m_carInvCollisions = 0;
 		m_carNoCollisions = 0;
 		m_carInvBullets = 0;
@@ -1213,6 +1230,9 @@ void MainWindow::FixCar()
 		return;
 
 	currLastCar->carDamage = 0;
+	currLastCar->fireState = 0;
+	fnExtinguishCar(currLastCar, 0);
+	fnFixCarBrokenEngine(currLastCar, 0);
 	log(L"Fixed the engine");
 }
 
@@ -1257,6 +1277,8 @@ void MainWindow::PedInfo()
 	WCHAR buf[256];
 	Ped* playerPed = fnGetPedByID(1);
 
+	CarPhysBitmaskUpdate();
+
 	if (currLastCar)
 	{
 		// Display currLastCar's id
@@ -1295,10 +1317,6 @@ void MainWindow::PedInfo()
 		// Display visual state
 		swprintf(buf, 256, L"%X", currLastCar->carLights);
 		m_carVisualData.SetWindowTextW(buf);
-
-		// Update car's physics bitmask checkboxes
-		UpdateCarPhysBitmaskCheckboxes();
-
 	}
 	else
 	{
@@ -1312,14 +1330,6 @@ void MainWindow::PedInfo()
 
 	if (playerPed)
 	{
-		// Display ped's clothes color
-		swprintf(buf, 256, L"%d", playerPed->remap);
-		m_pedClothes.SetWindowTextW(buf);
-
-		// Display ped's body shape
-		swprintf(buf, 256, L"%d", playerPed->remap2);
-		m_pedShape.SetWindowTextW(buf);
-
 		// If player's health changed
 		if (pedHOld != playerPed->health)
 		{
@@ -1734,69 +1744,52 @@ void MainWindow::CarColorReset()
 	log(L"Car color changed");
 }
 
-void MainWindow::PedClothesMinus()
+void MainWindow::PedRemapShapeSet()
 {
+	bool inGame = *(DWORD*)ptrToPedManager != 0;
+	if (!inGame) return;
+
 	Ped* playerPed = fnGetPedByID(1);
 
-	// Return if player ped doesn't exist
-	if (!playerPed)
-		return;
+	if (playerPed->remap != m_pedRemap.GetCurSel())
+	{
+		playerPed->remap = (PED_REMAP)m_pedRemap.GetCurSel();
+		log(L"Remap set to %d", playerPed->remap);
+	}
 
-	playerPed->remap = (PED_REMAP)((BYTE)playerPed->remap - 1);
-	if (playerPed->remap == 255) playerPed->remap = (PED_REMAP)52;
-	log(L"Player clothes changed");
+	if (playerPed->remap2 != m_pedShape.GetCurSel())
+	{
+		playerPed->remap2 = (PED_REMAP2)m_pedShape.GetCurSel();
+		log(L"Shape set to %d", playerPed->remap2);
+	}
 }
 
-void MainWindow::PedClothesPlus()
+void MainWindow::PedRemapShapeDefault()
 {
+	bool inGame = *(DWORD*)ptrToPedManager != 0;
+	if (!inGame) return;
+
 	Ped* playerPed = fnGetPedByID(1);
 
-	// Return if player ped doesn't exist
-	if (!playerPed)
-		return;
-
-	playerPed->remap = (PED_REMAP)((BYTE)playerPed->remap + 1);
-	if (playerPed->remap > 52) playerPed->remap = (PED_REMAP)0;
-	log(L"Player clothes changed");
-}
-
-void MainWindow::PedShapeMinus()
-{
-	Ped* playerPed = fnGetPedByID(1);
-
-	// Return if player ped doesn't exist
-	if (!playerPed)
-		return;
-
-	playerPed->remap2 = (PED_REMAP2)((BYTE)playerPed->remap2 - 1);
-	if (playerPed->remap2 == -1) playerPed->remap2 = (PED_REMAP2)2;
-	log(L"Player appearance changed");
-}
-
-void MainWindow::PedShapePlus()
-{
-	Ped* playerPed = fnGetPedByID(1);
-
-	// Return if player ped doesn't exist
-	if (!playerPed)
-		return;
-
-	playerPed->remap2 = (PED_REMAP2)((BYTE)playerPed->remap2 + 1);
-	if (playerPed->remap2 > 2) playerPed->remap2 = (PED_REMAP2)0;
-	log(L"Player appearance changed");
-}
-
-void MainWindow::PedShapeClothesReset()
-{
-	Ped* playerPed = fnGetPedByID(1);
-
-	// Return if player ped doesn't exist
-	if (!playerPed)
-		return;
-
-	playerPed->remap2 = PED_REMAP2_1;
 	playerPed->remap = PED_REMAP_PLAYER;
-	log(L"Player appearance reset");
+	playerPed->remap2 = PED_REMAP2_1;
+
+	log(L"Remap and shape set to default");
+}
+
+void MainWindow::PedRemapShapeUpdate()
+{
+	Ped* playerPed = fnGetPedByID(1);
+
+	if (playerPed->remap != m_pedRemap.GetCurSel() && !m_pedRemap.GetDroppedState())
+	{
+		m_pedRemap.SetCurSel(playerPed->remap);
+	}
+
+	if(playerPed->remap2 != m_pedShape.GetCurSel() && !m_pedShape.GetDroppedState())
+	{
+		m_pedShape.SetCurSel(playerPed->remap2);
+	}
 }
 
 void MainWindow::ShowBigText()
@@ -1989,6 +1982,7 @@ void MainWindow::OnGTAGameTick(Game* game)
 {
 	//OnTimer moved here, it's more stable now
 	KeepLockedValues();
+	PedRemapShapeUpdate();
 	PedInfo();
 	if (captureMouse) CaptureMouse();
 	FixCheckboxes();

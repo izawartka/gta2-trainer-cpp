@@ -26,7 +26,7 @@
 #define IDC_CARFIX                      3021
 #define IDC_CARVISFIX                   3022
 #define IDC_CARDAMAGE                   3023
-///
+#define IDC_PREMAP_S                    3024
 #define IDC_CARID                       3025
 #define IDC_CARLASTTP                   3027
 #define IDC_CARVIS                      3028
@@ -57,12 +57,8 @@
 #define IDC_CARCOLV                     3054
 #define IDC_CARCOLR                     3055
 #define IDC_GOSLOW                      3056
-#define IDC_PEDSHAPEM                   3057
-#define IDC_PEDSHAPEP                   3058
-#define IDC_PEDSHAPEV                   3059
-#define IDC_PEDCLOTHM                   3060
-#define IDC_PEDCLOTHP                   3061
-#define IDC_PEDCLOTHV                   3062
+#define IDC_PREMAP_R                    3057
+///
 #define IDC_BIGTEXTTEXT                 3063
 #define IDC_BIGTEXTSHOW                 3064
 #define IDC_CARTRCOLR                   3065
@@ -73,7 +69,7 @@
 #define IDC_CARINVRKT                   3070
 #define IDC_CARINVCOL                   3071
 #define IDC_CARNOCOL                    3072
-///
+#define IDC_PREMAP_DEF                  3073
 #define IDC_CARINFO                     3074
 #define IDC_DOOR1                       3075
 #define IDC_DOOR2                       3076
@@ -83,11 +79,11 @@
 #define IDC_EMBP                        3080
 #define IDC_EMBM                        3081
 #define IDC_EMBPOS                      3082
-#define IDC_EDIT1                       3083
-#define IDC_CAREXPLODE                  3086
-#define IDC_BANNER                      3087
-#define IDB_BANNER                      3088
-#define IDC_TPPLAYER                    3089
+#define IDC_CAREXPLODE                  3083
+#define IDC_BANNER                      3084
+#define IDB_BANNER                      3085
+#define IDC_TPPLAYER                    3086
+#define IDC_EDIT1                       3087
 #define IDD_ACS                         4000
 #define IDC_ACS_SPAWN                   4001
 #define IDC_ACS_X                       4002
@@ -176,7 +172,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3018
 #define _APS_NEXT_COMMAND_VALUE         32808
-#define _APS_NEXT_CONTROL_VALUE         3120
+#define _APS_NEXT_CONTROL_VALUE         3122
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
