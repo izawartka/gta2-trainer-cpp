@@ -232,7 +232,7 @@ typedef enum PED_BIT_STATE2 {
     PED_BIT_STATE2_UNK_MUGGER=4
 } PED_BIT_STATE2;
 
-typedef enum OCUPATION {
+typedef enum PED_OCUPATION {
     ANY_ELVIS=49,
     ANY_EMERGENCY_SERVICE_MAN=47,
     ANY_GANG_MEMBER=48,
@@ -282,7 +282,7 @@ typedef enum OCUPATION {
     UNK_REL_TO_POLICE2=30,
     UNK_REL_TO_POLICE3=31,
     UNK_REL_TO_POLICE4=37
-} OCUPATION;
+} PED_OCUPATION;
 
 typedef enum PED_REMAP : unsigned char {
     PED_REMAP_1=1,
@@ -324,50 +324,90 @@ typedef enum PED_REMAP : unsigned char {
     PED_REMAP_PLAYER=25
 } PED_REMAP;
 
-typedef enum PED_STATE3 {
-    PED_STATE3_1f_SIT_IN_TAXY_OR_IN_STEALED_CAR=31,
-    PED_STATE3_2_DRIVER_RUN_AWAY=2,
-    PED_STATE3_32_WASTED=50,
-    PED_STATE3_COP=54,
-    PED_STATE3_DO_NOTHING=0,
-    PED_STATE3_RUN_AWAY_FROM_CAR = 34,
-    PED_STATE3_ENTERING_TO_CAR=35,
-    PED_STATE3_GANG_MEMBER=13,
-    PED_STATE3_GETTING_OUT_FROM_CAR=36,
-    PED_STATE3_ENTERING_TO_TRAIN = 37,
-    PED_STATE3_UNK1=1,
-    PED_STATE3_UNK10=16,
-    PED_STATE3_UNK13=19,
-    PED_STATE3_UNK14=20,
-    PED_STATE3_UNK16=22,
-    PED_STATE3_UNK17=23,
-    PED_STATE3_UNK18=24,
-    PED_STATE3_UNK19=25,
-    PED_STATE3_UNK1a=26,
-    PED_STATE3_UNK1b=27,
-    PED_STATE3_UNK20=32,
-    PED_STATE3_UNK21=33,
-    PED_STATE3_UNK26=38,
-    PED_STATE3_UNK2a=42,
-    PED_STATE3_UNK2b=43,
-    PED_STATE3_UNK33=51,
-    PED_STATE3_UNK34=52,
-    PED_STATE3_UNK37=55,
-    PED_STATE3_UNK38=56,
-    PED_STATE3_UNK39=57,
-    PED_STATE3_UNK3a=58,
-    PED_STATE3_UNK3b=59,
-    PED_STATE3_UNK3c=60,
-    PED_STATE3_UNK3d_REL_TO_MISSION_ARROWS=61,
-    PED_STATE3_UNK6=6,
-    PED_STATE3_UNK7=7,
-    PED_STATE3_UNK8=8,
-    PED_STATE3_UNK9=9,
-    PED_STATE3_UNKa=10,
-    PED_STATE3_UNKc=12,
-    PED_STATE3_UNKe=14,
-    PEF_STATE3_1c_DEAD=28
-} PED_STATE3;
+typedef enum PED_OBJECTIVE {
+    PED_OBJECTIVE_NO_OBJ = 0,
+    PED_OBJECTIVE_FLEE_ON_FOOT_TILL_SAFE = 1,
+    PED_OBJECTIVE_FLEE_CHAR_ON_FOOT_TILL_SAFE = 2,
+    PED_OBJECTIVE_FLEE_CHAR_ON_FOOT_ALWAYS = 3,
+    PED_OBJECTIVE_4 = 4,
+    PED_OBJECTIVE_5 = 5,
+    PED_OBJECTIVE_6 = 6,
+    PED_OBJECTIVE_7 = 7,
+    PED_OBJECTIVE_8 = 8,
+    PED_OBJECTIVE_9 = 9,
+    PED_OBJECTIVE_10 = 10,
+    PED_OBJECTIVE_11 = 11,
+    PED_OBJECTIVE_12 = 12,
+    PED_OBJECTIVE_GOTO_AREA_ON_FOOT = 13,
+    PED_OBJECTIVE_14 = 14,
+    PED_OBJECTIVE_GOTO_AREA_IN_CAR = 15,
+    PED_OBJECTIVE_16 = 16,
+    PED_OBJECTIVE_GOTO_CHAR_ON_FOOT = 17,
+    PED_OBJECTIVE_18 = 18,
+    PED_OBJECTIVE_19 = 19,
+    PED_OBJECTIVE_KILL_CHAR_ANY_MEANS = 20,
+    PED_OBJECTIVE_KILL_CHAR_ON_FOOT = 21,
+    PED_OBJECTIVE_22 = 22,
+    PED_OBJECTIVE_23 = 23,
+    PED_OBJECTIVE_24 = 24,
+    PED_OBJECTIVE_GUARD_SPOT = 25,
+    PED_OBJECTIVE_GUARD_AREA = 26,
+    PED_OBJECTIVE_WAIT_ON_FOOT = 27,
+    PED_OBJECTIVE_WAIT_IN_CAR = 28,
+    PED_OBJECTIVE_29 = 29,
+    PED_OBJECTIVE_30 = 30,
+    PED_OBJECTIVE_31 = 31,
+    PED_OBJECTIVE_32 = 32,
+    PED_OBJECTIVE_33 = 33,
+    PED_OBJECTIVE_34 = 34,
+    PED_OBJECTIVE_35 = 35,
+    PED_OBJECTIVE_36 = 36,
+    PED_OBJECTIVE_37 = 37,
+    PED_OBJECTIVE_38 = 38,
+    PED_OBJECTIVE_39 = 39,
+    PED_OBJECTIVE_ENTER_CAR_AS_DRIVER = 40,
+    PED_OBJECTIVE_LEAVE_CAR = 41,
+    PED_OBJECTIVE_42 = 42,
+    PED_OBJECTIVE_43 = 43,
+    PED_OBJECTIVE_44 = 44,
+    PED_OBJECTIVE_45 = 45,
+    PED_OBJECTIVE_46 = 46,
+    PED_OBJECTIVE_47 = 47,
+    PED_OBJECTIVE_48 = 48,
+    PED_OBJECTIVE_49 = 49,
+    PED_OBJECTIVE_50 = 50,
+    PED_OBJECTIVE_51 = 51,
+    PED_OBJECTIVE_52 = 52,
+    PED_OBJECTIVE_53 = 53,
+    PED_OBJECTIVE_54 = 54,
+    PED_OBJECTIVE_55 = 55,
+    PED_OBJECTIVE_56 = 56,
+    PED_OBJECTIVE_57 = 57,
+    PED_OBJECTIVE_58 = 58,
+    PED_OBJECTIVE_59 = 59,
+    PED_OBJECTIVE_FOLLOW_CAR_IN_CAR = 60,
+    PED_OBJECTIVE_FOLLOW_CAR_ON_FOOT_WITH_OFFSET = 61,
+    PED_OBJECTIVE_FIRE_AT_OBJECT_FROM_VEHICLE = 62,
+    PED_OBJECTIVE_DESTROY_OBJECT = 63,
+    PED_OBJECTIVE_DESTROY_CAR = 64
+} PED_OBJECTIVE;
+
+typedef enum PED_THREAT_SEARCH {
+    PED_THREAT_SEARCH_NO_THREATS=0,
+    PED_THREAT_SEARCH_LINE_OF_SIGHT=1,
+    PED_THREAT_SEARCH_AREA=2,
+    PED_THREAT_SEARCH_AREA_PLAYER_THREAT_ONLY=3,
+    PED_THREAT_SEARCH_LINE_OF_SIGHT_PLAYER_THREAT_ONLY=4,
+    PED_THREAT_SEARCH_AREA_PLAYER_ONLY=5,
+    PED_THREAT_SEARCH_LINE_OF_SIGHT_PLAYER_ONLY=6
+} PED_THREAT_SEARCH;
+
+typedef enum PED_THREAT_REACTION {
+	PED_THREAT_REACTION_NO_REACTION=0,
+	PED_THREAT_REACTION_REACT_AS_EMERGENCY=1,
+	PED_THREAT_REACTION_REACT_AS_NORMAL=2,
+	PED_THREAT_REACTION_RUN_AWAY=3
+} PED_THREAT_REACTION;
 
 typedef enum PED_REMAP2 {
     PED_REMAP2_0=0,
@@ -545,13 +585,6 @@ struct WEAPON_PLAYER_LIST {
 
 // ADDED IN FILE //
 
-typedef enum PED_GUARD_MODE {
-    PED_GUARD_MODE_NONE = 0x0,
-    PED_GUARD_MODE_IF_ATTACKED = 0x1,
-    PED_GUARD_MODE_IF_SEES_VIOLENCE = 0x2,
-    PED_GUARD_MODE_FLEE_AWAY = 0x3
-} PED_GUARD_MODE;
-
 typedef enum EXPLOSION_SIZE {
     EXPLOSION_SIZE_NONE = 0x11,
     EXPLOSION_SIZE_SMALL = 0x12,
@@ -600,6 +633,13 @@ typedef enum CAR_PHYSICS_BITMASK : ushort {
     CAR_PHYSICS_BITMASK_JAMMED = 0x1000,
     CAR_PHYSICS_BITMASK_0x2000 = 0x2000
 } CAR_PHYSICS_BITMASK;
+
+struct PedGroup {
+    undefined undefinedFields[52];
+    byte membersCount;
+    byte field_0x35;
+    byte field_0x36;
+};
 
 struct CarDoor {
     byte animationFrame;
@@ -1440,7 +1480,7 @@ struct Ped {
     int field_0x158;
     struct WEAPON_PLAYER_LIST * playerWeapons;
     struct Ped * nextPed;
-    struct Ped * ElvisOrTarget; /* Created by retype action */
+    PedGroup * group;
     struct GameObject * gameObject;
     struct Car * currentCar;
     struct WEAPON_STRUCT * selectedWeapon;
@@ -1489,9 +1529,9 @@ struct Ped {
     undefined2 eq_100;
     undefined2 field_0x214;
     short health;
-    ushort timerToAction; /* will be decrement each game tick, when its 0 then ocupation action is done. Fo example: steal a car */
+    ushort objectiveTimer; /* will be decrement each game tick, when its 0 then objective is done. For example: steal a car */
     short field_0x21a;
-    enum PED_BIT_STATE bitStateInvisOnFireEtc; /* invisibilty, electrofingers on fire and more  */
+    enum PED_BIT_STATE bitState; /* invisibilty, electrofingers on fire and more  */
     undefined4 field_0x220;
     byte field_0x224;
     byte relatedToTimerToAction;
@@ -1512,7 +1552,7 @@ struct Ped {
     undefined field_0x23d;
     undefined field_0x23e;
     undefined field_0x23f;
-    enum OCUPATION occupation;
+    enum PED_OCUPATION occupation;
     enum PED_REMAP remap;
     undefined field_0x245;
     undefined field_0x246;
@@ -1527,7 +1567,7 @@ struct Ped {
     undefined field_0x255;
     undefined field_0x256;
     undefined field_0x257;
-    enum PED_STATE3 state3;
+    enum PED_OBJECTIVE objective;
     int field_0x25c;
     byte field_0x260;
     byte field_0x261;
@@ -1544,12 +1584,12 @@ struct Ped {
     enum PED_REMAP2 remap2;
     int field_0x270;
     enum CAR_MODEL4 gangCarModel;
-    enum PED_STATE state;
-    enum PED_STATE2 state2;
+    enum PED_STATE state; // 0x278
+    enum PED_STATE2 state2; // 0x27c
     enum PED_STATE state1_2; /* 0 on start, 3 when getting to a car */
     enum PED_STATE2 state2_2;
-    int shootingSkillMaybe;
-    PED_GUARD_MODE guardMode;
+    PED_THREAT_SEARCH threatSearch; // 0x288
+    PED_THREAT_REACTION threatReaction; // 0x28c
     int relToMultiplayer;
 };
 
@@ -7387,13 +7427,13 @@ struct S7 {
     undefined field_0x286;
     undefined field_0x287;
     undefined field_0x288;
-    undefined field_0x289;
+	undefined field_0x289;
     undefined field_0x28a;
-    undefined field_0x28b;
-    undefined guardMode;
-    undefined field_0x28d;
+	undefined field_0x28b;
+    undefined field_0x28c;
+	undefined field_0x28d;
     undefined field_0x28e;
-    undefined field_0x28f;
+	undefined field_0x28f;
     undefined field_0x290;
     undefined field_0x291;
     undefined field_0x292;

@@ -417,9 +417,9 @@ BOOL MainWindow::OnInitDialog()
 
 	// Create "Player body shape / remap" comboboxes
 	m_pedShape.ResetContent();
-	int shapesCount = sizeof(bodyShapes) / sizeof(bodyShapes[0]);
+	int shapesCount = sizeof(pedBodyShapes) / sizeof(pedBodyShapes[0]);
 	for (int i = 0; i < shapesCount; i++)
-		m_pedShape.AddString(bodyShapes[i].name);
+		m_pedShape.AddString(pedBodyShapes[i].name);
 
 	m_pedRemap.ResetContent();
 	int remapsCount = sizeof(pedRemaps) / sizeof(pedRemaps[0]);
@@ -674,9 +674,9 @@ void MainWindow::KeepLockedValues()
 		// Detect and prepare emblems if car changed
 		m_carEmblemPos.SetRange(-8192, 8192, TRUE);
 		currLastCarEmblemID = 0;
-		for (int i = 0; i < sizeof(emblems)/sizeof(emblems[0]); i++)
+		for (int i = 0; i < sizeof(carEmblems)/sizeof(carEmblems[0]); i++)
 		{
-			currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, emblems[i].id);
+			currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, carEmblems[i].id);
 			if (currLastCarEmblem && currLastCarEmblem->sprite->spriteType == 4)
 			{
 				currLastCarEmblemID = i;
@@ -1314,7 +1314,7 @@ void MainWindow::PedInfo()
 		}
 
 		// Display emblem name 
-		swprintf(buf, 256, L"%s", emblems[currLastCarEmblemID].name);
+		swprintf(buf, 256, L"%s", carEmblems[currLastCarEmblemID].name);
 		m_carEmblem.SetWindowTextW(buf);
 
 		// Display visual state
@@ -1668,7 +1668,7 @@ void MainWindow::CarEmblemMinus()
 	{
 		// Prev emblem //
 		currLastCarEmblemID--;
-		currLastCarEmblem->sprite->sprite = emblems[currLastCarEmblemID].id;
+		currLastCarEmblem->sprite->sprite = carEmblems[currLastCarEmblemID].id;
 		log(L"Car emblem changed");
 	}
 }
@@ -1694,18 +1694,18 @@ void MainWindow::CarEmblemPlus()
 		if (currLastCarEmblem)
 		{
 			currLastCarEmblemID = 1;
-			currLastCarEmblem->sprite->sprite = emblems[1].id;
+			currLastCarEmblem->sprite->sprite = carEmblems[1].id;
 			currLastCarEmblem->rotation = 0;
 			currLastCarEmblem->sprite->layer++;
 			m_carEmblemPos.SetPos(currLastCarEmblem->yOffset);
 			log(L"Car emblem created");
 		}
 	}
-	else if (currLastCarEmblemID < sizeof(emblems)/sizeof(emblems[0]) - 1)
+	else if (currLastCarEmblemID < sizeof(carEmblems)/sizeof(carEmblems[0]) - 1)
 	{
 		// Next emblem //
 		currLastCarEmblemID++;
-		currLastCarEmblem->sprite->sprite = emblems[currLastCarEmblemID].id;
+		currLastCarEmblem->sprite->sprite = carEmblems[currLastCarEmblemID].id;
 		log(L"Car emblem changed");
 	}
 }

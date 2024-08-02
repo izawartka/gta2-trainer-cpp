@@ -44,9 +44,12 @@ public:
 	CComboBox m_remap;
 	CComboBox m_shape;
 	CComboBox m_occupation;
+	CComboBox m_threatSearch;
+	CComboBox m_threatReaction;
 	short m_health = 100;
 	CComboBox m_weapon;
 	int m_aiValues[aiValuesCount] = { 0 };
+	int m_leaderID = 0;
 
 	UINT m_customPresetIndex = 0;
 	UINT m_noneWeaponIndex = 0;

@@ -108,6 +108,18 @@ static CarPutDummyDriverIn* fnCarPutDummyDriverIn = (CarPutDummyDriverIn*)0x0042
 typedef void(__fastcall CarMakeDummy)(Car* car, DWORD edx);
 static CarMakeDummy* fnCarMakeDummy = (CarMakeDummy*)0x004279e0;
 
+// void __thiscall PedGroupCreate(Ped *this,byte membersCount)
+typedef void(__fastcall PedGroupCreate)(Ped* ped, DWORD edx, byte membersCount);
+static PedGroupCreate* fnPedGroupCreate = (PedGroupCreate*)0x00440350;
+
+// void __fastcall PedGroupChangeLeader(Ped *ped1,uint eq0,Ped *ped2)
+typedef void(__fastcall PedGroupChangeLeader)(Ped* newLeader, DWORD edx, Ped* oldLeader);
+static PedGroupChangeLeader* fnPedGroupChangeLeader = (PedGroupChangeLeader*)0x00435490;
+
+// void __fastcall PedGroupAddPed(PedGroup *group,uint param_2,Ped *ped)
+typedef void(__fastcall PedGroupAddPed)(PedGroup* group, DWORD edx, Ped* ped);
+static PedGroupAddPed* fnPedGroupAddPed = (PedGroupAddPed*)0x00404c90;
+
 typedef uint (CarAddWeapon)(CAR_WEAPON type, uint ammo, Car* car);
 static CarAddWeapon* fnCarAddWeapon = (CarAddWeapon*)0x004cd820;
 

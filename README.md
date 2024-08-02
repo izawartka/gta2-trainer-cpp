@@ -8,12 +8,13 @@ Some of the main features are:
 - Controlling your character's stats e.g. health, ammo, appearance, walking speed, wanted level, respect
 - Teleporting peds and cars
 - Spawning vehicles
+- Customizing your vehicle (color, emblems, damage, physics, invulnerability)
 - Spawning objects (power-ups etc.)
-- Spawning peds (characters)
+- Spawning characters and setting up their AIs
 - Playing vocals
-- Getting weapons (including secret ones)
+- Obtaining weapons (including secret ones)
+- Obtaining car weapons
 - Getting unlimited ammo, no reload delays
-- Getting car weapons
 - Using some of the built-in cheats without entering any cheat codes
 - A customizable table showing info about all peds and vehicles in real time
 
@@ -24,7 +25,7 @@ gta-trainer.exe file instead of gta.exe and you should see the trainer window un
 
 If you're having problems with running the game make sure your system has [all needed VC++ Redistributables](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/) installed.
 
-## Playing with the code
+## Building
 If you want to build it on your own, there is a VS solution included in the repo.
 
 Before you'll try to compile it for the first time, you have to change some settings though
@@ -35,10 +36,16 @@ Before you'll try to compile it for the first time, you have to change some sett
 5. Compile!
 
 ## Authors
-h0x91b,
-masuo (aka. izawartka)
+- masuo (aka. izawartka)
+- h0x91b
 
-And if you want to add something more to it, you're free to do it but it would be nice if you mentioned us somewhere.
+## Knowledge sources
+- Own research using Ghidra, Cheat Engine and x64dbg
+- [Official scripting documentation](https://gtamp.com/GTA2/gta2script.7z)
+- [.MIS decompiler by T.M.](https://gtamp.com/forum/viewtopic.php?f=4&t=447)
+- [Memory addresses list by BeepBoop](https://gtamp.com/forum/viewtopic.php?t=1123)
+
+If you want to add something more to the software, you're free to do it but please mention us in your project.
 
 ## Links
 Some of my GTA2 videos on YT:
