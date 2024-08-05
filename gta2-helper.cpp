@@ -141,17 +141,17 @@ POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY) {
 	int width = *(int*)0x00673578;
 	int height = *(int*)0x006732e8;
 
-	auto pp = ByPtr(PlayerPhysics, ptrToPlayerPhysics);
+	auto pp = ByPtr(CameraOrPhysics, ptrToPlayerPhysics);
 
-	auto right = FloatDecode(pp->rightOfTheScreenX);
-	auto left = FloatDecode(pp->leftOfTheScreenX);
-	auto widthX = right - left;
+	double right = FloatDecode(pp->cameraBoundaries.right);
+	double left = FloatDecode(pp->cameraBoundaries.left);
+	double widthX = right - left;
 	double gameUnitsToScreenProportionX = (double)width / widthX;
 	double targetX = FloatDecode(gameX) - left; // offset from left
 
-	auto top = FloatDecode(pp->topOfTheScreenY);
-	auto bottom = FloatDecode(pp->bottomOfTheSceenY);
-	auto heightY = bottom - top;
+	double top = FloatDecode(pp->cameraBoundaries.top);
+	double bottom = FloatDecode(pp->cameraBoundaries.bottom);
+	double heightY = bottom - top;
 	double gameUnitsToScreenProportionY = (double)height / heightY;
 	double targetY = FloatDecode(gameY) - top; // offset from top 
 
@@ -178,4 +178,19 @@ bool IsPointSafe(SCR_f x, SCR_f y, SCR_f z)
 	if(z > 7 * 16384) return false;
 
 	return true;
+}
+
+void ClampPointToSafe(SCR_f &x, SCR_f &y)
+{
+	if(x < 1 * 16384) x = 1 * 16384;
+	if(x > 254 * 16384) x = 254 * 16384;
+	if(y < 1 * 16384) y = 1 * 16384;
+	if(y > 254 * 16384) y = 254 * 16384;
+}
+
+void ClampPointToSafe(SCR_f& x, SCR_f& y, SCR_f& z)
+{
+	ClampPointToSafe(x, y);
+	if(z < 0 * 16384) z = 0 * 16384;
+	if(z > 7 * 16384) z = 7 * 16384;
 }

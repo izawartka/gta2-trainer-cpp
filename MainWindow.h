@@ -5,6 +5,7 @@
 #include "ACSWindow.h"
 #include "PedSpawnerWindow.h"
 #include "LiveTable/LiveTableWindow.h"
+#include "CameraWindow.h"
 
 enum TIMER {
 	TIMER_CAPTURE_MOUSE,
@@ -35,6 +36,7 @@ public:
 	ACSWindow* m_acsWindow;
 	PedSpawnerWindow* m_pedSpawnerWindow;
 	LiveTableWindow* m_liveTableWindow;
+	CameraWindow* m_cameraWindow;
 
 	void OnPaint();
 	afx_msg void OnBnClickedExit();
@@ -120,6 +122,7 @@ public:
 	afx_msg void OnPlayVocalMenuClick(UINT nID);
 	afx_msg void OnNativeCheatMenuClick(UINT nID);
 	afx_msg void OnShowLiveTable();
+	afx_msg void OnShowCamera();
 
 	// currLastCar related
 	Car* currLastCar = 0;

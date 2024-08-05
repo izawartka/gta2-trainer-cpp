@@ -208,6 +208,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ACSWindow.cpp" />
+    <ClCompile Include="CameraWindow.cpp" />
     <ClCompile Include="gta2-helper.cpp" />
     <ClCompile Include="gta2dll.cpp" />
     <ClCompile Include="Hooking.Patterns.cpp" />
@@ -249,6 +250,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ACSWindow.h" />
+    <ClInclude Include="CameraWindow.h" />
     <ClInclude Include="gta2-helper.h" />
     <ClInclude Include="gta2.h" />
     <ClInclude Include="framework.h" />

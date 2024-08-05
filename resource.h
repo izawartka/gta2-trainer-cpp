@@ -59,7 +59,6 @@
 #define IDC_GOSLOW                      3056
 #define IDC_PREMAP_R                    3057
 #define IDC_CARDUMMY                    3058
-///
 #define IDC_BIGTEXTTEXT                 3063
 #define IDC_BIGTEXTSHOW                 3064
 #define IDC_CARTRCOLR                   3065
@@ -85,6 +84,9 @@
 #define IDB_BANNER                      3085
 #define IDC_TPPLAYER                    3086
 #define IDC_EDIT1                       3087
+#define IDC_CAM_ZL                      3125
+#define IDC_CAM_ZOOML                   3126
+#define IDC_CAM_TARL                    3127
 #define IDD_ACS                         4000
 #define IDC_ACS_SPAWN                   4001
 #define IDC_ACS_X                       4002
@@ -143,6 +145,15 @@
 #define IDC_PS_AI13                     5028
 #define IDC_PS_AI14                     5029
 #define IDC_PS_LEADER                   5030
+#define IDD_CAM                         6000
+#define IDC_CAM_X                       6001
+#define IDC_CAM_Y                       6002
+#define IDC_CAM_Z                       6003
+#define IDC_CAM_ZOOM                    6004
+#define IDC_CAM_SYNC                    6005
+#define IDC_CAM_TP                      6006
+#define IDC_CAM_FPED                    6007
+#define IDC_CAM_FPL                     6008
 #define ID_COMMANDS_HELLO               32000
 #define ID_COMMANDS_TANK                32001
 #define ID_COMMANDS_GUNJEEP             32002
@@ -151,6 +162,7 @@
 #define ID_COMMANDS_TPALLPEDS           32005
 #define ID_COMMANDS_LIVETABLE           32006
 #define ID_COMMANDS_GT24640             32007
+#define ID_COMMANDS_CAMERA              32008
 #define ID_SPAWNCAR                     35000
 #define ID_SPAWNCAR_LAST                35001
 #define ID_SPAWNCAR_ARRAY               35002
@@ -175,8 +187,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3018
-#define _APS_NEXT_COMMAND_VALUE         32808
-#define _APS_NEXT_CONTROL_VALUE         3122
+#define _APS_NEXT_COMMAND_VALUE         32810
+#define _APS_NEXT_CONTROL_VALUE         3126
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

@@ -62,8 +62,8 @@ static ShowBigOnScreenLabel* fnShowBigOnScreenLabel = (ShowBigOnScreenLabel*)0x0
 typedef Car* (SpawnCar)(int x, int y, int z, short rot, CAR_MODEL model);
 static SpawnCar* fnSpawnCar = (SpawnCar*)0x00426e10;
 
-//Car* __fastcall SpawnCarAdvanced(TrafficManager* trafficMngr, int edx, int x, int y, int z, int rot, CAR_MODEL4 model, int param_8)
-typedef Car* (__fastcall SpawnCarAdvanced)(TrafficManager* trafficMngr, DWORD edx, int x, int y, int z, int rot, CAR_MODEL4 model, int param_8);
+//Car* __fastcall SpawnCarAdvanced(TrafficManager* trafficMngr, int edx, int x, int y, int z, int rot, CAR_MODEL4 model, int scale)
+typedef Car* (__fastcall SpawnCarAdvanced)(TrafficManager* trafficMngr, DWORD edx, int x, int y, int z, int rot, CAR_MODEL4 model, int scale);
 static SpawnCarAdvanced* fnSpawnCarAdvanced = (SpawnCarAdvanced*)0x00426ac0;
 
 // void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
@@ -166,9 +166,9 @@ static DoTeleport* fnDoTeleportRaw = (DoTeleport*)0x004a5ad0;
 Usage: 
 fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
 */
-#define fnDoTeleport(p, x, y) \
-	p->ph2.encodedCameraOrTeleportX  = FloatEncode(x); \
-	p->ph2.encodedCameraOrTeleportY = FloatEncode(y); \
+#define fnDoTeleport(p, xPos, yPos) \
+	p->ph2.cameraPos.x = FloatEncode(xPos); \
+	p->ph2.cameraPos.y = FloatEncode(yPos); \
 	fnDoTeleportRaw(p, 0);
 
 
@@ -203,5 +203,7 @@ double FloatDecode(SCR_f x);
 SCR_f* GetPointInADistance(SCR_f baseX, SCR_f baseY, short rotation, SCR_f distance);
 POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
 bool IsPointSafe(SCR_f x, SCR_f y, SCR_f z);
+void ClampPointToSafe(SCR_f &x, SCR_f &y);
+void ClampPointToSafe(SCR_f &x, SCR_f &y, SCR_f &z);
 
 #endif // !GTA_H

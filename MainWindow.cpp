@@ -126,6 +126,10 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	m_liveTableWindow->Create(IDD_LT, this);
 	m_liveTableWindow->m_mainWindow = this;
 
+	m_cameraWindow = new CameraWindow();
+	m_cameraWindow->Create(IDD_CAM, this);
+	m_cameraWindow->m_mainWindow = this;
+
 	HookFunction(pGameTick, (DWORD)gameTick);
 	//HookFunction(pDrawChat, (DWORD)drawChat, 7);
 }
@@ -183,6 +187,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(IDC_MOUSECTRL, &MainWindow::MouseControl)
 	ON_COMMAND(ID_COMMANDS_TANK, &MainWindow::OnSpawnCarTank)
 	ON_COMMAND(ID_COMMANDS_LIVETABLE, &MainWindow::OnShowLiveTable)
+	ON_COMMAND(ID_COMMANDS_CAMERA, &MainWindow::OnShowCamera)
 	ON_WM_HOTKEY()
 	ON_COMMAND_RANGE(ID_SPAWNCAR, ID_SPAWNOBJ - 1, &OnSpawnCarMenuClick)
 	ON_COMMAND_RANGE(ID_SPAWNOBJ, ID_SPAWNPED - 1, &OnSpawnObjectMenuClick)
@@ -777,7 +782,7 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize)
 			currentWTS.z,
 			currentWTS.rot,
 			(CAR_MODEL4)currentWTS.model,
-			(uint)(*(uint*)0x005e4d4c)
+			(uint)(*(uint*)0x005e4d4c) // global car scale
 		);
 
 		if (car)
@@ -1026,6 +1031,13 @@ void MainWindow::OnShowLiveTable()
 	m_liveTableWindow->SetFocus();
 }
 
+void MainWindow::OnShowCamera()
+{
+	m_cameraWindow->m_active = true;
+	m_cameraWindow->ShowWindow(SW_SHOW);
+	m_cameraWindow->SetFocus();
+}
+
 void MainWindow::CarEngineOff()
 {
 	// Return if currLastCar doesn't exist
@@ -1155,8 +1167,8 @@ void MainWindow::TpToLastCar()
 
 	if (!currLastCar || !currLastCar->sprite) return;
 
-	player->ph2.encodedCameraOrTeleportX = currLastCar->sprite->x;
-	player->ph2.encodedCameraOrTeleportY = currLastCar->sprite->y;
+	player->ph2.cameraPos.x = currLastCar->sprite->x;
+	player->ph2.cameraPos.y = currLastCar->sprite->y;
 	fnDoTeleportRaw(player, 0);
 
 	log(L"Teleported to the car!");
@@ -2026,6 +2038,7 @@ void MainWindow::OnGTAGameTick(Game* game)
 	SafeSpawnCars(wtsCar, &wtsCarSize);
 	PreventFPSComprensation(game);
 	if (wtSpawnObject != -1) SpawnObject((OBJECT_TYPE)wtSpawnObject);
+	m_cameraWindow->OnGTAGameTick();
 }
 
 void MainWindow::OnGTADraw()

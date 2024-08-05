@@ -80,7 +80,7 @@ void PedSpawnerWindow::ClearValues()
 	m_xPos = 0;
 	m_yPos = 0;
 	m_zPos = 0;
-	m_health = 100;
+	m_health = 50;
 
 	UpdateData(FALSE);
 

@@ -459,7 +459,7 @@ typedef enum PED_STATE2 {
     PED_STATE2_f_UNK=15
 } PED_STATE2;
 
-typedef struct PlayerPhysics PlayerPhysics, *PPlayerPhysics;
+typedef struct CameraOrPhysics CameraOrPhysics, *PPlayerPhysics;
 
 typedef enum SPRITE_BIT1 : unsigned char {
     SPRITE_BIT1_1=1
@@ -923,7 +923,7 @@ struct GameObject {
     uint relToId; //0x10
     int id;
     OBJECT_TYPE type;
-    struct PlayerPhysics * probablyPhysics;
+    struct CameraOrPhysics * probablyPhysics;
     undefined field_0x20;
     undefined field_0x21;
     undefined field_0x22;
@@ -1050,69 +1050,48 @@ struct WEAPON_STRUCT {
     undefined field_0x2f;
 };
 
-struct PlayerPhysics {
+struct CameraPos {
     SCR_f x;
     SCR_f y;
-    SCR_f z; /* camera z offset */
-    struct GameObject * gameObject;
-    SCR_f x2;
-    SCR_f y2;
-    SCR_f z2;
-    struct GameObject * gameObject2;
-    undefined field_0x20;
-    undefined field_0x21;
-    undefined field_0x22;
-    undefined field_0x23;
-    undefined field_0x24;
-    undefined field_0x25;
-    undefined field_0x26;
-    undefined field_0x27;
-    undefined field_0x28;
-    undefined field_0x29;
-    undefined field_0x2a;
-    undefined field_0x2b;
-    undefined field_0x2c;
-    undefined field_0x2d;
-    undefined field_0x2e;
-    undefined field_0x2f;
+    SCR_f z;
+    int zoom;
+};
+
+struct WorldRect {
+    SCR_f left;
+    SCR_f right;
+    SCR_f top;
+    SCR_f bottom;
+};
+
+struct CameraOrPhysics {
+    CameraPos cameraPosTarget2; 
+    CameraPos cameraPosTarget;
+    WorldRect cameraBoundaries;
     enum PLAYER_PHYSICS_MOVEMENT movementBitmask;
     struct Ped * ped;
     undefined4 field_0x38;
-    enum PLAYER_PHYSICS_STATE2 state2;
-    u4 relToTime;
-    u4 fly_car;
-    void * field_0x48;
-    byte accurcy;
-    undefined field_0x4d;
-    undefined field_0x4e;
-    undefined field_0x4f;
-    undefined4 field_0x50;
-    undefined4 field_0x54;
-    undefined4 field_0x58;
-    undefined4 field_0x5c;
-    uint field_0x60;
-    uint field_0x64;
-    uint field_0x68;
-    uint field_0x6c;
-    uint field_0x70;
-    uint field_0x74;
-    SCR_f leftOfTheScreenX; /* Created by retype action */
-    SCR_f rightOfTheScreenX; /* Created by retype action */
-    SCR_f topOfTheScreenY; /* Created by retype action */
-    SCR_f bottomOfTheSceenY; /* Created by retype action */
-    SCR_f xx;
-    SCR_f yy;
-    SCR_f zz;
-    undefined4 field_0x94;
-    SCR_f encodedCameraOrTeleportX;
-    SCR_f encodedCameraOrTeleportY;
-    SCR_f encodedCameraOrTeleportZ;
-    undefined4 field_0xa4;
-    undefined4 field_0xa8;
-    SCR_f xCameraVelocity;
-    SCR_f yCameraVelocity;
-    undefined4 cameraHeadVelocity; /* changed when driving car */
-    SCR_f field_0xb8;
+    int followedPedID;
+    int targetElevation;
+    int flyTimerMaybe;
+    SCR_f altMovingPosX;
+    SCR_f altMovingPosY;
+    SCR_f altMovingStateUp;
+    SCR_f altMovingStateDown;
+    SCR_f altMovingStateLeft;
+    SCR_f altMovingStateRight;
+    uint altMovingArrowsRelated;
+    undefined2 field_0x64;
+    short altMovingLimit;
+    int screenPxWidth;
+    int screenPxHeight;
+    int screenPxCenterX;
+    int screenPxCenter;
+    WorldRect cameraBoundariesNonNegative;
+    CameraPos cameraPos2;
+    CameraPos cameraPos;
+    int uiScale;
+    CameraPos cameraVelocity;
 };
 
 struct CarManager4_S1 {
@@ -2562,10 +2541,10 @@ struct Player { /* Player actually */
     undefined field_0x8d;
     undefined1 field_0x8e;
     byte field_0x8f;
-    struct PlayerPhysics ph1; /* player ped related */
-    struct PlayerPhysics ph2; /* camera related, for example teleport use this struct */
-    struct PlayerPhysics ph3;
-    struct PlayerPhysics * ph4;
+    struct CameraOrPhysics ph1; /* player ped related */
+    struct CameraOrPhysics ph2; /* camera related, for example teleport use this struct */
+    struct CameraOrPhysics ph3;
+    struct CameraOrPhysics * ph4;
     struct Ped * ped2;
     void * field_0x2cc;
     byte field_0x2d0;
