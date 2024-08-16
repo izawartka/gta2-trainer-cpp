@@ -188,7 +188,7 @@ public:
 	// watch peds
 	void WatchPeds();
 	void WatchNextPed();
-	Ped* selectedPed = 0;
+	Ped* selectedPed = nullptr;
 	bool watchPeds = false;
 	int pedXPreWatch = 0, pedYPreWatch = 0, pedZPreWatch = 0;
 
@@ -207,7 +207,6 @@ public:
 	bool playerImmortal = 0;
 
 	// other
-	void TeleportPlayer();
 	void SetHealthArmorMoney();
 	void TeleportAllPeds();
 	void GangRespect(UINT nID);
@@ -223,8 +222,7 @@ public:
 	void KeepLockedValues();
 	void PedInfo();
 	int currLastCarXOld = 0, currLastCarYOld = 0, currLastCarXYShift;
-	int pedXOld = 0, pedYOld = 0, pedZOld = 0, pedRotOld = 0;
-	int pedHOld = 1, pedAOld = 1, pedMOld = 1; // 1 not 0 because it has to be different than the actual value in the first tick
+	int pedHOld = -1, pedAOld = -1, pedMOld = -1;
 
 	// important
 	void OnGTAGameTick(Game* game);

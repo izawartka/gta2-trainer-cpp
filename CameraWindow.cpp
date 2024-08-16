@@ -28,7 +28,9 @@ BEGIN_MESSAGE_MAP(CameraWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CAM_ZL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_ZOOML, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TARL, &CameraWindow::OnCheckboxChange)
-	ON_BN_CLICKED(IDC_CAM_TP, &CameraWindow::OnTeleport)
+	ON_BN_CLICKED(IDC_CAM_TP, &CameraWindow::OnTeleport)    
+	ON_MESSAGE(WM_CAMERA_MOVE_BTN, &CameraWindow::OnMoveButton)
+	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
 
@@ -43,6 +45,24 @@ void CameraWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CAM_ZL, m_lockZ);
 	DDX_Check(pDX, IDC_CAM_ZOOML, m_lockZoom);
 	DDX_Check(pDX, IDC_CAM_TARL, m_lockToTarget);
+	DDX_Control(pDX, IDC_CAM_SEN, m_sensitivitySlider);
+}
+
+BOOL CameraWindow::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	m_moveBtns[0].SubclassDlgItem(IDC_CAM_UP, this);
+	m_moveBtns[1].SubclassDlgItem(IDC_CAM_DOWN, this);
+	m_moveBtns[2].SubclassDlgItem(IDC_CAM_LEFT, this);
+	m_moveBtns[3].SubclassDlgItem(IDC_CAM_RIGHT, this);
+	m_moveBtns[4].SubclassDlgItem(IDC_CAM_ZUP, this);
+	m_moveBtns[5].SubclassDlgItem(IDC_CAM_ZDOWN, this);
+
+	m_sensitivitySlider.SetRange(1, 100);
+	m_sensitivitySlider.SetPos(m_sensitivity);
+
+	return TRUE;
 }
 
 int CameraWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -117,8 +137,41 @@ void CameraWindow::OnGTAGameTick()
 	m_followPlayer = m_player->ph1.followedPedID == 1 ? 1 : 0;
 
 	UpdateData(FALSE);
+
+	HandleButtonMove();
 }
 
+void CameraWindow::HandleButtonMove()
+{
+	if (!m_player) return;
+	if (m_btnMoveDirection == 0) return;
+	float moveSpeed = m_sensitivity / 100.0f;
+
+	switch (m_btnMoveDirection)
+	{
+	case IDC_CAM_UP:
+		m_yPos -= moveSpeed;
+		break;
+	case IDC_CAM_DOWN:
+		m_yPos += moveSpeed;
+		break;
+	case IDC_CAM_LEFT:
+		m_xPos -= moveSpeed;
+		break;
+	case IDC_CAM_RIGHT:
+		m_xPos += moveSpeed;
+		break;
+	case IDC_CAM_ZUP:
+		m_zPos += moveSpeed;
+		break;
+	case IDC_CAM_ZDOWN:
+		m_zPos -= moveSpeed;
+		break;
+	}
+
+	UpdateData(FALSE);
+	OnPositionInput();
+}
 
 void CameraWindow::OnGoToTargetClick()
 {
@@ -133,4 +186,21 @@ void CameraWindow::OnTeleport()
 	if (!m_player) return;
 
 	fnDoTeleport(m_player, m_xPos, m_yPos);
+}
+
+void CameraWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	if (pScrollBar->GetDlgCtrlID() == IDC_CAM_SEN)
+	{
+		m_sensitivity = ((CSliderCtrl*)pScrollBar)->GetPos();
+	}
+
+	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+LRESULT CameraWindow::OnMoveButton(WPARAM wParam, LPARAM lParam)
+{
+	m_btnMoveDirection = lParam == TRUE ? (int)wParam : 0;
+
+	return 0;
 }

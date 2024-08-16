@@ -82,11 +82,7 @@
 #define IDC_CAREXPLODE                  3083
 #define IDC_BANNER                      3084
 #define IDB_BANNER                      3085
-#define IDC_TPPLAYER                    3086
-#define IDC_EDIT1                       3087
-#define IDC_CAM_ZL                      3125
-#define IDC_CAM_ZOOML                   3126
-#define IDC_CAM_TARL                    3127
+#define IDC_EDIT1                       3086
 #define IDD_ACS                         4000
 #define IDC_ACS_SPAWN                   4001
 #define IDC_ACS_X                       4002
@@ -154,6 +150,16 @@
 #define IDC_CAM_TP                      6006
 #define IDC_CAM_FPED                    6007
 #define IDC_CAM_FPL                     6008
+#define IDC_CAM_ZL                      6009
+#define IDC_CAM_ZOOML                   6010
+#define IDC_CAM_TARL                    6011
+#define IDC_CAM_UP                      6012
+#define IDC_CAM_DOWN                    6013
+#define IDC_CAM_LEFT                    6014
+#define IDC_CAM_RIGHT                   6015
+#define IDC_CAM_ZUP                     6016
+#define IDC_CAM_ZDOWN                   6017
+#define IDC_CAM_SEN                     6018
 #define ID_COMMANDS_HELLO               32000
 #define ID_COMMANDS_TANK                32001
 #define ID_COMMANDS_GUNJEEP             32002
@@ -186,9 +192,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3018
+#define _APS_NEXT_RESOURCE_VALUE        3019
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         3126
+#define _APS_NEXT_CONTROL_VALUE         3133
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

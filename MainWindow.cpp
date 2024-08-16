@@ -215,7 +215,6 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND_RANGE(IDC_CARINVALL, IDC_CARNOCOL, &CarPhysBitmaskSet)
 	ON_BN_CLICKED(IDC_FREESHOP, &MainWindow::FreeShopping)
 	ON_BN_CLICKED(IDC_BEAHUMAN, &MainWindow::WatchPeds)
-	ON_BN_CLICKED(IDC_TPPLAYER, &MainWindow::TeleportPlayer)
 	ON_BN_CLICKED(IDC_EMBP, &MainWindow::CarEmblemPlus)
 	ON_BN_CLICKED(IDC_EMBM, &MainWindow::CarEmblemMinus)
 	ON_BN_CLICKED(IDC_CARCOLP, &MainWindow::CarColorPlus)
@@ -1417,34 +1416,17 @@ void MainWindow::PedInfo()
 		// If player in the car, display it's coords
 		if (playerPed->currentCar)
 		{	
-			if (playerPed->currentCar->sprite->x != pedXOld)
-			{
-				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->x / 16384.0);
-				m_pedX.SetWindowTextW(buf);
-				pedXOld = playerPed->currentCar->sprite->x;
-			}
+			swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->x / 16384.0);
+			m_pedX.SetWindowTextW(buf);
 
-			if (playerPed->currentCar->sprite->y != pedYOld)
-			{
-				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->y / 16384.0);
-				m_pedY.SetWindowTextW(buf);
-				pedYOld = playerPed->currentCar->sprite->y;
-			}
+			swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->y / 16384.0);
+			m_pedY.SetWindowTextW(buf);
 
-			if (playerPed->currentCar->sprite->z != pedZOld)
-			{
-				swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->z / 16384.0);
-				m_pedZ.SetWindowTextW(buf);
-				pedZOld = playerPed->currentCar->sprite->z;
-			}
+			swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->z / 16384.0);
+			m_pedZ.SetWindowTextW(buf);
 
-			if (playerPed->currentCar->sprite->rotation != pedRotOld)
-			{
-				swprintf(buf, 256, L"%d", playerPed->currentCar->sprite->rotation/4);
-				m_pedRot.SetWindowTextW(buf);
-				pedRotOld = playerPed->currentCar->sprite->rotation;
-			}
-			
+			swprintf(buf, 256, L"%d", playerPed->currentCar->sprite->rotation/4);
+			m_pedRot.SetWindowTextW(buf);			
 		}
 		// If player is not in the car, display ped's coords
 		else
@@ -1459,37 +1441,21 @@ void MainWindow::PedInfo()
 			}
 			else
 			{
-				// Display that ultra-cool message
+				// Display that ultra cool message
 				if (playerPed->gameObject->cigaretteIdleTimer == 1)
 					log(L"Smokin' time ;3");
 
-				if (playerPed->gameObject->sprite->x != pedXOld)
-				{
-					swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->x / 16384.0);
-					m_pedX.SetWindowTextW(buf);
-					pedXOld = playerPed->gameObject->sprite->x;
-				}
-				
-				if (playerPed->gameObject->sprite->y != pedYOld)
-				{
-					swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->y / 16384.0);
-					m_pedY.SetWindowTextW(buf);
-					pedYOld = playerPed->gameObject->sprite->y;	
-				}
+				swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->x / 16384.0);
+				m_pedX.SetWindowTextW(buf);
 
-				if (playerPed->gameObject->sprite->z != pedZOld)
-				{
-					swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->z / 16384.0);
-					m_pedZ.SetWindowTextW(buf);
-					pedZOld = playerPed->gameObject->sprite->z;	
-				}
+				swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->y / 16384.0);
+				m_pedY.SetWindowTextW(buf);
 
-				if (playerPed->gameObject->sprite->rotation != pedRotOld)
-				{
-					swprintf(buf, 256, L"%d", playerPed->gameObject->sprite->rotation/4);
-					m_pedRot.SetWindowTextW(buf);
-					pedRotOld = playerPed->gameObject->sprite->rotation;
-				}
+				swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->z / 16384.0);
+				m_pedZ.SetWindowTextW(buf);
+
+				swprintf(buf, 256, L"%d", playerPed->gameObject->sprite->rotation/4);
+				m_pedRot.SetWindowTextW(buf);
 			}
 		}
 	}	
@@ -1928,26 +1894,6 @@ void MainWindow::SetHealthArmorMoney()
 	player->animatedMoney.value = (int)_ttof(buffer);
 
 	log(L"Player's stats changed!");
-}
-
-void MainWindow::TeleportPlayer()
-{
-	Game* pGame = (Game*)*(DWORD*)ptrToGame;
-	if (!pGame) return;
-	Player* player = pGame->CurrentPlayer;
-	if (!player) return;
-
-	fesetround(FE_TONEAREST);
-	CString buffer;
-
-	m_pedX.GetWindowTextW(buffer);
-	float newx = _wtof(buffer);
-	m_pedY.GetWindowTextW(buffer);
-	float newy = _wtof(buffer);
-
-	fnDoTeleport(player, newx, newy);
-
-	log(L"Player teleported to %f, %f", newx, newy);
 }
 
 void MainWindow::ExplodeCars() {
