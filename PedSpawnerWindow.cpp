@@ -25,6 +25,8 @@ BEGIN_MESSAGE_MAP(PedSpawnerWindow, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_PS_SHAPE, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_CBN_SELCHANGE(IDC_PS_WEAP, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_CBN_SELCHANGE(IDC_PS_OCCUP, &PedSpawnerWindow::OnCustomPresetTrigger)
+	ON_CBN_SELCHANGE(IDC_PS_THR_S, &PedSpawnerWindow::OnCustomPresetTrigger)
+	ON_CBN_SELCHANGE(IDC_PS_THR_R, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_EN_CHANGE(IDC_PS_HEALTH, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_EN_CHANGE(IDC_PS_AI0, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_EN_CHANGE(IDC_PS_AI1, &PedSpawnerWindow::OnCustomPresetTrigger)
@@ -32,10 +34,11 @@ BEGIN_MESSAGE_MAP(PedSpawnerWindow, CDialogEx)
 	ON_EN_CHANGE(IDC_PS_AI3, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_EN_CHANGE(IDC_PS_AI4, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_EN_CHANGE(IDC_PS_AI5, &PedSpawnerWindow::OnCustomPresetTrigger)
-	ON_EN_CHANGE(IDC_PS_AI6, &PedSpawnerWindow::OnCustomPresetTrigger)
-	ON_EN_CHANGE(IDC_PS_AI7, &PedSpawnerWindow::OnCustomPresetTrigger)
-	ON_EN_CHANGE(IDC_PS_AI8, &PedSpawnerWindow::OnCustomPresetTrigger)
-	ON_EN_CHANGE(IDC_PS_AI9, &PedSpawnerWindow::OnCustomPresetTrigger)
+	//ON_EN_CHANGE(IDC_PS_AI6, &PedSpawnerWindow::OnCustomPresetTrigger)
+	//ON_EN_CHANGE(IDC_PS_AI7, &PedSpawnerWindow::OnCustomPresetTrigger)
+	//ON_EN_CHANGE(IDC_PS_AI8, &PedSpawnerWindow::OnCustomPresetTrigger)
+	//ON_EN_CHANGE(IDC_PS_AI9, &PedSpawnerWindow::OnCustomPresetTrigger)
+	ON_EN_CHANGE(IDC_PS_LEADER, &PedSpawnerWindow::OnCustomPresetTrigger)
 END_MESSAGE_MAP()
 
 
@@ -51,16 +54,19 @@ void PedSpawnerWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PS_SHAPE, m_shape);
 	DDX_Control(pDX, IDC_PS_WEAP, m_weapon);
 	DDX_Control(pDX, IDC_PS_OCCUP, m_occupation);
+	DDX_Control(pDX, IDC_PS_THR_S, m_threatSearch);
+	DDX_Control(pDX, IDC_PS_THR_R, m_threatReaction);
 	DDX_Text(pDX, IDC_PS_AI0, m_aiValues[0]);
 	DDX_Text(pDX, IDC_PS_AI1, m_aiValues[1]);
 	DDX_Text(pDX, IDC_PS_AI2, m_aiValues[2]);
 	DDX_Text(pDX, IDC_PS_AI3, m_aiValues[3]);
 	DDX_Text(pDX, IDC_PS_AI4, m_aiValues[4]);
 	DDX_Text(pDX, IDC_PS_AI5, m_aiValues[5]);
-	DDX_Text(pDX, IDC_PS_AI6, m_aiValues[6]);
-	DDX_Text(pDX, IDC_PS_AI7, m_aiValues[7]);
+	//DDX_Text(pDX, IDC_PS_AI6, m_aiValues[6]);
+	//DDX_Text(pDX, IDC_PS_AI7, m_aiValues[7]);
 	//DDX_Text(pDX, IDC_PS_AI8, m_aiValues[8]);
 	//DDX_Text(pDX, IDC_PS_AI9, m_aiValues[9]);
+	DDX_Text(pDX, IDC_PS_LEADER, m_leaderID);
 }
 
 int PedSpawnerWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -74,7 +80,7 @@ void PedSpawnerWindow::ClearValues()
 	m_xPos = 0;
 	m_yPos = 0;
 	m_zPos = 0;
-	m_health = 100;
+	m_health = 50;
 
 	UpdateData(FALSE);
 
@@ -86,9 +92,9 @@ void PedSpawnerWindow::ClearValues()
 	m_customPresetIndex = presetsCount;
 
 	m_shape.ResetContent();
-	int shapesCount = sizeof(bodyShapes) / sizeof(bodyShapes[0]);
+	int shapesCount = sizeof(pedBodyShapes) / sizeof(pedBodyShapes[0]);
 	for (int i = 0; i < shapesCount; i++)
-		m_shape.AddString(bodyShapes[i].name);
+		m_shape.AddString(pedBodyShapes[i].name);
 
 	m_remap.ResetContent();
 	int remapsCount = sizeof(pedRemaps) / sizeof(pedRemaps[0]);
@@ -105,7 +111,16 @@ void PedSpawnerWindow::ClearValues()
 	int occupationsCount = sizeof(occupations) / sizeof(occupations[0]);
 	for (int i = 0; i < occupationsCount; i++)
 		m_occupation.AddString(occupations[i].name);
-	
+
+	m_threatSearch.ResetContent();
+	int threatSearchCount = sizeof(pedThreatSearch) / sizeof(pedThreatSearch[0]);
+	for (int i = 0; i < threatSearchCount; i++)
+		m_threatSearch.AddString(pedThreatSearch[i].name);
+
+	m_threatReaction.ResetContent();
+	int threatReactionsCount = sizeof(pedThreatReactions) / sizeof(pedThreatReactions[0]);
+	for (int i = 0; i < threatReactionsCount; i++)
+		m_threatReaction.AddString(pedThreatReactions[i].name);
 
 	GetPlayerPos();
 	LoadPreset(0);
@@ -122,8 +137,8 @@ void PedSpawnerWindow::LoadPreset(int index)
 
 	PedPreset preset = pedPresets[index];
 
-	for (int i = 0; i < sizeof(bodyShapes) / sizeof(bodyShapes[0]); i++) {
-		if (bodyShapes[i].id != preset.shape) 
+	for (int i = 0; i < sizeof(pedBodyShapes) / sizeof(pedBodyShapes[0]); i++) {
+		if (pedBodyShapes[i].id != preset.shape) 
 			continue;
 
 		m_shape.SetCurSel(i);
@@ -151,9 +166,25 @@ void PedSpawnerWindow::LoadPreset(int index)
 		m_occupation.SetCurSel(i);
 	}
 
+	for (int i = 0; i < sizeof(pedThreatSearch) / sizeof(pedThreatSearch[0]); i++) {
+		if (pedThreatSearch[i].id != preset.threatSearch)
+			continue;
+
+		m_threatSearch.SetCurSel(i);
+	}
+
+	for (int i = 0; i < sizeof(pedThreatReactions) / sizeof(pedThreatReactions[0]); i++) {
+		if (pedThreatReactions[i].id != preset.threatReaction)
+			continue;
+
+		m_threatReaction.SetCurSel(i);
+	}
+
 	m_health = preset.health;
 	for(int i = 0; i < aiValuesCount; i++)
 		m_aiValues[i] = preset.aiValues[i];
+
+	m_leaderID = preset.playerLeader ? 1 : 0;
 
 	UpdateData(FALSE);
 }
@@ -223,7 +254,7 @@ void PedSpawnerWindow::OnSpawnClick()
 
 	ped->health = m_health;
 
-	int shape = bodyShapes[m_shape.GetCurSel()].id;
+	int shape = pedBodyShapes[m_shape.GetCurSel()].id;
 	ped->remap2 = (PED_REMAP2)shape;
 
 	int weaponSel = m_weapon.GetCurSel();
@@ -233,23 +264,41 @@ void PedSpawnerWindow::OnSpawnClick()
 	}
 
 	int occupation = occupations[m_occupation.GetCurSel()].id;
-	ped->occupation = (OCUPATION)occupation;
+	ped->occupation = (PED_OCUPATION)occupation;
 
-	//todo: ped->gameObject->spriteRotation
+	int threatSearch = pedThreatSearch[m_threatSearch.GetCurSel()].id;
+	ped->threatSearch = (PED_THREAT_SEARCH)threatSearch;
+
+	int threatReaction = pedThreatReactions[m_threatReaction.GetCurSel()].id;
+	ped->threatReaction = (PED_THREAT_REACTION)threatReaction;
 
 	SetPedAiValues(ped, m_aiValues);
+
+	if(m_leaderID != 0) {
+		Ped* leaderPed = fnGetPedByID(m_leaderID);
+
+		if(!leaderPed) {
+			MessageBox(L"Leader ped not found");
+			return;
+		}
+
+		if (leaderPed->group) {
+			fnPedGroupAddPed(leaderPed->group, 0, ped);
+		}
+		else {
+			fnPedGroupCreate(ped, 0, 0);
+			fnPedGroupChangeLeader(leaderPed, 0, ped);
+		}
+	}
 }
 
 void PedSpawnerWindow::SetPedAiValues(Ped* ped, int* values)
 {
 	if(values[0] != -1) ped->state = (PED_STATE)values[0];
 	if(values[1] != -1) ped->state2 = (PED_STATE2)values[1];
-	if(values[2] != -1) ped->state3 = (PED_STATE3)values[2];
-	if(values[3] != -1) ped->shootingSkillMaybe = values[3];
-	if(values[4] != -1) ped->guardMode = (PED_GUARD_MODE)values[4];
-	if(values[5] != -1) ped->bitStateInvisOnFireEtc = (PED_BIT_STATE)values[5];
-	if(values[6] != -1) ped->bitState2 = (PED_BIT_STATE2)values[6];
-	if(values[7] != -1) ped->timerToAction = values[7];
-	if(values[8] != -1) ped->field_0x230 = values[8];
+	if(values[2] != -1) ped->objective = (PED_OBJECTIVE)values[2];
+	if(values[3] != -1) ped->bitState = (PED_BIT_STATE)values[3];
+	if(values[4] != -1) ped->bitState2 = (PED_BIT_STATE2)values[4];
+	if(values[5] != -1) ped->objectiveTimer = values[5];
 
 }

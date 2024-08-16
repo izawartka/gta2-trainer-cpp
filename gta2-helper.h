@@ -62,8 +62,8 @@ static ShowBigOnScreenLabel* fnShowBigOnScreenLabel = (ShowBigOnScreenLabel*)0x0
 typedef Car* (SpawnCar)(int x, int y, int z, short rot, CAR_MODEL model);
 static SpawnCar* fnSpawnCar = (SpawnCar*)0x00426e10;
 
-//Car* __fastcall SpawnCarAdvanced(TrafficManager* trafficMngr, int edx, int x, int y, int z, int rot, CAR_MODEL4 model, int param_8)
-typedef Car* (__fastcall SpawnCarAdvanced)(TrafficManager* trafficMngr, DWORD edx, int x, int y, int z, int rot, CAR_MODEL4 model, int param_8);
+//Car* __fastcall SpawnCarAdvanced(TrafficManager* trafficMngr, int edx, int x, int y, int z, int rot, CAR_MODEL4 model, int scale)
+typedef Car* (__fastcall SpawnCarAdvanced)(TrafficManager* trafficMngr, DWORD edx, int x, int y, int z, int rot, CAR_MODEL4 model, int scale);
 static SpawnCarAdvanced* fnSpawnCarAdvanced = (SpawnCarAdvanced*)0x00426ac0;
 
 // void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
@@ -85,6 +85,40 @@ static SetPedPosition* fnSetPedPosition = (SetPedPosition*)0x004360c0;
 // void __thiscall ExplodeCarMaybe(Car *this,uint param_1_00 = 0x13)
 typedef void(__fastcall ExplodeCar)(Car* car, DWORD edx, EXPLOSION_SIZE explosionSize);
 static ExplodeCar* fnExplodeCar = (ExplodeCar*)0x00426fa0;
+
+// void __fastcall FixCarDamage(Car *car)
+typedef void(__fastcall FixCarDamage)(Car* car, DWORD edx);
+static FixCarDamage* fnFixCarDamage = (FixCarDamage*)0x00425f20;
+
+// void __fastcall ExtinguishCar(Car *car)
+// also set car->fireState to 0 for full extinguish
+typedef void(__fastcall ExtinguishCar)(Car* car, DWORD edx);
+static ExtinguishCar* fnExtinguishCar = (ExtinguishCar*)0x004bf070;
+
+// void __fastcall FixCarBrokenEngine(Car *car)
+// allows to run the engine even after the car exploded
+typedef void(__fastcall FixCarBrokenEngine)(Car* car, DWORD edx);
+static FixCarBrokenEngine* fnFixCarBrokenEngine = (FixCarBrokenEngine*)0x00421570;
+
+// void __fastcall CarPutDummyDriverIn(Car *car)
+typedef void(__fastcall CarPutDummyDriverIn)(Car* car, DWORD edx);
+static CarPutDummyDriverIn* fnCarPutDummyDriverIn = (CarPutDummyDriverIn*)0x00423510;
+
+// void __fastcall CarMakeDummy(Car *car)
+typedef void(__fastcall CarMakeDummy)(Car* car, DWORD edx);
+static CarMakeDummy* fnCarMakeDummy = (CarMakeDummy*)0x004279e0;
+
+// void __thiscall PedGroupCreate(Ped *this,byte membersCount)
+typedef void(__fastcall PedGroupCreate)(Ped* ped, DWORD edx, byte membersCount);
+static PedGroupCreate* fnPedGroupCreate = (PedGroupCreate*)0x00440350;
+
+// void __fastcall PedGroupChangeLeader(Ped *ped1,uint eq0,Ped *ped2)
+typedef void(__fastcall PedGroupChangeLeader)(Ped* newLeader, DWORD edx, Ped* oldLeader);
+static PedGroupChangeLeader* fnPedGroupChangeLeader = (PedGroupChangeLeader*)0x00435490;
+
+// void __fastcall PedGroupAddPed(PedGroup *group,uint param_2,Ped *ped)
+typedef void(__fastcall PedGroupAddPed)(PedGroup* group, DWORD edx, Ped* ped);
+static PedGroupAddPed* fnPedGroupAddPed = (PedGroupAddPed*)0x00404c90;
 
 typedef uint (CarAddWeapon)(CAR_WEAPON type, uint ammo, Car* car);
 static CarAddWeapon* fnCarAddWeapon = (CarAddWeapon*)0x004cd820;
@@ -132,9 +166,9 @@ static DoTeleport* fnDoTeleportRaw = (DoTeleport*)0x004a5ad0;
 Usage: 
 fnDoTeleport(fnGetPlayerSlotByIndex(0), 133.9, 106.5);
 */
-#define fnDoTeleport(p, x, y) \
-	p->ph2.encodedCameraOrTeleportX  = FloatEncode(x); \
-	p->ph2.encodedCameraOrTeleportY = FloatEncode(y); \
+#define fnDoTeleport(p, xPos, yPos) \
+	p->ph2.cameraPos.x = FloatEncode(xPos); \
+	p->ph2.cameraPos.y = FloatEncode(yPos); \
 	fnDoTeleportRaw(p, 0);
 
 
@@ -169,5 +203,7 @@ double FloatDecode(SCR_f x);
 SCR_f* GetPointInADistance(SCR_f baseX, SCR_f baseY, short rotation, SCR_f distance);
 POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
 bool IsPointSafe(SCR_f x, SCR_f y, SCR_f z);
+void ClampPointToSafe(SCR_f &x, SCR_f &y);
+void ClampPointToSafe(SCR_f &x, SCR_f &y, SCR_f &z);
 
 #endif // !GTA_H

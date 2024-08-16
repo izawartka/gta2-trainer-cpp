@@ -295,12 +295,12 @@ const CatMenuItem cars[] = {
 	{2, L"ZCX5", 83}
 };
 
-struct Emblem {
+struct CarEmblem {
 	wchar_t* name;
 	short id;
 };
 
-const Emblem emblems[] = {
+const CarEmblem carEmblems[] = {
 	{L"None", 0},
 	{L"Loonies", 294},
 	{L"Yakuza", 295},
@@ -452,12 +452,12 @@ const MenuItem nativeCheats[] = {
 	{L"Show all arrows", 0xB2}
 };
 
-struct Occupation {
+struct PedProperty {
 	wchar_t* name;
 	UINT id;
 };
 
-const Occupation occupations[] = {
+const PedProperty occupations[] = {
 	{L"0 - Player", 0},
 	{L"1", 1},
 	{L"2", 2},
@@ -492,7 +492,7 @@ const Occupation occupations[] = {
 	{L"32 - Guard against player ?", 32},
 	{L"33 - Criminal type 1 ?", 33},
 	{L"34 - Criminal type 2 ?", 34},
-	{L"35 - Special group member ?", 35},
+	{L"35 - Special group member", 35},
 	{L"36 - Tank driver ?", 36},
 	{L"37 - FBI in a roadblock", 37},
 	{L"38 - Fireman ?", 38},
@@ -511,23 +511,13 @@ const Occupation occupations[] = {
 	{L"51", 51}
 };
 
-struct BodyShape {
-	wchar_t* name;
-	UINT id;
-};
-
-const BodyShape bodyShapes[] = {
+const PedProperty pedBodyShapes[] = {
 	{L"Ped", 0},
 	{L"Armored", 1},
 	{L"Heavily armored", 2}
 };
 
-struct PedRemap {
-	wchar_t* name;
-	UINT id;
-};
-
-const PedRemap pedRemaps[] = {
+const PedProperty pedRemaps[] = {
 	{L"Blue police", 0},
 	{L"Green police", 1},
 	{L"Red police", 2},
@@ -583,24 +573,44 @@ const PedRemap pedRemaps[] = {
 	{L"Dummy 31", 52}
 };
 
+const PedProperty pedThreatSearch[] = {
+	{L"No threats", 0},
+	{L"In line of sight", 1},
+	{L"In nearby area", 2},
+	{L"Area (player threat only)", 3},
+	{L"Sight (player threat only)", 4},
+	{L"Area (player only)", 5},
+	{L"Sight (player only)", 6}
+};
+
+const PedProperty pedThreatReactions[] = {
+	{L"No reaction", 0},
+	{L"React as emergency", 1},
+	{L"React as normal", 2},
+	{L"Run away", 3}
+};
+
 struct PedPreset {
 	wchar_t* name;
 	PED_REMAP2 shape;
 	PED_REMAP remap;
 	WEAPON_INDEX weapon;
 	short health;
-	OCUPATION occupation;
+	PED_OCUPATION occupation;
+	PED_THREAT_SEARCH threatSearch;
+	PED_THREAT_REACTION threatReaction;
 	int aiValues[10];
 	// 0 - state (0x278)
 	// 1 - state2 (0x27c)
-	// 2 - state3 (0x258)
-	// 3 - shooting skill maybe (0x288)
-	// 4 - guard mode (0x28c)
-	// 5 - bitstate (0x21c)
-	// 6 - bitstate2 (0x238)
-	// 7 - timer to action (0x218)
+	// 2 - objective (0x258)
+	// 3 - bitstate (0x21c)
+	// 4 - bitstate2 (0x238)
+	// 5 - objective timer (0x218)
+	// 6 - reserverd
+	// 7 - reserverd
 	// 8 - reserverd
 	// 9 - reserverd
+	bool playerLeader = false;
 };
 const int aiValuesCount = sizeof(PedPreset::aiValues) / sizeof(PedPreset::aiValues[0]);
 
@@ -611,8 +621,10 @@ const PedPreset pedPresets[] = {
 		(PED_REMAP)27,
 		(WEAPON_INDEX)-1,
 		50,
-		(OCUPATION)3,
-		{0, 0, 0, 2, 3, 1, 3, 0x270F, -1, -1}
+		(PED_OCUPATION)3,
+		PED_THREAT_SEARCH_AREA,
+		PED_THREAT_REACTION_RUN_AWAY,
+		{0, 0, 0, 1, 3, 9999, -1, -1, -1, -1}
 	},
 	{
 		L"Cop", // on foot variant ofc
@@ -620,26 +632,21 @@ const PedPreset pedPresets[] = {
 		(PED_REMAP)0,
 		(WEAPON_INDEX)-1,
 		50,
-		(OCUPATION)29,
-		{0, 0, 0, 1, 1, 1, 3, 0x270F, -1, -1}
+		(PED_OCUPATION)29,
+		PED_THREAT_SEARCH_LINE_OF_SIGHT,
+		PED_THREAT_REACTION_REACT_AS_EMERGENCY,
+		{0, 0, 0, 1, 3, 9999, -1, -1, -1, -1}
 	},
-	/*{
-		L"Scientist (gang)", // on foot variant ofc
-		(PED_REMAP2)1,
-		(PED_REMAP)7,
-		(WEAPON_INDEX)1,
-		50,
-		(OCUPATION)19,
-		{0, 0, 0, 1, 2, 1, 4, 0x270F, -1, -1}
-	},*/
 	{
 		L"Mugger",
 		(PED_REMAP2)0,
 		(PED_REMAP)17,
 		(WEAPON_INDEX)-1,
 		50,
-		(OCUPATION)15,
-		{0, 0, 0, 2, 3, 1, 3, 0, -1, -1}
+		(PED_OCUPATION)15,
+		PED_THREAT_SEARCH_AREA,
+		PED_THREAT_REACTION_RUN_AWAY,
+		{0, 0, 0, 1, 3, 0, -1, -1, -1, -1}
 	},
 	{
 		L"Car thief",
@@ -647,8 +654,10 @@ const PedPreset pedPresets[] = {
 		(PED_REMAP)15,
 		(WEAPON_INDEX)-1,
 		50,
-		(OCUPATION)16,
-		{0, 0, 0, 2, 3, 1, 3, 0, -1, -1}
+		(PED_OCUPATION)16,
+		PED_THREAT_SEARCH_AREA,
+		PED_THREAT_REACTION_RUN_AWAY,
+		{0, 0, 0, 1, 3, 0, -1, -1, -1, -1}
 	},
 	{
 		L"FBI",
@@ -656,9 +665,23 @@ const PedPreset pedPresets[] = {
 		(PED_REMAP)8,
 		(WEAPON_INDEX)9,
 		250,
-		(OCUPATION)26,
-		{0, 0, 0, 1, 1, 1, 4, 0x270F, -1, -1}
+		(PED_OCUPATION)26,
+		PED_THREAT_SEARCH_LINE_OF_SIGHT,
+		PED_THREAT_REACTION_REACT_AS_EMERGENCY,
+		{0, 0, 0, 1, 4, 9999, -1, -1, -1, -1}
 	},
+	{
+		L"Bodyguard",
+		(PED_REMAP2)1,
+		(PED_REMAP)25,
+		(WEAPON_INDEX)1,
+		50,
+		(PED_OCUPATION)35,
+		PED_THREAT_SEARCH_LINE_OF_SIGHT,
+		PED_THREAT_REACTION_REACT_AS_NORMAL,
+		{0, 0, 0, 1, 4, 9999, -1, -1, -1, -1},
+		true
+	}
 };
 
 #endif

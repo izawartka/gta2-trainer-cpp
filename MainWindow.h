@@ -5,6 +5,7 @@
 #include "ACSWindow.h"
 #include "PedSpawnerWindow.h"
 #include "LiveTable/LiveTableWindow.h"
+#include "CameraWindow.h"
 
 enum TIMER {
 	TIMER_CAPTURE_MOUSE,
@@ -22,6 +23,7 @@ class MainWindow : public CDialogEx
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL OnInitDialog();
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -34,6 +36,7 @@ public:
 	ACSWindow* m_acsWindow;
 	PedSpawnerWindow* m_pedSpawnerWindow;
 	LiveTableWindow* m_liveTableWindow;
+	CameraWindow* m_cameraWindow;
 
 	void OnPaint();
 	afx_msg void OnBnClickedExit();
@@ -65,8 +68,8 @@ public:
 	CEdit m_pedHealth;
 	CEdit m_pedArmor;
 	CEdit m_pedMoney;
-	CEdit m_pedClothes;
-	CEdit m_pedShape;
+	CComboBox m_pedRemap;
+	CComboBox m_pedShape;
 	CEdit m_BigText;
 	CEdit m_pedals[3];
 	CEdit m_gangRespect[3];
@@ -119,6 +122,7 @@ public:
 	afx_msg void OnPlayVocalMenuClick(UINT nID);
 	afx_msg void OnNativeCheatMenuClick(UINT nID);
 	afx_msg void OnShowLiveTable();
+	afx_msg void OnShowCamera();
 
 	// currLastCar related
 	Car* currLastCar = 0;
@@ -127,19 +131,29 @@ public:
 	void TpToLastCar();
 	void PrintCarInfo();
 	void HijackTrain();
+	void CarMakeDummy();
 
 	// currLastCar's color
 	afx_msg void CarColorReset();
 	afx_msg void CarColorPlus();
 	afx_msg void CarColorMinus();
+	void CarColorSet(short index);
 	void SyncTrailerColor();
 
 	// currLastCar's damage
 	void FixCar();
 	void CarExplode();
-	void LockCarDamage();
-	short startCarDamage = 0;
-	bool carDamageLocked = 0;
+
+	// currLastCar's physics bitmap
+	void CarPhysBitmaskSet(UINT nID);
+	void SetCarPhysBitmask(uint pos, bool value);
+	void CarPhysBitmaskUpdate();
+	int m_carInvAll = 0;
+	int m_carInvBullets = 0;
+	int m_carInvCollisions = 0;
+	int m_carInvRockets = 0;
+	int m_carInvFlames = 0;
+	int m_carNoCollisions = 0;
 
 	// currLastCar's visual damage
 	void VisFixCar();
@@ -170,13 +184,11 @@ public:
 	// walking speed
 	void GoSlow();
 	int* walkingSpeed = nullptr;
-	void SetGlobalPedSpeeds();
-	int globalPedSpeedsOld[3] = { 1,1,1 }; // same here
 
 	// watch peds
 	void WatchPeds();
 	void WatchNextPed();
-	Ped* selectedPed = 0;
+	Ped* selectedPed = nullptr;
 	bool watchPeds = false;
 	int pedXPreWatch = 0, pedYPreWatch = 0, pedZPreWatch = 0;
 
@@ -185,19 +197,16 @@ public:
 	bool captureMouse = 0;
 	void CaptureMouse();
 
-	// ped clothes
-	void PedClothesPlus();
-	void PedClothesMinus();
-	void PedShapePlus();
-	void PedShapeMinus();
-	void PedShapeClothesReset();
+	// player ped remap and shape
+	void PedRemapShapeSet();
+	void PedRemapShapeDefault();
+	void PedRemapShapeUpdate();
 
 	// player immortal
 	void PlayerImmortal();
 	bool playerImmortal = 0;
 
 	// other
-	void TeleportPlayer();
 	void SetHealthArmorMoney();
 	void TeleportAllPeds();
 	void GangRespect(UINT nID);
@@ -213,8 +222,7 @@ public:
 	void KeepLockedValues();
 	void PedInfo();
 	int currLastCarXOld = 0, currLastCarYOld = 0, currLastCarXYShift;
-	int pedXOld = 0, pedYOld = 0, pedZOld = 0, pedRotOld = 0;
-	int pedHOld = 1, pedAOld = 1, pedMOld = 1; // 1 not 0 because it has to be different than the actual value in the first tick
+	int pedHOld = -1, pedAOld = -1, pedMOld = -1;
 
 	// important
 	void OnGTAGameTick(Game* game);
