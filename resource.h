@@ -96,6 +96,7 @@
 #define IDC_ACS_YOFF                    4010
 #define IDC_ACS_VCOLORS                 4011
 #define IDC_ACS_MODEL                   4012
+#define IDC_ACS_MINICAR                 4013
 #define IDD_LT                          4500
 #define IDC_LT_LIST                     4501
 #define IDC_LT_MODE                     4502

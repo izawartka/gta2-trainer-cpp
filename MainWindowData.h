@@ -8,7 +8,8 @@ struct WantToSpawn {
 	int z;
 	int rot;
 	unsigned int model;
-	short color;
+	short color = -1;
+	bool miniCar = false;
 };
 
 const LPCTSTR objectsCategories[] = {

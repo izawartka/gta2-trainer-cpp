@@ -42,4 +42,5 @@ public:
 	double m_yOffset;
 	CComboBox m_model;
 	int m_variateColors;
+	int m_miniCar;
 };

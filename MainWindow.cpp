@@ -772,6 +772,8 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize)
 			continue;
 		}
 
+		uint scale = currentWTS.miniCar ? (*(uint*)0x005e4f38) : (*(uint*)0x005e4d4c);
+
 		// Spawn a car
 		Car* car = fnSpawnCarAdvanced(
 			(TrafficManager*)(*(TrafficManager**)ptrToTrafficManager),
@@ -781,7 +783,7 @@ void MainWindow::SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize)
 			currentWTS.z,
 			currentWTS.rot,
 			(CAR_MODEL4)currentWTS.model,
-			(uint)(*(uint*)0x005e4d4c) // global car scale
+			scale
 		);
 
 		if (car)
@@ -847,8 +849,7 @@ void MainWindow::OnSpawnCarMenuClick(UINT nID) {
 		targetXY[1], 
 		playerPed->gameObject->sprite->z, 
 		4 * 180, 
-		nID - ID_SPAWNCAR_START, 
-		-1 
+		nID - ID_SPAWNCAR_START
 	};
 
 	wtsCar[wtsCarSize] = wts;
