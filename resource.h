@@ -142,6 +142,16 @@
 #define IDC_PS_AI13                     5028
 #define IDC_PS_AI14                     5029
 #define IDC_PS_LEADER                   5030
+#define IDC_PS_INCAR                    5031
+#define IDC_PS_OBJ                      5032
+#define IDC_PS_OBJTIMER                 5033
+#define IDC_PS_Z2                       5034
+#define IDC_PS_OBJT_X                   5035
+#define IDC_PS_OBJT_Y                   5036
+#define IDC_PS_OBJT_Z                   5037
+#define IDC_PS_OBJT_XL                  3138
+#define IDC_PS_OBJT_YL                  3139
+#define IDC_PS_OBJT_ZL                  3140
 #define IDD_CAM                         6000
 #define IDC_CAM_X                       6001
 #define IDC_CAM_Y                       6002
@@ -195,7 +205,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3019
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         3133
+#define _APS_NEXT_CONTROL_VALUE         3136
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

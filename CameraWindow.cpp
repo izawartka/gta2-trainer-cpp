@@ -97,9 +97,7 @@ void CameraWindow::OnCheckboxChange()
 }
 
 void CameraWindow::OnGTAGameTick()
-{
-	if (!this->IsWindowVisible()) return;
-	
+{	
 	// Return if not in the game
 	if (*(DWORD*)ptrToPedManager == 0)
 	{

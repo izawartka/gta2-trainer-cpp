@@ -27,6 +27,8 @@ BEGIN_MESSAGE_MAP(PedSpawnerWindow, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_PS_OCCUP, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_CBN_SELCHANGE(IDC_PS_THR_S, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_CBN_SELCHANGE(IDC_PS_THR_R, &PedSpawnerWindow::OnCustomPresetTrigger)
+	ON_CBN_SELCHANGE(IDC_PS_OBJ, &PedSpawnerWindow::OnCustomPresetTrigger)
+	ON_EN_CHANGE(IDC_PS_OBJTIMER, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_EN_CHANGE(IDC_PS_HEALTH, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_EN_CHANGE(IDC_PS_AI0, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_EN_CHANGE(IDC_PS_AI1, &PedSpawnerWindow::OnCustomPresetTrigger)
@@ -39,6 +41,7 @@ BEGIN_MESSAGE_MAP(PedSpawnerWindow, CDialogEx)
 	//ON_EN_CHANGE(IDC_PS_AI8, &PedSpawnerWindow::OnCustomPresetTrigger)
 	//ON_EN_CHANGE(IDC_PS_AI9, &PedSpawnerWindow::OnCustomPresetTrigger)
 	ON_EN_CHANGE(IDC_PS_LEADER, &PedSpawnerWindow::OnCustomPresetTrigger)
+	ON_BN_CLICKED(IDC_PS_INCAR, &PedSpawnerWindow::OnCustomPresetTrigger)
 END_MESSAGE_MAP()
 
 
@@ -56,17 +59,29 @@ void PedSpawnerWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PS_OCCUP, m_occupation);
 	DDX_Control(pDX, IDC_PS_THR_S, m_threatSearch);
 	DDX_Control(pDX, IDC_PS_THR_R, m_threatReaction);
+	DDX_Control(pDX, IDC_PS_OBJ, m_objective);
+	DDX_Text(pDX, IDC_PS_OBJTIMER, m_objTimer);
+	DDX_Text(pDX, IDC_PS_OBJT_X, m_objX);
+	DDX_Text(pDX, IDC_PS_OBJT_Y, m_objY);
+	DDX_Text(pDX, IDC_PS_OBJT_Z, m_objZ);
+	DDX_Control(pDX, IDC_PS_OBJT_X, m_objXEdit);
+	DDX_Control(pDX, IDC_PS_OBJT_Y, m_objYEdit);
+	DDX_Control(pDX, IDC_PS_OBJT_Z, m_objZEdit);
+	DDX_Control(pDX, IDC_PS_OBJT_XL, m_objXLabel);
+	DDX_Control(pDX, IDC_PS_OBJT_YL, m_objYLabel);
+	DDX_Control(pDX, IDC_PS_OBJT_ZL, m_objZLabel);
 	DDX_Text(pDX, IDC_PS_AI0, m_aiValues[0]);
 	DDX_Text(pDX, IDC_PS_AI1, m_aiValues[1]);
 	DDX_Text(pDX, IDC_PS_AI2, m_aiValues[2]);
 	DDX_Text(pDX, IDC_PS_AI3, m_aiValues[3]);
-	DDX_Text(pDX, IDC_PS_AI4, m_aiValues[4]);
-	DDX_Text(pDX, IDC_PS_AI5, m_aiValues[5]);
+	//DDX_Text(pDX, IDC_PS_AI4, m_aiValues[4]);
+	//DDX_Text(pDX, IDC_PS_AI5, m_aiValues[5]);
 	//DDX_Text(pDX, IDC_PS_AI6, m_aiValues[6]);
 	//DDX_Text(pDX, IDC_PS_AI7, m_aiValues[7]);
 	//DDX_Text(pDX, IDC_PS_AI8, m_aiValues[8]);
 	//DDX_Text(pDX, IDC_PS_AI9, m_aiValues[9]);
 	DDX_Text(pDX, IDC_PS_LEADER, m_leaderID);
+	DDX_Check(pDX, IDC_PS_INCAR, m_inCar);
 }
 
 int PedSpawnerWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -81,6 +96,7 @@ void PedSpawnerWindow::ClearValues()
 	m_yPos = 0;
 	m_zPos = 0;
 	m_health = 50;
+	m_objTimer = 9999;
 
 	UpdateData(FALSE);
 
@@ -121,6 +137,11 @@ void PedSpawnerWindow::ClearValues()
 	int threatReactionsCount = sizeof(pedThreatReactions) / sizeof(pedThreatReactions[0]);
 	for (int i = 0; i < threatReactionsCount; i++)
 		m_threatReaction.AddString(pedThreatReactions[i].name);
+
+	m_objective.ResetContent();
+	int objectivesCount = sizeof(pedObjectives) / sizeof(pedObjectives[0]);
+	for (int i = 0; i < objectivesCount; i++)
+		m_objective.AddString(pedObjectives[i].name);
 
 	GetPlayerPos();
 	LoadPreset(0);
@@ -180,13 +201,23 @@ void PedSpawnerWindow::LoadPreset(int index)
 		m_threatReaction.SetCurSel(i);
 	}
 
+	for (int i = 0; i < sizeof(pedObjectives) / sizeof(pedObjectives[0]); i++) {
+		if (pedObjectives[i].id != preset.objective)
+			continue;
+
+		m_objective.SetCurSel(i);
+	}
+
 	m_health = preset.health;
+	m_objTimer = preset.objTimer;
 	for(int i = 0; i < aiValuesCount; i++)
 		m_aiValues[i] = preset.aiValues[i];
 
 	m_leaderID = preset.playerLeader ? 1 : 0;
+	m_inCar = preset.inCar;
 
 	UpdateData(FALSE);
+	UpdateObjectiveControls();
 }
 
 void PedSpawnerWindow::OnPresetSelChange()
@@ -198,7 +229,57 @@ void PedSpawnerWindow::OnPresetSelChange()
 
 void PedSpawnerWindow::OnCustomPresetTrigger()
 {
+	UpdateData(TRUE);
 	m_preset.SetCurSel(m_customPresetIndex);
+	UpdateObjectiveControls();
+}
+
+void PedSpawnerWindow::UpdateObjectiveControls()
+{
+	const PedObjectiveProperty* objProperty = &pedObjectives[m_objective.GetCurSel()];
+	PED_OBJ_TARGET_TYPE targetType = objProperty->targetType;
+
+	if (targetType == m_objTargetType) return;
+	m_objTargetType = targetType;
+
+	switch (targetType) {
+	case PED_OBJ_TARGET_TYPE_NONE:
+		m_objXEdit.ShowWindow(SW_HIDE);
+		m_objYEdit.ShowWindow(SW_HIDE);
+		m_objZEdit.ShowWindow(SW_HIDE);
+		m_objXLabel.ShowWindow(SW_HIDE);
+		m_objYLabel.ShowWindow(SW_HIDE);
+		m_objZLabel.ShowWindow(SW_HIDE);
+		break;
+	case PED_OBJ_TARGET_TYPE_OBJ:
+	case PED_OBJ_TARGET_TYPE_PED:
+	case PED_OBJ_TARGET_TYPE_CAR:
+		m_objXEdit.ShowWindow(SW_SHOW);
+		m_objYEdit.ShowWindow(SW_HIDE);
+		m_objZEdit.ShowWindow(SW_HIDE);
+		m_objXLabel.ShowWindow(SW_SHOW);
+		m_objYLabel.ShowWindow(SW_HIDE);
+		m_objZLabel.ShowWindow(SW_HIDE);
+
+		m_objXLabel.SetWindowTextW(L"Target ID:");
+		m_objX = 0;
+		break;
+	case PED_OBJ_TARGET_TYPE_COORDS:
+		m_objXEdit.ShowWindow(SW_SHOW);
+		m_objYEdit.ShowWindow(SW_SHOW);
+		m_objZEdit.ShowWindow(SW_SHOW);
+		m_objXLabel.ShowWindow(SW_SHOW);
+		m_objYLabel.ShowWindow(SW_SHOW);
+		m_objZLabel.ShowWindow(SW_SHOW);
+
+		m_objXLabel.SetWindowTextW(L"Target X:");
+		m_objX = m_xPos;
+		m_objY = m_yPos;
+		m_objZ = m_zPos;
+		break;
+	}
+
+	UpdateData(FALSE);
 }
 
 void PedSpawnerWindow::GetPlayerPos()
@@ -215,9 +296,9 @@ void PedSpawnerWindow::GetPlayerPos()
 
 	UpdateData(TRUE);
 
-	m_xPos = playerPed->gameObject->sprite->x / 16384.;
-	m_yPos = playerPed->gameObject->sprite->y / 16384.;
-	m_zPos = playerPed->gameObject->sprite->z / 16384.;
+	m_xPos = FloatDecode(playerPed->gameObject->sprite->x);
+	m_yPos = FloatDecode(playerPed->gameObject->sprite->y);
+	m_zPos = FloatDecode(playerPed->gameObject->sprite->z);
 
 	UpdateData(FALSE);
 }
@@ -230,75 +311,209 @@ void PedSpawnerWindow::OnSpawnClick()
 
 	UpdateData(TRUE);
 
-	SCR_f x = m_xPos * 16384.0;
-	SCR_f y = m_yPos * 16384.0;
-	SCR_f z = m_zPos * 16384.0;
+	PedSpawnRequest request;
+
+	request.xPos = FloatEncode(m_xPos);
+	request.yPos = FloatEncode(m_yPos);
+	request.zPos = FloatEncode(m_zPos);
 
 	// coordinates check
-	if (!IsPointSafe(x, y, z)) {
-		MessageBox(L"Target position is out of the map");
+	if (!IsPointSafe(request.xPos, request.yPos, request.zPos)) {
+		MessageBox(L"Ped position is out of the map");
 		return;
 	}
 
-	int remap = pedRemaps[m_remap.GetCurSel()].id;
+	// objective info
+	if (!SetObjectiveRequest(request)) return;
 
-	Ped* ped = fnSpawnPedAtPosition(
-		x,
-		y,
-		z,
-		(PED_REMAP)remap,
-		0
-	);
+	// car
+	if (m_inCar == 1) {
+		Car* car = FindTheNearestCar(request.xPos, request.yPos, request.zPos);
 
-	if(!ped) return;
+		if (!car) {
+			MessageBox(L"Car not found");
+			return;
+		}
 
-	ped->health = m_health;
+		if (car->driver) {
+			MessageBox(L"Car is already occupied");
+			return;
+		}
 
-	int shape = pedBodyShapes[m_shape.GetCurSel()].id;
-	ped->remap2 = (PED_REMAP2)shape;
-
-	int weaponSel = m_weapon.GetCurSel();
-	if (weaponSel != 0) {
-		int weapon = weapons[weaponSel - 1].id;
-		fnSetNPCWeapon(ped, 0, (WEAPON_INDEX)weapon);
+		request.car = car;
 	}
 
-	int occupation = occupations[m_occupation.GetCurSel()].id;
-	ped->occupation = (PED_OCUPATION)occupation;
-
-	int threatSearch = pedThreatSearch[m_threatSearch.GetCurSel()].id;
-	ped->threatSearch = (PED_THREAT_SEARCH)threatSearch;
-
-	int threatReaction = pedThreatReactions[m_threatReaction.GetCurSel()].id;
-	ped->threatReaction = (PED_THREAT_REACTION)threatReaction;
-
-	SetPedAiValues(ped, m_aiValues);
-
-	if(m_leaderID != 0) {
+	// leader ped
+	if (m_leaderID != 0) {
 		Ped* leaderPed = fnGetPedByID(m_leaderID);
 
-		if(!leaderPed) {
+		if (!leaderPed) {
 			MessageBox(L"Leader ped not found");
 			return;
 		}
 
-		if (leaderPed->group) {
-			fnPedGroupAddPed(leaderPed->group, 0, ped);
+		request.leader = leaderPed;
+	}
+
+	request.remap = (PED_REMAP)pedRemaps[m_remap.GetCurSel()].id;
+	request.shape = (PED_REMAP2)pedBodyShapes[m_shape.GetCurSel()].id;
+	request.weapon = (WEAPON_INDEX)(m_weapon.GetCurSel() == m_noneWeaponIndex ? -1 : weapons[m_weapon.GetCurSel() - 1].id);
+	request.health = m_health;
+	request.occupation = (PED_OCUPATION)occupations[m_occupation.GetCurSel()].id;
+	request.threatSearch = (PED_THREAT_SEARCH)pedThreatSearch[m_threatSearch.GetCurSel()].id;
+	request.threatReaction = (PED_THREAT_REACTION)pedThreatReactions[m_threatReaction.GetCurSel()].id;
+
+	for (int i = 0; i < aiValuesCount; i++)
+		request.aiValues[i] = m_aiValues[i];
+
+	request.requestedSpawn = true;
+	m_request = request;
+}
+
+bool PedSpawnerWindow::SetObjectiveRequest(PedSpawnRequest& request)
+{
+	const PedObjectiveProperty* objProperty = &pedObjectives[m_objective.GetCurSel()];
+	request.objective = (PED_OBJECTIVE)objProperty->id;
+	request.objTimer = m_objTimer;
+	request.objTargetType = objProperty->targetType;
+
+	int targetID = (int)m_objX;
+
+	switch (request.objTargetType) {
+	case PED_OBJ_TARGET_TYPE_NONE:
+		break;
+	case PED_OBJ_TARGET_TYPE_CAR:
+		request.objTargetCar = fnGetCarByID(targetID);
+		if (!request.objTargetCar) {
+			MessageBox(L"Objective's target car not found");
+			return false;
 		}
-		else {
-			fnPedGroupCreate(ped, 0, 0);
-			fnPedGroupChangeLeader(leaderPed, 0, ped);
+		break;
+	case PED_OBJ_TARGET_TYPE_PED:
+		request.objTargetPed = fnGetPedByID(targetID);
+		if (!request.objTargetPed) {
+			MessageBox(L"Objective's target ped not found");
+			return false;
 		}
+		break;
+	case PED_OBJ_TARGET_TYPE_OBJ:
+		request.objTargetPed = fnGetPedByID(targetID);
+		if (!request.objTargetPed) {
+			MessageBox(L"Objective's target object not found");
+			return false;
+		}
+		break;
+	case PED_OBJ_TARGET_TYPE_COORDS:
+		request.objTargetX = FloatEncode(m_objX);
+		request.objTargetY = FloatEncode(m_objY);
+		request.objTargetZ = FloatEncode(m_objZ);
+
+		if (!IsPointSafe(request.objTargetX, request.objTargetY, request.objTargetZ)) {
+			MessageBox(L"Objective's target position is out of the map");
+			return false;
+		}
+		break;
+	}
+
+	return true;
+}
+
+void PedSpawnerWindow::SetPedObjective(PedSpawnRequest& request)
+{
+	fnPedSetObjective(request.ped, 0, request.objective, request.objTimer);
+	request.ped->bitState = (PED_BIT_STATE)(request.ped->bitState & ~PED_BIT_STATE_UNK_400);
+
+	switch (request.objTargetType) {
+		case PED_OBJ_TARGET_TYPE_NONE:
+			break;
+		case PED_OBJ_TARGET_TYPE_CAR:
+			request.ped->objectiveTargetCar = request.objTargetCar;
+			break;
+		case PED_OBJ_TARGET_TYPE_PED:
+			request.ped->objectiveTargetPed = request.objTargetPed;
+			break;
+		case PED_OBJ_TARGET_TYPE_OBJ:
+			request.ped->objectiveTargetObject = request.objTargetObject;
+			break;
+		case PED_OBJ_TARGET_TYPE_COORDS:
+			request.ped->objectiveTargetX = request.objTargetX;
+			request.ped->objectiveTargetY = request.objTargetY;
+			request.ped->objectiveTargetZ = request.objTargetZ;
+			break;
 	}
 }
 
-void PedSpawnerWindow::SetPedAiValues(Ped* ped, int* values)
+bool PedSpawnerWindow::SafeSpawnPed(PedSpawnRequest& request)
 {
-	if(values[0] != -1) ped->state = (PED_STATE)values[0];
-	if(values[1] != -1) ped->state2 = (PED_STATE2)values[1];
-	if(values[2] != -1) ped->objective = (PED_OBJECTIVE)values[2];
-	if(values[3] != -1) ped->bitState = (PED_BIT_STATE)values[3];
-	if(values[4] != -1) ped->bitState2 = (PED_BIT_STATE2)values[4];
-	if(values[5] != -1) ped->objectiveTimer = values[5];
+	if (!request.requestedSpawn) return false;
+	request.requestedSpawn = false;
 
+	if (request.car) {
+		Ped* ped = fnCreatePed();
+
+		if (!ped) {
+			MessageBox(L"Failed to create ped");
+			return false;
+		}
+
+		ped->remap = request.remap;
+		fnPutPedInCarRelated(ped, 0, request.car);
+		fnCreatePed2(*(void**)0x006644b8, 0, ped);
+		fnCarMakeDriveable1(request.car, 0, 5);
+		fnCarMakeDriveable2(request.car, 0);
+		fnCarMakeDriveable3(request.car->notEngineStruct, 0, request.car);
+		fnCarMakeDriveable4(request.car, 0);
+
+		request.ped = ped;
+	}
+	else {
+		Ped* ped = fnSpawnPedAtPosition(
+			request.xPos,
+			request.yPos,
+			request.zPos,
+			request.remap,
+			0
+		);
+
+		if (!ped) {
+			MessageBox(L"Failed to spawn ped");
+			return false;
+		}
+
+		request.ped = ped;
+	}
+
+	request.ped->remap2 = request.shape;
+	if(request.weapon != (WEAPON_INDEX)-1)
+		fnSetNPCWeapon(request.ped, 0, request.weapon);
+	request.ped->health = request.health;
+	request.ped->occupation = request.occupation;
+	request.ped->threatSearch = request.threatSearch;
+	request.ped->threatReaction = request.threatReaction;
+
+	if(request.leader) SetPedLeader(request.ped, request.leader);
+	SetPedObjective(m_request);
+
+	if (request.aiValues[0] != -1) request.ped->state = (PED_STATE)request.aiValues[0];
+	if (request.aiValues[1] != -1) request.ped->state2 = (PED_STATE2)request.aiValues[1];
+	if (request.aiValues[2] != -1) request.ped->bitState = (PED_BIT_STATE)request.aiValues[2];
+	if (request.aiValues[3] != -1) request.ped->bitState2 = (PED_BIT_STATE2)request.aiValues[3];
+
+	return true;
+}
+
+void PedSpawnerWindow::SetPedLeader(Ped* ped, Ped* leader)
+{
+	if (leader->group) {
+		fnPedGroupAddPed(leader->group, 0, ped);
+	}
+	else {
+		fnPedGroupCreate(ped, 0, 0);
+		fnPedGroupChangeLeader(leader, 0, ped);
+	}
+}
+
+void PedSpawnerWindow::OnGTAGameTick()
+{
+	SafeSpawnPed(m_request);
 }

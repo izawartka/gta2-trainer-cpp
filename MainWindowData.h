@@ -591,6 +591,83 @@ const PedProperty pedThreatReactions[] = {
 	{L"Run away", 3}
 };
 
+typedef enum PED_OBJ_TARGET_TYPE {
+	PED_OBJ_TARGET_TYPE_NONE = 0,
+	PED_OBJ_TARGET_TYPE_PED = 1,
+	PED_OBJ_TARGET_TYPE_CAR = 2,
+	PED_OBJ_TARGET_TYPE_OBJ = 3,
+	PED_OBJ_TARGET_TYPE_COORDS = 4,
+} PED_OBJ_TARGET_TYPE;
+
+struct PedObjectiveProperty {
+	wchar_t* name;
+	UINT id;
+	PED_OBJ_TARGET_TYPE targetType;
+};
+
+const PedObjectiveProperty pedObjectives[] = {
+	{L"No objective", 0, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Flee on foot till safe", 1, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Flee char on foot till safe", 2, PED_OBJ_TARGET_TYPE_PED},
+	{L"Flee char on foot always", 3, PED_OBJ_TARGET_TYPE_PED},
+	{L"4 - ?", 4, PED_OBJ_TARGET_TYPE_PED},
+	{L"5 - ?", 5, PED_OBJ_TARGET_TYPE_PED},
+	{L"6 - ?", 6, PED_OBJ_TARGET_TYPE_PED},
+	{L"7 - ?", 7, PED_OBJ_TARGET_TYPE_NONE},
+	{L"8 - ?", 8, PED_OBJ_TARGET_TYPE_NONE},
+	{L"9 - ?", 9, PED_OBJ_TARGET_TYPE_NONE},
+	{L"10 - ?", 10, PED_OBJ_TARGET_TYPE_NONE},
+	{L"11 - ?", 11, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Go to area on foot", 12, PED_OBJ_TARGET_TYPE_COORDS},
+	{L"13 - ?", 13, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Go to area in car", 14, PED_OBJ_TARGET_TYPE_COORDS},
+	{L"15 - ?", 15, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Go to char on foot", 16, PED_OBJ_TARGET_TYPE_PED},
+	{L"17 - ?", 17, PED_OBJ_TARGET_TYPE_NONE},
+	{L"18 - ?", 18, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Kill char any means", 19, PED_OBJ_TARGET_TYPE_PED},
+	{L"Kill char on foot", 20, PED_OBJ_TARGET_TYPE_PED},
+	{L"21 - ?", 21, PED_OBJ_TARGET_TYPE_CAR},
+	{L"22 - ?", 22, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Beat / rob char", 23, PED_OBJ_TARGET_TYPE_PED},
+	{L"Guard spot", 24, PED_OBJ_TARGET_TYPE_COORDS},
+	{L"Guard current area", 25, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Wait on foot", 26, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Wait in car", 27, PED_OBJ_TARGET_TYPE_CAR},
+	{L"28 - ?", 28, PED_OBJ_TARGET_TYPE_NONE},
+	{L"29 - ?", 29, PED_OBJ_TARGET_TYPE_NONE},
+	{L"30 - ?", 30, PED_OBJ_TARGET_TYPE_NONE},
+	{L"31 - ?", 31, PED_OBJ_TARGET_TYPE_NONE},
+	{L"32 - ?", 32, PED_OBJ_TARGET_TYPE_NONE},
+	{L"33 - ?", 33, PED_OBJ_TARGET_TYPE_NONE},
+	{L"34 - ?", 34, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Enter car", 35, PED_OBJ_TARGET_TYPE_CAR},
+	{L"Leave car", 36, PED_OBJ_TARGET_TYPE_CAR},
+	{L"37 - ?", 37, PED_OBJ_TARGET_TYPE_NONE},
+	{L"38 - ?", 38, PED_OBJ_TARGET_TYPE_NONE},
+	{L"39 - ?", 39, PED_OBJ_TARGET_TYPE_NONE},
+	{L"40 - ?", 40, PED_OBJ_TARGET_TYPE_NONE},
+	{L"41 - ?", 41, PED_OBJ_TARGET_TYPE_NONE},
+	{L"42 - ?", 42, PED_OBJ_TARGET_TYPE_NONE},
+	{L"43 - ?", 43, PED_OBJ_TARGET_TYPE_NONE},
+	{L"44 - ?", 44, PED_OBJ_TARGET_TYPE_NONE},
+	{L"45 - ?", 45, PED_OBJ_TARGET_TYPE_NONE},
+	{L"46 - ?", 46, PED_OBJ_TARGET_TYPE_NONE},
+	{L"47 - ?", 47, PED_OBJ_TARGET_TYPE_NONE},
+	{L"48 - ?", 48, PED_OBJ_TARGET_TYPE_NONE},
+	{L"49 - ?", 49, PED_OBJ_TARGET_TYPE_NONE},
+	{L"50 - ?", 50, PED_OBJ_TARGET_TYPE_NONE},
+	{L"51 - ?", 51, PED_OBJ_TARGET_TYPE_NONE},
+	{L"52 - ?", 52, PED_OBJ_TARGET_TYPE_NONE},
+	{L"53 - ?", 53, PED_OBJ_TARGET_TYPE_NONE},
+	{L"54 - ? ", 54, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Follow car in car", 55, PED_OBJ_TARGET_TYPE_CAR},
+	{L"Follow car on foot", 56, PED_OBJ_TARGET_TYPE_CAR},
+//	{L"Fire at object from tank", 57, PED_OBJ_TARGET_TYPE_OBJ},
+//	{L"Destroy object", 58, PED_OBJ_TARGET_TYPE_OBJ},
+	{L"Destroy car", 59, PED_OBJ_TARGET_TYPE_CAR}
+};
+
 struct PedPreset {
 	wchar_t* name;
 	PED_REMAP2 shape;
@@ -598,20 +675,23 @@ struct PedPreset {
 	WEAPON_INDEX weapon;
 	short health;
 	PED_OCUPATION occupation;
+	PED_OBJECTIVE objective;
+	ushort objTimer;
 	PED_THREAT_SEARCH threatSearch;
 	PED_THREAT_REACTION threatReaction;
 	int aiValues[10];
 	// 0 - state (0x278)
 	// 1 - state2 (0x27c)
-	// 2 - objective (0x258)
-	// 3 - bitstate (0x21c)
-	// 4 - bitstate2 (0x238)
-	// 5 - objective timer (0x218)
-	// 6 - reserverd
-	// 7 - reserverd
-	// 8 - reserverd
-	// 9 - reserverd
+	// 2 - bitstate (0x21c)
+	// 3 - bitstate2 (0x238)
+	// 4 - reserved
+	// 5 - reserved
+	// 6 - reserved
+	// 7 - reserved
+	// 8 - reserved
+	// 9 - reserved
 	bool playerLeader = false;
+	bool inCar = false;
 };
 const int aiValuesCount = sizeof(PedPreset::aiValues) / sizeof(PedPreset::aiValues[0]);
 
@@ -623,20 +703,39 @@ const PedPreset pedPresets[] = {
 		(WEAPON_INDEX)-1,
 		50,
 		(PED_OCUPATION)3,
+		(PED_OBJECTIVE)0,
+		9999,
 		PED_THREAT_SEARCH_AREA,
 		PED_THREAT_REACTION_RUN_AWAY,
-		{0, 0, 0, 1, 3, 9999, -1, -1, -1, -1}
+		{0, 0, 1, 3, -1, -1, -1, -1, -1, -1}
 	},
 	{
-		L"Cop", // on foot variant ofc
+		L"Following car in car",
+		(PED_REMAP2)0,
+		(PED_REMAP)37,
+		(WEAPON_INDEX)-1,
+		50,
+		(PED_OCUPATION)18,
+		(PED_OBJECTIVE)55,
+		9999,
+		PED_THREAT_SEARCH_NO_THREATS,
+		PED_THREAT_REACTION_NO_REACTION,
+		{0, 0, 1, 5, -1, -1, -1, -1, -1, -1},
+		false,
+		true
+	},
+	{
+		L"Cop", // on foot
 		(PED_REMAP2)2,
 		(PED_REMAP)0,
 		(WEAPON_INDEX)-1,
 		50,
 		(PED_OCUPATION)29,
+		(PED_OBJECTIVE)0,
+		9999,
 		PED_THREAT_SEARCH_LINE_OF_SIGHT,
 		PED_THREAT_REACTION_REACT_AS_EMERGENCY,
-		{0, 0, 0, 1, 3, 9999, -1, -1, -1, -1}
+		{0, 0, 1, 3, -1, -1, -1, -1, -1, -1}
 	},
 	{
 		L"Mugger",
@@ -645,9 +744,11 @@ const PedPreset pedPresets[] = {
 		(WEAPON_INDEX)-1,
 		50,
 		(PED_OCUPATION)15,
+		(PED_OBJECTIVE)23,
+		9999,
 		PED_THREAT_SEARCH_AREA,
 		PED_THREAT_REACTION_RUN_AWAY,
-		{0, 0, 0, 1, 3, 0, -1, -1, -1, -1}
+		{0, 0, 1, 3, -1, -1, -1, -1, -1, -1}
 	},
 	{
 		L"Car thief",
@@ -656,9 +757,11 @@ const PedPreset pedPresets[] = {
 		(WEAPON_INDEX)-1,
 		50,
 		(PED_OCUPATION)16,
+		(PED_OBJECTIVE)0,
+		0,
 		PED_THREAT_SEARCH_AREA,
 		PED_THREAT_REACTION_RUN_AWAY,
-		{0, 0, 0, 1, 3, 0, -1, -1, -1, -1}
+		{0, 0, 1, 3, -1, -1, -1, -1, -1, -1}
 	},
 	{
 		L"FBI",
@@ -667,9 +770,11 @@ const PedPreset pedPresets[] = {
 		(WEAPON_INDEX)9,
 		250,
 		(PED_OCUPATION)26,
+		(PED_OBJECTIVE)0,
+		9999,
 		PED_THREAT_SEARCH_LINE_OF_SIGHT,
 		PED_THREAT_REACTION_REACT_AS_EMERGENCY,
-		{0, 0, 0, 1, 4, 9999, -1, -1, -1, -1}
+		{0, 0, 1, 4, -1, -1, -1, -1, -1, -1}
 	},
 	{
 		L"Bodyguard",
@@ -678,9 +783,11 @@ const PedPreset pedPresets[] = {
 		(WEAPON_INDEX)1,
 		50,
 		(PED_OCUPATION)35,
+		(PED_OBJECTIVE)0,
+		9999,
 		PED_THREAT_SEARCH_LINE_OF_SIGHT,
 		PED_THREAT_REACTION_REACT_AS_NORMAL,
-		{0, 0, 0, 1, 4, 9999, -1, -1, -1, -1},
+		{0, 0, 1, 4, -1, -1, -1, -1, -1, -1},
 		true
 	}
 };

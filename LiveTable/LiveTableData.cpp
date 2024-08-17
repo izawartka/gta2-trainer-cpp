@@ -47,7 +47,9 @@ const LiveTableData ltPedData[] = {
     { L"Objective", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x258} },
     { L"State 4", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x284} },
     { L"Threat search", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x288} },
-    { L"Threat reaction", 40, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x28c} }
+    { L"Threat reaction", 40, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x28c} },
+    { L"Obj. target ped", 50, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x148} },
+    { L"Obj. target car", 50, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x150} }
 };
 
 const int ltPedDataCount = sizeof(ltPedData) / sizeof(ltPedData[0]);

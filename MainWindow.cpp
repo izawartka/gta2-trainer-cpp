@@ -1986,6 +1986,7 @@ void MainWindow::OnGTAGameTick(Game* game)
 	PreventFPSComprensation(game);
 	if (wtSpawnObject != -1) SpawnObject((OBJECT_TYPE)wtSpawnObject);
 	m_cameraWindow->OnGTAGameTick();
+	m_pedSpawnerWindow->OnGTAGameTick();
 }
 
 void MainWindow::OnGTADraw()
