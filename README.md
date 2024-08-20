@@ -10,13 +10,15 @@ Some of the main features are:
 - Spawning vehicles
 - Customizing your vehicle (color, emblems, damage, physics, invulnerability)
 - Spawning objects (power-ups etc.)
-- Spawning characters and setting up their AIs
+- Spawning characters and setting up their AIs, appearance etc.
 - Playing vocals
 - Obtaining weapons (including secret ones)
 - Obtaining car weapons
 - Getting unlimited ammo, no reload delays
 - Using some of the built-in cheats without entering any cheat codes
+- Freely moving in-game camera, freezing its height and zoom
 - A customizable table showing info about all peds and vehicles in real time
+- Hijacking trains:)
 
 ## Fast install
 If you just want to play it, go to the [Releases tab](https://github.com/izawartka/gta2-trainer-cpp/releases) and download

@@ -463,7 +463,7 @@ const PedProperty occupations[] = {
 	{L"1", 1},
 	{L"2", 2},
 	{L"3 - Dummy", 3},
-	{L"4", 4},
+	{L"4 - Mission driver ?", 4},
 	{L"5 - Driver ?", 5},
 	{L"7", 7},
 	{L"8 - Bus passenger", 8},
@@ -628,7 +628,7 @@ const PedObjectiveProperty pedObjectives[] = {
 	{L"Kill char any means", 19, PED_OBJ_TARGET_TYPE_PED},
 	{L"Kill char on foot", 20, PED_OBJ_TARGET_TYPE_PED},
 	{L"21 - ?", 21, PED_OBJ_TARGET_TYPE_CAR},
-	{L"22 - ?", 22, PED_OBJ_TARGET_TYPE_NONE},
+	{L"22 - ?", 22, PED_OBJ_TARGET_TYPE_CAR},
 	{L"Beat / rob char", 23, PED_OBJ_TARGET_TYPE_PED},
 	{L"Guard spot", 24, PED_OBJ_TARGET_TYPE_COORDS},
 	{L"Guard current area", 25, PED_OBJ_TARGET_TYPE_NONE},
@@ -637,7 +637,7 @@ const PedObjectiveProperty pedObjectives[] = {
 	{L"28 - ?", 28, PED_OBJ_TARGET_TYPE_NONE},
 	{L"29 - ?", 29, PED_OBJ_TARGET_TYPE_NONE},
 	{L"30 - ?", 30, PED_OBJ_TARGET_TYPE_NONE},
-	{L"31 - ?", 31, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Medic related", 31, PED_OBJ_TARGET_TYPE_PED}, // not working but medics do have it when healing peds
 	{L"32 - ?", 32, PED_OBJ_TARGET_TYPE_NONE},
 	{L"33 - ?", 33, PED_OBJ_TARGET_TYPE_NONE},
 	{L"34 - ?", 34, PED_OBJ_TARGET_TYPE_NONE},
@@ -657,13 +657,13 @@ const PedObjectiveProperty pedObjectives[] = {
 	{L"48 - ?", 48, PED_OBJ_TARGET_TYPE_NONE},
 	{L"49 - ?", 49, PED_OBJ_TARGET_TYPE_NONE},
 	{L"50 - ?", 50, PED_OBJ_TARGET_TYPE_NONE},
-	{L"51 - ?", 51, PED_OBJ_TARGET_TYPE_NONE},
+	{L"Staying in police car related", 51, PED_OBJ_TARGET_TYPE_CAR},
 	{L"52 - ?", 52, PED_OBJ_TARGET_TYPE_NONE},
 	{L"53 - ?", 53, PED_OBJ_TARGET_TYPE_NONE},
 	{L"54 - ? ", 54, PED_OBJ_TARGET_TYPE_NONE},
 	{L"Follow car in car", 55, PED_OBJ_TARGET_TYPE_CAR},
 	{L"Follow car on foot", 56, PED_OBJ_TARGET_TYPE_CAR},
-//	{L"Fire at object from tank", 57, PED_OBJ_TARGET_TYPE_OBJ},
+//	{L"Fire at object from tank", 57, PED_OBJ_TARGET_TYPE_OBJ}, // objects as target are not supported yet
 //	{L"Destroy object", 58, PED_OBJ_TARGET_TYPE_OBJ},
 	{L"Destroy car", 59, PED_OBJ_TARGET_TYPE_CAR}
 };
@@ -789,6 +789,19 @@ const PedPreset pedPresets[] = {
 		PED_THREAT_REACTION_REACT_AS_NORMAL,
 		{0, 0, 1, 4, -1, -1, -1, -1, -1, -1},
 		true
+	},
+	{
+		L"Anti-player guard",
+		(PED_REMAP2)1,
+		(PED_REMAP)8,
+		(WEAPON_INDEX)1,
+		100,
+		(PED_OCUPATION)28,
+		(PED_OBJECTIVE)24,
+		9999,
+		PED_THREAT_SEARCH_AREA_PLAYER_ONLY,
+		PED_THREAT_REACTION_REACT_AS_NORMAL,
+		{0, 0, 1, 3, -1, -1, -1, -1, -1, -1}
 	}
 };
 

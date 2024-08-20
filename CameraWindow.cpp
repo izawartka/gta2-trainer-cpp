@@ -29,6 +29,7 @@ BEGIN_MESSAGE_MAP(CameraWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CAM_ZOOML, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TARL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TP, &CameraWindow::OnTeleport)    
+	ON_BN_CLICKED(IDC_CAM_AA, &CameraWindow::OnAntialiasingChange)
 	ON_MESSAGE(WM_CAMERA_MOVE_BTN, &CameraWindow::OnMoveButton)
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
@@ -46,6 +47,7 @@ void CameraWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CAM_ZOOML, m_lockZoom);
 	DDX_Check(pDX, IDC_CAM_TARL, m_lockToTarget);
 	DDX_Control(pDX, IDC_CAM_SEN, m_sensitivitySlider);
+	DDX_Check(pDX, IDC_CAM_AA, m_antialiasing);
 }
 
 BOOL CameraWindow::OnInitDialog()
@@ -171,6 +173,23 @@ void CameraWindow::HandleButtonMove()
 	OnPositionInput();
 }
 
+void CameraWindow::SetAntialiasing(bool enable)
+{
+	DWORD* pConvertColourBank = *(DWORD**)0x00595328;
+	DWORD* pAATest = (DWORD*)((BYTE*)pConvertColourBank + 0x650);
+
+	DWORD OldProtection = { 0 };
+	VirtualProtectEx(GetCurrentProcess(), (LPVOID)pAATest, 6, PAGE_EXECUTE_READWRITE, &OldProtection);
+
+	BYTE enabledBytes[6] = { 0xF7, 0xC7, 0x00, 0x00, 0x02, 0x00 };
+	BYTE disabledBytes[6] = { 0x90, 0x90, 0x90, 0x90, 0x85, 0xFF };
+
+	for (int i = 0; i < 6; i++)
+	{
+		*(BYTE*)((LPBYTE)pAATest + i) = enable ? enabledBytes[i] : disabledBytes[i];
+	}
+}
+
 void CameraWindow::OnGoToTargetClick()
 {
 	if (!m_player) return;
@@ -184,6 +203,12 @@ void CameraWindow::OnTeleport()
 	if (!m_player) return;
 
 	fnDoTeleport(m_player, m_xPos, m_yPos);
+}
+
+void CameraWindow::OnAntialiasingChange()
+{
+	UpdateData(TRUE);
+	SetAntialiasing(m_antialiasing == 1);
 }
 
 void CameraWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)

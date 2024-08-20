@@ -31,10 +31,12 @@ protected:
 	afx_msg void OnCheckboxChange();
 	afx_msg void OnGoToTargetClick();
 	afx_msg void OnTeleport();
+	afx_msg void OnAntialiasingChange();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg LRESULT OnMoveButton(WPARAM wParam, LPARAM lParam);
 
 	void HandleButtonMove();
+	void SetAntialiasing(bool enable);
 
 public:
 	void OnGTAGameTick();
@@ -57,4 +59,5 @@ protected:
 	UINT m_btnMoveDirection = 0;
 	CSliderCtrl m_sensitivitySlider;
 	int m_sensitivity = 10;
+	int m_antialiasing = 1;
 };

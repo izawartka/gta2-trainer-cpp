@@ -35,8 +35,6 @@ const LiveTableData ltPedData[] = {
     { L"Car ref 2", 80, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x150} },
     { L"Car ref", 80, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x140} },
     { L"Elvis something", 80, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x2c} },
-    { L"Timer to action", 40, 2, LT_DATA_TYPE_UINT, 1, new int[1] {0x218} },
-    { L"Timer to action 2", 40, 1, LT_DATA_TYPE_UINT, 1, new int[1] {0x225} },
     { L"Bitstate", 50, 4, LT_DATA_TYPE_HEX, 1, new int[1] {0x21c} },
     { L"Bitstate 2", 50, 4, LT_DATA_TYPE_HEX, 1, new int[1] {0x238} },
     { L"Body shape", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x26c} },
@@ -44,12 +42,14 @@ const LiveTableData ltPedData[] = {
     { L"State 1_2", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x27c} },
     { L"State 2", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x278} },
     { L"State 2_2", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x280} },
-    { L"Objective", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x258} },
     { L"State 4", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x284} },
+    { L"Objective", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x258} },
+    { L"Obj. target ped", 50, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x148} },
+    { L"Obj. target car", 50, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x150} },
+    { L"Obj. timer", 40, 2, LT_DATA_TYPE_UINT, 1, new int[1] {0x218} },
+    { L"Timer to action 2", 40, 1, LT_DATA_TYPE_UINT, 1, new int[1] {0x225} },
     { L"Threat search", 50, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x288} },
     { L"Threat reaction", 40, 4, LT_DATA_TYPE_UINT, 1, new int[1] {0x28c} },
-    { L"Obj. target ped", 50, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x148} },
-    { L"Obj. target car", 50, 4, LT_DATA_TYPE_ADDRESS, 1, new int[1] {0x150} }
 };
 
 const int ltPedDataCount = sizeof(ltPedData) / sizeof(ltPedData[0]);

@@ -145,13 +145,12 @@
 #define IDC_PS_INCAR                    5031
 #define IDC_PS_OBJ                      5032
 #define IDC_PS_OBJTIMER                 5033
-#define IDC_PS_Z2                       5034
-#define IDC_PS_OBJT_X                   5035
-#define IDC_PS_OBJT_Y                   5036
-#define IDC_PS_OBJT_Z                   5037
-#define IDC_PS_OBJT_XL                  3138
-#define IDC_PS_OBJT_YL                  3139
-#define IDC_PS_OBJT_ZL                  3140
+#define IDC_PS_OBJT_X                   5034
+#define IDC_PS_OBJT_Y                   5035
+#define IDC_PS_OBJT_Z                   5036
+#define IDC_PS_OBJT_XL                  5037
+#define IDC_PS_OBJT_YL                  5038
+#define IDC_PS_OBJT_ZL                  5039
 #define IDD_CAM                         6000
 #define IDC_CAM_X                       6001
 #define IDC_CAM_Y                       6002
@@ -171,6 +170,7 @@
 #define IDC_CAM_ZUP                     6016
 #define IDC_CAM_ZDOWN                   6017
 #define IDC_CAM_SEN                     6018
+#define IDC_CAM_AA                      6019
 #define ID_COMMANDS_HELLO               32000
 #define ID_COMMANDS_TANK                32001
 #define ID_COMMANDS_GUNJEEP             32002
