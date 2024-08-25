@@ -96,6 +96,7 @@
 #define IDC_ACS_YOFF                    4010
 #define IDC_ACS_VCOLORS                 4011
 #define IDC_ACS_MODEL                   4012
+#define IDC_ACS_MINICAR                 4013
 #define IDD_LT                          4500
 #define IDC_LT_LIST                     4501
 #define IDC_LT_MODE                     4502
@@ -141,6 +142,15 @@
 #define IDC_PS_AI13                     5028
 #define IDC_PS_AI14                     5029
 #define IDC_PS_LEADER                   5030
+#define IDC_PS_INCAR                    5031
+#define IDC_PS_OBJ                      5032
+#define IDC_PS_OBJTIMER                 5033
+#define IDC_PS_OBJT_X                   5034
+#define IDC_PS_OBJT_Y                   5035
+#define IDC_PS_OBJT_Z                   5036
+#define IDC_PS_OBJT_XL                  5037
+#define IDC_PS_OBJT_YL                  5038
+#define IDC_PS_OBJT_ZL                  5039
 #define IDD_CAM                         6000
 #define IDC_CAM_X                       6001
 #define IDC_CAM_Y                       6002
@@ -160,6 +170,10 @@
 #define IDC_CAM_ZUP                     6016
 #define IDC_CAM_ZDOWN                   6017
 #define IDC_CAM_SEN                     6018
+#define IDC_CAM_AA                      6019
+#define IDC_CAM_SHADOWS                 6020
+#define IDC_CAM_NOLIGHTS                6021
+#define IDC_CAM_NIGHT                   6022
 #define ID_COMMANDS_HELLO               32000
 #define ID_COMMANDS_TANK                32001
 #define ID_COMMANDS_GUNJEEP             32002
@@ -194,7 +208,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3019
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         3133
+#define _APS_NEXT_CONTROL_VALUE         3136
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

@@ -57,75 +57,74 @@ double FloatDecode(SCR_f x) {
 
 Ped* FindTheNearestPed(Ped* basePed)
 {
-	int distancefromPed = 0;
-	int nearestPedDistance = 16384000;
-	Ped* nearestPed = 0;
+	Ped* nearestPed = nullptr;
+	int nearestPedDistance = 16384 * 512;
+
 	PedManager_S25* manager = ByPtr(PedManager_S25, ptrToPedManager);
 	Ped* lastPed = manager->lastPedInArray;
+	if(!lastPed) return nullptr;
 
 	for (int i = 0; i <= lastPed->id; i++)
 	{
-		Ped* foundPed = fnGetPedByID(i);
+		Ped* ped = fnGetPedByID(i);
 
-		if(!foundPed) continue;
-		if(foundPed == basePed) continue;
+		if(!ped) continue;
+		if(ped == basePed) continue;
 
 		SCR_f x;
 		SCR_f y;
 
-		if (foundPed->currentCar) {
-			if(!foundPed->currentCar->sprite) continue;
+		if (ped->currentCar) {
+			if(!ped->currentCar->sprite) continue;
 
-			x = foundPed->currentCar->sprite->x;
-			y = foundPed->currentCar->sprite->y;
+			x = ped->currentCar->sprite->x;
+			y = ped->currentCar->sprite->y;
 		}
 		else {
-			x = foundPed->x;
-			y = foundPed->y;
+			x = ped->x;
+			y = ped->y;
 		}
 
-		distancefromPed =
-			sqrt(
-				pow(x - basePed->x, 2) +
-				pow(y - basePed->y, 2)
-			);
+		int pedDistance = sqrt(pow(x - basePed->x, 2) + pow(y - basePed->y, 2));
 
-		if (distancefromPed <= nearestPedDistance)
+		if (pedDistance <= nearestPedDistance)
 		{
-			nearestPedDistance = distancefromPed;
-			nearestPed = foundPed;
+			nearestPedDistance = pedDistance;
+			nearestPed = ped;
 		}
 	}
 	return nearestPed;
 }
 
-Car* FindTheNearestCar(Ped* basePed)
+Car* FindTheNearestCar(SCR_f x, SCR_f y, SCR_f z)
 {
-	Car* tempcar = 0;
-	int distancefromCar = 0;
-	int nearestCarDistance = 16384000;
-	Car* nearestCar = 0;
+	Car* nearestCar = nullptr;
+	int nearestCarDistance = 16384 * 512;
+
 	auto prefab = ByPtr(CarsPrefab, ptrToCarsPrefabs);
 	auto lastCar = prefab->lastCar;
+	if(!lastCar) return nullptr;
 
 	for (int i = 0; i <= lastCar->id; i++)
 	{
-		tempcar = fnGetCarByID(i);
-		if (tempcar && tempcar->sprite && tempcar->sprite->x)
+		Car* car = fnGetCarByID(i);
+		if (!car || !car->sprite || !car->sprite->x) continue;
+
+		int carDistance = sqrt(pow(car->sprite->x - x, 2) + pow(car->sprite->y - y, 2));
+		if (carDistance <= nearestCarDistance)
 		{
-			distancefromCar =
-				sqrt(
-					pow(tempcar->sprite->x - basePed->x, 2) +
-					pow(tempcar->sprite->y - basePed->y, 2)
-				);
-			if (distancefromCar <= nearestCarDistance)
-			{
-				nearestCarDistance = distancefromCar;
-				nearestCar = tempcar;
-			}
+			nearestCarDistance = carDistance;
+			nearestCar = car;
 		}
 	}
 	return nearestCar;
+}
+
+Car* FindTheNearestCar(Ped* basePed)
+{
+	if (!basePed) return nullptr;
+
+	return FindTheNearestCar(basePed->x, basePed->y, basePed->z);
 }
 
 SCR_f* GetPointInADistance(SCR_f baseX, SCR_f baseY, short angle, SCR_f distance) {
@@ -193,4 +192,15 @@ void ClampPointToSafe(SCR_f& x, SCR_f& y, SCR_f& z)
 	ClampPointToSafe(x, y);
 	if(z < 0 * 16384) z = 0 * 16384;
 	if(z > 7 * 16384) z = 7 * 16384;
+}
+
+void ReplaceCode(DWORD* address, BYTE* newCode, int length)
+{
+	DWORD oldProtection = { 0 };
+	VirtualProtectEx(GetCurrentProcess(), (LPVOID)address, length, PAGE_EXECUTE_READWRITE, &oldProtection);
+
+	for (int i = 0; i < length; i++)
+	{
+		*(BYTE*)((LPBYTE)address + i) = newCode[i];
+	}
 }

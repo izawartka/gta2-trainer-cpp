@@ -66,6 +66,35 @@ static SpawnCar* fnSpawnCar = (SpawnCar*)0x00426e10;
 typedef Car* (__fastcall SpawnCarAdvanced)(TrafficManager* trafficMngr, DWORD edx, int x, int y, int z, int rot, CAR_MODEL4 model, int scale);
 static SpawnCarAdvanced* fnSpawnCarAdvanced = (SpawnCarAdvanced*)0x00426ac0;
 
+// void __thiscall PutPedInCarRelated(Ped *this,Car *car,int param_3)
+typedef void(__fastcall PutPedInCarRelated)(Ped* ped, DWORD edx, Car* car);
+static PutPedInCarRelated* fnPutPedInCarRelated = (PutPedInCarRelated*)0x00436070;
+
+// Ped * CreatePed(void)
+typedef Ped* (CreatePed)(void);
+static CreatePed* fnCreatePed = (CreatePed*)0x0043df60;
+
+// void __thiscall CreatePed2(void *this,Ped *param_1_00)
+// ptr = *0x006644b8
+typedef void(__fastcall CreatePed2)(void* ptr, DWORD edx, Ped* ped);
+static CreatePed2* fnCreatePed2 = (CreatePed2*)0x00476d20;
+
+// void __thiscall CarMakeDriveable1(Car *this,int param_1_00,undefined4 param_3)
+typedef void(__fastcall CarMakeDriveable1)(Car* car, DWORD edx, int param_2);
+static CarMakeDriveable1* fnCarMakeDriveable1 = (CarMakeDriveable1*)0x00421560;
+
+// void __fastcall CarMakeDriveable2(Car *car)
+typedef void(__fastcall CarMakeDriveable2)(Car* car, DWORD edx);
+static CarMakeDriveable2* fnCarMakeDriveable2 = (CarMakeDriveable2*)0x00421510;
+
+// void __thiscall CarMakeDriveable3(CarManager4_S1 *this,Car *car)
+typedef void(__fastcall CarMakeDriveable3)(CarManager4_S1* carManager, DWORD edx, Car* car);
+static CarMakeDriveable3* fnCarMakeDriveable3 = (CarMakeDriveable3*)0x0042a9d0;
+
+// void __fastcall CarMakeDriveable4(Car *car)
+typedef void(__fastcall CarMakeDriveable4)(Car* car, DWORD edx);
+static CarMakeDriveable4* fnCarMakeDriveable4 = (CarMakeDriveable4*)0x00425dd0;
+
 // void __fastcall PlayVocal(void *param_1,undefined4 unused,VOCAL vocal)
 typedef void* (__fastcall PlayVocal)(void*, DWORD edx, VOCAL vocal);
 static PlayVocal* fnPlayVocal = (PlayVocal*)0x004105b0;
@@ -119,6 +148,10 @@ static PedGroupChangeLeader* fnPedGroupChangeLeader = (PedGroupChangeLeader*)0x0
 // void __fastcall PedGroupAddPed(PedGroup *group,uint param_2,Ped *ped)
 typedef void(__fastcall PedGroupAddPed)(PedGroup* group, DWORD edx, Ped* ped);
 static PedGroupAddPed* fnPedGroupAddPed = (PedGroupAddPed*)0x00404c90;
+
+// void __fastcall PedSetObjective(Ped *this,int edx,PED_OBJECTIVE objective,ushort timer,undefined param_5)
+typedef void(__fastcall PedSetObjective)(Ped* ped, DWORD edx, PED_OBJECTIVE objective, ushort timer);
+static PedSetObjective* fnPedSetObjective = (PedSetObjective*)0x0043bbc0;
 
 typedef uint (CarAddWeapon)(CAR_WEAPON type, uint ammo, Car* car);
 static CarAddWeapon* fnCarAddWeapon = (CarAddWeapon*)0x004cd820;
@@ -197,6 +230,7 @@ Roof* getCarRoofWithSpriteIfExists(Roof* startroof, short spritetype);
 Roof* getCarLastRoof(Roof* startroof);
 Car* fnGetCarByID(int id);
 Ped* FindTheNearestPed(Ped* basePed);
+Car* FindTheNearestCar(SCR_f x, SCR_f y, SCR_f z);
 Car* FindTheNearestCar(Ped* basePed);
 SCR_f FloatEncode(double x);
 double FloatDecode(SCR_f x);
@@ -205,5 +239,6 @@ POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
 bool IsPointSafe(SCR_f x, SCR_f y, SCR_f z);
 void ClampPointToSafe(SCR_f &x, SCR_f &y);
 void ClampPointToSafe(SCR_f &x, SCR_f &y, SCR_f &z);
+void ReplaceCode(DWORD* address, BYTE* newCode, int length);
 
 #endif // !GTA_H

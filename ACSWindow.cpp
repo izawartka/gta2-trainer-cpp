@@ -35,6 +35,7 @@ void ACSWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_ACS_XOFF, m_xOffset);
 	DDX_Text(pDX, IDC_ACS_YOFF, m_yOffset);
 	DDX_Check(pDX, IDC_ACS_VCOLORS, m_variateColors);
+	DDX_Check(pDX, IDC_ACS_MINICAR, m_miniCar);
 	DDX_Control(pDX, IDC_ACS_MODEL, m_model);
 }
 
@@ -52,16 +53,19 @@ void ACSWindow::OnSpawnClick()
 	UpdateData(TRUE);
 
 	short color = m_variateColors == true ? -2 : -1;
+	short rot = m_rot * 4;
+	bool miniCar = m_miniCar == 1 ? true : false;
 
 	SCR_f xPos = m_xPos * 16384.0;
 	SCR_f yPos = m_yPos * 16384.0;
 	SCR_f zPos = m_zPos * 16384.0;
-	short rot = m_rot * 4;
 	SCR_f xOffset = m_xOffset * 16384.0;
 	SCR_f yOffset = m_yOffset * 16384.0;
+	SCR_f xPosMax = xPos + m_xSize * xOffset;
+	SCR_f yPosMax = yPos + m_ySize * yOffset;
 
 	// coordinates check
-	if (!IsPointSafe(xPos, yPos, zPos)) {
+	if (!IsPointSafe(xPos, yPos, zPos) || !IsPointSafe(xPosMax, yPosMax, zPos)) {
 		MessageBox(L"Target position is out of the map");
 		return;
 	}
@@ -75,7 +79,7 @@ void ACSWindow::OnSpawnClick()
 			int targetX = xPos + x * xOffset;
 			int targetY = yPos + y * yOffset;
 
-			m_mainWindow->wtsCar[m_mainWindow->wtsCarSize] = WantToSpawn{ targetX, targetY, zPos, rot, model, color };
+			m_mainWindow->wtsCar[m_mainWindow->wtsCarSize] = WantToSpawn{ targetX, targetY, zPos, rot, model, color, miniCar };
 			m_mainWindow->wtsCarSize++;
 		}
 	}
@@ -92,6 +96,7 @@ void ACSWindow::ClearValues()
 	m_xOffset = 1.0;
 	m_yOffset = 1.0;
 	m_variateColors = false;
+	m_miniCar = false;
 
 	UpdateData(FALSE);
 

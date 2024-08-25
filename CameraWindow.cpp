@@ -29,6 +29,10 @@ BEGIN_MESSAGE_MAP(CameraWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CAM_ZOOML, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TARL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TP, &CameraWindow::OnTeleport)    
+	ON_BN_CLICKED(IDC_CAM_AA, &CameraWindow::OnAntialiasingChange)
+	ON_BN_CLICKED(IDC_CAM_SHADOWS, &CameraWindow::OnShadowsChange)
+	ON_BN_CLICKED(IDC_CAM_NIGHT, &CameraWindow::OnNightChange)
+	ON_BN_CLICKED(IDC_CAM_NOLIGHTS, &CameraWindow::OnNoLightsChange)
 	ON_MESSAGE(WM_CAMERA_MOVE_BTN, &CameraWindow::OnMoveButton)
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
@@ -46,6 +50,10 @@ void CameraWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CAM_ZOOML, m_lockZoom);
 	DDX_Check(pDX, IDC_CAM_TARL, m_lockToTarget);
 	DDX_Control(pDX, IDC_CAM_SEN, m_sensitivitySlider);
+	DDX_Check(pDX, IDC_CAM_AA, m_antialiasing);
+	DDX_Check(pDX, IDC_CAM_SHADOWS, m_shadows);
+	DDX_Check(pDX, IDC_CAM_NIGHT, m_night);
+	DDX_Check(pDX, IDC_CAM_NOLIGHTS, m_noLights);
 }
 
 BOOL CameraWindow::OnInitDialog()
@@ -61,6 +69,8 @@ BOOL CameraWindow::OnInitDialog()
 
 	m_sensitivitySlider.SetRange(1, 100);
 	m_sensitivitySlider.SetPos(m_sensitivity);
+
+	m_night = *(BYTE*)0x00595011 == 1 ? 1 : 0;
 
 	return TRUE;
 }
@@ -97,9 +107,7 @@ void CameraWindow::OnCheckboxChange()
 }
 
 void CameraWindow::OnGTAGameTick()
-{
-	if (!this->IsWindowVisible()) return;
-	
+{	
 	// Return if not in the game
 	if (*(DWORD*)ptrToPedManager == 0)
 	{
@@ -173,6 +181,52 @@ void CameraWindow::HandleButtonMove()
 	OnPositionInput();
 }
 
+void CameraWindow::SetAntialiasing(bool enable)
+{
+	DWORD* pConvertColourBank = *(DWORD**)0x00595328;
+	DWORD* pAATest = (DWORD*)((BYTE*)pConvertColourBank + 0x650);
+
+	BYTE enabledBytes[6] = { 0xF7, 0xC7, 0x00, 0x00, 0x02, 0x00 };
+	BYTE disabledBytes[6] = { 0x90, 0x90, 0x90, 0x90, 0x85, 0xFF };
+
+	ReplaceCode(pAATest, enable ? enabledBytes : disabledBytes, 6);
+}
+
+void CameraWindow::SetShadows(bool enable)
+{
+	DWORD* pShadows = (DWORD*)0x004BAC10;
+
+	BYTE enabledBytes[5] = { 0x8B, 0x41, 0x30, 0x48, 0x83 };
+	BYTE disabledBytes[5] = { 0xB0, 0x00, 0xC2, 0x00, 0x00 };
+
+	ReplaceCode(pShadows, enable ? enabledBytes : disabledBytes, 5);
+}
+
+void CameraWindow::SetNight(bool enable)
+{
+	DWORD* pNight1 = (DWORD*)0x004cb235;
+	DWORD* pNight2 = (DWORD*)0x004cb248;
+
+	BYTE enabledBytes[7] = { 0xc6, 0x05, 0x11, 0x50, 0x59, 0x00, 0x01 };
+	BYTE disabledBytes[7] = { 0xc6, 0x05, 0x11, 0x50, 0x59, 0x00, 0x00 };
+
+	ReplaceCode(pNight1, enable ? enabledBytes : disabledBytes, 7);
+	ReplaceCode(pNight2, enable ? enabledBytes : disabledBytes, 7);
+
+	*(int*)0x00595011 = enable ? 1 : 0;
+}
+
+void CameraWindow::SetNoLights(bool enable)
+{
+	DWORD* pConvertColourBank = *(DWORD**)0x00595328;
+	DWORD* pLights = (DWORD*)((BYTE*)pConvertColourBank - 0x9C1);
+
+	BYTE enabledBytes[1] = { 0x90 };
+	BYTE disabledBytes[1] = { 0x42 };
+
+	ReplaceCode(pLights, enable ? enabledBytes : disabledBytes, 1);
+}
+
 void CameraWindow::OnGoToTargetClick()
 {
 	if (!m_player) return;
@@ -186,6 +240,30 @@ void CameraWindow::OnTeleport()
 	if (!m_player) return;
 
 	fnDoTeleport(m_player, m_xPos, m_yPos);
+}
+
+void CameraWindow::OnAntialiasingChange()
+{
+	UpdateData(TRUE);
+	SetAntialiasing(m_antialiasing == 1);
+}
+
+void CameraWindow::OnShadowsChange()
+{
+	UpdateData(TRUE);
+	SetShadows(m_shadows == 1);
+}
+
+void CameraWindow::OnNightChange()
+{
+	UpdateData(TRUE);
+	SetNight(m_night == 1);
+}
+
+void CameraWindow::OnNoLightsChange()
+{
+	UpdateData(TRUE);
+	SetNoLights(m_noLights == 1);
 }
 
 void CameraWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
