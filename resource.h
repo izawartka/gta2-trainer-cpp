@@ -171,6 +171,7 @@
 #define IDC_CAM_ZDOWN                   6017
 #define IDC_CAM_SEN                     6018
 #define IDC_CAM_AA                      6019
+#define IDC_CAM_SHADOWS                 6020
 #define ID_COMMANDS_HELLO               32000
 #define ID_COMMANDS_TANK                32001
 #define ID_COMMANDS_GUNJEEP             32002

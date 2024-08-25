@@ -193,3 +193,14 @@ void ClampPointToSafe(SCR_f& x, SCR_f& y, SCR_f& z)
 	if(z < 0 * 16384) z = 0 * 16384;
 	if(z > 7 * 16384) z = 7 * 16384;
 }
+
+void ReplaceCode(DWORD* address, BYTE* newCode, int length)
+{
+	DWORD oldProtection = { 0 };
+	VirtualProtectEx(GetCurrentProcess(), (LPVOID)address, length, PAGE_EXECUTE_READWRITE, &oldProtection);
+
+	for (int i = 0; i < length; i++)
+	{
+		*(BYTE*)((LPBYTE)address + i) = newCode[i];
+	}
+}

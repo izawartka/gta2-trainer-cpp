@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(CameraWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CAM_TARL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TP, &CameraWindow::OnTeleport)    
 	ON_BN_CLICKED(IDC_CAM_AA, &CameraWindow::OnAntialiasingChange)
+	ON_BN_CLICKED(IDC_CAM_SHADOWS, &CameraWindow::OnShadowsChange)
 	ON_MESSAGE(WM_CAMERA_MOVE_BTN, &CameraWindow::OnMoveButton)
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
@@ -48,6 +49,7 @@ void CameraWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CAM_TARL, m_lockToTarget);
 	DDX_Control(pDX, IDC_CAM_SEN, m_sensitivitySlider);
 	DDX_Check(pDX, IDC_CAM_AA, m_antialiasing);
+	DDX_Check(pDX, IDC_CAM_SHADOWS, m_shadows);
 }
 
 BOOL CameraWindow::OnInitDialog()
@@ -178,16 +180,20 @@ void CameraWindow::SetAntialiasing(bool enable)
 	DWORD* pConvertColourBank = *(DWORD**)0x00595328;
 	DWORD* pAATest = (DWORD*)((BYTE*)pConvertColourBank + 0x650);
 
-	DWORD OldProtection = { 0 };
-	VirtualProtectEx(GetCurrentProcess(), (LPVOID)pAATest, 6, PAGE_EXECUTE_READWRITE, &OldProtection);
-
 	BYTE enabledBytes[6] = { 0xF7, 0xC7, 0x00, 0x00, 0x02, 0x00 };
 	BYTE disabledBytes[6] = { 0x90, 0x90, 0x90, 0x90, 0x85, 0xFF };
 
-	for (int i = 0; i < 6; i++)
-	{
-		*(BYTE*)((LPBYTE)pAATest + i) = enable ? enabledBytes[i] : disabledBytes[i];
-	}
+	ReplaceCode(pAATest, enable ? enabledBytes : disabledBytes, 6);
+}
+
+void CameraWindow::SetShadows(bool enable)
+{
+	DWORD* pShadows = (DWORD*)0x004BAC10;
+
+	BYTE enabledBytes[5] = { 0x8B, 0x41, 0x30, 0x48, 0x83 };
+	BYTE disabledBytes[5] = { 0xB0, 0x00, 0xC2, 0x00, 0x00 };
+
+	ReplaceCode(pShadows, enable ? enabledBytes : disabledBytes, 5);
 }
 
 void CameraWindow::OnGoToTargetClick()
@@ -209,6 +215,12 @@ void CameraWindow::OnAntialiasingChange()
 {
 	UpdateData(TRUE);
 	SetAntialiasing(m_antialiasing == 1);
+}
+
+void CameraWindow::OnShadowsChange()
+{
+	UpdateData(TRUE);
+	SetShadows(m_shadows == 1);
 }
 
 void CameraWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
