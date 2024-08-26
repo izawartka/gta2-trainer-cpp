@@ -72,6 +72,8 @@ BOOL CameraWindow::OnInitDialog()
 
 	m_night = *(BYTE*)0x00595011 == 1 ? 1 : 0;
 
+	ApplyShadowsDistanceFix();
+
 	return TRUE;
 }
 
@@ -147,6 +149,25 @@ void CameraWindow::OnGTAGameTick()
 	UpdateData(FALSE);
 
 	HandleButtonMove();
+	UpdateShadowsDistance();
+}
+
+void CameraWindow::ApplyShadowsDistanceFix()
+{
+	DWORD* pUIScaleCode = (DWORD*)0x004be38e;
+	DWORD* pDummyUIScale = (DWORD*)&m_shadowsDummyUIScale;
+
+	BYTE bytes[6] = { 0xB9, 0x00, 0x00, 0x00, 0x00, 0x90 };
+	memcpy(bytes + 1, &pDummyUIScale, 4);
+
+	ReplaceCode(pUIScaleCode, bytes, 6);
+}
+
+void CameraWindow::UpdateShadowsDistance()
+{
+	float shadowsDistance = (1.0f / (m_zPos + 7.0f)) * 8.0f;
+	int uiScale = m_player->ph1.uiScale;
+	m_shadowsDummyUIScale = shadowsDistance * uiScale;
 }
 
 void CameraWindow::HandleButtonMove()

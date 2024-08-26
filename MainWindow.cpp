@@ -1389,7 +1389,7 @@ void MainWindow::PedInfo()
 		DWORD* gangsArr = (DWORD*)0x005eb898;
 		for (int i = 0; i < 3; i++)
 		{
-			int* gangresp = (int*)*gangsArr + 0x47 + i * 0x51;
+			char* gangresp = (char*)*gangsArr + 0x11C + i * 0x144;
 			swprintf(buf, 256, L"%d", (char)*gangresp);
 			m_gangRespect[i].SetWindowTextW(buf);
 		}	
@@ -1582,8 +1582,8 @@ void MainWindow::GangRespect(UINT nID)
 	int dataInt = (int)nID - 3040;
 	int gangNo = dataInt / 3;
 
-	int* gangresp;
-	gangresp = (int*)*gangsArr + 0x47 + gangNo * 0x51;
+	char* gangresp;
+	gangresp = (char*)*gangsArr + 0x11C + gangNo * 0x144;
 
 	switch(dataInt % 3) {
 	case 0:

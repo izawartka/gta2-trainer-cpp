@@ -46,6 +46,8 @@ protected:
 
 public:
 	void OnGTAGameTick();
+	void ApplyShadowsDistanceFix();
+	void UpdateShadowsDistance();
 
 	bool m_active = false;
 	MainWindow* m_mainWindow = nullptr;
@@ -69,4 +71,6 @@ protected:
 	int m_shadows = 1;
 	int m_noLights = 0;
 	int m_night = 0;
+
+	int m_shadowsDummyUIScale = 32768;
 };

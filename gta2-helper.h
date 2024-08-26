@@ -220,6 +220,11 @@ static ShowMessageToPlayer* fnShowMessageToPlayerRaw = (ShowMessageToPlayer*)0x0
 typedef void(DrawGTATextRaw)(WCHAR* str, SCR_f x, SCR_f y, int param_4, SCR_f scale, S4_ENUM1* param_6, int param_7, SPRITE_INVISIBILITY spriteInvisibility, SCR_f param_9);
 static DrawGTATextRaw* fnDrawGTATextRaw = (DrawGTATextRaw*)0x004cc100;
 
+// 0046bc70
+// void MatrixTransform3Advanced(SCR_f *x,SCR_f *y,SCR_f *z,float *outFloatArr)
+typedef void(MatrixTransform3Advanced)(SCR_f* x, SCR_f* y, SCR_f* z, float* outFloatArr);
+static MatrixTransform3Advanced* fnMatrixTransform3Advanced = (MatrixTransform3Advanced*)0x0046bc70;
+
 // doesnt seem to make any effect
 // int SetGamma(int param_1)
 typedef int(SetGamma)(int param_1);
