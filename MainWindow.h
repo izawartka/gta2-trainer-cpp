@@ -50,13 +50,12 @@ public:
 	HMENU objHMenu;
 	HMENU carHMenu;
 	CEdit m_log;
-	CEdit m_pedX;
-	CEdit m_pedY;
-	CEdit m_pedZ;
-	CEdit m_pedRot;
-	CEdit m_pedSAmmo;
-	CEdit m_pedSType;
-	CEdit m_pedSTime;
+	CString m_pedX;
+	CString m_pedY;
+	CString m_pedZ;
+	CString m_pedRot;
+	CString m_pedWeapAmmo;
+	CString m_pedWeapName;
 	CEdit m_pedCopLevel;
 	unsigned int m_carDamage;
 	unsigned int m_carID;
@@ -72,7 +71,7 @@ public:
 	CComboBox m_pedShape;
 	CEdit m_BigText;
 	CEdit m_pedals[3];
-	CEdit m_gangRespect[3];
+	CString m_gangRespect[3];
 	CEdit m_globalPedSpeeds[3];
 
 	void AddCategorizedMenuItems(

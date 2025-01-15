@@ -143,19 +143,18 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_EDIT1, m_log);
-	DDX_Control(pDX, IDC_PEDX, m_pedX);
-	DDX_Control(pDX, IDC_PEDY, m_pedY);
-	DDX_Control(pDX, IDC_PEDZ, m_pedZ);
-	DDX_Control(pDX, IDC_PEDROT, m_pedRot);
-	DDX_Control(pDX, IDC_PEDSAMMO, m_pedSAmmo);
-	DDX_Control(pDX, IDC_PEDSTYPE, m_pedSType);
-	DDX_Control(pDX, IDC_PEDSTIME, m_pedSTime);
+	DDX_Text(pDX, IDC_PEDX, m_pedX);
+	DDX_Text(pDX, IDC_PEDY, m_pedY);
+	DDX_Text(pDX, IDC_PEDZ, m_pedZ);
+	DDX_Text(pDX, IDC_PEDROT, m_pedRot);
+	DDX_Text(pDX, IDC_PEDSAMMO, m_pedWeapAmmo);
+	DDX_Text(pDX, IDC_PEDSTYPE, m_pedWeapName);
 	DDX_Control(pDX, IDC_STARCOUNTER, m_pedCopLevel);
 	DDX_Text(pDX, IDC_CARDAMAGE, m_carDamage);
 	DDX_Text(pDX, IDC_CARID, m_carID);
-	DDX_Control(pDX, IDC_GANG1V, m_gangRespect[0]);
-	DDX_Control(pDX, IDC_GANG2V, m_gangRespect[1]);
-	DDX_Control(pDX, IDC_GANG3V, m_gangRespect[2]);
+	DDX_Text(pDX, IDC_GANG1V, m_gangRespect[0]);
+	DDX_Text(pDX, IDC_GANG2V, m_gangRespect[1]);
+	DDX_Text(pDX, IDC_GANG3V, m_gangRespect[2]);
 	DDX_Text(pDX, IDC_CARVEL, m_carVelocity);
 	DDX_Text(pDX, IDC_EMBCUR, m_carEmblemName);
 	DDX_Control(pDX, IDC_EMBPOS, m_carEmblemPos);
@@ -1338,123 +1337,100 @@ void MainWindow::PedInfo()
 	WCHAR buf[256];
 	Ped* playerPed = fnGetPedByID(1);
 
-	if (playerPed)
+	if (playerPed == nullptr) return;
+
+	// If player's health changed
+	if (pedHOld != playerPed->health)
 	{
-		// If player's health changed
-		if (pedHOld != playerPed->health)
-		{
-			m_pedHealth.SetWindowTextW(L"0");
-			swprintf(buf, 256, L"%d", playerPed->health);
-			m_pedHealth.SetWindowTextW(buf);
-		}
-		pedHOld = playerPed->health;
+		m_pedHealth.SetWindowTextW(L"0");
+		swprintf(buf, 256, L"%d", playerPed->health);
+		m_pedHealth.SetWindowTextW(buf);
+	}
+	pedHOld = playerPed->health;
 		
-		// If player's armor changed
-		int *pedA = (int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa); // TEMPOARY
-		if (pedAOld != *pedA)
-		{
-			m_pedArmor.SetWindowTextW(L"0");
-			swprintf(buf, 256, L"%d", *pedA);
-			m_pedArmor.SetWindowTextW(buf);
-			pedAOld = *pedA;
-		}
+	// If player's armor changed
+	int *pedA = (int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa); // TEMPOARY
+	if (pedAOld != *pedA)
+	{
+		m_pedArmor.SetWindowTextW(L"0");
+		swprintf(buf, 256, L"%d", *pedA);
+		m_pedArmor.SetWindowTextW(buf);
+		pedAOld = *pedA;
+	}
 
-		// If player's money changed
-		int *pedM = (int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4); // TEMPORARY
-		if (pedMOld != *pedM)
-		{
-			m_pedMoney.SetWindowTextW(L"0");
-			swprintf(buf, 256, L"%d", *pedM);
-			m_pedMoney.SetWindowTextW(buf);
-			pedMOld = *pedM;
-		}
+	// If player's money changed
+	int *pedM = (int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4); // TEMPORARY
+	if (pedMOld != *pedM)
+	{
+		m_pedMoney.SetWindowTextW(L"0");
+		swprintf(buf, 256, L"%d", *pedM);
+		m_pedMoney.SetWindowTextW(buf);
+		pedMOld = *pedM;
+	}
 
-		// Display police level
-		int Pvalue = playerPed->copValue;
-		if(Pvalue <600) swprintf(buf, 256, L"%d (0) Peace", Pvalue);
-		else if (Pvalue < 1600)  swprintf(buf, 256, L"%d (1) Lite", Pvalue);
-		else if (Pvalue < 3000) swprintf(buf, 256, L"%d (2) All units", Pvalue);
-		else if (Pvalue < 5000)  swprintf(buf, 256, L"%d (3) Barricades", Pvalue);
-		else if (Pvalue < 8000) swprintf(buf, 256, L"%d (4) SWAT", Pvalue);
-		else if (Pvalue < 12000) swprintf(buf, 256, L"%d (5) FBI", Pvalue);
-		else swprintf(buf, 256, L"%d (6) Army!", Pvalue);
-		m_pedCopLevel.SetWindowTextW(buf);
+	// Display police level
+	int Pvalue = playerPed->copValue;
+	if(Pvalue <600) swprintf(buf, 256, L"%d (0) Peace", Pvalue);
+	else if (Pvalue < 1600)  swprintf(buf, 256, L"%d (1) Lite", Pvalue);
+	else if (Pvalue < 3000) swprintf(buf, 256, L"%d (2) All units", Pvalue);
+	else if (Pvalue < 5000)  swprintf(buf, 256, L"%d (3) Barricades", Pvalue);
+	else if (Pvalue < 8000) swprintf(buf, 256, L"%d (4) SWAT", Pvalue);
+	else if (Pvalue < 12000) swprintf(buf, 256, L"%d (5) FBI", Pvalue);
+	else swprintf(buf, 256, L"%d (6) Army!", Pvalue);
+	m_pedCopLevel.SetWindowTextW(buf);
 
-		// Display gangs respect
-		DWORD* gangsArr = (DWORD*)0x005eb898;
-		for (int i = 0; i < 3; i++)
-		{
-			char* gangresp = (char*)*gangsArr + 0x11C + i * 0x144;
-			swprintf(buf, 256, L"%d", (char)*gangresp);
-			m_gangRespect[i].SetWindowTextW(buf);
-		}	
-
-		// Display current weapon's ammo and reload time
-		if (playerPed->selectedWeapon)
-		{
-			swprintf(buf, 256, L"%d", playerPed->selectedWeapon->id);
-			m_pedSType.SetWindowTextW(buf);
-
-			float ammowithcomma = playerPed->selectedWeapon->ammo / 10.0f;
-			swprintf(buf, 256, L"%f", ammowithcomma);
-			m_pedSAmmo.SetWindowTextW(buf);
-
-			swprintf(buf, 256, L"%d", playerPed->selectedWeapon->timeToReload);
-			m_pedSTime.SetWindowTextW(buf);
-		}
-		else
-		{
-			m_pedSAmmo.SetWindowTextW(L"");
-			m_pedSTime.SetWindowTextW(L"");
-			m_pedSType.SetWindowTextW(L"");
-		}
-
-		// If player in the car, display it's coords
-		if (playerPed->currentCar)
-		{	
-			swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->x / 16384.0);
-			m_pedX.SetWindowTextW(buf);
-
-			swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->y / 16384.0);
-			m_pedY.SetWindowTextW(buf);
-
-			swprintf(buf, 256, L"%.2f", playerPed->currentCar->sprite->z / 16384.0);
-			m_pedZ.SetWindowTextW(buf);
-
-			swprintf(buf, 256, L"%d", playerPed->currentCar->sprite->rotation/4);
-			m_pedRot.SetWindowTextW(buf);			
-		}
-		// If player is not in the car, display ped's coords
-		else
-		{
-			// If player ped's sprite doesn't exist, clear textboxes
-			if (!playerPed->gameObject || !playerPed->gameObject->sprite) {
-
-				m_pedX.SetWindowTextW(L"");
-				m_pedY.SetWindowTextW(L"");
-				m_pedZ.SetWindowTextW(L"");
-				m_pedRot.SetWindowTextW(L"");
-			}
-			else
-			{
-				// Display that ultra cool message
-				if (playerPed->gameObject->cigaretteIdleTimer == 1)
-					log(L"Smokin' time ;3");
-
-				swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->x / 16384.0);
-				m_pedX.SetWindowTextW(buf);
-
-				swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->y / 16384.0);
-				m_pedY.SetWindowTextW(buf);
-
-				swprintf(buf, 256, L"%.2f", playerPed->gameObject->sprite->z / 16384.0);
-				m_pedZ.SetWindowTextW(buf);
-
-				swprintf(buf, 256, L"%d", playerPed->gameObject->sprite->rotation/4);
-				m_pedRot.SetWindowTextW(buf);
-			}
-		}
+	// Display gangs respect
+	DWORD* gangsArr = (DWORD*)0x005eb898;
+	for (int i = 0; i < 3; i++)
+	{
+		char* gangRespect = (char*)*gangsArr + 0x11C + i * 0x144;
+		m_gangRespect[i].Format(L"%d", (char)*gangRespect);
 	}	
+
+	// Display current weapon's ammo and reload time
+	if (playerPed->selectedWeapon)
+	{
+		m_pedWeapName = weapons[playerPed->selectedWeapon->id].name;
+		m_pedWeapAmmo.Format(L"%f", playerPed->selectedWeapon->ammo / 10.0f);
+	}
+	else
+	{
+		m_pedWeapName = L"";
+		m_pedWeapAmmo = L"";
+	}
+
+	// If player in the car, display it's coords
+	if (playerPed->currentCar)
+	{	
+		m_pedX.Format(L"%.2f", playerPed->currentCar->sprite->x / 16384.0);
+		m_pedY.Format(L"%.2f", playerPed->currentCar->sprite->y / 16384.0);
+		m_pedZ.Format(L"%.2f", playerPed->currentCar->sprite->z / 16384.0);
+		m_pedRot.Format(L"%d\x00B0", playerPed->currentCar->sprite->rotation/4);
+	}
+	// If player is not in the car, display ped's coords
+	else
+	{
+		// If player ped's sprite doesn't exist, clear textboxes
+		if (!playerPed->gameObject || !playerPed->gameObject->sprite) {
+			m_pedX = L"";
+			m_pedY = L"";
+			m_pedZ = L"";
+			m_pedRot = L"";
+		}
+		else
+		{
+			// Display that ultra cool message
+			if (playerPed->gameObject->cigaretteIdleTimer == 1)
+				log(L"Smokin' time ;3");
+
+			m_pedX.Format(L"%.2f", playerPed->gameObject->sprite->x / 16384.0);
+			m_pedY.Format(L"%.2f", playerPed->gameObject->sprite->y / 16384.0);
+			m_pedZ.Format(L"%.2f", playerPed->gameObject->sprite->z / 16384.0);
+			m_pedRot.Format(L"%d\x00B0", playerPed->gameObject->sprite->rotation/4);
+		}
+	}
+
+	UpdateData(false);
 }
 
 void MainWindow::TeleportAllPeds()
