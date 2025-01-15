@@ -58,13 +58,13 @@ public:
 	CEdit m_pedSType;
 	CEdit m_pedSTime;
 	CEdit m_pedCopLevel;
-	CEdit m_carDamage;
-	CEdit m_carID;
-	CEdit m_carVelocity;
-	CEdit m_carVisualData;
-	CEdit m_carEmblem;
+	unsigned int m_carDamage;
+	unsigned int m_carID;
+	unsigned int m_carVelocity;
+	CString m_carVisualData;
+	CString m_carEmblemName;
 	CSliderCtrl m_carEmblemPos;
-	CEdit m_carColor;
+	int m_carColor;
 	CEdit m_pedHealth;
 	CEdit m_pedArmor;
 	CEdit m_pedMoney;
@@ -124,30 +124,31 @@ public:
 	afx_msg void OnShowLiveTable();
 	afx_msg void OnShowCamera();
 
-	// currLastCar related
-	Car* currLastCar = 0;
-	Car* currLastCarOld = 0;
+	// lastCar related
+	short m_lastCarIDtest = 0;
+	Car* m_lastCar = 0;
+	Car* m_lastCarOld = 0;
 	void CarEngineOff();
 	void TpToLastCar();
 	void PrintCarInfo();
 	void HijackTrain();
 	void CarMakeDummy();
 
-	// currLastCar's color
+	// lastCar's color
 	afx_msg void CarColorReset();
 	afx_msg void CarColorPlus();
 	afx_msg void CarColorMinus();
 	void CarColorSet(short index);
 	void SyncTrailerColor();
 
-	// currLastCar's damage
+	// lastCar's damage
 	void FixCar();
 	void CarExplode();
 
-	// currLastCar's physics bitmap
+	// lastCar's physics bitmap
 	void CarPhysBitmaskSet(UINT nID);
 	void SetCarPhysBitmask(uint pos, bool value);
-	void CarPhysBitmaskUpdate();
+	void UpdateCarPhysBitmask();
 	int m_carInvAll = 0;
 	int m_carInvBullets = 0;
 	int m_carInvCollisions = 0;
@@ -155,18 +156,17 @@ public:
 	int m_carInvFlames = 0;
 	int m_carNoCollisions = 0;
 
-	// currLastCar's visual damage
+	// lastCar's visual damage
 	void VisFixCar();
 	void VisBreakCar();
 
-	// currLastCar's emblem
+	// lastCar's emblem
 	void CarEmblemPlus();
 	void CarEmblemMinus();
-	Roof* currLastCarEmblem = 0;
-	short currLastCarEmblemID = 0;
-	short currLastCarEmblemLPos = 0;
+	Roof* m_carEmblem = 0;
+	short m_carEmblemID = 0;
 
-	// currLastCar's doors lock
+	// lastCar's doors lock
 	void ToggleDoor(UINT nID);
 	bool doorOpen[4] = { 0,0,0,0 }; // 1 - force open
 
@@ -220,8 +220,8 @@ public:
 	// big functions
 	void FixCheckboxes();
 	void KeepLockedValues();
+	void UpdateCar();
 	void PedInfo();
-	int currLastCarXOld = 0, currLastCarYOld = 0, currLastCarXYShift;
 	int pedHOld = -1, pedAOld = -1, pedMOld = -1;
 
 	// important

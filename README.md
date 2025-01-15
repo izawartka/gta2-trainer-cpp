@@ -25,7 +25,21 @@ If you just want to play it, go to the [Releases tab](https://github.com/izawart
 the latest gta2-trainer-x.xx.zip. Then copy its contents to your game root folder. Now you just need to run (in windowed mode)
 gta-trainer.exe file instead of gta.exe and you should see the trainer window under the GTA2 window.
 
-If you're having problems with running the game make sure your system has [all needed VC++ Redistributables](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/) installed.
+If you're having problems with running the game make sure your system has [all needed VC++ Redistributables](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/) installed and you are using [GTA2 v11.44](https://gtamp.com/gta2/) without WideScreenFix or any other mods.
+
+## Key bindings
+- `ALT + W` - Get all weapons
+- `ALT + G` - Spawn GT24640
+- `ALT + T` - Spawn a tank
+- `ALT + J` - Spawn a jeep
+- `ALT + E` - Explode all nearby cars
+- `ALT + P` - Teleport all peds to the player
+- `ALT + O` - Spawn the last spawned object
+- `ALT + C` - Spawn the last spawned car
+- `ALT + H` - Hijack a train
+- `ALT + N` - Watch the next ped (when watching peds)
+- `ALT + B` - Show big text
+- `ALT + D` - Call the debug function (no effect)
 
 ## Building
 If you want to build it on your own, there is a VS solution included in the repo.

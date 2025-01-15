@@ -151,16 +151,16 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PEDSTYPE, m_pedSType);
 	DDX_Control(pDX, IDC_PEDSTIME, m_pedSTime);
 	DDX_Control(pDX, IDC_STARCOUNTER, m_pedCopLevel);
-	DDX_Control(pDX, IDC_CARDAMAGE, m_carDamage);
-	DDX_Control(pDX, IDC_CARID, m_carID);
+	DDX_Text(pDX, IDC_CARDAMAGE, m_carDamage);
+	DDX_Text(pDX, IDC_CARID, m_carID);
 	DDX_Control(pDX, IDC_GANG1V, m_gangRespect[0]);
 	DDX_Control(pDX, IDC_GANG2V, m_gangRespect[1]);
 	DDX_Control(pDX, IDC_GANG3V, m_gangRespect[2]);
-	DDX_Control(pDX, IDC_CARVEL, m_carVelocity);
-	DDX_Control(pDX, IDC_EMBCUR, m_carEmblem);
+	DDX_Text(pDX, IDC_CARVEL, m_carVelocity);
+	DDX_Text(pDX, IDC_EMBCUR, m_carEmblemName);
 	DDX_Control(pDX, IDC_EMBPOS, m_carEmblemPos);
-	DDX_Control(pDX, IDC_CARCOLV, m_carColor);
-	DDX_Control(pDX, IDC_CARVIS, m_carVisualData);
+	DDX_Text(pDX, IDC_CARCOLV, m_carColor);
+	DDX_Text(pDX, IDC_CARVIS, m_carVisualData);
 	DDX_Control(pDX, IDC_PEDHEALTH, m_pedHealth);
 	DDX_Control(pDX, IDC_PEDARMOR, m_pedArmor);
 	DDX_Control(pDX, IDC_PEDMONEY, m_pedMoney);
@@ -584,37 +584,7 @@ void MainWindow::KeepLockedValues()
 {
 	// If not in game
 	if (*(DWORD*)ptrToPedManager == 0) {
-		currLastCar = 0;
-		currLastCarEmblem = 0;
-		currLastCarEmblemID = 0;
-		currLastCarEmblemLPos = 0;
-		currLastCarXOld = 0;
-		currLastCarYOld = 0;
 		return;
-	}
-
-	// Remove currLastCar if its sprite doesn't exist
-	if (currLastCar && !currLastCar->sprite)
-		currLastCar = 0; //without this the game crashes after some missions and after WCB
-
-	if (currLastCar)
-	{
-		// Update emblem 
-		int carEmblemPos = m_carEmblemPos.GetPos();
-		if (currLastCarEmblemID && carEmblemPos != currLastCarEmblemLPos)
-		{
-			currLastCarEmblem->yOffset = carEmblemPos;
-			currLastCarEmblemLPos = carEmblemPos;
-		}
-
-		// Lock doors
-		for (int i = 0; i < 4; i++)
-		{
-			if (doorOpen[i])
-			{
-				currLastCar->carDoor[i].doorState = 2;
-			}
-		}
 	}
 
 	Ped* playerPed = fnGetPedByID(1);
@@ -658,39 +628,6 @@ void MainWindow::KeepLockedValues()
 				
 		}
 	}
-
-	// Return if player not in the car
-	if (!playerPed->currentCar)
-		return;
-
-	currLastCar = playerPed->currentCar;
-
-	if (currLastCar != currLastCarOld)
-	{
-		log(L"\"Current / Last car\" changed");
-
-		// Reset door open locks if car changed
-		for (int i = 0; i < 4; i++)
-		{
-			doorOpen[i] = false;
-		}
-
-		// Detect and prepare emblems if car changed
-		m_carEmblemPos.SetRange(-8192, 8192, TRUE);
-		currLastCarEmblemID = 0;
-		for (int i = 0; i < sizeof(carEmblems)/sizeof(carEmblems[0]); i++)
-		{
-			currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, carEmblems[i].id);
-			if (currLastCarEmblem && currLastCarEmblem->sprite->spriteType == 4)
-			{
-				currLastCarEmblemID = i;
-				m_carEmblemPos.SetPos(currLastCarEmblem->yOffset);
-				break;
-			}
-		}
-	}
-
-	currLastCarOld = currLastCar;
 }
 
 // Object spawning
@@ -978,30 +915,30 @@ void MainWindow::OnGetCarWeaponMenuClick(UINT nID) {
 	byte ID = nID - ID_GETCARWEAP_START;
 	CAR_WEAPON weapon = (CAR_WEAPON)(15 + ID);
 
-	fnCarAddWeapon(weapon, 99, currLastCar);
+	fnCarAddWeapon(weapon, 99, m_lastCar);
 	log(L"Car weapon #%d got", ID);
 
 	switch (weapon)
 	{
 		case CAR_WEAP_TANKTURRET:
-			if (!getCarRoofWithSpriteIfExists(currLastCar->roof, 546))
+			if (!getCarRoofWithSpriteIfExists(m_lastCar->roof, 546))
 			{
-				fnCarAddRoofTankTurret(currLastCar);
+				fnCarAddRoofTankTurret(m_lastCar);
 				log(L"Tank turret spawned", ID);
 			}
 			break;
 		case CAR_WEAP_WATERGUN:
 		case CAR_WEAP_FLAMETHROWER:
-			if (!getCarRoofWithSpriteIfExists(currLastCar->roof, 278))
+			if (!getCarRoofWithSpriteIfExists(m_lastCar->roof, 278))
 			{
-				fnCarAddRoofWaterGun(currLastCar);
+				fnCarAddRoofWaterGun(m_lastCar);
 				log(L"Firetruck turret spawned", ID);
 			}
 			break;
 		case CAR_WEAP_JEEPGUN:
-			if (!getCarRoofWithSpriteIfExists(currLastCar->roof, 285))
+			if (!getCarRoofWithSpriteIfExists(m_lastCar->roof, 285))
 			{
-				fnCarAddRoofGun(currLastCar);
+				fnCarAddRoofGun(m_lastCar);
 				log(L"Jeep turret spawned", ID);
 			}
 			break;
@@ -1040,17 +977,17 @@ void MainWindow::OnShowCamera()
 
 void MainWindow::CarEngineOff()
 {
-	// Return if currLastCar doesn't exist
-	if (!currLastCar)
+	// Return if lastCar doesn't exist
+	if (!m_lastCar)
 		return;
 
-	if (currLastCar->engineState != CAR_ENGINE_STATE(ENGINE_ON))
+	if (m_lastCar->engineState != CAR_ENGINE_STATE(ENGINE_ON))
 	{
 		log(L"Engine is already off or broken");
 		return;
 	}
 
-	currLastCar->engineState = CAR_ENGINE_STATE(TURNING_OFF);
+	m_lastCar->engineState = CAR_ENGINE_STATE(TURNING_OFF);
 	log(L"Engine turned off");
 }
 
@@ -1072,13 +1009,13 @@ void MainWindow::NoReloads()
 
 void MainWindow::CarExplode()
 {
-	if (!currLastCar) return;
-	fnExplodeCar(currLastCar, 0, EXPLOSION_SIZE_MEDIUM);
+	if (!m_lastCar) return;
+	fnExplodeCar(m_lastCar, 0, EXPLOSION_SIZE_MEDIUM);
 }
 
 void MainWindow::CarPhysBitmaskSet(UINT nID)
 {
-	if(currLastCar == nullptr) return;
+	if(m_lastCar == nullptr) return;
 
 	UpdateData(true);
 
@@ -1102,44 +1039,41 @@ void MainWindow::CarPhysBitmaskSet(UINT nID)
 
 void MainWindow::SetCarPhysBitmask(uint bit, bool value)
 {
-	if (!currLastCar) return;
+	if (!m_lastCar) return;
 
 	if (value) 
 	{
-		currLastCar->physicsBitmask |= bit;
+		m_lastCar->physicsBitmask |= bit;
 	}
 	else 
 	{
-		currLastCar->physicsBitmask &= ~bit;
+		m_lastCar->physicsBitmask &= ~bit;
 	}
 }
 
-void MainWindow::CarPhysBitmaskUpdate()
+void MainWindow::UpdateCarPhysBitmask()
 {
-	if (currLastCar == nullptr) {
+	if (m_lastCar == nullptr) {
 		m_carInvCollisions = 0;
 		m_carNoCollisions = 0;
 		m_carInvBullets = 0;
 		m_carInvRockets = 0;
 		m_carInvFlames = 0;
 		m_carInvAll = 0;
-		UpdateData(false);
 		return;
 	}
 
-	m_carInvCollisions = currLastCar->physicsBitmask & 0x8 ? 1 : 0;
-	m_carNoCollisions = currLastCar->physicsBitmask & 0x10 ? 1 : 0;
-	m_carInvBullets = currLastCar->physicsBitmask & 0x100 ? 1 : 0;
-	m_carInvRockets = currLastCar->physicsBitmask & 0x200 ? 1 : 0;
-	m_carInvFlames = currLastCar->physicsBitmask & 0x400 ? 1 : 0;
+	m_carInvCollisions = m_lastCar->physicsBitmask & 0x8 ? 1 : 0;
+	m_carNoCollisions = m_lastCar->physicsBitmask & 0x10 ? 1 : 0;
+	m_carInvBullets = m_lastCar->physicsBitmask & 0x100 ? 1 : 0;
+	m_carInvRockets = m_lastCar->physicsBitmask & 0x200 ? 1 : 0;
+	m_carInvFlames = m_lastCar->physicsBitmask & 0x400 ? 1 : 0;
 
 	m_carInvAll = 
 		m_carInvCollisions == 1 && 
 		m_carInvBullets == 1 && 
 		m_carInvRockets == 1 && 
 		m_carInvFlames == 1 ? 1 : 0;
-
-	UpdateData(false);
 }
 
 void MainWindow::SetStars(UINT nID)
@@ -1165,10 +1099,10 @@ void MainWindow::TpToLastCar()
 	Player* player = pGame->CurrentPlayer;
 	if (!player) return;
 
-	if (!currLastCar || !currLastCar->sprite) return;
+	if (!m_lastCar || !m_lastCar->sprite) return;
 
-	player->ph2.cameraPos.x = currLastCar->sprite->x;
-	player->ph2.cameraPos.y = currLastCar->sprite->y;
+	player->ph2.cameraPos.x = m_lastCar->sprite->x;
+	player->ph2.cameraPos.y = m_lastCar->sprite->y;
 	fnDoTeleportRaw(player, 0);
 
 	log(L"Teleported to the car!");
@@ -1176,45 +1110,45 @@ void MainWindow::TpToLastCar()
 
 void MainWindow::PrintCarInfo()
 {
-	// Return if currLastCar doesn't exist
-	if (!currLastCar)
+	// Return if lastCar doesn't exist
+	if (!m_lastCar)
 		return;
 
 	// Print all info
-	log(L"--- Car #%d info ---", currLastCar->id);
-	log(L"Address: 0x%X", currLastCar);
-	log(L"model: %d", currLastCar->carModel);
-	if (currLastCar->roof)
+	log(L"--- Car #%d info ---", m_lastCar->id);
+	log(L"Address: 0x%X", m_lastCar);
+	log(L"model: %d", m_lastCar->carModel);
+	if (m_lastCar->roof)
 	{
-		log(L"Turret: 0x%X rot: %d x:%d y:%d", currLastCar->roof, currLastCar->roof->rotation, currLastCar->roof->xOffset, currLastCar->roof->yOffset);
-		log(L"Turret Sprite: 0x%X spr: %d pal: %d lckpal: %d", currLastCar->roof->sprite, currLastCar->roof->sprite->sprite, currLastCar->roof->sprite->carColor, currLastCar->roof->sprite->lockPalleteMaybe);
-		log(L"Turret GmObj: 0x%X id: %d", currLastCar->roof->sprite->gameObject, currLastCar->roof->sprite->gameObject->id);
+		log(L"Turret: 0x%X rot: %d x:%d y:%d", m_lastCar->roof, m_lastCar->roof->rotation, m_lastCar->roof->xOffset, m_lastCar->roof->yOffset);
+		log(L"Turret Sprite: 0x%X spr: %d pal: %d lckpal: %d", m_lastCar->roof->sprite, m_lastCar->roof->sprite->sprite, m_lastCar->roof->sprite->carColor, m_lastCar->roof->sprite->lockPalleteMaybe);
+		log(L"Turret GmObj: 0x%X id: %d", m_lastCar->roof->sprite->gameObject, m_lastCar->roof->sprite->gameObject->id);
 	}
 	else
 		log(L"No turret");
-	if (currLastCar->physics)
-		log(L"Physics: 0x%X", currLastCar->physics);
+	if (m_lastCar->physics)
+		log(L"Physics: 0x%X", m_lastCar->physics);
 	else
 		log(L"No physics");
-	if (currLastCar->sprite)
+	if (m_lastCar->sprite)
 	{
-		log(L"Sprite: 0x%X", currLastCar->sprite);
-		log(L"x: %d y: %d z: %d r: %d", currLastCar->sprite->x, currLastCar->sprite->y, currLastCar->sprite->z, currLastCar->sprite->rotation);
+		log(L"Sprite: 0x%X", m_lastCar->sprite);
+		log(L"x: %d y: %d z: %d r: %d", m_lastCar->sprite->x, m_lastCar->sprite->y, m_lastCar->sprite->z, m_lastCar->sprite->rotation);
 	}
 	else
 		log(L"No sprite");
-	if (currLastCar->driver)
-		log(L"Driver: 0x%X occ: %d", currLastCar->driver, currLastCar->driver->occupation);
+	if (m_lastCar->driver)
+		log(L"Driver: 0x%X occ: %d", m_lastCar->driver, m_lastCar->driver->occupation);
 	else
 		log(L"No driver");
-	log(L"damage: %d visdmg: %d", currLastCar->carDamage, currLastCar->carLights);
-	if (currLastCar->trailerController)
-		log(L"Trailer: 0x%X model: %d", currLastCar->trailerController->trailer, currLastCar->trailerController->trailer->carModel);
+	log(L"damage: %d visdmg: %d", m_lastCar->carDamage, m_lastCar->carLights);
+	if (m_lastCar->trailerController)
+		log(L"Trailer: 0x%X model: %d", m_lastCar->trailerController->trailer, m_lastCar->trailerController->trailer->carModel);
 	else
 		log(L"No trailer");
 
-	log(L"Prev: -1:0x%X, -2:0x%X, -3:0x%X", fnGetCarByID(currLastCar->id - 1), fnGetCarByID(currLastCar->id - 2), fnGetCarByID(currLastCar->id - 3));
-	log(L"Next: +1:0x%X, +2:0x%X, +3:0x%X", fnGetCarByID(currLastCar->id + 1), fnGetCarByID(currLastCar->id + 2), fnGetCarByID(currLastCar->id + 3));
+	log(L"Prev: -1:0x%X, -2:0x%X, -3:0x%X", fnGetCarByID(m_lastCar->id - 1), fnGetCarByID(m_lastCar->id - 2), fnGetCarByID(m_lastCar->id - 3));
+	log(L"Next: +1:0x%X, +2:0x%X, +3:0x%X", fnGetCarByID(m_lastCar->id + 1), fnGetCarByID(m_lastCar->id + 2), fnGetCarByID(m_lastCar->id + 3));
 }
 
 void MainWindow::GiveUnlimitedAmmo()
@@ -1238,34 +1172,34 @@ void MainWindow::GiveUnlimitedAmmo()
 
 void MainWindow::FixCar()
 {
-	// Return if currLastCar doesn't exist
-	if (!currLastCar)
+	// Return if lastCar doesn't exist
+	if (!m_lastCar)
 		return;
 
-	currLastCar->carDamage = 0;
-	currLastCar->fireState = 0;
-	fnExtinguishCar(currLastCar, 0);
-	fnFixCarBrokenEngine(currLastCar, 0);
+	m_lastCar->carDamage = 0;
+	m_lastCar->fireState = 0;
+	fnExtinguishCar(m_lastCar, 0);
+	fnFixCarBrokenEngine(m_lastCar, 0);
 	log(L"Fixed the engine");
 }
 
 void MainWindow::VisFixCar()
 {
-	// Return if currLastCar doesn't exist
-	if (!currLastCar)
+	// Return if lastCar doesn't exist
+	if (!m_lastCar)
 		return;
 
-	currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE((currLastCar->carLights | 0x800040) & 0xFFFFFFE0); // turn on lights and filter out damage
+	m_lastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE((m_lastCar->carLights | 0x800040) & 0xFFFFFFE0); // turn on lights and filter out damage
 	log(L"Fixed the car visually");
 }
 
 void MainWindow::VisBreakCar()
 {
-	// Return if currLastCar doesn't exist
-	if (!currLastCar)
+	// Return if lastCar doesn't exist
+	if (!m_lastCar)
 		return;
 
-	currLastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE((currLastCar->carLights | 0x1F) & 0xFF387F9F); // make damage and filter out lights
+	m_lastCar->carLights = CAR_LIGHTS_AND_DOORS_BITSTATE((m_lastCar->carLights | 0x1F) & 0xFF387F9F); // make damage and filter out lights
 	log(L"Broke the car visually");
 }
 
@@ -1281,6 +1215,120 @@ void MainWindow::PlayerImmortal()
 	log(L"Invulnerability %s", (playerPed->Invulnerability) ? L"enabled" : L"disabled");
 }
 
+void MainWindow::UpdateCar()
+{
+	bool carChanged = false;
+
+	// Remove current car if not in the game
+	if (*(DWORD*)ptrToPedManager == 0) {
+		m_lastCarOld = m_lastCar;
+		m_lastCar = nullptr;
+		m_lastCarIDtest = 0;
+	}
+	else {
+		Ped* playerPed = fnGetPedByID(1);
+
+		// Change current car if playerPed's car changed
+		if (playerPed->currentCar && playerPed->currentCar != m_lastCar) {
+			carChanged = true;
+			m_lastCarOld = m_lastCar;
+			m_lastCar = playerPed->currentCar;
+			m_lastCarIDtest = m_lastCar->id;
+		}
+	}
+
+	// Prevents bugs on level restart
+	if (m_lastCar && m_lastCar->id != m_lastCarIDtest) {
+		m_lastCarOld = m_lastCar;
+		m_lastCar = nullptr;
+		m_lastCarIDtest = 0;
+	}
+
+	UpdateCarPhysBitmask();
+
+	// Reset properties and return if lastCar doesn't exist
+	if (!m_lastCar || !m_lastCar->sprite) {
+		m_lastCar = nullptr;
+		m_carVisualData = L"";
+		m_carID = 0;
+		m_carColor = 0;
+		m_carDamage = 0;
+		m_carEmblem = nullptr;
+		m_carEmblemID = 0;
+		m_carEmblemName = L"";
+		m_carEmblemPos.SetPos(0);
+
+		for (int i = 0; i < 4; i++) {
+			CButton* pButton = (CButton*)GetDlgItem(3075 + i);
+			pButton->EnableWindow(false);
+		}
+
+		UpdateData(false);
+		return;
+	}
+
+	// Update emblem info after car change
+	if (carChanged) {
+		m_carEmblemPos.SetRange(-8192, 8192, TRUE);
+
+		bool found = false;
+
+		for (int i = 0; i < sizeof(carEmblems) / sizeof(carEmblems[0]); i++)
+		{
+			m_carEmblem = getCarRoofWithSpriteIfExists(m_lastCar->roof, carEmblems[i].id);
+			if (!m_carEmblem || m_carEmblem->sprite->spriteType != 4) continue;
+
+			m_carEmblemID = i;
+			m_carEmblemName = carEmblems[m_carEmblemID].name;
+			m_carEmblemPos.SetPos(m_carEmblem->yOffset);
+			found = true;
+			break;
+		}
+
+		if (!found) {
+			m_carEmblem = nullptr;
+			m_carEmblemID = 0;
+			m_carEmblemName = L"";
+			m_carEmblemPos.SetPos(0);
+		}
+	}
+
+	// Update car info
+	m_carID = m_lastCar->id;
+	m_carDamage = m_lastCar->carDamage;
+
+	if (m_lastCar->physics) {
+		int xVelocity = m_lastCar->physics->xVelocity;
+		int yVelocity = m_lastCar->physics->yVelocity;
+		m_carVelocity = (unsigned int)sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
+	}
+	else {
+		m_carVelocity = 0;
+	}
+	
+	m_carColor = m_lastCar->sprite->carColor;
+	if (~m_lastCar->sprite->lockPalleteMaybe & 1) m_carColor = -1;
+	if (m_carEmblem) m_carEmblem->yOffset = m_carEmblemPos.GetPos();
+
+	WCHAR buf[256];
+	swprintf(buf, 256, L"%X", m_lastCar->carLights);
+	m_carVisualData = buf;
+
+	UpdateData(false);
+
+	// Car doors
+	for (int i = 0; i < 4; i++)
+	{
+		if(carChanged) doorOpen[i] = false;
+
+		CButton* pButton = (CButton*)GetDlgItem(3075 + i);
+		pButton->EnableWindow(m_lastCar->carDoor[i].doorState != 0);
+
+		if (!doorOpen[i]) continue; 
+		m_lastCar->carDoor[i].doorState = 2;
+	}
+}
+
 void MainWindow::PedInfo()
 {
 	// Return if not in the game
@@ -1289,59 +1337,6 @@ void MainWindow::PedInfo()
 
 	WCHAR buf[256];
 	Ped* playerPed = fnGetPedByID(1);
-
-	CarPhysBitmaskUpdate();
-
-	if (currLastCar)
-	{
-		// Display currLastCar's id
-		swprintf(buf, 256, L"%d", currLastCar->id);
-		m_carID.SetWindowTextW(buf);
-
-		// Display engine damage
-		swprintf(buf, 256, L"%d", currLastCar->carDamage);
-		m_carDamage.SetWindowTextW(buf);
-
-		if (currLastCar->sprite)
-		{
-			// Calculate and display currLastCar's velocity
-			currLastCarXYShift = (int)sqrt(pow(currLastCar->sprite->x - currLastCarXOld, 2) + pow(currLastCar->sprite->y - currLastCarYOld, 2));
-			currLastCarXOld = currLastCar->sprite->x;
-			currLastCarYOld = currLastCar->sprite->y;
-			swprintf(buf, 256, L"%d", currLastCarXYShift);
-			m_carVelocity.SetWindowTextW(buf);
-
-			// Display currLastCar's color
-			short color = currLastCar->sprite->carColor;
-			if (~currLastCar->sprite->lockPalleteMaybe & 1) color = -1;
-			swprintf(buf, 256, L"%d", color);
-			m_carColor.SetWindowTextW(buf);
-		}
-
-		// Lock door's buttons if car doesn't have ones
-		for (int i = 0; i < 4; i++)
-		{
-			CButton* pButton = (CButton*)GetDlgItem(3075 + i);
-			pButton->EnableWindow(currLastCar->carDoor[i].doorState != 0);
-		}
-
-		// Display emblem name 
-		swprintf(buf, 256, L"%s", carEmblems[currLastCarEmblemID].name);
-		m_carEmblem.SetWindowTextW(buf);
-
-		// Display visual state
-		swprintf(buf, 256, L"%X", currLastCar->carLights);
-		m_carVisualData.SetWindowTextW(buf);
-	}
-	else
-	{
-		m_carID.SetWindowTextW(L"");
-		m_carDamage.SetWindowTextW(L"");
-		m_carVelocity.SetWindowTextW(L"");
-		m_carColor.SetWindowTextW(L"");
-		m_carEmblem.SetWindowTextW(L"");
-		m_carVisualData.SetWindowTextW(L"");
-	}
 
 	if (playerPed)
 	{
@@ -1604,12 +1599,12 @@ void MainWindow::GangRespect(UINT nID)
 
 void MainWindow::ToggleDoor(UINT uID)
 {
-	// Return if currLastCar doesn't exist
-	if (!currLastCar)
+	// Return if lastCar doesn't exist
+	if (!m_lastCar)
 		return;
 
 	int doorID = uID - IDC_DOOR1;
-	if (currLastCar->carDoor[doorID].doorState == 6 || doorOpen[doorID] == true)
+	if (m_lastCar->carDoor[doorID].doorState == 6 || doorOpen[doorID] == true)
 	{
 		doorOpen[doorID] = !doorOpen[doorID];
 		log(L"Door %s", (doorOpen[doorID] ? L"opened" : L"closed"));
@@ -1618,36 +1613,38 @@ void MainWindow::ToggleDoor(UINT uID)
 
 void MainWindow::SyncTrailerColor()
 {
-	if(!currLastCar) return;
-	if(!currLastCar->sprite) return;
-	if(!currLastCar->trailerController) return;
-	if(!currLastCar->trailerController->trailer) return;
-	if(!currLastCar->trailerController->trailer->sprite) return;
+	if(!m_lastCar) return;
+	if(!m_lastCar->sprite) return;
+	if(!m_lastCar->trailerController) return;
+	if(!m_lastCar->trailerController->trailer) return;
+	if(!m_lastCar->trailerController->trailer->sprite) return;
 
-	currLastCar->trailerController->trailer->sprite->lockPalleteMaybe = currLastCar->sprite->lockPalleteMaybe;
-	currLastCar->trailerController->trailer->sprite->carColor = currLastCar->sprite->carColor;
+	m_lastCar->trailerController->trailer->sprite->lockPalleteMaybe = m_lastCar->sprite->lockPalleteMaybe;
+	m_lastCar->trailerController->trailer->sprite->carColor = m_lastCar->sprite->carColor;
 	log(L"Trailer color changed");
 }
 
 void MainWindow::CarEmblemMinus()
 {
-	// Return if currLastCar's sprite doesn't exist
-	if (!currLastCar || !currLastCar->sprite)
+	// Return if lastCar's sprite doesn't exist
+	if (!m_lastCar || !m_lastCar->sprite)
 		return;
 
-	if (currLastCarEmblemID == 1)
+	if (m_carEmblemID == 1)
 	{
 		// "Remove" emblem //
-		currLastCarEmblemID = 0;
-		currLastCarEmblem->sprite->spriteType = SPRITE_TYPE_INVISIBLE;
-		currLastCarEmblem->sprite->layer--;
-		currLastCarEmblem = 0;
+		m_carEmblemID = 0;
+		m_carEmblem->sprite->spriteType = SPRITE_TYPE_INVISIBLE;
+		m_carEmblem->sprite->layer--;
+		m_carEmblem = 0;
+		m_carEmblemName = L"";
 	}
-	else if (currLastCarEmblemID > 1)
+	else if (m_carEmblemID > 1)
 	{
 		// Prev emblem //
-		currLastCarEmblemID--;
-		currLastCarEmblem->sprite->sprite = carEmblems[currLastCarEmblemID].id;
+		m_carEmblemID--;
+		m_carEmblem->sprite->sprite = carEmblems[m_carEmblemID].id;
+		m_carEmblemName = carEmblems[m_carEmblemID].name;
 		log(L"Car emblem changed");
 	}
 }
@@ -1655,48 +1652,48 @@ void MainWindow::CarEmblemMinus()
 
 void MainWindow::CarEmblemPlus()
 {
-	// Return if currLastCar's sprite doesn't exist
-	if (!currLastCar || !currLastCar->sprite)
+	// Return if lastCar's sprite doesn't exist
+	if (!m_lastCar || !m_lastCar->sprite)
 		return;
 
-	if (currLastCarEmblemID == 0)
+	if (m_carEmblemID == 0)
 	{
-		if (currLastCar->carModel == CAR_MODEL4_TVVAN)
+		if (m_lastCar->carModel == CAR_MODEL4_TVVAN)
 		{
 			log(L"TV Van is the only car you cannot put emblem on :(");
 			return;
 		}
 
 		// Create emblem //
-		fnCarAddRoofAntenna(currLastCar);
-		currLastCarEmblem = getCarRoofWithSpriteIfExists(currLastCar->roof, 0);
-		if (currLastCarEmblem)
-		{
-			currLastCarEmblemID = 1;
-			currLastCarEmblem->sprite->sprite = carEmblems[1].id;
-			currLastCarEmblem->rotation = 0;
-			currLastCarEmblem->sprite->layer++;
-			m_carEmblemPos.SetPos(currLastCarEmblem->yOffset);
-			log(L"Car emblem created");
-		}
+		fnCarAddRoofAntenna(m_lastCar);
+		m_carEmblem = getCarRoofWithSpriteIfExists(m_lastCar->roof, 0);
+		if (!m_carEmblem) return;
+
+		m_carEmblemID = 1;
+		m_carEmblem->sprite->sprite = carEmblems[1].id;
+		m_carEmblem->rotation = 0;
+		m_carEmblem->sprite->layer++;
+		m_carEmblemName = carEmblems[m_carEmblemID].name;
+		log(L"Car emblem created");
 	}
-	else if (currLastCarEmblemID < sizeof(carEmblems)/sizeof(carEmblems[0]) - 1)
+	else if (m_carEmblemID < sizeof(carEmblems)/sizeof(carEmblems[0]) - 1)
 	{
 		// Next emblem //
-		currLastCarEmblemID++;
-		currLastCarEmblem->sprite->sprite = carEmblems[currLastCarEmblemID].id;
+		m_carEmblemID++;
+		m_carEmblem->sprite->sprite = carEmblems[m_carEmblemID].id;
+		m_carEmblemName = carEmblems[m_carEmblemID].name;
 		log(L"Car emblem changed");
 	}
 }
 
 void MainWindow::CarColorPlus()
 {
-	// Return if currLastCar's sprite doesn't exist
-	if (!currLastCar || !currLastCar->sprite)
+	// Return if lastCar's sprite doesn't exist
+	if (!m_lastCar || !m_lastCar->sprite)
 		return;
 
-	short color = currLastCar->sprite->carColor;
-	if (~currLastCar->sprite->lockPalleteMaybe & 1) color = -1;
+	short color = m_lastCar->sprite->carColor;
+	if (~m_lastCar->sprite->lockPalleteMaybe & 1) color = -1;
 	color++;
 
 	CarColorSet(color);
@@ -1704,12 +1701,12 @@ void MainWindow::CarColorPlus()
 
 void MainWindow::CarColorMinus()
 {
-	// Return if currLastCar's sprite doesn't exist
-	if (!currLastCar || !currLastCar->sprite)
+	// Return if lastCar's sprite doesn't exist
+	if (!m_lastCar || !m_lastCar->sprite)
 		return;
 
-	short color = currLastCar->sprite->carColor;
-	if (~currLastCar->sprite->lockPalleteMaybe & 1) color = -1;
+	short color = m_lastCar->sprite->carColor;
+	if (~m_lastCar->sprite->lockPalleteMaybe & 1) color = -1;
 	color--;
 
 	CarColorSet(color);
@@ -1717,8 +1714,8 @@ void MainWindow::CarColorMinus()
 
 void MainWindow::CarColorReset()
 {
-	// Return if currLastCar's sprite doesn't exist
-	if (!currLastCar || !currLastCar->sprite)
+	// Return if lastCar's sprite doesn't exist
+	if (!m_lastCar || !m_lastCar->sprite)
 		return;
 
 	CarColorSet(-1);
@@ -1731,13 +1728,13 @@ void MainWindow::CarColorSet(short color)
 
 	if (color == -1)
 	{
-		currLastCar->sprite->lockPalleteMaybe &= ~1;
-		currLastCar->sprite->carColor = 0;
+		m_lastCar->sprite->lockPalleteMaybe &= ~1;
+		m_lastCar->sprite->carColor = 0;
 	}
 	else
 	{
-		currLastCar->sprite->lockPalleteMaybe |= 1;
-		currLastCar->sprite->carColor = color;
+		m_lastCar->sprite->lockPalleteMaybe |= 1;
+		m_lastCar->sprite->carColor = color;
 	}
 
 	log(L"Car color changed");
@@ -1846,17 +1843,17 @@ void MainWindow::HijackTrain()
 
 void MainWindow::CarMakeDummy()
 {
-	if(!currLastCar) return;
+	if(!m_lastCar) return;
 
-	if (currLastCar->driver) {
+	if (m_lastCar->driver) {
 		log(L"Car already has a driver");
 		return;
 	}
 
-	fnCarPutDummyDriverIn(currLastCar, 0);
-	fnCarMakeDummy(currLastCar, 0);
-	currLastCar->field_0x76 = 0;
-	currLastCar->field_0x7c = 5;
+	fnCarPutDummyDriverIn(m_lastCar, 0);
+	fnCarMakeDummy(m_lastCar, 0);
+	m_lastCar->field_0x76 = 0;
+	m_lastCar->field_0x7c = 5;
 
 	log(L"Dummy driver created");
 }
@@ -1979,6 +1976,7 @@ void MainWindow::OnGTAGameTick(Game* game)
 	//OnTimer moved here, it's more stable now
 	KeepLockedValues();
 	PedRemapShapeUpdate();
+	UpdateCar();
 	PedInfo();
 	if (captureMouse) CaptureMouse();
 	FixCheckboxes();
