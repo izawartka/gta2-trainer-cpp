@@ -91,6 +91,7 @@ public:
 	);
 
 	// features //
+	void LoadNativeCheatsState();
 
 	// spawn car
 	void SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize);
@@ -224,6 +225,8 @@ public:
 	int pedHOld = -1, pedAOld = -1, pedMOld = -1;
 
 	// important
+	bool m_isFirstTick = true;
+	void OnFirstGTAGameTick(Game* game);
 	void OnGTAGameTick(Game* game);
 	void OnGTADraw();
 	void NewFunction();

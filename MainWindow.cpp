@@ -271,8 +271,25 @@ void MainWindow::AddMenuItems(
 )
 {
 	for (int i = 0; i < itemsCount; i++) {
-		MenuItem info = items[i];
+		const MenuItem& info = items[i];
 		menu->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + baseID), info.name);
+	}
+}
+
+void MainWindow::LoadNativeCheatsState()
+{
+	CMenu* menu = CMenu::FromHandle(ncHMenu);
+
+	uint itemsCount = sizeof(nativeCheats) / sizeof(nativeCheats[0]);
+
+	for (int i = 0; i < itemsCount; i++) {
+		const MenuItem& info = nativeCheats[i];
+
+		CString idString = std::to_wstring(info.id).c_str();
+		int value = GetProfileInt(L"NativeCheats", idString, -1);
+		if(value == 0 || value == 1) *(bool*)(0x5EAD00 + info.id) = value;
+		else value = *(bool*)(0x5EAD00 + info.id);
+		CheckMenuItem(menu->m_hMenu, info.id + ID_NATIVE_START, value ? MF_CHECKED : MF_UNCHECKED);
 	}
 }
 
@@ -959,6 +976,9 @@ void MainWindow::OnNativeCheatMenuClick(UINT nID) {
 	*cheat = !*cheat;
 	log(L"%s cheat at 0x%X", *cheat ? L"Enabled" : L"Disabled", address);
 	CheckMenuItem(ncHMenu, nID, *cheat ? MF_CHECKED : MF_UNCHECKED);
+
+	CString stringValue = *cheat ? L"1" : L"0";
+	WriteProfileString(L"NativeCheats", std::to_wstring(ID).c_str(), stringValue);
 }
 
 void MainWindow::OnShowLiveTable()
@@ -1390,7 +1410,8 @@ void MainWindow::PedInfo()
 	// Display current weapon's ammo and reload time
 	if (playerPed->selectedWeapon)
 	{
-		m_pedWeapName = weapons[playerPed->selectedWeapon->id].name;
+		bool isCarWeapon = playerPed->selectedWeapon->id >= 15;
+		m_pedWeapName = isCarWeapon ? carWeapons[playerPed->selectedWeapon->id - 15].name : weapons[playerPed->selectedWeapon->id].name;
 		m_pedWeapAmmo.Format(L"%f", playerPed->selectedWeapon->ammo / 10.0f);
 	}
 	else
@@ -1813,7 +1834,7 @@ void MainWindow::HijackTrain()
 	}
 	else
 	{
-		log(L"Player is not in the train");
+		log(L"Player is not in a train");
 	}
 }
 
@@ -1947,9 +1968,18 @@ void Strafe(bool right, bool movingBackward) {
 	playerPed->gameObject->spriteRotation = original;
 }
 
+void MainWindow::OnFirstGTAGameTick(Game* game)
+{
+	if (!m_isFirstTick) return;
+	m_isFirstTick = false;
+
+	LoadNativeCheatsState();
+}
+
 void MainWindow::OnGTAGameTick(Game* game)
 {
 	//OnTimer moved here, it's more stable now
+	OnFirstGTAGameTick(game);
 	KeepLockedValues();
 	PedRemapShapeUpdate();
 	UpdateCar();
