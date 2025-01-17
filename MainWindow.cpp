@@ -210,6 +210,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND(ID_COMMANDS_TANK, &MainWindow::OnSpawnCarTank)
 	ON_COMMAND(ID_COMMANDS_LIVETABLE, &MainWindow::OnShowLiveTable)
 	ON_COMMAND(ID_COMMANDS_CAMERA, &MainWindow::OnShowCamera)
+	ON_COMMAND(ID_COMMANDS_QUICKSAVE, &MainWindow::SaveGame)
 	ON_WM_HOTKEY()
 	ON_COMMAND_RANGE(ID_SPAWNCAR, ID_SPAWNOBJ - 1, &OnSpawnCarMenuClick)
 	ON_COMMAND_RANGE(ID_SPAWNOBJ, ID_SPAWNPED - 1, &OnSpawnObjectMenuClick)
@@ -404,6 +405,12 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		1,
 		MOD_ALT | MOD_NOREPEAT,
 		0x57); //ALT+W
+
+	RegisterHotKey(
+		GetSafeHwnd(),
+		1,
+		MOD_ALT | MOD_NOREPEAT,
+		0x51); //ALT+Q
 
 	CMenu *menu = GetMenu();
 	std::map<std::wstring, DWORD>::iterator itr;
@@ -907,6 +914,9 @@ void MainWindow::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		break;
 	case 0x57:
 		OnGetWeaponMenuClick(ID_GETWEAP_ALL);
+		break;
+	case 0x51:
+		SaveGame();
 		break;
 	default:
 		break;
@@ -1950,6 +1960,28 @@ void MainWindow::ExplodeCars() {
 	log(L"Boom!");
 }
 
+void MainWindow::SaveGame()
+{
+	if (*(DWORD*)ptrToPedManager == 0) {
+		return;
+	}
+
+	S15_script* s15 = (S15_script*)*(DWORD*)ptrToS15;
+	if(s15 == nullptr) return;
+
+	bool* missionFlagPtr = (bool*)s15->missionPtrMaybe;
+	if (missionFlagPtr == nullptr) return;
+
+	if (*missionFlagPtr != 0) {
+		log(L"Cannot save during a mission");
+		return;
+	}
+
+	Menu* menu = (Menu*)ptrToMenu;
+	fnSaveGame(s15, 0, menu->saveFile);
+	log(L"Game saved");
+}
+
 void MainWindow::PreventFPSComprensation(Game* game) {
 	HWND foregroundWindow = ::GetForegroundWindow();
 	bool isFocused = this->GetSafeHwnd() == foregroundWindow;
@@ -2009,8 +2041,6 @@ void MainWindow::OnFirstGTAGameTick(Game* game)
 {
 	if (!m_isFirstTick) return;
 	m_isFirstTick = false;
-
-
 }
 
 void MainWindow::OnGTAGameTick(Game* game)

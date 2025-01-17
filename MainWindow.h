@@ -210,6 +210,7 @@ public:
 	void FreeShopping();
 	void ShowBigText();
 	void ExplodeCars();
+	void SaveGame();
 	void PreventFPSComprensation(Game* game);
 	afx_msg void OnEnterAsPassengerToggle();
 	int m_enterAsPassenger = 0;

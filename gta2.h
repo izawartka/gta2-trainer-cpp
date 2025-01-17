@@ -4317,7 +4317,7 @@ struct Menu {
     char gmpFile[256];
     char styFile[256];
     char styFile2[256];
-    char unk2[256];
+    char saveFile[256];
     byte playerArea;
     byte bonusStage;
     undefined field_0x402;
@@ -6355,7 +6355,7 @@ struct S15_script { /* Map or something related to missions */
     undefined4 field_0x338;
     undefined4 field_0x33c;
     undefined4 field_0x340;
-    undefined4 field_0x344;
+    DWORD* missionPtrMaybe;
     undefined4 field_0x348;
     undefined4 field_0x34c;
     undefined4 field_0x350;

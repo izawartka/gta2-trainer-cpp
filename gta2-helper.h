@@ -42,6 +42,8 @@ static DWORD ptrToTrafficManager = 0x005e4ca4;
 static DWORD ptrToPlayerPhysics = 0x005e3cc4;
 static DWORD ptrToFrontEnd = 0x005eb160;
 static DWORD ptrToS6 = 0x005dcbc8;
+static DWORD ptrToMenu = 0x005ec070;
+static DWORD ptrToS15 = 0x006644bc;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
 // Usage: auto game = fnGetGame();
@@ -235,6 +237,11 @@ static SetGamma* fnSetGamma = (SetGamma*)0x004cb930;
 // uint __thiscall GivePowerUp(Player *this,POWERUP_TYPE type)
 typedef uint(__fastcall GivePowerUp)(Player* player, DWORD edx, POWERUP_TYPE type);
 static GivePowerUp* fnGivePowerUp = (GivePowerUp*)0x004a5780;
+
+// 0047ef40
+// void __thiscall SaveGame(S15_script *this,char *saveFileName)
+typedef void(__fastcall SaveGame)(S15_script* s15, DWORD edx, char* saveFileName);
+static SaveGame* fnSaveGame = (SaveGame*)0x0047ef40;
 
 void fnShowCustomTextMessage(WCHAR* message);
 Roof* getCarRoofWithSpriteIfExists(Roof* startroof, short spritetype);

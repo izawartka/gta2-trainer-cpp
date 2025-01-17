@@ -8,6 +8,7 @@ Some of the main features are:
 - Controlling your character's stats e.g. health, ammo, appearance, walking speed, wanted level, respect
 - Teleporting peds and cars
 - Spawning vehicles
+- Quicksaving the game
 - Customizing your vehicle (color, emblems, damage, physics, invulnerability)
 - Spawning objects (football, generator, tank turret, power-ups etc.)
 - Spawning characters and setting up their AIs, appearance etc.
@@ -41,6 +42,7 @@ If you're having problems with running the game make sure your system has [all n
 - `ALT + N` - Watch the next ped (when watching peds)
 - `ALT + B` - Show big text
 - `ALT + D` - Call the debug function (no effect)
+- `ALT + Q` - Save the game
 
 ## Building
 If you want to build it on your own, there is a VS solution included in the repo.
