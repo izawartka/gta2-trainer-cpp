@@ -408,106 +408,118 @@ const MenuItem vocals[] = {
 	{L"DAMNATION! NO DONATION, NO SALVATION", 62}
 };
 
-const MenuItem nativeCheats[] = {
-	{L"Do blood", 0x51},
-	{L"Show objects IDs", 0x52},
-	{L"Skip traffic lights", 0x53},
-	{L"Skip buses", 0x54},
-	{L"Show counters", 0x55},
-	{L"Skip particles", 0x56},
-	//{L"Skip trains", 0x57}, // crashes the game;v
-	{L"Show input", 0x58},
-	{L"Skip right tiles", 0x59},
-	{L"Show hidden faces", 0x5A},
-	{L"No traffic", 0x5B},
-	{L"Unlock all levels", 0x5C},
-	//{L"Exploding on", 0x5D}, // doesn't seem to work and is being overwritten
-	{L"No police", 0x5E},
-	{L"Skip bottom tiles", 0x5F},
-	//{L"Do Police 1", 0x60}, // no effect observed
-	{L"Infinite lives", 0x61},
-	//{L"Unknown 0x62"}, // unused
-	{L"Log random", 0x63},
-	{L"No HUD", 0x64},
-	//{L"Double damage", 0x65}, // requires restart
-	{L"Log missions", 0x66},
-	{L"Skip left tiles", 0x67},
-	//{L"Do corner window", 0x68}, // no effect ovserved
-	{L"No pedestrians", 0x69},
-	//{L"Unknown 0x6A", 0x6A}, // probably unused
-	{L"No ambulances", 0x6B},
-	//{L"Skip window check", 0x6C}, // probably unused
-	{L"Mini cars", 0x6D},
-	//{L"Give basic weapons", 0x6E}, // no effect observed
-	{L"Show Imaginary Things", 0x6F},
-	//{L"Give electric gun", 0x70}, // requires restart
-	{L"Invulnerability", 0x71},
-	{L"No audio", 0x72},
-	//{L"Unknown 0x73", 0x73}, // GXT relacted, unused
-	//{L"Get all weapons", 0x74}, // requires restart
-	{L"No annoying chars", 0x75},
-	{L"Show player names", 0x76}, // test needed
-	{L"Log DirectInput", 0x77},
-	{L"No slopes tiles", 0x78},
-	{L"Show FPS", 0x79},
-	{L"Log random extra", 0x7A},
-	// {L"Multiplier x10", 0x7B}, // requires restart
-	// 0x7C - Skip frontend
-	{L"Do Brian test", 0x7D},
-	// 0x7E - Do load savegame
-	{L"Show car horn", 0x7F},
-	{L"Do test", 0x80},
-	{L"Show drawing info", 0x81},
-	{L"Show camera info", 0x82},
-	// {L"Get outta jail free card", 0x83}, // requires restart
-	// {L"Free shopping", 0x84}, // requires restart
-	{L"Show vehicle info", 0x85},
-	// 0x86 - Ignore replay header
-	{L"Debug keys", 0x87},
-	{L"Insane speed", 0x88},
-	{L"Show junctions IDs", 0x89},
-	// {L"Max respect", 0x8A}, // requires restart
-	{L"Skip fire engines", 0x8B},
-	{L"Skip top tiles", 0x8C},
-	{L"Show ped info", 0x8D},
-	// {L"Invisibility", 0x8E}, // requires restart
-	// {L"Health 99", 0x8F}, // requires restart
-	{L"Skip tiles", 0x90},
-	{L"Log input", 0x91},
-	// {L"Unknown 0x92", 0x92}, // replay related
-	// {L"Aggresive peds", 0x93}, // requires restart
-	{L"Don't get car back", 0x94}, // test needed
-	{L"Show traffic info", 0x95},
-	{L"Show traffic lights info", 0x96},
-	// 0x97 - Give money on start
-	// {L"Unknown 0x98", 0x98}, // probably unused
-	{L"Log routefinder", 0x99},
-	{L"Do text ID test", 0x9A},
-	// 0x9B - Give flamethrower
-	{L"Skip lid", 0x9C},
-	// {L"Do Police 2", 0x9D}, // no effect ovserved
-	{L"Keep weapons after death", 0x9E},
-	{L"Only elvis peds", 0x9F},
-	{L"Nekkid peds", 0xA0},
-	{L"Show peds IDs", 0xA1},
-	// 0xA2 - Unknown, requires restart
-	// 0xA3 - Replay related
-	// 0xA4 - Skip replay sync check
-	{L"Show brief number", 0xA5},
-	// {L"$9,000,000", 0xA6}, // requires restart
-	{L"Show cycle", 0xA7},
-	{L"Do sync check", 0xA8},
-	// {L"Do Police 3", 0xA9}, // no effect observed
-	// 0xAA - Play replay
-	{L"Skip quit confirm", 0xAB},
-	{L"Limit recycling", 0xAC}, // test needed
-	// 0xAD - Exit after replay
-	// {L"Skip missions", 0xAE}, // crashes the game
-	{L"Skip skidmarks", 0xAF},
-	{L"Log collisions", 0xB0},
-	{L"Show collision box", 0xB1}, // ?
-	{L"Show all arrows", 0xB2},
-	{L"Kill phones on answer", 0xB3}, // ?
+const LPCTSTR nativeCheatsCategories[] = {
+	L"Standard", // 0
+	L"Skip things", // 1
+	L"Debug info", // 2
+	L"Tiles related", // 3
+	L"Requiring restart", // 4
+	L"Replay related", // 5
+	L"Unstable / unused", // 6
+	L"Logging", // 7
+	L"Other debug" // 8
+};
+
+const CatMenuItem nativeCheats[] = {
+	{0, L"Do blood", 0x51},
+	{2, L"Show objects IDs", 0x52},
+	{1, L"Skip traffic lights", 0x53},
+	{1, L"Skip buses", 0x54},
+	{2, L"Show counters", 0x55},
+	{1, L"Skip particles", 0x56},
+	{1, L"Skip trains", 0x57}, // crashes the game;v
+	{2, L"Show input", 0x58},
+	{3, L"Skip right tiles", 0x59},
+	{3, L"Show hidden faces", 0x5A},
+	{1, L"No traffic", 0x5B},
+	{4, L"Unlock all levels", 0x5C},
+	{6, L"Exploding on", 0x5D}, // doesn't seem to work and is being overwritten
+	{1, L"No police", 0x5E},
+	{3, L"Skip bottom tiles", 0x5F},
+	{6, L"Do Police 1", 0x60}, // no effect observed
+	{0, L"Infinite lives", 0x61},
+	{6, L"Unused 0x62"}, // unused
+	{7, L"Log random", 0x63},
+	{1, L"No HUD", 0x64},
+	{4, L"Double damage", 0x65},
+	{7, L"Log missions", 0x66},
+	{3, L"Skip left tiles", 0x67},
+	{6, L"Do corner window", 0x68}, // no effect ovserved
+	{1, L"No pedestrians", 0x69},
+	{6, L"Unknown 0x6A", 0x6A}, // probably unused
+	{1, L"No ambulances", 0x6B},
+	{6, L"Skip window check", 0x6C}, // probably unused
+	{0, L"Mini cars", 0x6D},
+	{4, L"Give basic weapons", 0x6E}, // no effect observed
+	{2, L"Show Imaginary Things", 0x6F},
+	{4, L"Give electric gun", 0x70},
+	{0, L"Invulnerability", 0x71},
+	{1, L"No audio", 0x72},
+	{6, L"Unknown 0x73", 0x73}, // GXT relacted, unused
+	{4, L"Get all weapons", 0x74},
+	{0, L"No annoying chars", 0x75},
+	{0, L"Show player names", 0x76}, // test needed
+	{7, L"Log DirectInput", 0x77},
+	{3, L"No slopes tiles", 0x78},
+	{2, L"Show FPS", 0x79},
+	{7, L"Log random extra", 0x7A},
+	{4, L"Multiplier x10", 0x7B},
+	{1, L"Skip frontend", 0x7C},
+	{8, L"Do Brian test", 0x7D},
+	{6, L"Do load savegame", 0x7E}, // unstable
+	{2, L"Show car horn", 0x7F},
+	{8, L"Do test", 0x80},
+	{2, L"Show drawing info", 0x81},
+	{2, L"Show camera info", 0x82},
+	{4, L"Get outta jail free card", 0x83},
+	{4, L"Free shopping", 0x84},
+	{2, L"Show vehicle info", 0x85},
+	{5, L"Ignore replay header", 0x86}, // unstable
+	{8, L"Debug keys", 0x87},
+	{8, L"Insane speed", 0x88},
+	{2, L"Show junctions IDs", 0x89},
+	{4, L"Max respect", 0x8A},
+	{1, L"Skip fire engines", 0x8B},
+	{3, L"Skip top tiles", 0x8C},
+	{2, L"Show ped info", 0x8D},
+	{4, L"Invisibility", 0x8E},
+	{4, L"Health 99", 0x8F},
+	{3, L"Skip tiles", 0x90},
+	{7, L"Log input", 0x91},
+	{5, L"Unknown 0x92", 0x92}, // replay related
+	{4, L"Aggresive peds", 0x93},
+	{0, L"Don't get car back", 0x94}, // test needed
+	{2, L"Show traffic info", 0x95},
+	{2, L"Show traffic lights info", 0x96},
+	{4, L"$200,000", 0x97},
+	{6, L"Unknown 0x98", 0x98}, // probably unused
+	{7, L"Log routefinder", 0x99},
+	{8, L"Do text ID test", 0x9A},
+	{4, L"Give flamethrower", 0x9B},
+	{3, L"Skip lid", 0x9C},
+	{8, L"Do Police 2", 0x9D}, // no effect ovserved
+	{0, L"Keep weapons after death", 0x9E},
+	{0, L"Only elvis peds", 0x9F},
+	{0, L"Nekkid peds", 0xA0},
+	{2, L"Show peds IDs", 0xA1},
+	{6, L"Unknown 0xA2", 0xA2},
+	{5, L"Unknown 0xA3", 0xA3}, // replay related
+	{5, L"Skip replay sync check", 0xA4}, // replay related
+	{2, L"Show brief number", 0xA5},
+	{4, L"$9,000,000", 0xA6},
+	{2, L"Show cycle", 0xA7},
+	{8, L"Do sync check", 0xA8},
+	{8, L"Do Police 3", 0xA9}, // no effect observed
+	{5, L"Play replay", 0xAA}, // replay related
+	{8, L"Skip quit confirm", 0xAB},
+	{8, L"Limit recycling", 0xAC}, // test needed
+	{5, L"Exit after replay", 0xAD}, // replay related
+	{6, L"Skip missions", 0xAE}, // crashes the game
+	{1, L"Skip skidmarks", 0xAF},
+	{7, L"Log collisions", 0xB0},
+	{6, L"Show collision box", 0xB1}, // ?
+	{2, L"Show all arrows", 0xB2},
+	{8, L"Kill phones on answer", 0xB3}, // ?
 };
 
 const MenuItem powerUps[] = {

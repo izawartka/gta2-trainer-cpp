@@ -30,9 +30,8 @@ BOOL HookFunction(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
 
 	size_t i;
 
-	// memcpy(hookFn, originalFn, copyBytes);
 	for (i = 0; i < copyBytes; i++) {
-		*(BYTE*)((LPBYTE)hookFn + i + 1) = *(BYTE*)((LPBYTE)originalFn + i);
+		*(BYTE*)((LPBYTE)hookFn + i) = *(BYTE*)((LPBYTE)originalFn + i);
 	}
 
 	success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)originalFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
@@ -105,6 +104,29 @@ static __declspec(naked) void drawChat(void) {
 
 }
 
+static __declspec(naked) void afterDebugFlags(LPCSTR stringVal) {
+	// this will be replaced by original 5 bytes
+	__asm {
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+	}
+
+	mainWnd->OnGTAAfterDebugFlags();
+
+	__asm {
+		MOV EAX, pAfterDebugFlags
+		add eax, 5
+		JMP EAX
+	}
+
+}
+
 IMPLEMENT_DYNAMIC(MainWindow, CDialogEx)
 
 MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
@@ -131,6 +153,7 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	m_cameraWindow->m_mainWindow = this;
 
 	HookFunction(pGameTick, (DWORD)gameTick);
+	HookFunction(pAfterDebugFlags, (DWORD)afterDebugFlags);
 	//HookFunction(pDrawChat, (DWORD)drawChat, 7);
 }
 
@@ -261,6 +284,8 @@ void MainWindow::AddCategorizedMenuItems(
 		CatMenuItem info = items[i];
 		cMenus[info.category]->AppendMenuW(MF_STRING, (UINT_PTR)(info.id + baseID), info.name);
 	}
+
+	delete[] cMenus;
 }
 
 void MainWindow::AddMenuItems(
@@ -283,13 +308,15 @@ void MainWindow::LoadNativeCheatsState()
 	uint itemsCount = sizeof(nativeCheats) / sizeof(nativeCheats[0]);
 
 	for (int i = 0; i < itemsCount; i++) {
-		const MenuItem& info = nativeCheats[i];
+		const CatMenuItem& info = nativeCheats[i];
 
 		CString idString = std::to_wstring(info.id).c_str();
 		int value = GetProfileInt(L"NativeCheats", idString, -1);
 		if(value == 0 || value == 1) *(bool*)(0x5EAD00 + info.id) = value;
 		else value = *(bool*)(0x5EAD00 + info.id);
-		CheckMenuItem(menu->m_hMenu, info.id + ID_NATIVE_START, value ? MF_CHECKED : MF_UNCHECKED);
+
+		HMENU categoryMenu = menu->GetSubMenu(info.category)->m_hMenu;
+		CheckMenuItem(categoryMenu, info.id + ID_NATIVE_START, value ? MF_CHECKED : MF_UNCHECKED);
 	}
 }
 
@@ -420,12 +447,20 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	vocalsMenu->CreatePopupMenu();
 	AddMenuItems(vocalsMenu, vocals, sizeof(vocals) / sizeof(vocals[0]), ID_VOCALS_START);
 	AppendMenu(menu->m_hMenu, MF_POPUP, (UINT_PTR)vocalsMenu->m_hMenu, L"Play vocal");
-	
+
 	// Create the "Native cheats" menu
 	CMenu* nativeCheatsMenu = new CMenu();
 	nativeCheatsMenu->CreatePopupMenu();
-	AddMenuItems(nativeCheatsMenu, nativeCheats, sizeof(nativeCheats) / sizeof(nativeCheats[0]), ID_NATIVE_START);
 	AppendMenu(menu->m_hMenu, MF_POPUP, (UINT_PTR)nativeCheatsMenu->m_hMenu, L"Native cheats");
+
+	AddCategorizedMenuItems(
+		nativeCheatsMenu,
+		nativeCheatsCategories,
+		sizeof(nativeCheatsCategories) / sizeof(nativeCheatsCategories[0]),
+		nativeCheats,
+		sizeof(nativeCheats) / sizeof(nativeCheats[0]),
+		ID_NATIVE_START
+	);
 	this->ncHMenu = nativeCheatsMenu->m_hMenu;
 
 	// Create the "Power-ups" menu
@@ -1244,16 +1279,15 @@ void MainWindow::VisBreakCar()
 void MainWindow::UpdateCar()
 {
 	bool carChanged = false;
+	Ped* playerPed = fnGetPedByID(1);
 
 	// Remove current car if not in the game
-	if (*(DWORD*)ptrToPedManager == 0) {
+	if (*(DWORD*)ptrToPedManager == 0 || !playerPed) {
 		m_lastCarOld = m_lastCar;
 		m_lastCar = nullptr;
 		m_lastCarIDtest = 0;
 	}
 	else {
-		Ped* playerPed = fnGetPedByID(1);
-
 		// Change current car if playerPed's car changed
 		if (playerPed->currentCar && playerPed->currentCar != m_lastCar) {
 			carChanged = true;
@@ -1780,6 +1814,7 @@ void MainWindow::PedRemapShapeDefault()
 void MainWindow::PedRemapShapeUpdate()
 {
 	Ped* playerPed = fnGetPedByID(1);
+	if (!playerPed) return;
 
 	if (playerPed->remap != m_pedRemap.GetCurSel() && !m_pedRemap.GetDroppedState())
 	{
@@ -1975,7 +2010,7 @@ void MainWindow::OnFirstGTAGameTick(Game* game)
 	if (!m_isFirstTick) return;
 	m_isFirstTick = false;
 
-	LoadNativeCheatsState();
+
 }
 
 void MainWindow::OnGTAGameTick(Game* game)
@@ -1993,6 +2028,11 @@ void MainWindow::OnGTAGameTick(Game* game)
 	if (wtSpawnObject != -1) SpawnObject((OBJECT_TYPE)wtSpawnObject);
 	m_cameraWindow->OnGTAGameTick();
 	m_pedSpawnerWindow->OnGTAGameTick();
+}
+
+void MainWindow::OnGTAAfterDebugFlags()
+{
+	LoadNativeCheatsState();
 }
 
 void MainWindow::OnGTADraw()

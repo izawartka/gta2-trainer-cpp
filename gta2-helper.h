@@ -22,6 +22,7 @@ static_assert(sizeof(SPRITE_BIT1) == 0x1, "Wrong size of SPRITE_BIT1 enum");
 static_assert(sizeof(TRAFFIC_PHASE) == 0x1, "Wrong size of TRAFFIC_PHASE enum");
 
 const DWORD pGameTick = (DWORD)0x0045c1f0;
+const DWORD pAfterDebugFlags = (DWORD)0x00451f28;
 const DWORD pDraw = (DWORD)0x00461960;
 const DWORD pFreeSurface = (DWORD)0x004caf50;
 const DWORD pDrawUI = (DWORD)0x004ca440;

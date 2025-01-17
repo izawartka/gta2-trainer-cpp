@@ -225,6 +225,7 @@ public:
 	bool m_isFirstTick = true;
 	void OnFirstGTAGameTick(Game* game);
 	void OnGTAGameTick(Game* game);
+	void OnGTAAfterDebugFlags();
 	void OnGTADraw();
 	void NewFunction();
 };
