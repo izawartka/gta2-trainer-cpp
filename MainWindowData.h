@@ -2,6 +2,21 @@
 #ifndef SPAWNING_DATA
 #define SPAWNING_DATA
 
+struct WantedLevel {
+	short maxValue;
+	LPCTSTR text;
+};
+
+const WantedLevel wantedLevels[] = {
+	{600, L"%d (0) Peace"},
+	{1600, L"%d (1) Lite"},
+	{3000, L"%d (2) All units"},
+	{5000, L"%d (3) Barricades"},
+	{8000, L"%d (4) SWAT"},
+	{12000, L"%d (5) FBI"},
+	{0, L"%d (6) Army!"}
+};
+
 struct WantToSpawn {
 	int x;
 	int y;

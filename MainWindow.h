@@ -64,13 +64,15 @@ public:
 	CString m_carEmblemName;
 	CSliderCtrl m_carEmblemPos;
 	int m_carColor;
-	CEdit m_pedHealth;
-	CEdit m_pedArmor;
-	CEdit m_pedMoney;
+	CEdit m_playerHealth;
+	ushort m_playerHealthOld = -1;
+	CEdit m_playerArmor;
+	ushort m_playerArmorOld = -1;
+	CEdit m_playerMoney;
+	uint m_playerMoneyOld = -1;
 	CComboBox m_pedRemap;
 	CComboBox m_pedShape;
 	CEdit m_BigText;
-	CEdit m_pedals[3];
 	CString m_gangRespect[3];
 	CEdit m_globalPedSpeeds[3];
 
@@ -220,7 +222,6 @@ public:
 	void KeepLockedValues();
 	void UpdateCar();
 	void PedInfo();
-	int pedHOld = -1, pedAOld = -1, pedMOld = -1;
 
 	// important
 	bool m_isFirstTick = true;

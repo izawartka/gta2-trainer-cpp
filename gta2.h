@@ -1523,7 +1523,7 @@ struct Ped {
     short field_0x210;
     undefined2 eq_100;
     undefined2 field_0x214;
-    short health;
+    ushort health;
     ushort objectiveTimer; /* will be decrement each game tick, when its 0 then objective is done. For example: steal a car */
     short field_0x21a;
     enum PED_BIT_STATE bitState; /* invisibilty, electrofingers on fire and more  */
@@ -2425,7 +2425,7 @@ typedef struct SaveSlotAnimatedValue SaveSlotAnimatedValue, *PSaveSlotAnimatedVa
 typedef struct S26 S26, *PS26;
 
 struct SaveSlotAnimatedValue { /* Used for animate changing of values */
-    int value;
+    uint value;
     undefined field_0x4;
     undefined field_0x5;
     undefined field_0x6;
@@ -3453,7 +3453,7 @@ struct Player { /* Player actually */
     undefined field_0x6f7;
     undefined field_0x6f8;
     undefined field_0x6f9;
-    short armor;
+    ushort armor;
     short field_0x6fc;
     undefined field_0x6fe;
     undefined field_0x6ff;

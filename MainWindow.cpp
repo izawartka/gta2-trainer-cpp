@@ -183,9 +183,9 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EMBPOS, m_carEmblemPos);
 	DDX_Text(pDX, IDC_CARCOLV, m_carColor);
 	DDX_Text(pDX, IDC_CARVIS, m_carVisualData);
-	DDX_Control(pDX, IDC_PEDHEALTH, m_pedHealth);
-	DDX_Control(pDX, IDC_PEDARMOR, m_pedArmor);
-	DDX_Control(pDX, IDC_PEDMONEY, m_pedMoney);
+	DDX_Control(pDX, IDC_PEDHEALTH, m_playerHealth);
+	DDX_Control(pDX, IDC_PEDARMOR, m_playerArmor);
+	DDX_Control(pDX, IDC_PEDMONEY, m_playerMoney);
 	DDX_Control(pDX, IDC_PREMAP_R, m_pedRemap);
 	DDX_Control(pDX, IDC_PREMAP_S, m_pedShape);
 	DDX_Control(pDX, IDC_BIGTEXTTEXT, m_BigText);
@@ -1405,52 +1405,47 @@ void MainWindow::PedInfo()
 	if (*(DWORD*)ptrToPedManager == 0)
 		return;
 
-	WCHAR buf[256];
+	Game* pGame = (Game*)*(DWORD*)ptrToGame;
+	if (!pGame) return;
+
+	CString buf;
 	Ped* playerPed = fnGetPedByID(1);
 
 	if (playerPed == nullptr) return;
 
-	// If player's health changed
-	if (pedHOld != playerPed->health)
-	{
-		m_pedHealth.SetWindowTextW(L"0");
-		swprintf(buf, 256, L"%d", playerPed->health);
-		m_pedHealth.SetWindowTextW(buf);
+	// Update health, armor, money if changed
+	ushort health = playerPed->health;
+	if (health != m_playerHealthOld) {
+		buf.Format(L"%d", health);
+		m_playerHealth.SetWindowTextW(buf);
 	}
-	pedHOld = playerPed->health;
-		
-	// If player's armor changed
-	int *pedA = (int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x4) + 0x6fa); // TEMPOARY
-	if (pedAOld != *pedA)
+	m_playerHealthOld = health;
+
+	ushort armor = pGame->CurrentPlayer->armor;
+	if (armor != m_playerArmorOld) {
+		buf.Format(L"%d", armor);
+		m_playerArmor.SetWindowTextW(buf);
+	}
+	m_playerArmorOld = armor;
+
+	uint money = pGame->CurrentPlayer->animatedMoney.value;
+	if (money != m_playerMoneyOld) {
+		buf.Format(L"%d", money);
+		m_playerMoney.SetWindowTextW(buf);
+	}
+	m_playerMoneyOld = money;
+
+	// Update wanted level
+	short copValue = playerPed->copValue;
+	for(int i = 0; i <= 6; i++)
 	{
-		m_pedArmor.SetWindowTextW(L"0");
-		swprintf(buf, 256, L"%d", *pedA);
-		m_pedArmor.SetWindowTextW(buf);
-		pedAOld = *pedA;
+		if (copValue >= wantedLevels[i].maxValue && i < 6) continue;
+		buf.Format(wantedLevels[i].text, copValue);
+		m_pedCopLevel.SetWindowTextW(buf);
+		break;
 	}
 
-	// If player's money changed
-	int *pedM = (int*)(*(DWORD*)(*(DWORD*)0x005eb4fc + 0x38) + 0x2d4); // TEMPORARY
-	if (pedMOld != *pedM)
-	{
-		m_pedMoney.SetWindowTextW(L"0");
-		swprintf(buf, 256, L"%d", *pedM);
-		m_pedMoney.SetWindowTextW(buf);
-		pedMOld = *pedM;
-	}
-
-	// Display police level
-	int Pvalue = playerPed->copValue;
-	if(Pvalue <600) swprintf(buf, 256, L"%d (0) Peace", Pvalue);
-	else if (Pvalue < 1600)  swprintf(buf, 256, L"%d (1) Lite", Pvalue);
-	else if (Pvalue < 3000) swprintf(buf, 256, L"%d (2) All units", Pvalue);
-	else if (Pvalue < 5000)  swprintf(buf, 256, L"%d (3) Barricades", Pvalue);
-	else if (Pvalue < 8000) swprintf(buf, 256, L"%d (4) SWAT", Pvalue);
-	else if (Pvalue < 12000) swprintf(buf, 256, L"%d (5) FBI", Pvalue);
-	else swprintf(buf, 256, L"%d (6) Army!", Pvalue);
-	m_pedCopLevel.SetWindowTextW(buf);
-
-	// Display gangs respect
+	// Update gangs respect
 	DWORD* gangsArr = (DWORD*)0x005eb898;
 	for (int i = 0; i < 3; i++)
 	{
@@ -1458,7 +1453,7 @@ void MainWindow::PedInfo()
 		m_gangRespect[i].Format(L"%d", (char)*gangRespect);
 	}	
 
-	// Display current weapon's ammo and reload time
+	// Update current weapon's ammo and reload time
 	if (playerPed->selectedWeapon)
 	{
 		bool isCarWeapon = playerPed->selectedWeapon->id >= 15;
@@ -1926,19 +1921,20 @@ void MainWindow::SetHealthArmorMoney()
 {
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 	if (!pGame) return;
-	Player* player = pGame->CurrentPlayer;
-	if (!player) return;
 
-	CString buffer;
+	Ped* playerPed = fnGetPedByID(1);
+	if (!playerPed) return;
 
-	m_pedHealth.GetWindowTextW(buffer);
-	fnGetPedByID(1)->health = (int)_ttof(buffer);
+	CString buf;
 
-	m_pedArmor.GetWindowTextW(buffer);
-	player->armor = (int)_ttof(buffer);
+	m_playerHealth.GetWindowTextW(buf);
+	playerPed->health = _wtoi(buf);
 
-	m_pedMoney.GetWindowTextW(buffer);
-	player->animatedMoney.value = (int)_ttof(buffer);
+	m_playerArmor.GetWindowTextW(buf);
+	pGame->CurrentPlayer->armor = _wtoi(buf);
+
+	m_playerMoney.GetWindowTextW(buf);
+	pGame->CurrentPlayer->animatedMoney.value = _wtoi(buf);
 
 	log(L"Player's stats changed!");
 }
