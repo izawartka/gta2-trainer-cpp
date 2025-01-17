@@ -630,6 +630,26 @@ typedef enum CAR_PHYSICS_BITMASK : ushort {
     CAR_PHYSICS_BITMASK_0x2000 = 0x2000
 } CAR_PHYSICS_BITMASK;
 
+typedef enum POWERUP_TYPE : uint {
+    POWERUP_TYPE_MULTIPLIER = 0,
+    POWERUP_TYPE_LIFE = 1,
+    POWERUP_TYPE_HEALTH = 2,
+    POWERUP_TYPE_ARMOR = 3,
+    POWERUP_TYPE_GET_OUTTA_JAIL_FREE_CARD = 4,
+    POWERUP_TYPE_COP_BRIBE = 5,
+    POWERUP_TYPE_INVULNERABILITY = 6,
+    POWERUP_TYPE_DOUBLE_DAMAGE = 7,
+    POWERUP_TYPE_FAST_RELOAD = 8,
+    POWERUP_TYPE_ELECTROFINGERS = 9,
+    POWERUP_TYPE_RESPECT = 10, /* doesn't seem to work with fnGivePowerUp */
+    POWERUP_TYPE_INVISIBILITY = 11,
+    POWERUP_TYPE_INSTANT_GANG = 12,
+    POWERUP_TYPE_13,
+    POWERUP_TYPE_14,
+    POWERUP_TYPE_15,
+    POWERUP_TYPE_16
+} POWERUP_TYPE;
+
 struct PedGroup {
     undefined undefinedFields[52];
     byte membersCount;
@@ -1503,7 +1523,7 @@ struct Ped {
     short field_0x210;
     undefined2 eq_100;
     undefined2 field_0x214;
-    short health;
+    ushort health;
     ushort objectiveTimer; /* will be decrement each game tick, when its 0 then objective is done. For example: steal a car */
     short field_0x21a;
     enum PED_BIT_STATE bitState; /* invisibilty, electrofingers on fire and more  */
@@ -2405,7 +2425,7 @@ typedef struct SaveSlotAnimatedValue SaveSlotAnimatedValue, *PSaveSlotAnimatedVa
 typedef struct S26 S26, *PS26;
 
 struct SaveSlotAnimatedValue { /* Used for animate changing of values */
-    int value;
+    uint value;
     undefined field_0x4;
     undefined field_0x5;
     undefined field_0x6;
@@ -3433,7 +3453,7 @@ struct Player { /* Player actually */
     undefined field_0x6f7;
     undefined field_0x6f8;
     undefined field_0x6f9;
-    short armor;
+    ushort armor;
     short field_0x6fc;
     undefined field_0x6fe;
     undefined field_0x6ff;
@@ -4297,7 +4317,7 @@ struct Menu {
     char gmpFile[256];
     char styFile[256];
     char styFile2[256];
-    char unk2[256];
+    char saveFile[256];
     byte playerArea;
     byte bonusStage;
     undefined field_0x402;
@@ -6335,7 +6355,7 @@ struct S15_script { /* Map or something related to missions */
     undefined4 field_0x338;
     undefined4 field_0x33c;
     undefined4 field_0x340;
-    undefined4 field_0x344;
+    DWORD* missionPtrMaybe;
     undefined4 field_0x348;
     undefined4 field_0x34c;
     undefined4 field_0x350;

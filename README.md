@@ -8,14 +8,16 @@ Some of the main features are:
 - Controlling your character's stats e.g. health, ammo, appearance, walking speed, wanted level, respect
 - Teleporting peds and cars
 - Spawning vehicles
+- Quicksaving the game
 - Customizing your vehicle (color, emblems, damage, physics, invulnerability)
-- Spawning objects (power-ups etc.)
+- Spawning objects (football, generator, tank turret, power-ups etc.)
 - Spawning characters and setting up their AIs, appearance etc.
 - Playing vocals
 - Obtaining weapons (including secret ones)
 - Obtaining car weapons
 - Getting unlimited ammo, no reload delays
 - Using some of the built-in cheats without entering any cheat codes
+- Obtaining power-ups (invisibility, get outta jail free card, etc.)
 - Freely moving in-game camera, freezing its height and zoom
 - A customizable table showing info about all peds and vehicles in real time
 - Hijacking trains:)
@@ -25,7 +27,22 @@ If you just want to play it, go to the [Releases tab](https://github.com/izawart
 the latest gta2-trainer-x.xx.zip. Then copy its contents to your game root folder. Now you just need to run (in windowed mode)
 gta-trainer.exe file instead of gta.exe and you should see the trainer window under the GTA2 window.
 
-If you're having problems with running the game make sure your system has [all needed VC++ Redistributables](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/) installed.
+If you're having problems with running the game make sure your system has [all needed VC++ Redistributables](https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/) installed and you are using [GTA2 v11.44](https://gtamp.com/gta2/) without WideScreenFix or any other mods.
+
+## Key bindings
+- `ALT + W` - Get all weapons
+- `ALT + G` - Spawn GT24640
+- `ALT + T` - Spawn a tank
+- `ALT + J` - Spawn a jeep
+- `ALT + E` - Explode all nearby cars
+- `ALT + P` - Teleport all peds to the player
+- `ALT + O` - Spawn the last spawned object
+- `ALT + C` - Spawn the last spawned car
+- `ALT + H` - Hijack a train
+- `ALT + N` - Watch the next ped (when watching peds)
+- `ALT + B` - Show big text
+- `ALT + D` - Call the debug function (no effect)
+- `ALT + Q` - Save the game
 
 ## Building
 If you want to build it on your own, there is a VS solution included in the repo.

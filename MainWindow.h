@@ -50,29 +50,30 @@ public:
 	HMENU objHMenu;
 	HMENU carHMenu;
 	CEdit m_log;
-	CEdit m_pedX;
-	CEdit m_pedY;
-	CEdit m_pedZ;
-	CEdit m_pedRot;
-	CEdit m_pedSAmmo;
-	CEdit m_pedSType;
-	CEdit m_pedSTime;
+	CString m_pedX;
+	CString m_pedY;
+	CString m_pedZ;
+	CString m_pedRot;
+	CString m_pedWeapAmmo;
+	CString m_pedWeapName;
 	CEdit m_pedCopLevel;
-	CEdit m_carDamage;
-	CEdit m_carID;
-	CEdit m_carVelocity;
-	CEdit m_carVisualData;
-	CEdit m_carEmblem;
+	unsigned int m_carDamage;
+	unsigned int m_carID;
+	unsigned int m_carVelocity;
+	CString m_carVisualData;
+	CString m_carEmblemName;
 	CSliderCtrl m_carEmblemPos;
-	CEdit m_carColor;
-	CEdit m_pedHealth;
-	CEdit m_pedArmor;
-	CEdit m_pedMoney;
+	int m_carColor;
+	CEdit m_playerHealth;
+	ushort m_playerHealthOld = -1;
+	CEdit m_playerArmor;
+	ushort m_playerArmorOld = -1;
+	CEdit m_playerMoney;
+	uint m_playerMoneyOld = -1;
 	CComboBox m_pedRemap;
 	CComboBox m_pedShape;
 	CEdit m_BigText;
-	CEdit m_pedals[3];
-	CEdit m_gangRespect[3];
+	CString m_gangRespect[3];
 	CEdit m_globalPedSpeeds[3];
 
 	void AddCategorizedMenuItems(
@@ -92,6 +93,7 @@ public:
 	);
 
 	// features //
+	void LoadNativeCheatsState();
 
 	// spawn car
 	void SafeSpawnCars(WantToSpawn wtsArray[128], int* wtsArraySize);
@@ -121,33 +123,35 @@ public:
 	afx_msg void OnGetCarWeaponMenuClick(UINT nID);
 	afx_msg void OnPlayVocalMenuClick(UINT nID);
 	afx_msg void OnNativeCheatMenuClick(UINT nID);
+	afx_msg void OnPowerUpMenuClick(UINT nID);
 	afx_msg void OnShowLiveTable();
 	afx_msg void OnShowCamera();
 
-	// currLastCar related
-	Car* currLastCar = 0;
-	Car* currLastCarOld = 0;
+	// lastCar related
+	short m_lastCarIDtest = 0;
+	Car* m_lastCar = 0;
+	Car* m_lastCarOld = 0;
 	void CarEngineOff();
 	void TpToLastCar();
 	void PrintCarInfo();
 	void HijackTrain();
 	void CarMakeDummy();
 
-	// currLastCar's color
+	// lastCar's color
 	afx_msg void CarColorReset();
 	afx_msg void CarColorPlus();
 	afx_msg void CarColorMinus();
 	void CarColorSet(short index);
 	void SyncTrailerColor();
 
-	// currLastCar's damage
+	// lastCar's damage
 	void FixCar();
 	void CarExplode();
 
-	// currLastCar's physics bitmap
+	// lastCar's physics bitmap
 	void CarPhysBitmaskSet(UINT nID);
 	void SetCarPhysBitmask(uint pos, bool value);
-	void CarPhysBitmaskUpdate();
+	void UpdateCarPhysBitmask();
 	int m_carInvAll = 0;
 	int m_carInvBullets = 0;
 	int m_carInvCollisions = 0;
@@ -155,18 +159,17 @@ public:
 	int m_carInvFlames = 0;
 	int m_carNoCollisions = 0;
 
-	// currLastCar's visual damage
+	// lastCar's visual damage
 	void VisFixCar();
 	void VisBreakCar();
 
-	// currLastCar's emblem
+	// lastCar's emblem
 	void CarEmblemPlus();
 	void CarEmblemMinus();
-	Roof* currLastCarEmblem = 0;
-	short currLastCarEmblemID = 0;
-	short currLastCarEmblemLPos = 0;
+	Roof* m_carEmblem = 0;
+	short m_carEmblemID = 0;
 
-	// currLastCar's doors lock
+	// lastCar's doors lock
 	void ToggleDoor(UINT nID);
 	bool doorOpen[4] = { 0,0,0,0 }; // 1 - force open
 
@@ -202,10 +205,6 @@ public:
 	void PedRemapShapeDefault();
 	void PedRemapShapeUpdate();
 
-	// player immortal
-	void PlayerImmortal();
-	bool playerImmortal = 0;
-
 	// other
 	void SetHealthArmorMoney();
 	void TeleportAllPeds();
@@ -213,6 +212,7 @@ public:
 	void FreeShopping();
 	void ShowBigText();
 	void ExplodeCars();
+	void SaveGame();
 	void PreventFPSComprensation(Game* game);
 	afx_msg void OnEnterAsPassengerToggle();
 	int m_enterAsPassenger = 0;
@@ -220,12 +220,14 @@ public:
 	// big functions
 	void FixCheckboxes();
 	void KeepLockedValues();
+	void UpdateCar();
 	void PedInfo();
-	int currLastCarXOld = 0, currLastCarYOld = 0, currLastCarXYShift;
-	int pedHOld = -1, pedAOld = -1, pedMOld = -1;
 
 	// important
+	bool m_isFirstTick = true;
+	void OnFirstGTAGameTick(Game* game);
 	void OnGTAGameTick(Game* game);
+	void OnGTAAfterDebugFlags();
 	void OnGTADraw();
 	void NewFunction();
 };
