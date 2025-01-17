@@ -207,7 +207,6 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_PEDS0TIME, &MainWindow::NoReloads)
 	ON_BN_CLICKED(IDC_CARLASTTP, &MainWindow::TpToLastCar)
 	ON_BN_CLICKED(IDC_CARINFO, &MainWindow::PrintCarInfo)
-	ON_BN_CLICKED(IDC_PEDIMMORT, &MainWindow::PlayerImmortal)
 	ON_BN_CLICKED(ID_COMMANDS_TPALLPEDS, &MainWindow::TeleportAllPeds)
 	ON_COMMAND_RANGE(IDC_GANG1M, IDC_GANG3P, &GangRespect)
 	ON_COMMAND_RANGE(IDC_DOOR1, IDC_DOOR4, &ToggleDoor)
@@ -1222,18 +1221,6 @@ void MainWindow::VisBreakCar()
 	log(L"Broke the car visually");
 }
 
-void MainWindow::PlayerImmortal()
-{
-	Ped* playerPed = fnGetPedByID(1);
-
-	// Return if player ped doesn't exist
-	if (!playerPed)
-		return;
-
-	playerPed->Invulnerability = 9999*(!playerPed->Invulnerability);
-	log(L"Invulnerability %s", (playerPed->Invulnerability) ? L"enabled" : L"disabled");
-}
-
 void MainWindow::UpdateCar()
 {
 	bool carChanged = false;
@@ -1278,7 +1265,7 @@ void MainWindow::UpdateCar()
 		m_carEmblemPos.SetPos(0);
 
 		for (int i = 0; i < 4; i++) {
-			CButton* pButton = (CButton*)GetDlgItem(3075 + i);
+			CButton* pButton = (CButton*)GetDlgItem(IDC_DOOR1 + i);
 			pButton->EnableWindow(false);
 		}
 
@@ -1340,7 +1327,7 @@ void MainWindow::UpdateCar()
 	{
 		if(carChanged) doorOpen[i] = false;
 
-		CButton* pButton = (CButton*)GetDlgItem(3075 + i);
+		CButton* pButton = (CButton*)GetDlgItem(IDC_DOOR1 + i);
 		pButton->EnableWindow(m_lastCar->carDoor[i].doorState != 0);
 
 		if (!doorOpen[i]) continue; 
@@ -1571,7 +1558,7 @@ void MainWindow::WatchNextPed()
 void MainWindow::GangRespect(UINT nID)
 {
 	DWORD* gangsArr = (DWORD*)0x005eb898;
-	int dataInt = (int)nID - 3040;
+	int dataInt = (int)nID - IDC_GANG1M;
 	int gangNo = dataInt / 3;
 
 	char* gangresp;
@@ -1927,11 +1914,6 @@ void MainWindow::FixCheckboxes()
 {
 	Ped* playerPed = fnGetPedByID(1);
 	TrafficManager* trafficManager = (TrafficManager*)*(DWORD*)0x005e4ca4;
-
-	if (playerPed)
-	{
-		((CButton*)GetDlgItem(IDC_PEDIMMORT))->SetCheck(playerPed->Invulnerability);
-	}
 
 	if (trafficManager)
 	{

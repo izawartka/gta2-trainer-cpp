@@ -202,10 +202,6 @@ public:
 	void PedRemapShapeDefault();
 	void PedRemapShapeUpdate();
 
-	// player immortal
-	void PlayerImmortal();
-	bool playerImmortal = 0;
-
 	// other
 	void SetHealthArmorMoney();
 	void TeleportAllPeds();
