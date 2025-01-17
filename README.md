@@ -9,13 +9,14 @@ Some of the main features are:
 - Teleporting peds and cars
 - Spawning vehicles
 - Customizing your vehicle (color, emblems, damage, physics, invulnerability)
-- Spawning objects (power-ups etc.)
+- Spawning objects (football, generator, tank turret, power-ups etc.)
 - Spawning characters and setting up their AIs, appearance etc.
 - Playing vocals
 - Obtaining weapons (including secret ones)
 - Obtaining car weapons
 - Getting unlimited ammo, no reload delays
 - Using some of the built-in cheats without entering any cheat codes
+- Obtaining power-ups (invisibility, get outta jail free card, etc.)
 - Freely moving in-game camera, freezing its height and zoom
 - A customizable table showing info about all peds and vehicles in real time
 - Hijacking trains:)

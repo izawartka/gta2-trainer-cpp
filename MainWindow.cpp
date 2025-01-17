@@ -194,7 +194,8 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_COMMAND_RANGE(ID_GETWEAP, ID_GETCARWEAP - 1, &OnGetWeaponMenuClick)
 	ON_COMMAND_RANGE(ID_GETCARWEAP, ID_VOCALS - 1, &OnGetCarWeaponMenuClick)
 	ON_COMMAND_RANGE(ID_VOCALS, ID_NATIVE - 1, &OnPlayVocalMenuClick)
-	ON_COMMAND_RANGE(ID_NATIVE, ID_NATIVE + 256, &OnNativeCheatMenuClick)
+	ON_COMMAND_RANGE(ID_NATIVE, ID_POWERUP - 1, &OnNativeCheatMenuClick)
+	ON_COMMAND_RANGE(ID_POWERUP, ID_POWERUP + 256, &OnPowerUpMenuClick)
 	ON_COMMAND(ID_COMMANDS_GUNJEEP, &MainWindow::OnSpawnCarGunjeep)
 	ON_COMMAND(ID_COMMANDS_GT24640, &MainWindow::OnSpawnCarGT24640)
 	ON_BN_CLICKED(IDC_CARENGINEOFF, &MainWindow::CarEngineOff)
@@ -426,6 +427,12 @@ int MainWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	AddMenuItems(nativeCheatsMenu, nativeCheats, sizeof(nativeCheats) / sizeof(nativeCheats[0]), ID_NATIVE_START);
 	AppendMenu(menu->m_hMenu, MF_POPUP, (UINT_PTR)nativeCheatsMenu->m_hMenu, L"Native cheats");
 	this->ncHMenu = nativeCheatsMenu->m_hMenu;
+
+	// Create the "Power-ups" menu
+	CMenu* powerUpsMenu = new CMenu();
+	powerUpsMenu->CreatePopupMenu();
+	AddMenuItems(powerUpsMenu, powerUps, sizeof(powerUps) / sizeof(powerUps[0]), ID_POWERUP_START);
+	AppendMenu(menu->m_hMenu, MF_POPUP, (UINT_PTR)powerUpsMenu->m_hMenu, L"Power-ups");
 
 	return 0;
 }
@@ -978,6 +985,19 @@ void MainWindow::OnNativeCheatMenuClick(UINT nID) {
 
 	CString stringValue = *cheat ? L"1" : L"0";
 	WriteProfileString(L"NativeCheats", std::to_wstring(ID).c_str(), stringValue);
+}
+
+void MainWindow::OnPowerUpMenuClick(UINT nID)
+{
+	Game* game = (Game*)*(DWORD*)ptrToGame;
+	if(!game) return;
+
+	Player* player = game->CurrentPlayer;
+	if(!player) return;
+
+	POWERUP_TYPE type = (POWERUP_TYPE)(nID - ID_POWERUP_START);
+	fnGivePowerUp(player, 0, type);
+	log(L"%s powerup given", powerUps[type].name);
 }
 
 void MainWindow::OnShowLiveTable()

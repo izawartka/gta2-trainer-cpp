@@ -121,6 +121,7 @@ public:
 	afx_msg void OnGetCarWeaponMenuClick(UINT nID);
 	afx_msg void OnPlayVocalMenuClick(UINT nID);
 	afx_msg void OnNativeCheatMenuClick(UINT nID);
+	afx_msg void OnPowerUpMenuClick(UINT nID);
 	afx_msg void OnShowLiveTable();
 	afx_msg void OnShowCamera();
 

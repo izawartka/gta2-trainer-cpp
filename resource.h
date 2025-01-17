@@ -199,6 +199,8 @@
 #define ID_VOCALS_START                 37201
 #define ID_NATIVE                       38000
 #define ID_NATIVE_START                 38001
+#define ID_POWERUP                      39000
+#define ID_POWERUP_START                39001
 
 // Next default values for new objects
 // 

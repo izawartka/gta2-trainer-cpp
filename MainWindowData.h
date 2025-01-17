@@ -16,7 +16,7 @@ const LPCTSTR objectsCategories[] = {
 		L"Basic objects",           // 0
 		L"Weapon collectibles",     // 1
 		L"Car Weapon collectibles", // 2
-		L"Power-Ups",				// 3
+		L"Power-ups",				// 3
 		L"Skids",					// 4
 		L"Projectiles",				// 5
 		L"Phones",					// 6
@@ -468,7 +468,7 @@ const MenuItem nativeCheats[] = {
 	{L"Show junctions IDs", 0x89},
 	// {L"Max respect", 0x8A}, // requires restart
 	{L"Skip fire engines", 0x8B},
-	{L"No top tiles", 0x8C},
+	{L"Skip top tiles", 0x8C},
 	{L"Show ped info", 0x8D},
 	// {L"Invisibility", 0x8E}, // requires restart
 	// {L"Health 99", 0x8F}, // requires restart
@@ -508,6 +508,26 @@ const MenuItem nativeCheats[] = {
 	{L"Show collision box", 0xB1}, // ?
 	{L"Show all arrows", 0xB2},
 	{L"Kill phones on answer", 0xB3}, // ?
+};
+
+const MenuItem powerUps[] = {
+	{L"Multiplier +1", 0},
+	{L"Life +1", 1},
+	{L"Health", 2},
+	{L"Armor", 3},
+	{L"Get Outta Jail Free Card", 4},
+	{L"Cop Bribe", 5},
+	{L"Invulnerability*", 6},
+	{L"Double Damage", 7},
+	{L"Fast Reload", 8},
+	{L"ElectroFingers", 9},
+	// {L"Respect!", 10}, // doesn't work
+	{L"Invisibility", 11},
+	{L"Instant Gang", 12},
+	{L"Letter N", 13},
+	{L"Letter O", 14},
+	{L"Letter P", 15},
+	{L"Letter Q", 16}
 };
 
 struct PedProperty {

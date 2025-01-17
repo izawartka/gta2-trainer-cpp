@@ -230,6 +230,11 @@ static MatrixTransform3Advanced* fnMatrixTransform3Advanced = (MatrixTransform3A
 typedef int(SetGamma)(int param_1);
 static SetGamma* fnSetGamma = (SetGamma*)0x004cb930;
 
+// 004a5780
+// uint __thiscall GivePowerUp(Player *this,POWERUP_TYPE type)
+typedef uint(__fastcall GivePowerUp)(Player* player, DWORD edx, POWERUP_TYPE type);
+static GivePowerUp* fnGivePowerUp = (GivePowerUp*)0x004a5780;
+
 void fnShowCustomTextMessage(WCHAR* message);
 Roof* getCarRoofWithSpriteIfExists(Roof* startroof, short spritetype);
 Roof* getCarLastRoof(Roof* startroof);
