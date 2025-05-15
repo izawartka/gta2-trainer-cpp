@@ -27,6 +27,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	static MainWindow* m_instance;
+
 	// technical //
 	MainWindow(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~MainWindow();

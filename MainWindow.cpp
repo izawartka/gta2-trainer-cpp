@@ -5,6 +5,8 @@
 #include "gta2dll.h"
 #include "MainWindow.h"
 #include "afxdialogex.h"
+#include "HookHelper.h"
+#include "Hooks.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -16,123 +18,15 @@
 #include <d3d9.h>
 
 // MainWindow dialog
-BOOL HookFunction(const DWORD originalFn, DWORD hookFn, size_t copyBytes = 5);
 
-MainWindow* mainWnd = nullptr;
-
-BOOL HookFunction(const DWORD originalFn, DWORD hookFn, size_t copyBytes) {
-	DWORD OldProtection = { 0 };
-	BOOL success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)hookFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
-	if (!success) {
-		DWORD error = GetLastError();
-		return 0;
-	}
-
-	size_t i;
-
-	for (i = 0; i < copyBytes; i++) {
-		*(BYTE*)((LPBYTE)hookFn + i) = *(BYTE*)((LPBYTE)originalFn + i);
-	}
-
-	success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)originalFn, copyBytes, PAGE_EXECUTE_READWRITE, &OldProtection);
-	if (!success) {
-		DWORD error = GetLastError();
-		return 0;
-	}
-
-	Game* pGame = (Game*)*(DWORD*)ptrToGame;
-
-	//if (pGame && pGame->gameStatus)
-	{
-		*(BYTE*)((LPBYTE)originalFn) = 0xE9; //JMP FAR
-		DWORD offset = (((DWORD)hookFn) - ((DWORD)originalFn + 5)); //Offset math.
-		*(DWORD*)((LPBYTE)originalFn + 1) = offset;
-
-		for (i = 5; i < copyBytes; i++) {
-			*(BYTE*)((LPBYTE)originalFn + i) = 0x90; //JMP FAR
-		}
-	}
-
-	return 1;
-}
-
-static __declspec(naked) void gameTick(void) {
-	// this will be replaced by original 5 bytes
-	__asm {
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-	}
-
-	// OutputDebugStringA("gameTick\n");
-	mainWnd->OnGTAGameTick((Game*)*(DWORD*)ptrToGame);
-
-	__asm {
-		MOV EAX, pGameTick
-		add eax, 5
-		JMP EAX
-	}
-
-}
-
-static __declspec(naked) void drawChat(void) {
-	// this will be replaced by original 5 bytes
-	__asm {
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-	}
-
-	// OutputDebugStringA("draw\n");
-	mainWnd->OnGTADraw();
-
-	__asm {
-		mov eax, pDrawChat
-		add eax, 5
-		jmp eax
-	}
-
-}
-
-static __declspec(naked) void afterDebugFlags(LPCSTR stringVal) {
-	// this will be replaced by original 5 bytes
-	__asm {
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-	}
-
-	mainWnd->OnGTAAfterDebugFlags();
-
-	__asm {
-		MOV EAX, pAfterDebugFlags
-		add eax, 5
-		JMP EAX
-	}
-
-}
+MainWindow* MainWindow::m_instance = nullptr;
 
 IMPLEMENT_DYNAMIC(MainWindow, CDialogEx)
 
 MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG1, pParent)
 {
-	mainWnd = this;
+	m_instance = this;
 
 	Game* pGame = (Game*)*(DWORD*)ptrToGame;
 
@@ -152,9 +46,9 @@ MainWindow::MainWindow(CWnd* pParent /*=nullptr*/)
 	m_cameraWindow->Create(IDD_CAM, this);
 	m_cameraWindow->m_mainWindow = this;
 
-	HookFunction(pGameTick, (DWORD)gameTick);
-	HookFunction(pAfterDebugFlags, (DWORD)afterDebugFlags);
-	//HookFunction(pDrawChat, (DWORD)drawChat, 7);
+	HookHelper::HookFunction(pGameTick, (DWORD)Hooks::gameTick);
+	HookHelper::HookFunction(pAfterDebugFlags, (DWORD)Hooks::afterDebugFlags);
+	//HookHelper::HookFunction(pDrawChat, (DWORD)Hooks::drawChat, 7);
 }
 
 MainWindow::~MainWindow()

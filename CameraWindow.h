@@ -35,6 +35,7 @@ protected:
 	afx_msg void OnShadowsChange();
 	afx_msg void OnNightChange();
 	afx_msg void OnNoLightsChange();
+	afx_msg void OnRotationModeChange(UINT nID);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg LRESULT OnMoveButton(WPARAM wParam, LPARAM lParam);
 

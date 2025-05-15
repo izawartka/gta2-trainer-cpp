@@ -2,6 +2,7 @@
 #include "gta2dll.h"
 #include "CameraWindow.h"
 #include "gta2-helper.h"
+#include "CameraHooks.h"
 
 CameraWindow* camWnd = nullptr;
 
@@ -33,6 +34,7 @@ BEGIN_MESSAGE_MAP(CameraWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CAM_SHADOWS, &CameraWindow::OnShadowsChange)
 	ON_BN_CLICKED(IDC_CAM_NIGHT, &CameraWindow::OnNightChange)
 	ON_BN_CLICKED(IDC_CAM_NOLIGHTS, &CameraWindow::OnNoLightsChange)
+	ON_COMMAND_RANGE(IDC_CAM_RM, IDC_CAM_RM_LAST, &CameraWindow::OnRotationModeChange)
 	ON_MESSAGE(WM_CAMERA_MOVE_BTN, &CameraWindow::OnMoveButton)
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
@@ -73,6 +75,8 @@ BOOL CameraWindow::OnInitDialog()
 	m_night = *(BYTE*)0x00595011 == 1 ? 1 : 0;
 
 	ApplyShadowsDistanceFix();
+
+	CheckRadioButton(IDC_CAM_RM, IDC_CAM_RM_LAST, IDC_CAM_RM_DEF);
 
 	return TRUE;
 }
@@ -150,6 +154,7 @@ void CameraWindow::OnGTAGameTick()
 
 	HandleButtonMove();
 	UpdateShadowsDistance();
+	CameraHooks::update();
 }
 
 void CameraWindow::ApplyShadowsDistanceFix()
@@ -285,6 +290,19 @@ void CameraWindow::OnNoLightsChange()
 {
 	UpdateData(TRUE);
 	SetNoLights(m_noLights == 1);
+}
+
+void CameraWindow::OnRotationModeChange(UINT nID)
+{
+	switch (nID) {
+	case IDC_CAM_RM_DEF:
+		CameraHooks::setEnabled(false);
+		break;
+	case IDC_CAM_RM_ROT:
+		CameraHooks::setEnabled(true);
+		CameraHooks::init();
+		break;
+	}
 }
 
 void CameraWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)

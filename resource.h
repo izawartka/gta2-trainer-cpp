@@ -172,6 +172,10 @@
 #define IDC_CAM_SHADOWS                 6020
 #define IDC_CAM_NOLIGHTS                6021
 #define IDC_CAM_NIGHT                   6022
+#define IDC_CAM_RM                      6023
+#define IDC_CAM_RM_DEF                  6023
+#define IDC_CAM_RM_ROT                  6024
+#define IDC_CAM_RM_LAST                 6024
 #define ID_COMMANDS_HELLO               32000
 #define ID_COMMANDS_TANK                32001
 #define ID_COMMANDS_GUNJEEP             32002
@@ -209,7 +213,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3019
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         3136
+#define _APS_NEXT_CONTROL_VALUE         3137
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
