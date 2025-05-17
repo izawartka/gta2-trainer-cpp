@@ -64,14 +64,17 @@ protected:
 	int m_lockZ = 0;
 	int m_lockZoom = 0;
 	int m_lockToTarget = 0;
-	CameraMoveBtn m_moveBtns[6];
+	CameraMoveBtn m_moveBtns[8];
 	UINT m_btnMoveDirection = 0;
 	CSliderCtrl m_sensitivitySlider;
+	CSliderCtrl m_horAngleSlider;
 	int m_sensitivity = 10;
 	int m_antialiasing = 1;
 	int m_shadows = 1;
 	int m_noLights = 0;
 	int m_night = 0;
+	int m_followRotation = 0;
+	int m_forceClearScreen = 0;
 
 	int m_shadowsDummyUIScale = 32768;
 };

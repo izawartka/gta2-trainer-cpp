@@ -3,6 +3,8 @@
 #include "CameraWindow.h"
 #include "gta2-helper.h"
 #include "CameraHooks.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 CameraWindow* camWnd = nullptr;
 
@@ -29,6 +31,8 @@ BEGIN_MESSAGE_MAP(CameraWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CAM_ZL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_ZOOML, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TARL, &CameraWindow::OnCheckboxChange)
+	ON_BN_CLICKED(IDC_CAM_ROTF, &CameraWindow::OnCheckboxChange)
+	ON_BN_CLICKED(IDC_CAM_CLEAR, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TP, &CameraWindow::OnTeleport)    
 	ON_BN_CLICKED(IDC_CAM_AA, &CameraWindow::OnAntialiasingChange)
 	ON_BN_CLICKED(IDC_CAM_SHADOWS, &CameraWindow::OnShadowsChange)
@@ -52,10 +56,13 @@ void CameraWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CAM_ZOOML, m_lockZoom);
 	DDX_Check(pDX, IDC_CAM_TARL, m_lockToTarget);
 	DDX_Control(pDX, IDC_CAM_SEN, m_sensitivitySlider);
+	DDX_Control(pDX, IDC_CAM_HOR_ANGLE, m_horAngleSlider);
 	DDX_Check(pDX, IDC_CAM_AA, m_antialiasing);
 	DDX_Check(pDX, IDC_CAM_SHADOWS, m_shadows);
 	DDX_Check(pDX, IDC_CAM_NIGHT, m_night);
 	DDX_Check(pDX, IDC_CAM_NOLIGHTS, m_noLights);
+	DDX_Check(pDX, IDC_CAM_ROTF, m_followRotation);
+	DDX_Check(pDX, IDC_CAM_CLEAR, m_forceClearScreen);
 }
 
 BOOL CameraWindow::OnInitDialog()
@@ -68,15 +75,21 @@ BOOL CameraWindow::OnInitDialog()
 	m_moveBtns[3].SubclassDlgItem(IDC_CAM_RIGHT, this);
 	m_moveBtns[4].SubclassDlgItem(IDC_CAM_ZUP, this);
 	m_moveBtns[5].SubclassDlgItem(IDC_CAM_ZDOWN, this);
+	m_moveBtns[6].SubclassDlgItem(IDC_CAM_RL, this);
+	m_moveBtns[7].SubclassDlgItem(IDC_CAM_RR, this);
 
 	m_sensitivitySlider.SetRange(1, 100);
 	m_sensitivitySlider.SetPos(m_sensitivity);
+
+	m_horAngleSlider.SetRange(0, 90);
+	m_horAngleSlider.SetPos(0);
 
 	m_night = *(BYTE*)0x00595011 == 1 ? 1 : 0;
 
 	ApplyShadowsDistanceFix();
 
 	CheckRadioButton(IDC_CAM_RM, IDC_CAM_RM_LAST, IDC_CAM_RM_DEF);
+	OnRotationModeChange(IDC_CAM_RM_DEF);
 
 	return TRUE;
 }
@@ -110,6 +123,8 @@ void CameraWindow::OnCheckboxChange()
 
 	UpdateData(TRUE);
 	m_player->ph1.followedPedID = m_followPlayer == 1 ? 1 : 0;
+	CameraHooks::setFollowRotation(m_followRotation);
+	CameraHooks::setForceClearScreen(m_forceClearScreen);
 }
 
 void CameraWindow::OnGTAGameTick()
@@ -154,7 +169,7 @@ void CameraWindow::OnGTAGameTick()
 
 	HandleButtonMove();
 	UpdateShadowsDistance();
-	CameraHooks::update();
+	CameraHooks::update(m_player ? &m_player->ph1 : nullptr);
 }
 
 void CameraWindow::ApplyShadowsDistanceFix()
@@ -181,6 +196,8 @@ void CameraWindow::HandleButtonMove()
 	if (m_btnMoveDirection == 0) return;
 	float moveSpeed = m_sensitivity / 100.0f;
 
+	bool rotInput = false;
+
 	switch (m_btnMoveDirection)
 	{
 	case IDC_CAM_UP:
@@ -201,10 +218,25 @@ void CameraWindow::HandleButtonMove()
 	case IDC_CAM_ZDOWN:
 		m_zPos -= moveSpeed;
 		break;
+	case IDC_CAM_RL:
+		CameraHooks::addAngle(moveSpeed / M_PI);
+		rotInput = true;
+		break;
+	case IDC_CAM_RR:
+		CameraHooks::addAngle(-moveSpeed / M_PI);
+		rotInput = true;
+		break;
 	}
 
-	UpdateData(FALSE);
-	OnPositionInput();
+	if (rotInput) {
+		CameraHooks::setFollowRotation(false);
+		m_followRotation = false;
+		UpdateData(FALSE);
+	}
+	else {
+		UpdateData(FALSE);
+		OnPositionInput();
+	}
 }
 
 void CameraWindow::SetAntialiasing(bool enable)
@@ -294,15 +326,49 @@ void CameraWindow::OnNoLightsChange()
 
 void CameraWindow::OnRotationModeChange(UINT nID)
 {
+	CameraHookMode mode = CameraHookMode::Disabled;
+
 	switch (nID) {
 	case IDC_CAM_RM_DEF:
-		CameraHooks::setEnabled(false);
+		mode = CameraHookMode::Disabled;
 		break;
 	case IDC_CAM_RM_ROT:
-		CameraHooks::setEnabled(true);
-		CameraHooks::init();
+		mode = CameraHookMode::Rotate;
+		break;
+	case IDC_CAM_RM_3D:
+		mode = CameraHookMode::Full3D;
 		break;
 	}
+
+	CameraHooks::setMode(mode);
+
+	if (mode < CameraHookMode::Rotate) {
+
+		GetDlgItem(IDC_CAM_ROTF)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CAM_RL)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CAM_RR)->EnableWindow(FALSE);
+		m_followRotation = false;
+		CameraHooks::setFollowRotation(false);
+		CameraHooks::setAngle(0);
+	}
+	else {
+		GetDlgItem(IDC_CAM_ROTF)->EnableWindow(TRUE);
+		GetDlgItem(IDC_CAM_RL)->EnableWindow(TRUE);
+		GetDlgItem(IDC_CAM_RR)->EnableWindow(TRUE);
+		m_forceClearScreen = true;
+		CameraHooks::setForceClearScreen(true);
+	}
+
+	if (mode < CameraHookMode::Full3D) {
+		CameraHooks::setHorAngle(0);
+		m_horAngleSlider.SetPos(0);
+		m_horAngleSlider.EnableWindow(FALSE);
+	}
+	else {
+		m_horAngleSlider.EnableWindow(TRUE);
+	}
+
+	UpdateData(FALSE);
 }
 
 void CameraWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
@@ -310,6 +376,12 @@ void CameraWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	if (pScrollBar->GetDlgCtrlID() == IDC_CAM_SEN)
 	{
 		m_sensitivity = ((CSliderCtrl*)pScrollBar)->GetPos();
+	}
+
+	if (pScrollBar->GetDlgCtrlID() == IDC_CAM_HOR_ANGLE)
+	{
+		float angle = ((CSliderCtrl*)pScrollBar)->GetPos() / 180.0f * M_PI;
+		CameraHooks::setHorAngle(angle);
 	}
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);

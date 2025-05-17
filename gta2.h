@@ -931,7 +931,7 @@ struct S33 {
     Car car;
 };
 
-struct QuadVertex {
+struct GTAVertex {
     float x;
     float y;
     float z;
@@ -1115,7 +1115,7 @@ struct CameraOrPhysics {
     int screenPxWidth;
     int screenPxHeight;
     int screenPxCenterX;
-    int screenPxCenter;
+    int screenPxCenterY;
     WorldRect cameraBoundariesNonNegative;
     CameraPos cameraPos2;
     CameraPos cameraPos;
