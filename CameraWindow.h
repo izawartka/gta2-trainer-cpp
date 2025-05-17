@@ -28,6 +28,8 @@ protected:
 
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnPositionInput();
+	afx_msg void OnZoomInput();
+	afx_msg void OnZInput();
 	afx_msg void OnCheckboxChange();
 	afx_msg void OnGoToTargetClick();
 	afx_msg void OnTeleport();

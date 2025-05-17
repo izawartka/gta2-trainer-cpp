@@ -24,8 +24,8 @@ CameraWindow::~CameraWindow()
 BEGIN_MESSAGE_MAP(CameraWindow, CDialogEx)
 	ON_EN_CHANGE(IDC_CAM_X, &CameraWindow::OnPositionInput)
 	ON_EN_CHANGE(IDC_CAM_Y, &CameraWindow::OnPositionInput)
-	ON_EN_CHANGE(IDC_CAM_Z, &CameraWindow::OnPositionInput)
-	ON_EN_CHANGE(IDC_CAM_ZOOM, &CameraWindow::OnPositionInput)
+	ON_EN_CHANGE(IDC_CAM_Z, &CameraWindow::OnZInput)
+	ON_EN_CHANGE(IDC_CAM_ZOOM, &CameraWindow::OnZoomInput)
 	ON_BN_CLICKED(IDC_CAM_SYNC, &CameraWindow::OnGoToTargetClick)
 	ON_BN_CLICKED(IDC_CAM_FPL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_ZL, &CameraWindow::OnCheckboxChange)
@@ -108,11 +108,34 @@ void CameraWindow::OnPositionInput()
 
 	m_player->ph1.cameraPos.x = FloatEncode(m_xPos);
 	m_player->ph1.cameraPos.y = FloatEncode(m_yPos);
-	m_player->ph1.cameraPos.z = FloatEncode(m_zPos);
-	m_player->ph1.cameraPos.zoom = m_zoom;
 
+	m_lockToTarget = 0;
 	m_followPlayer = 0;
 	m_player->ph1.followedPedID = 0;
+
+	UpdateData(FALSE);
+}
+
+void CameraWindow::OnZoomInput()
+{
+	if (!m_player) return;
+
+	UpdateData(TRUE);
+
+	m_player->ph1.cameraPos.zoom = m_zoom;
+	m_lockZoom = 1;
+
+	UpdateData(FALSE);
+}
+
+void CameraWindow::OnZInput()
+{
+	if (!m_player) return;
+
+	UpdateData(TRUE);
+
+	m_player->ph1.cameraPos.z = FloatEncode(m_zPos);
+	m_lockZ = 1;
 
 	UpdateData(FALSE);
 }
@@ -150,7 +173,9 @@ void CameraWindow::OnGTAGameTick()
 	m_yPos = FloatDecode(m_player->ph1.cameraPos.y);
 
 	if (m_lockZ) {
-		m_player->ph1.cameraPos.z = FloatEncode(m_zPos);
+		float z = FloatEncode(m_zPos);
+		m_player->ph1.cameraPos.z = z;
+		m_player->ph1.cameraPosTarget.z = z;
 	}
 	else {
 		m_zPos = FloatDecode(m_player->ph1.cameraPos.z);
@@ -158,6 +183,7 @@ void CameraWindow::OnGTAGameTick()
 
 	if (m_lockZoom) {
 		m_player->ph1.cameraPos.zoom = m_zoom;
+		m_player->ph1.cameraPosTarget.zoom = m_zoom;
 	}
 	else {
 		m_zoom = m_player->ph1.cameraPos.zoom;
@@ -196,46 +222,50 @@ void CameraWindow::HandleButtonMove()
 	if (m_btnMoveDirection == 0) return;
 	float moveSpeed = m_sensitivity / 100.0f;
 
-	bool rotInput = false;
-
 	switch (m_btnMoveDirection)
 	{
 	case IDC_CAM_UP:
 		m_yPos -= moveSpeed;
+		UpdateData(FALSE);
+		OnPositionInput();
 		break;
 	case IDC_CAM_DOWN:
 		m_yPos += moveSpeed;
+		UpdateData(FALSE);
+		OnPositionInput();
 		break;
 	case IDC_CAM_LEFT:
 		m_xPos -= moveSpeed;
+		UpdateData(FALSE);
+		OnPositionInput();
 		break;
 	case IDC_CAM_RIGHT:
 		m_xPos += moveSpeed;
+		UpdateData(FALSE);
+		OnPositionInput();
 		break;
 	case IDC_CAM_ZUP:
 		m_zPos += moveSpeed;
+		UpdateData(FALSE);
+		OnZInput();
 		break;
 	case IDC_CAM_ZDOWN:
-		m_zPos -= moveSpeed;
+		m_zPos -= moveSpeed; 
+		UpdateData(FALSE);
+		OnZInput();
 		break;
 	case IDC_CAM_RL:
-		CameraHooks::addAngle(moveSpeed / M_PI);
-		rotInput = true;
-		break;
-	case IDC_CAM_RR:
-		CameraHooks::addAngle(-moveSpeed / M_PI);
-		rotInput = true;
-		break;
-	}
-
-	if (rotInput) {
+		CameraHooks::addAngle(moveSpeed / M_PI); 
 		CameraHooks::setFollowRotation(false);
 		m_followRotation = false;
 		UpdateData(FALSE);
-	}
-	else {
+		break;
+	case IDC_CAM_RR:
+		CameraHooks::addAngle(-moveSpeed / M_PI);
+		CameraHooks::setFollowRotation(false);
+		m_followRotation = false;
 		UpdateData(FALSE);
-		OnPositionInput();
+		break;
 	}
 }
 
