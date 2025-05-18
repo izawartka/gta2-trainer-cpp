@@ -1,3 +1,5 @@
+#pragma once
+
 typedef unsigned char   undefined;
 
 typedef unsigned int    ImageBaseOffset32;
@@ -929,6 +931,17 @@ struct S33 {
     Car car;
 };
 
+struct GTAVertex {
+    float x;
+    float y;
+    float z;
+    undefined4 field_0x0c;
+    undefined4 field_0x10;
+    undefined4 field_0x14;
+    undefined4 field_0x18;
+    undefined4 field_0x1c;
+};
+
 // END OF ADDED IN FILE //
 
 struct GameObject {
@@ -1102,7 +1115,7 @@ struct CameraOrPhysics {
     int screenPxWidth;
     int screenPxHeight;
     int screenPxCenterX;
-    int screenPxCenter;
+    int screenPxCenterY;
     WorldRect cameraBoundariesNonNegative;
     CameraPos cameraPos2;
     CameraPos cameraPos;

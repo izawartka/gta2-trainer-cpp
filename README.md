@@ -18,7 +18,8 @@ Some of the main features are:
 - Getting unlimited ammo, no reload delays
 - Using some of the built-in cheats without entering any cheat codes
 - Obtaining power-ups (invisibility, get outta jail free card, etc.)
-- Freely moving in-game camera, freezing its height and zoom
+- Freely moving and rotating(!) in-game camera, freezing its height and zoom
+- Modifying rendering options like screen clearing, anti-aliasing, shadows, lights
 - A customizable table showing info about all peds and vehicles in real time
 - Hijacking trains:)
 

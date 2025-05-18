@@ -208,11 +208,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ACSWindow.cpp" />
+    <ClCompile Include="CameraHooks.cpp" />
     <ClCompile Include="CameraMoveBtn.cpp" />
     <ClCompile Include="CameraWindow.cpp" />
     <ClCompile Include="gta2-helper.cpp" />
     <ClCompile Include="gta2dll.cpp" />
-    <ClCompile Include="Hooking.Patterns.cpp" />
+    <ClCompile Include="HookHelper.cpp" />
+    <ClCompile Include="Hooks.cpp" />
     <ClCompile Include="LiveTable\LiveTableData.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../pch.h</PrecompiledHeaderFile>
@@ -251,13 +253,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ACSWindow.h" />
+    <ClInclude Include="CameraHooks.h" />
     <ClInclude Include="CameraMoveBtn.h" />
     <ClInclude Include="CameraWindow.h" />
     <ClInclude Include="gta2-helper.h" />
     <ClInclude Include="gta2.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="gta2dll.h" />
-    <ClInclude Include="Hooking.Patterns.h" />
+    <ClInclude Include="HookHelper.h" />
+    <ClInclude Include="Hooks.h" />
     <ClInclude Include="LiveTable\LiveTableData.h" />
     <ClInclude Include="LiveTable\LiveTableEditWindow.h" />
     <ClInclude Include="LiveTable\LiveTableHelper.h" />
