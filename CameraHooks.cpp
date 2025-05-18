@@ -207,8 +207,7 @@ void CameraHooks::update(CameraOrPhysics* gameCamera)
 	if (gameCamera) {
 		m_gameCameraZ = FloatDecode(gameCamera->cameraPos.z);
 		m_gameCameraField60 = FloatDecode(gameCamera->altMovingArrowsRelated);
-		SCR_f playerOffset = (playerPed ? playerPed->z : 0);
-		m_horRotationCenterZ = FloatDecode(playerOffset) - 1.0f;
+		m_horRotationCenterZ = FloatDecode(playerPed ? playerPed->z : 0);
 	}
 
 	updateFollowRotation(playerPed);
