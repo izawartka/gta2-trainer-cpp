@@ -8,6 +8,7 @@
 
 CameraHookMode CameraHooks::m_mode = CameraHookMode::Disabled;
 bool CameraHooks::m_followRotation = false;
+bool CameraHooks::m_disableCulling = false;
 bool CameraHooks::m_forceClearScreen = false;
 float CameraHooks::m_gameCameraZ = 0;
 float CameraHooks::m_gameCameraField60 = 0;
@@ -222,6 +223,35 @@ void CameraHooks::setForceClearScreen(bool value)
 	if (value) { // hook if not already
 		HookHelper::HookFunctionCall(0x00461977, (DWORD)clearScreen, false);
 	}
+}
+
+static HookHelper::HookStruct disableCullingHooks[] = {
+	{0x0046c661, 6}, // DrawLeftTile
+	{0x0046c327, 6},
+	{0x0046c495, 6},
+	{0x0046de19, 6}, // DrawBottomTile
+	{0x0046da31, 6},
+	{0x0046dbfa, 6},
+	{0x0046c661, 6}, // DrawLeftTile
+	{0x0046c327, 6},
+	{0x0046c495, 6},
+	{0x0046cc71, 6}, // DrawRightTile
+	{0x0046c87f, 6},
+	{0x0046ca4d, 6},
+	{0x0046d1d2, 6}, // DrawTopTile
+	{0x0046ce99, 6},
+	{0x0046d006, 6}
+
+};
+
+void CameraHooks::setDisableCulling(bool value)
+{
+	if (m_disableCulling == value) return;
+
+	m_disableCulling = value;
+
+	size_t count = sizeof(disableCullingHooks) / sizeof(disableCullingHooks[0]);
+	HookHelper::ReplaceMultipleWithNoOps(disableCullingHooks, count, !value);
 }
 
 void CameraHooks::setMode(CameraHookMode mode)

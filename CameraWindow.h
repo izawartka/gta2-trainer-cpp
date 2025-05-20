@@ -77,6 +77,7 @@ protected:
 	int m_night = 0;
 	int m_followRotation = 0;
 	int m_forceClearScreen = 0;
+	int m_disableCulling = 0;
 
 	int m_shadowsDummyUIScale = 32768;
 };

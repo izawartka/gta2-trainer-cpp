@@ -177,6 +177,7 @@
 #define IDC_CAM_RR                      6025
 #define IDC_CAM_RL                      6026
 #define IDC_CAM_ROTF                    6027
+#define IDC_CAM_DCULL                   6028
 #define IDC_CAM_RM                      6100
 #define IDC_CAM_RM_DEF                  6100
 #define IDC_CAM_RM_ROT                  6101
