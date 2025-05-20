@@ -232,9 +232,6 @@ static HookHelper::HookStruct disableCullingHooks[] = {
 	{0x0046de19, 6}, // DrawBottomTile
 	{0x0046da31, 6},
 	{0x0046dbfa, 6},
-	{0x0046c661, 6}, // DrawLeftTile
-	{0x0046c327, 6},
-	{0x0046c495, 6},
 	{0x0046cc71, 6}, // DrawRightTile
 	{0x0046c87f, 6},
 	{0x0046ca4d, 6},

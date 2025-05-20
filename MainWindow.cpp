@@ -1856,6 +1856,9 @@ void MainWindow::SaveGame()
 		return;
 	}
 
+	Ped* playerPed = fnGetPedByID(1);
+	if (!playerPed) return;
+
 	S15_script* s15 = (S15_script*)*(DWORD*)ptrToS15;
 	if(s15 == nullptr) return;
 
@@ -1867,9 +1870,13 @@ void MainWindow::SaveGame()
 		return;
 	}
 
+	playerPed->y -= FloatEncode(1.0);
+
 	Menu* menu = (Menu*)ptrToMenu;
 	fnSaveGame(s15, 0, menu->saveFile);
 	log(L"Game saved");
+
+	playerPed->y += FloatEncode(1.0);
 }
 
 void MainWindow::PreventFPSComprensation(Game* game) {
