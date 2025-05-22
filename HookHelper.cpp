@@ -24,7 +24,7 @@ bool HookHelper::HookFunction(const DWORD originalFn, DWORD hookFn, size_t copyB
 	*(DWORD*)((LPBYTE)originalFn + 1) = offset;
 
 	for (size_t i = 5; i < copyBytes; i++) {
-		*(BYTE*)((LPBYTE)originalFn + i) = 0x90; //JMP FAR
+		*(BYTE*)((LPBYTE)originalFn + i) = 0x90; //NOP
 	}
 
 	return true;
@@ -52,4 +52,64 @@ bool HookHelper::HookLibraryFunctionCall(const DWORD originalFnPtrAddr, DWORD ho
 	*(DWORD*)originalFnPtrAddr = hookFn;
 
 	return true;
+}
+
+bool HookHelper::ReplaceWithNoOps(const DWORD address, size_t size)
+{
+	DWORD OldProtection = { 0 };
+	bool success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)address, size, PAGE_EXECUTE_READWRITE, &OldProtection);
+	if (!success) {
+		DWORD error = GetLastError();
+		return false;
+	}
+
+	for (size_t i = 0; i < size; i++) {
+		*(BYTE*)((LPBYTE)address + i) = 0x90; //NOP
+	}
+
+	return true;
+}
+
+bool HookHelper::ReplaceWithNoOps(HookStruct& hookStruct, bool revert)
+{
+	if ((hookStruct.originalStore == nullptr) == revert) return false;
+
+	DWORD OldProtection = { 0 };
+	bool success = VirtualProtectEx(GetCurrentProcess(), (LPVOID)hookStruct.address, hookStruct.size, PAGE_EXECUTE_READWRITE, &OldProtection);
+	if (!success) {
+		DWORD error = GetLastError();
+		return false;
+	}
+
+	if (!revert) {
+		hookStruct.originalStore = new BYTE[hookStruct.size];
+
+		for (size_t i = 0; i < hookStruct.size; i++) {
+			hookStruct.originalStore[i] = *(BYTE*)((LPBYTE)hookStruct.address + i);
+			*(BYTE*)((LPBYTE)hookStruct.address + i) = 0x90; //NOP
+		}
+	}
+	else {
+		for (size_t i = 0; i < hookStruct.size; i++) {
+			*(BYTE*)((LPBYTE)hookStruct.address + i) = hookStruct.originalStore[i];
+		}
+
+		delete[] hookStruct.originalStore;
+		hookStruct.originalStore = nullptr;
+	}
+
+	return true;
+}
+
+bool HookHelper::ReplaceMultipleWithNoOps(HookStruct* hookStructs, size_t count, bool revert)
+{
+	bool allSuccess = true;
+
+	for (size_t i = 0; i < count; i++) {
+		if (!ReplaceWithNoOps(hookStructs[i], revert)) {
+			allSuccess = false;
+		}
+	}
+
+	return allSuccess;
 }

@@ -12,6 +12,7 @@ class CameraHooks {
 	static constexpr float rotationSpeed = 0.25f;
 
 	static CameraHookMode m_mode;
+	static bool m_disableCulling;
 	static bool m_followRotation;
 	static bool m_forceClearScreen;
 	static float m_gameCameraZ;
@@ -51,6 +52,7 @@ public:
 	static void update(CameraOrPhysics* gameCamera);
 
 	static void setForceClearScreen(bool value);
+	static void setDisableCulling(bool value);
 	static void setMode(CameraHookMode mode);
 	static void setFollowRotation(bool value);
 	static void setAngle(float angle);

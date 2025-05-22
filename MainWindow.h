@@ -202,10 +202,12 @@ public:
 	bool captureMouse = 0;
 	void CaptureMouse();
 
-	// player ped remap and shape
+	// player ped remap, shape & invisibility
 	void PedRemapShapeSet();
 	void PedRemapShapeDefault();
 	void PedRemapShapeUpdate();
+	void PedInvisibilitySet();
+	int m_pedInvisibility = 0;
 
 	// other
 	void SetHealthArmorMoney();

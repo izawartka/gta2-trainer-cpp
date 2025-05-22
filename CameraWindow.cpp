@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CameraWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CAM_TARL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_ROTF, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_CLEAR, &CameraWindow::OnCheckboxChange)
+	ON_BN_CLICKED(IDC_CAM_DCULL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TP, &CameraWindow::OnTeleport)    
 	ON_BN_CLICKED(IDC_CAM_AA, &CameraWindow::OnAntialiasingChange)
 	ON_BN_CLICKED(IDC_CAM_SHADOWS, &CameraWindow::OnShadowsChange)
@@ -63,6 +64,7 @@ void CameraWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CAM_NOLIGHTS, m_noLights);
 	DDX_Check(pDX, IDC_CAM_ROTF, m_followRotation);
 	DDX_Check(pDX, IDC_CAM_CLEAR, m_forceClearScreen);
+	DDX_Check(pDX, IDC_CAM_DCULL, m_disableCulling);
 }
 
 BOOL CameraWindow::OnInitDialog()
@@ -148,6 +150,7 @@ void CameraWindow::OnCheckboxChange()
 	m_player->ph1.followedPedID = m_followPlayer == 1 ? 1 : 0;
 	CameraHooks::setFollowRotation(m_followRotation);
 	CameraHooks::setForceClearScreen(m_forceClearScreen);
+	CameraHooks::setDisableCulling(m_disableCulling);
 }
 
 void CameraWindow::OnGTAGameTick()
@@ -396,6 +399,8 @@ void CameraWindow::OnRotationModeChange(UINT nID)
 	}
 	else {
 		m_horAngleSlider.EnableWindow(TRUE);
+		m_disableCulling = true;
+		CameraHooks::setDisableCulling(true);
 	}
 
 	UpdateData(FALSE);
