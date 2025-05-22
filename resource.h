@@ -78,9 +78,10 @@
 #define IDC_EMBM                        3073
 #define IDC_EMBPOS                      3074
 #define IDC_CAREXPLODE                  3075
-#define IDC_BANNER                      3076
-#define IDB_BANNER                      3077
-#define IDC_EDIT1                       3078
+#define IDC_INVISIBILITY                3076
+#define IDC_BANNER                      3077
+#define IDB_BANNER                      3078
+#define IDC_EDIT1                       3079
 #define IDD_ACS                         4000
 #define IDC_ACS_SPAWN                   4001
 #define IDC_ACS_X                       4002
@@ -220,7 +221,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3019
 #define _APS_NEXT_COMMAND_VALUE         32810
-#define _APS_NEXT_CONTROL_VALUE         3137
+#define _APS_NEXT_CONTROL_VALUE         3138
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

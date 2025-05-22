@@ -212,7 +212,7 @@ typedef int Sint32;
 typedef Sint32 SCR_f;
 
 typedef enum PED_BIT_STATE {
-    PED_BIT_STATE_2000000=33554432,
+    PED_BIT_STATE_INVISIBLE=33554432,
     PED_BIT_STATE_ARMED=128,
     PED_BIT_STATE_FIRING_FROM_GUN=2048,
     PED_BIT_STATE_FOLLOW_CAR_TO_GET_IN=65536,
@@ -682,8 +682,9 @@ struct TrailerController {
 typedef enum SPRITE_INVISIBILITY : byte {
     SPRITE_INVISIBILITY_VISIBLE = 0,
     SPRITE_INVISIBILITY_INVISIBLE = 1,
-    SPRITE_INVISIBILITY_GHOST = 2,
-    SPRITE_INVISIBILITY_NO_TRANSPARENCY = 3
+    SPRITE_INVISIBILITY_MULTIPLY = 2,
+    SPRITE_INVISIBILITY_NO_TRANSPARENCY = 3,
+    SPRITE_INVISIBILITY_GHOST = 65,
 } SPRITE_INVISIBILITY;
 
 typedef enum CAR_SURFACE : uint {
@@ -2573,8 +2574,8 @@ struct Player { /* Player actually */
     struct CameraOrPhysics ph1; /* player ped related */
     struct CameraOrPhysics ph2; /* camera related, for example teleport use this struct */
     struct CameraOrPhysics ph3;
-    struct CameraOrPhysics * ph4;
-    struct Ped * ped2;
+    struct Ped* ped;
+    struct Ped* ped2;
     void * field_0x2cc;
     byte field_0x2d0;
     undefined field_0x2d1;

@@ -90,6 +90,7 @@ void MainWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CARINVRKT, m_carInvRockets);
 	DDX_Check(pDX, IDC_CARINVCOL, m_carInvCollisions);
 	DDX_Check(pDX, IDC_CARNOCOL, m_carNoCollisions);
+	DDX_Check(pDX, IDC_INVISIBILITY, m_pedInvisibility);
 }
 
 
@@ -148,6 +149,7 @@ BEGIN_MESSAGE_MAP(MainWindow, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_PREMAP_S, &MainWindow::PedRemapShapeSet)
 	ON_BN_CLICKED(IDC_PREMAP_DEF, &MainWindow::PedRemapShapeDefault)
 	ON_BN_CLICKED(IDC_CARDUMMY, &MainWindow::CarMakeDummy)
+	ON_BN_CLICKED(IDC_INVISIBILITY, &MainWindow::PedInvisibilitySet)
 END_MESSAGE_MAP()
 
 // Close GTA2 on Trainer exit
@@ -1347,6 +1349,9 @@ void MainWindow::PedInfo()
 		m_gangRespect[i].Format(L"%d", (char)*gangRespect);
 	}	
 
+	// Update invisibility
+	m_pedInvisibility = (playerPed->bitState & PED_BIT_STATE_INVISIBLE) ? 1 : 0;
+
 	// Update current weapon's ammo and reload time
 	if (playerPed->selectedWeapon)
 	{
@@ -1723,6 +1728,23 @@ void MainWindow::PedRemapShapeUpdate()
 	if(playerPed->remap2 != m_pedShape.GetCurSel() && !m_pedShape.GetDroppedState())
 	{
 		m_pedShape.SetCurSel(playerPed->remap2);
+	}
+}
+
+void MainWindow::PedInvisibilitySet()
+{
+	Ped* playerPed = fnGetPedByID(1);
+	if (!playerPed || !playerPed->gameObject) return;
+
+	UpdateData(true);
+
+	if (m_pedInvisibility) {
+		playerPed->bitState = (PED_BIT_STATE)(playerPed->bitState | PED_BIT_STATE_INVISIBLE);
+		playerPed->gameObject->sprite->invisibility = SPRITE_INVISIBILITY_GHOST;
+	}
+	else {
+		playerPed->bitState = (PED_BIT_STATE)(playerPed->bitState & ~PED_BIT_STATE_INVISIBLE);
+		playerPed->gameObject->sprite->invisibility = SPRITE_INVISIBILITY_VISIBLE;
 	}
 }
 
