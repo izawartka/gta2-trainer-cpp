@@ -84,7 +84,7 @@ void CameraHooks::rotateVertex(GTAVertex& vertex) {
 
 	vertex.x = x2 + m_rotationCenterX;
 	vertex.y = y2 + m_rotationCenterY;
-	vertex.z = z0 + m_rotationCenterZ;
+	vertex.z = z2 + m_rotationCenterZ;
 }
 
 void CameraHooks::rotateTile(GTAVertex* vertexArr) {
@@ -208,7 +208,7 @@ void CameraHooks::update(CameraOrPhysics* gameCamera)
 	if (gameCamera) {
 		m_gameCameraZ = FloatDecode(gameCamera->cameraPos.z);
 		m_gameCameraField60 = FloatDecode(gameCamera->altMovingArrowsRelated);
-		m_horRotationCenterZ = FloatDecode(playerPed ? playerPed->z : 0);
+		m_horRotationCenterZ = FloatDecode(playerPed ? playerPed->z : 0) + 0.5f;
 	}
 
 	updateFollowRotation(playerPed);
