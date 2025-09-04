@@ -58,6 +58,7 @@ void CameraWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CAM_TARL, m_lockToTarget);
 	DDX_Control(pDX, IDC_CAM_SEN, m_sensitivitySlider);
 	DDX_Control(pDX, IDC_CAM_HOR_ANGLE, m_horAngleSlider);
+	DDX_Control(pDX, IDC_CAM_ADDZ, m_additionalZOffsetSlider);
 	DDX_Check(pDX, IDC_CAM_AA, m_antialiasing);
 	DDX_Check(pDX, IDC_CAM_SHADOWS, m_shadows);
 	DDX_Check(pDX, IDC_CAM_NIGHT, m_night);
@@ -85,6 +86,9 @@ BOOL CameraWindow::OnInitDialog()
 
 	m_horAngleSlider.SetRange(0, 90);
 	m_horAngleSlider.SetPos(0);
+
+	m_additionalZOffsetSlider.SetRange(0, 32);
+	m_additionalZOffsetSlider.SetPos(0);
 
 	m_night = *(BYTE*)0x00595011 == 1 ? 1 : 0;
 
@@ -396,9 +400,13 @@ void CameraWindow::OnRotationModeChange(UINT nID)
 		CameraHooks::setHorAngle(0);
 		m_horAngleSlider.SetPos(0);
 		m_horAngleSlider.EnableWindow(FALSE);
+		CameraHooks::setAdditionalZOffset(0);
+		m_additionalZOffsetSlider.SetPos(0);
+		m_additionalZOffsetSlider.EnableWindow(FALSE);
 	}
 	else {
 		m_horAngleSlider.EnableWindow(TRUE);
+		m_additionalZOffsetSlider.EnableWindow(TRUE);
 		m_disableCulling = true;
 		CameraHooks::setDisableCulling(true);
 	}
@@ -417,6 +425,12 @@ void CameraWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	{
 		float angle = ((CSliderCtrl*)pScrollBar)->GetPos() / 180.0f * M_PI;
 		CameraHooks::setHorAngle(angle);
+	}
+
+	if (pScrollBar->GetDlgCtrlID() == IDC_CAM_ADDZ)
+	{
+		float offset = ((CSliderCtrl*)pScrollBar)->GetPos();
+		CameraHooks::setAdditionalZOffset(offset);
 	}
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);

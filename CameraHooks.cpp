@@ -24,6 +24,7 @@ float CameraHooks::m_rotationCenterX = 0.0f;
 float CameraHooks::m_rotationCenterY = 0.0f;
 float CameraHooks::m_rotationCenterZ = 0.0f;
 float CameraHooks::m_horRotationCenterZ = 0.0f;
+float CameraHooks::m_additionalZOffset = 0.0f;
 struct GTAVertex CameraHooks::m_vertexBuf[8];
 
 float CameraHooks::normalizeAngle(float angle) {
@@ -74,7 +75,7 @@ void CameraHooks::rotateVertex(GTAVertex& vertex) {
 		y2 = y1 * cos(m_horAngle) - z1 * sin(m_horAngle);
 		z2 = y1 * sin(m_horAngle) + z1 * cos(m_horAngle);
 
-		z1 += m_horRotationCenterZ;
+		z2 += m_horRotationCenterZ + m_additionalZOffset;
 
 		// Convert back to screen space
 		z2 = 1.0f / (m_gameCameraZ + 8.0f - z2);
@@ -288,4 +289,9 @@ void CameraHooks::setHorAngle(float angle)
 void CameraHooks::setHorRotationCenterZ(float val)
 {
 	m_horRotationCenterZ = val;
+}
+
+void CameraHooks::setAdditionalZOffset(float val)
+{
+	m_additionalZOffset = val;
 }

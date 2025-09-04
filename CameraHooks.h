@@ -29,6 +29,7 @@ class CameraHooks {
 	static float m_rotationCenterY;
 	static float m_rotationCenterZ;
 	static float m_horRotationCenterZ;
+	static float m_additionalZOffset;
 	static struct GTAVertex m_vertexBuf[8];
 
 	static float normalizeAngle(float angle);
@@ -59,6 +60,7 @@ public:
 	static void addAngle(float delta);
 	static void setHorAngle(float angle);
 	static void setHorRotationCenterZ(float val);
+	static void setAdditionalZOffset(float val);
 
 	static CameraHookMode getMode() { return m_mode; }
 };
