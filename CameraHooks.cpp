@@ -88,12 +88,46 @@ void CameraHooks::rotateVertex(GTAVertex& vertex) {
 	vertex.z = z2 + m_rotationCenterZ;
 }
 
+void CameraHooks::applyCustomCulling(GTAVertex* vertexArr, int count)
+{
+	if (m_mode != CameraHookMode::Full3D) return;
+	bool culled = false;
+
+	// backface culling
+	float ax = vertexArr[1].x - vertexArr[0].x;
+	float ay = vertexArr[1].y - vertexArr[0].y;
+	float bx = vertexArr[2].x - vertexArr[0].x;
+	float by = vertexArr[2].y - vertexArr[0].y;
+	float cross = ax * by - ay * bx;
+	if (cross <= 0.0f) culled = true;
+
+	// frustum culling
+	if (!culled) {
+		for (int i = 0; i < count; i++) {
+			if (vertexArr[i].z < 0.0f) {
+				culled = true;
+				break;
+			}
+		}
+	}
+
+	if (!culled) return;
+
+	for (int i = 0; i < count; i++) {
+		vertexArr[i].x = 0.0f;
+		vertexArr[i].y = 0.0f;
+		vertexArr[i].z = 0.0f;
+	}
+}
+
 void CameraHooks::rotateTile(GTAVertex* vertexArr) {
 	if (m_mode == CameraHookMode::Disabled) return;
 
 	for (int i = 0; i < 4; i++) {
 		rotateVertex(vertexArr[i]);
 	}
+
+	applyCustomCulling(vertexArr, 4);
 }
 
 void CameraHooks::rotateQuad(uint32_t flags, GTAVertex** vertexArrPtr) {
@@ -107,6 +141,8 @@ void CameraHooks::rotateQuad(uint32_t flags, GTAVertex** vertexArrPtr) {
 	for (int i = 0; i < 4; i++) {
 		rotateVertex(m_vertexBuf[i]);
 	}
+
+	applyCustomCulling(m_vertexBuf, 4);
 }
 
 void CameraHooks::rotateTriangle(GTAVertex* vertexArr) {
@@ -115,6 +151,8 @@ void CameraHooks::rotateTriangle(GTAVertex* vertexArr) {
 	for (int i = 0; i < 3; i++) {
 		rotateVertex(vertexArr[i]);
 	}
+
+	applyCustomCulling(vertexArr, 3);
 }
 
 __declspec(naked) void CameraHooks::drawTile(void) {
