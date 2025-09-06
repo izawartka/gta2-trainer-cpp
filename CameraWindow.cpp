@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(CameraWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_CAM_ZL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_ZOOML, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_TARL, &CameraWindow::OnCheckboxChange)
+	ON_BN_CLICKED(IDC_CAM_PLL, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_ROTF, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_CLEAR, &CameraWindow::OnCheckboxChange)
 	ON_BN_CLICKED(IDC_CAM_DCULL, &CameraWindow::OnCheckboxChange)
@@ -56,6 +57,7 @@ void CameraWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CAM_ZL, m_lockZ);
 	DDX_Check(pDX, IDC_CAM_ZOOML, m_lockZoom);
 	DDX_Check(pDX, IDC_CAM_TARL, m_lockToTarget);
+	DDX_Check(pDX, IDC_CAM_PLL, m_lockToPlayer);
 	DDX_Control(pDX, IDC_CAM_SEN, m_sensitivitySlider);
 	DDX_Control(pDX, IDC_CAM_HOR_ANGLE, m_horAngleSlider);
 	DDX_Control(pDX, IDC_CAM_ADDZ, m_additionalZOffsetSlider);
@@ -172,6 +174,25 @@ void CameraWindow::OnGTAGameTick()
 	m_player = pGame->CurrentPlayer;
 	if (!m_player) return;
 
+	Ped* playerPed = m_player->ped;
+
+	if (m_lockToPlayer) {
+		m_lockToTarget = 0;
+		SCR_f x, y, z;
+
+		if(!GetPlayerPos(&x, &y, &z)) {
+			m_lockToPlayer = 0;
+		}
+		else {
+			m_player->ph1.cameraPos.z -= FloatEncode(1.0);
+			m_player->ph1.followedPedID = 0;
+
+			m_player->ph1.cameraPos.x = x;
+			m_player->ph1.cameraPos.y = y;
+			m_player->ph1.cameraPos.z = z;
+		}
+	} 
+	
 	if (m_lockToTarget) {
 		m_player->ph1.cameraPos = m_player->ph1.cameraPosTarget;
 	}
@@ -196,7 +217,7 @@ void CameraWindow::OnGTAGameTick()
 		m_zoom = m_player->ph1.cameraPos.zoom;
 	}
 
-	m_followPlayer = m_player->ph1.followedPedID == 1 ? 1 : 0;
+	m_followPlayer = (m_player->ph1.followedPedID == 1 || m_lockToPlayer == 1) ? 1 : 0;
 
 	UpdateData(FALSE);
 
