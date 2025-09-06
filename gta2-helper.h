@@ -257,6 +257,7 @@ POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
 bool IsPointSafe(SCR_f x, SCR_f y, SCR_f z);
 void ClampPointToSafe(SCR_f &x, SCR_f &y);
 void ClampPointToSafe(SCR_f &x, SCR_f &y, SCR_f &z);
+bool GetPlayerPos(SCR_f* x, SCR_f* y, SCR_f* z = nullptr, bool* inCar = nullptr);
 void ReplaceCode(DWORD* address, BYTE* newCode, int length);
 
 #endif // !GTA_H
