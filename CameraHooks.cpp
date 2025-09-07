@@ -99,7 +99,7 @@ void CameraHooks::applyCustomCulling(GTAVertex* vertexArr, int count)
 	float bx = vertexArr[2].x - vertexArr[0].x;
 	float by = vertexArr[2].y - vertexArr[0].y;
 	float cross = ax * by - ay * bx;
-	if (cross <= 0.0f) culled = true;
+	if (cross < 0.0f) culled = true;
 
 	// frustum culling
 	if (!culled) {
@@ -276,7 +276,19 @@ static HookHelper::HookStruct disableCullingHooks[] = {
 	{0x0046ca4d, 6},
 	{0x0046d1d2, 6}, // DrawTopTile
 	{0x0046ce99, 6},
-	{0x0046d006, 6}
+	{0x0046d006, 6},
+
+	{0x0046d581, 6}, // SlopTile1
+	{0x0046d597, 6},
+	{0x0046d711, 6}, // SlopTile2
+	{0x0046d727, 6},
+	{0x0046d8d3, 6}, // SlopTile3
+	{0x0046d423, 6}, // SlopTile4
+	{0x004700e9, 6}, // SlopTile5
+	{0x004702d9, 6}, // SlopTile6
+	{0x004704c9, 6}, // SlopTile7
+	{0x004706a9, 6}, // SlopTile8
+
 
 };
 
