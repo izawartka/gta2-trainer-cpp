@@ -44,6 +44,8 @@ static DWORD ptrToFrontEnd = 0x005eb160;
 static DWORD ptrToS6 = 0x005dcbc8;
 static DWORD ptrToMenu = 0x005ec070;
 static DWORD ptrToS15 = 0x006644bc;
+static DWORD ptrToS12 = 0x006633c8;
+static DWORD ptrToCurrentMapLayer = 0x006633a0;
 
 #define ByPtr(type, x) (type*)*(DWORD*)x
 // Usage: auto game = fnGetGame();
@@ -243,6 +245,11 @@ static GivePowerUp* fnGivePowerUp = (GivePowerUp*)0x004a5780;
 typedef void(__fastcall SaveGame)(S15_script* s15, DWORD edx, char* saveFileName);
 static SaveGame* fnSaveGame = (SaveGame*)0x0047ef40;
 
+// 00471f20
+// void __fastcall DrawTileBlock(S12 *this,int *param_2,int x,int y)
+typedef void(__fastcall DrawTileBlock)(S12* s12, DWORD edx, int* x, int* y);
+static DrawTileBlock* fnDrawTileBlock = (DrawTileBlock*)0x00471f20;
+
 void fnShowCustomTextMessage(WCHAR* message);
 Roof* getCarRoofWithSpriteIfExists(Roof* startroof, short spritetype);
 Roof* getCarLastRoof(Roof* startroof);
@@ -257,6 +264,7 @@ POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY);
 bool IsPointSafe(SCR_f x, SCR_f y, SCR_f z);
 void ClampPointToSafe(SCR_f &x, SCR_f &y);
 void ClampPointToSafe(SCR_f &x, SCR_f &y, SCR_f &z);
+bool GetPlayerPos(SCR_f* x, SCR_f* y, SCR_f* z = nullptr, bool* inCar = nullptr);
 void ReplaceCode(DWORD* address, BYTE* newCode, int length);
 
 #endif // !GTA_H

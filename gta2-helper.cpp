@@ -194,6 +194,33 @@ void ClampPointToSafe(SCR_f& x, SCR_f& y, SCR_f& z)
 	if(z > 7 * 16384) z = 7 * 16384;
 }
 
+bool GetPlayerPos(SCR_f* x, SCR_f* y, SCR_f* z, bool* inCar)
+{
+	Game* pGame = (Game*)*(DWORD*)ptrToGame;
+	if (!pGame) return false;
+
+	Player* player = pGame->CurrentPlayer;
+	if (!player) return false;
+
+	Ped* playerPed = player->ped;
+	if (!playerPed) return false;
+
+	if (playerPed->currentCar && playerPed->currentCar->sprite) {
+		if (inCar) *inCar = true;
+		*x = playerPed->currentCar->sprite->x;
+		*y = playerPed->currentCar->sprite->y;
+		if(z) *z = playerPed->currentCar->sprite->z;
+	}
+	else if (playerPed->gameObject && playerPed->gameObject->sprite) {
+		if (inCar) *inCar = false;
+		*x = playerPed->gameObject->sprite->x;
+		*y = playerPed->gameObject->sprite->y;
+		if(z) *z = playerPed->gameObject->sprite->z;
+	}
+
+	return true;
+}
+
 void ReplaceCode(DWORD* address, BYTE* newCode, int length)
 {
 	DWORD oldProtection = { 0 };

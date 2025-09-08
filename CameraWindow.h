@@ -66,10 +66,13 @@ protected:
 	int m_lockZ = 0;
 	int m_lockZoom = 0;
 	int m_lockToTarget = 0;
+	int m_lockToPlayer = 0;
 	CameraMoveBtn m_moveBtns[8];
 	UINT m_btnMoveDirection = 0;
 	CSliderCtrl m_sensitivitySlider;
 	CSliderCtrl m_horAngleSlider;
+	CSliderCtrl m_additionalZOffsetSlider;
+	CSliderCtrl m_renderDistanceSlider;
 	int m_sensitivity = 10;
 	int m_antialiasing = 1;
 	int m_shadows = 1;
