@@ -131,6 +131,39 @@ void CameraHooks::applyCustomCulling(GTAVertex* vertexArr, int count)
 	}
 }
 
+void CameraHooks::reverseDiagonalTile(GTAVertex* vertexArr)
+{
+	GTAVertex worldSpaceVerts[3];
+	memcpy(worldSpaceVerts, vertexArr, sizeof(GTAVertex) * 3);
+
+	for (int i = 0; i < 3; i++) {
+		GTAVertex& vertex = worldSpaceVerts[i];
+		float x = vertex.x - m_rotationCenterX;
+		float y = vertex.y - m_rotationCenterY;
+		float z = vertex.z - m_rotationCenterZ;
+
+		// Convert from screen space to world space
+		x = x / (m_gameCameraField60 * z);
+		y = y / (m_gameCameraField60 * z);
+		z = m_gameCameraZ + 8.0f - (1.0f / z);
+
+		worldSpaceVerts[i].x = x + m_rotationCenterX;
+		worldSpaceVerts[i].y = y + m_rotationCenterY;
+		worldSpaceVerts[i].z = z + m_rotationCenterZ;
+	}
+
+	float ax = worldSpaceVerts[1].x - worldSpaceVerts[0].x;
+	float ay = worldSpaceVerts[1].y - worldSpaceVerts[0].y;
+	float bx = worldSpaceVerts[2].x - worldSpaceVerts[0].x;
+	float by = worldSpaceVerts[2].y - worldSpaceVerts[0].y;
+	float cross = ax * by - ay * bx;
+
+	// if the face is facing back even in world coords, reverse it
+	if (cross < 0.0f) {
+		std::swap(vertexArr[1], vertexArr[2]);
+	}
+}
+
 void CameraHooks::rotateTile(GTAVertex* vertexArr) {
 	if (m_mode == CameraHookMode::Disabled) return;
 
@@ -158,6 +191,8 @@ void CameraHooks::rotateQuad(uint32_t flags, GTAVertex** vertexArrPtr) {
 
 void CameraHooks::rotateTriangle(GTAVertex* vertexArr) {
 	if (m_mode == CameraHookMode::Disabled) return;
+
+	reverseDiagonalTile(vertexArr);
 
 	for (int i = 0; i < 3; i++) {
 		rotateVertex(vertexArr[i]);

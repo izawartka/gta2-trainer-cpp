@@ -48,6 +48,7 @@ class CameraHooks {
 
 	static void rotateVertex(GTAVertex& vertex);
 	static void applyCustomCulling(GTAVertex* vertexArr, int count);
+	static void reverseDiagonalTile(GTAVertex* vertexArr);
 	static void rotateTile(GTAVertex* vertexArr);
 	static void rotateQuad(uint32_t flags, GTAVertex** vertexArrPtr);
 	static void rotateTriangle(GTAVertex* vertexArr);
