@@ -6221,6 +6221,11 @@ struct S10 {
     int text_speed;
 };
 
+typedef struct RenderDistanceArrayItem {
+    int x;
+	int y;
+} RenderDistanceArrayItem;
+
 typedef struct S12 S12, *PS12;
 
 struct S12 {
@@ -6243,9 +6248,9 @@ struct S12 {
     byte field_0x19;
     byte field_0x1a;
     byte field_0x1b;
-    undefined field_0x1c[12000];
-    int field_0x2efc;
-    int field_0x2f00;
+	RenderDistanceArrayItem renderDistanceArr[1500];
+    int currentDrawLayerSize;
+    int tilesCount;
 };
 
 typedef struct S13 S13, *PS13;

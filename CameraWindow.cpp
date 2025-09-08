@@ -61,6 +61,7 @@ void CameraWindow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CAM_SEN, m_sensitivitySlider);
 	DDX_Control(pDX, IDC_CAM_HOR_ANGLE, m_horAngleSlider);
 	DDX_Control(pDX, IDC_CAM_ADDZ, m_additionalZOffsetSlider);
+	DDX_Control(pDX, IDC_CAM_RDIST, m_renderDistanceSlider);
 	DDX_Check(pDX, IDC_CAM_AA, m_antialiasing);
 	DDX_Check(pDX, IDC_CAM_SHADOWS, m_shadows);
 	DDX_Check(pDX, IDC_CAM_NIGHT, m_night);
@@ -91,6 +92,9 @@ BOOL CameraWindow::OnInitDialog()
 
 	m_additionalZOffsetSlider.SetRange(0, 32);
 	m_additionalZOffsetSlider.SetPos(0);
+
+	m_renderDistanceSlider.SetRange(8, 256);
+	m_renderDistanceSlider.SetPos(8);
 
 	m_night = *(BYTE*)0x00595011 == 1 ? 1 : 0;
 
@@ -421,13 +425,23 @@ void CameraWindow::OnRotationModeChange(UINT nID)
 		CameraHooks::setHorAngle(0);
 		m_horAngleSlider.SetPos(0);
 		m_horAngleSlider.EnableWindow(FALSE);
+
 		CameraHooks::setAdditionalZOffset(0);
 		m_additionalZOffsetSlider.SetPos(0);
 		m_additionalZOffsetSlider.EnableWindow(FALSE);
+
+		CameraHooks::setRenderDistance(8);
+		m_renderDistanceSlider.SetPos(8);
+		m_renderDistanceSlider.EnableWindow(FALSE);
 	}
 	else {
 		m_horAngleSlider.EnableWindow(TRUE);
 		m_additionalZOffsetSlider.EnableWindow(TRUE);
+
+		m_renderDistanceSlider.EnableWindow(TRUE);
+		m_renderDistanceSlider.SetPos(20);
+		CameraHooks::setRenderDistance(20);
+
 		m_disableCulling = true;
 		CameraHooks::setDisableCulling(true);
 	}
@@ -452,6 +466,12 @@ void CameraWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	{
 		float offset = ((CSliderCtrl*)pScrollBar)->GetPos();
 		CameraHooks::setAdditionalZOffset(offset);
+	}
+
+	if (pScrollBar->GetDlgCtrlID() == IDC_CAM_RDIST)
+	{
+		int dist = ((CSliderCtrl*)pScrollBar)->GetPos();
+		CameraHooks::setRenderDistance(dist);
 	}
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);

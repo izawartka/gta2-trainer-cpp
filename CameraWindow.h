@@ -72,6 +72,7 @@ protected:
 	CSliderCtrl m_sensitivitySlider;
 	CSliderCtrl m_horAngleSlider;
 	CSliderCtrl m_additionalZOffsetSlider;
+	CSliderCtrl m_renderDistanceSlider;
 	int m_sensitivity = 10;
 	int m_antialiasing = 1;
 	int m_shadows = 1;
