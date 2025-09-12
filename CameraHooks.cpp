@@ -379,7 +379,7 @@ void CameraHooks::updateCustomCameraPos()
 	m_customCameraZ = m_horRotationCenterZ + horizontalZ;
 }
 
-void CameraHooks::update(Camera* gameCamera)
+void CameraHooks::update()
 {
 	if (m_mode == CameraHookMode::Disabled) return;
 	updateRotationCenter();
@@ -387,8 +387,9 @@ void CameraHooks::update(Camera* gameCamera)
 	Ped* playerPed = fnGetPedByID(1);
 
 	updateFollowRotation(playerPed);
-
 	m_angle = moveAngleTowards(m_angle, m_destAngle, rotationSpeed);
+
+	Camera* gameCamera = *(Camera**)ptrToMainCamera;
 
 	if (gameCamera) {
 		m_gameCameraX = FloatDecode(gameCamera->cameraPos.x);

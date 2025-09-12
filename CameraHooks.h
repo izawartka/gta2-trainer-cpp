@@ -68,7 +68,7 @@ class CameraHooks {
 	static void updateCustomCameraPos();
 
 public:
-	static void update(Camera* gameCamera);
+	static void update();
 
 	static void setForceClearScreen(bool value);
 	static void setDisableCulling(bool value);

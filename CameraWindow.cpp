@@ -227,7 +227,7 @@ void CameraWindow::OnGTAGameTick()
 
 	HandleButtonMove();
 	UpdateShadowsDistance();
-	CameraHooks::update(m_player ? &m_player->ph1 : nullptr);
+	CameraHooks::update();
 }
 
 void CameraWindow::ApplyShadowsDistanceFix()
