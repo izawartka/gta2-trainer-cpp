@@ -19,6 +19,7 @@ class CameraHooks {
 	static float m_gameCameraY;
 	static float m_gameCameraZ;
 	static float m_gameCameraField60;
+	static float m_gameCameraZoomFactor;
 	static bool m_enabled;
 	static bool m_wasFullScreen;
 	static float m_destAngle;
@@ -67,7 +68,7 @@ class CameraHooks {
 	static void updateCustomCameraPos();
 
 public:
-	static void update(CameraOrPhysics* gameCamera);
+	static void update(Camera* gameCamera);
 
 	static void setForceClearScreen(bool value);
 	static void setDisableCulling(bool value);

@@ -15,6 +15,7 @@ float CameraHooks::m_gameCameraX = 0;
 float CameraHooks::m_gameCameraY = 0;
 float CameraHooks::m_gameCameraZ = 0;
 float CameraHooks::m_gameCameraField60 = 0;
+float CameraHooks::m_gameCameraZoomFactor = 1.0f;
 bool CameraHooks::m_enabled = false;
 bool CameraHooks::m_wasFullScreen = false;
 float CameraHooks::m_destAngle = 0.0f;
@@ -77,19 +78,20 @@ void CameraHooks::rotateVertex(GTAVertex& vertex) {
 		// Convert from screen space to world space
 		x1 = x1 / (m_gameCameraField60 * z1);
 		y1 = y1 / (m_gameCameraField60 * z1);
-		z1 = m_gameCameraZ + 8.0f - (1.0f / z1);
+		z1 = m_gameCameraZ + (8.0f * m_gameCameraZoomFactor) - (1.0f / z1);
 
-		z1 -= m_horRotationCenterZ;
+		float zOffset = m_horRotationCenterZ + 8.0f * (m_gameCameraZoomFactor - 1.0f);
+		z1 -= zOffset;
 
 		// Rotate the world
 		x2 = x1; // unchanged
 		y2 = y1 * cos(m_horAngle) - z1 * sin(m_horAngle);
 		z2 = y1 * sin(m_horAngle) + z1 * cos(m_horAngle);
 
-		z2 += m_horRotationCenterZ + m_additionalZOffset;
+		z2 += zOffset + m_additionalZOffset;
 
 		// Convert back to screen space
-		z2 = 1.0f / (m_gameCameraZ + 8.0f - z2);
+		z2 = 1.0f / (m_gameCameraZ + 8.0f * m_gameCameraZoomFactor - z2);
 		x2 = x2 * m_gameCameraField60 * z2;
 		y2 = y2 * m_gameCameraField60 * z2;
 	}
@@ -145,7 +147,7 @@ void CameraHooks::reverseDiagonalTile(GTAVertex* vertexArr)
 		// Convert from screen space to world space
 		x = x / (m_gameCameraField60 * z);
 		y = y / (m_gameCameraField60 * z);
-		z = m_gameCameraZ + 8.0f - (1.0f / z);
+		z = m_gameCameraZ + (8.0f * m_gameCameraZoomFactor) - (1.0f / z);
 
 		worldSpaceVerts[i].x = x + m_rotationCenterX;
 		worldSpaceVerts[i].y = y + m_rotationCenterY;
@@ -377,7 +379,7 @@ void CameraHooks::updateCustomCameraPos()
 	m_customCameraZ = m_horRotationCenterZ + horizontalZ;
 }
 
-void CameraHooks::update(CameraOrPhysics* gameCamera)
+void CameraHooks::update(Camera* gameCamera)
 {
 	if (m_mode == CameraHookMode::Disabled) return;
 	updateRotationCenter();
@@ -393,6 +395,7 @@ void CameraHooks::update(CameraOrPhysics* gameCamera)
 		m_gameCameraY = FloatDecode(gameCamera->cameraPos.y);
 		m_gameCameraZ = FloatDecode(gameCamera->cameraPos.z);
 		m_gameCameraField60 = FloatDecode(gameCamera->altMovingArrowsRelated);
+		m_gameCameraZoomFactor = (float)gameCamera->cameraPos.zoom / 14540.0f;
 		m_horRotationCenterZ = FloatDecode(playerPed ? playerPed->z : 0) + 0.5f;
 		updateCustomCameraPos();
 	}
