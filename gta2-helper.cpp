@@ -140,16 +140,16 @@ POINT ConvertGameWorldCoordinateToScreen(SCR_f gameX, SCR_f gameY) {
 	int width = *(int*)0x00673578;
 	int height = *(int*)0x006732e8;
 
-	auto pp = ByPtr(CameraOrPhysics, ptrToPlayerPhysics);
+	auto camera = ByPtr(Camera, ptrToMainCamera);
 
-	double right = FloatDecode(pp->cameraBoundaries.right);
-	double left = FloatDecode(pp->cameraBoundaries.left);
+	double right = FloatDecode(camera->cameraBoundaries.right);
+	double left = FloatDecode(camera->cameraBoundaries.left);
 	double widthX = right - left;
 	double gameUnitsToScreenProportionX = (double)width / widthX;
 	double targetX = FloatDecode(gameX) - left; // offset from left
 
-	double top = FloatDecode(pp->cameraBoundaries.top);
-	double bottom = FloatDecode(pp->cameraBoundaries.bottom);
+	double top = FloatDecode(camera->cameraBoundaries.top);
+	double bottom = FloatDecode(camera->cameraBoundaries.bottom);
 	double heightY = bottom - top;
 	double gameUnitsToScreenProportionY = (double)height / heightY;
 	double targetY = FloatDecode(gameY) - top; // offset from top 

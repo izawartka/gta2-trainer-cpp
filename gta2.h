@@ -457,7 +457,7 @@ typedef enum PED_STATE2 {
     PED_STATE2_f_UNK=15
 } PED_STATE2;
 
-typedef struct CameraOrPhysics CameraOrPhysics, *PPlayerPhysics;
+typedef struct Camera Camera, *PCamera;
 
 typedef enum SPRITE_BIT1 : unsigned char {
     SPRITE_BIT1_1=1
@@ -953,7 +953,7 @@ struct GameObject {
     uint relToId; //0x10
     int id;
     OBJECT_TYPE type;
-    struct CameraOrPhysics * probablyPhysics;
+    struct Camera * probablyPhysics;
     undefined field_0x20;
     undefined field_0x21;
     undefined field_0x22;
@@ -1094,7 +1094,7 @@ struct WorldRect {
     SCR_f bottom;
 };
 
-struct CameraOrPhysics {
+struct Camera {
     CameraPos cameraPosTarget2; 
     CameraPos cameraPosTarget;
     WorldRect cameraBoundaries;
@@ -2571,9 +2571,9 @@ struct Player { /* Player actually */
     undefined field_0x8d;
     undefined1 field_0x8e;
     byte field_0x8f;
-    struct CameraOrPhysics ph1; /* player ped related */
-    struct CameraOrPhysics ph2; /* camera related, for example teleport use this struct */
-    struct CameraOrPhysics ph3;
+    struct Camera ph1; /* player ped related */
+    struct Camera ph2; /* camera related, for example teleport use this struct */
+    struct Camera ph3;
     struct Ped* ped;
     struct Ped* ped2;
     void * field_0x2cc;
