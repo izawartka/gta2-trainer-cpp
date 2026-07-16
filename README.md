@@ -1,5 +1,8 @@
 # gta2-trainer-cpp
 
+> [!CAUTION]
+> This mod is no longer being developed. It has been superseded by [gta2-seuko-mod](https://github.com/izawartka/gta2-seuko-mod), which offers more features and is more stable :)
+
 [Video showcase](https://www.youtube.com/watch?v=uAMWq2xMrv0)
 
 ## About
